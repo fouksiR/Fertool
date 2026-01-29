@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egg Freezing – What Are My Chances? | Dr. Yuval Fouks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%);
+            min-height: 100vh;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(248, 247, 245, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            border-bottom: 1px solid rgba(44, 44, 44, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #2c2c2c;
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: #4a6741;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover { opacity: 0.7; }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tool-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #6b5b95, #8b7db5);
+            color: #fff;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .tool-header .subtitle {
+            font-size: 1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+            border-left: 4px solid #6b5b95;
+            padding: 1rem 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .info-box strong {
+            color: #4a4a6a;
+        }
+
+        /* Calculator Card */
+        .calculator-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            font-weight: 500;
+            font-size: 1rem;
+            color: #2c2c2c;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .input-sublabel {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Age Buttons */
+        .age-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .age-btn {
+            padding: 1rem 0.5rem;
+            background: #f8f7f5;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: #2c2c2c;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .age-btn:hover {
+            border-color: #6b5b95;
+            background: #f5f3fa;
+        }
+
+        .age-btn.selected {
+            background: linear-gradient(135deg, #6b5b95, #8b7db5);
+            color: #fff;
+            border-color: #6b5b95;
+        }
+
+        /* Egg Slider */
+        .slider-container {
+            padding: 0.5rem 0;
+        }
+
+        .slider-value {
+            text-align: center;
+            font-size: 2.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: #6b5b95;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-value span {
+            font-size: 1rem;
+            color: #888;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+        }
+
+        .egg-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 1rem 0;
+        }
+
+        .egg-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6b5b95, #8b7db5);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(107, 91, 149, 0.4);
+        }
+
+        .egg-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6b5b95, #8b7db5);
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Calculate Button */
+        .calculate-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            color: #fff;
+            background: linear-gradient(135deg, #6b5b95, #8b7db5);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 91, 149, 0.3);
+        }
+
+        .calculate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results */
+        .results-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: none;
+            margin-top: 1.5rem;
+        }
+
+        .results-card.visible {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-main {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(135deg, #f8f5ff, #f0ebff);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-percentage {
+            font-size: 4rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: #6b5b95;
+            line-height: 1;
+        }
+
+        .result-label {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .result-ci {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 0.25rem;
+        }
+
+        .result-context {
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .result-context.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 4px solid #4a6741;
+        }
+
+        .result-context.moderate {
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border-left: 4px solid #f9a825;
+        }
+
+        .result-context.low {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-left: 4px solid #c62828;
+        }
+
+        .result-context h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-context p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .key-points {
+            background: #f8f7f5;
+            padding: 1.25rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .key-points h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: #4a4a6a;
+        }
+
+        .key-points ul {
+            padding-left: 1.25rem;
+            font-size: 0.85rem;
+        }
+
+        .key-points li {
+            margin-bottom: 0.4rem;
+        }
+
+        .data-source {
+            font-size: 0.75rem;
+            color: #999;
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #6b5b95, #8b7db5);
+            color: #fff;
+            border: none;
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: #6b5b95;
+            border: 2px solid #6b5b95;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            margin-top: 2rem;
+        }
+
+        .comparison-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #4a4a6a;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .comparison-table th {
+            background: #f5f3fa;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            font-weight: 500;
+            border-bottom: 2px solid #6b5b95;
+        }
+
+        .comparison-table td {
+            padding: 0.6rem 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table tr:hover {
+            background: #faf9fc;
+        }
+
+        .highlight-row {
+            background: #f5f3fa !important;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .main-container { padding: 90px 15px 40px; }
+            .tool-header h1 { font-size: 2rem; }
+            .calculator-card { padding: 1.5rem; }
+            .age-grid { grid-template-columns: repeat(2, 1fr); }
+            .result-percentage { font-size: 3rem; }
+            .action-buttons { flex-direction: column; }
+            .comparison-table { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Dr. Yuval Fouks</a>
+            <a href="index.html" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="tool-header">
+            <span class="badge">Egg Freezing Calculator</span>
+            <h1>What Are My Chances?</h1>
+            <p class="subtitle">Estimate your likelihood of having a baby from frozen eggs based on your age and number of eggs stored</p>
+        </div>
+
+        <div class="info-box">
+            <strong>Based on real outcomes:</strong> This calculator uses data from nearly 3,000 patients at world-leading fertility centers, published in RBMO 2025 (Cobo et al.) and JAMA Network Open 2023 (Fouks et al.).
+        </div>
+
+        <div class="calculator-card">
+            <div class="input-group">
+                <label class="input-label">Your age at egg freezing</label>
+                <div class="age-grid">
+                    <button class="age-btn" data-age="under35">Under 35</button>
+                    <button class="age-btn" data-age="35-37">35–37</button>
+                    <button class="age-btn" data-age="38-40">38–40</button>
+                    <button class="age-btn" data-age="over40">Over 40</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Number of mature eggs (MII) frozen</label>
+                <p class="input-sublabel">Move the slider or enter a number</p>
+                <div class="slider-container">
+                    <div class="slider-value"><span id="eggCount">10</span> <span>eggs</span></div>
+                    <input type="range" class="egg-slider" id="eggSlider" min="1" max="30" value="10">
+                    <div class="slider-labels">
+                        <span>1</span>
+                        <span>10</span>
+                        <span>20</span>
+                        <span>30+</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="calculate-btn" id="calculateBtn" disabled>Calculate My Chances</button>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <div class="result-main">
+                <div class="result-percentage" id="resultPercent">--</div>
+                <div class="result-label">Estimated chance of at least one live birth</div>
+                <div class="result-ci" id="resultCI"></div>
+            </div>
+
+            <div class="result-context" id="resultContext">
+                <h3 id="contextTitle"></h3>
+                <p id="contextText"></p>
+            </div>
+
+            <div class="key-points">
+                <h4>Key things to know</h4>
+                <ul>
+                    <li>These are <strong>real outcomes</strong> from patients who returned to use their eggs</li>
+                    <li>More eggs = higher chances, but <strong>no number guarantees success</strong></li>
+                    <li>Freezing eggs younger gives better results even with fewer eggs</li>
+                    <li>Your individual results may vary based on egg quality and other factors</li>
+                </ul>
+            </div>
+
+            <div class="comparison-section">
+                <h3 class="comparison-title">How age and egg numbers affect success</h3>
+                <table class="comparison-table" id="comparisonTable">
+                    <thead>
+                        <tr>
+                            <th>Age at Freeze</th>
+                            <th>1–9 eggs</th>
+                            <th>10–14 eggs</th>
+                            <th>15–19 eggs</th>
+                            <th>20+ eggs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>&lt;35 years</td>
+                            <td>48%</td>
+                            <td>44%</td>
+                            <td>77%</td>
+                            <td>84%</td>
+                        </tr>
+                        <tr>
+                            <td>35–37 years</td>
+                            <td>37%</td>
+                            <td>47%</td>
+                            <td>53%</td>
+                            <td>73%</td>
+                        </tr>
+                        <tr>
+                            <td>38–40 years</td>
+                            <td>19%</td>
+                            <td>41%</td>
+                            <td>41%</td>
+                            <td>57%</td>
+                        </tr>
+                        <tr>
+                            <td>&gt;40 years</td>
+                            <td>5%</td>
+                            <td>25%</td>
+                            <td>32%</td>
+                            <td>27%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="data-source">
+                <strong>Sources:</strong><br>
+                Cobo A et al. Is planned oocyte cryopreservation delivering? RBMO 2025;50(4):104794. (n=2,891 patients, IVIRMA Spain & NYU Langone)<br>
+                Fouks Y et al. Utilization of Cryopreserved Oocytes in Patients With Poor Ovarian Response After Planned Oocyte Cryopreservation. JAMA Netw Open 2023;6(12):e2349722.
+            </div>
+
+            <div class="action-buttons">
+                <a href="index.html#contact" class="action-btn primary">Discuss with Dr. Fouks</a>
+                <button class="action-btn secondary" onclick="resetCalculator()">Calculate Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data from Table 4 of the RBMO paper (combined IVIRMA + NYU data)
+        const outcomeData = {
+            'under35': {
+                '1-9': { rate: 47.8, ci: '39.8–55.9', n: '75/157' },
+                '10-14': { rate: 43.5, ci: '35.4–52.0', n: '64/147' },
+                '15-19': { rate: 77.4, ci: '65.0–87.1', n: '48/62' },
+                '20+': { rate: 84.4, ci: '70.5–93.5', n: '38/45' }
+            },
+            '35-37': {
+                '1-9': { rate: 37.0, ci: '32.6–41.6', n: '170/459' },
+                '10-14': { rate: 47.4, ci: '42.3–52.5', n: '181/382' },
+                '15-19': { rate: 53.3, ci: '45.0–61.5', n: '80/150' },
+                '20+': { rate: 72.6, ci: '63.9–80.2', n: '90/124' }
+            },
+            '38-40': {
+                '1-9': { rate: 19.2, ci: '15.9–22.8', n: '101/526' },
+                '10-14': { rate: 41.4, ci: '35.7–47.2', n: '122/295' },
+                '15-19': { rate: 40.6, ci: '32.4–49.1', n: '58/143' },
+                '20+': { rate: 56.5, ci: '45.3–67.2', n: '48/85' }
+            },
+            'over40': {
+                '1-9': { rate: 5.3, ci: '2.5–9.8', n: '9/170' },
+                '10-14': { rate: 25.0, ci: '16.4–35.4', n: '22/88' },
+                '15-19': { rate: 32.1, ci: '15.9–52.4', n: '9/28' },
+                '20+': { rate: 26.7, ci: '12.3–45.9', n: '8/30' }
+            }
+        };
+
+        let selectedAge = null;
+
+        // Age button selection
+        document.querySelectorAll('.age-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAge = this.dataset.age;
+                document.getElementById('calculateBtn').disabled = false;
+            });
+        });
+
+        // Slider update
+        const slider = document.getElementById('eggSlider');
+        const eggCount = document.getElementById('eggCount');
+        
+        slider.addEventListener('input', function() {
+            eggCount.textContent = this.value;
+        });
+
+        // Calculate button
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const eggs = parseInt(slider.value);
+            const result = calculateChance(selectedAge, eggs);
+            displayResult(result, selectedAge, eggs);
+        });
+
+        function getEggCategory(eggs) {
+            if (eggs <= 9) return '1-9';
+            if (eggs <= 14) return '10-14';
+            if (eggs <= 19) return '15-19';
+            return '20+';
+        }
+
+        function calculateChance(age, eggs) {
+            const category = getEggCategory(eggs);
+            return outcomeData[age][category];
+        }
+
+        function displayResult(result, age, eggs) {
+            document.getElementById('resultPercent').textContent = Math.round(result.rate) + '%';
+            document.getElementById('resultCI').textContent = `95% confidence interval: ${result.ci}`;
+
+            const context = document.getElementById('resultContext');
+            const title = document.getElementById('contextTitle');
+            const text = document.getElementById('contextText');
+
+            // Remove existing classes
+            context.classList.remove('good', 'moderate', 'low');
+
+            if (result.rate >= 50) {
+                context.classList.add('good');
+                title.textContent = '✓ Good chances';
+                text.textContent = `With ${eggs} eggs frozen at your age, you have a good chance of achieving a live birth. These are encouraging numbers, though remember that individual outcomes can vary.`;
+            } else if (result.rate >= 30) {
+                context.classList.add('moderate');
+                title.textContent = '◐ Moderate chances';
+                text.textContent = `With ${eggs} eggs frozen at your age, you have a reasonable chance of success. Consider whether freezing additional eggs might improve your odds.`;
+            } else {
+                context.classList.add('low');
+                title.textContent = '⚠ Lower chances';
+                text.textContent = `With ${eggs} eggs frozen at your age, success rates are lower. A consultation can help you understand your options and whether additional cycles might help.`;
+            }
+
+            // Highlight current row in table
+            highlightTableRow(age);
+
+            document.getElementById('resultsCard').classList.add('visible');
+            document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function highlightTableRow(age) {
+            const rows = document.querySelectorAll('.comparison-table tbody tr');
+            rows.forEach(row => row.classList.remove('highlight-row'));
+            
+            const ageIndex = {
+                'under35': 0,
+                '35-37': 1,
+                '38-40': 2,
+                'over40': 3
+            };
+            
+            rows[ageIndex[age]].classList.add('highlight-row');
+        }
+
+        function resetCalculator() {
+            document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
+            selectedAge = null;
+            slider.value = 10;
+            eggCount.textContent = '10';
+            document.getElementById('calculateBtn').disabled = true;
+            document.getElementById('resultsCard').classList.remove('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
