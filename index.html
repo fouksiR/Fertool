@@ -377,23 +377,92 @@
     </footer>
 
     <script>
-        function handleEnter(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        }
-
-        function quickSearch(query) {
-            document.getElementById('searchInput').value = query;
+    function handleEnter(event) {
+        if (event.key === 'Enter') {
             performSearch();
         }
+    }
 
-        async function performSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
+    function quickSearch(query) {
+        document.getElementById('searchInput').value = query;
+        performSearch();
+    }
 
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('results').classList.remove('active');
+    async function performSearch() {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) return;
+
+        document.getElementById('loading').classList.add('active');
+        document.getElementById('results').classList.remove('active');
+
+        try {
+            // YOUR Gradio URL here
+            const GRADIO_URL = 'https://d296ce4dd00383656ce4.gradio.live';
+            
+            // Call Gradio's predict endpoint
+            const response = await fetch(`${GRADIO_URL}/api/predict`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    data: [query]
+                })
+            });
+
+            const data = await response.json();
+            
+            // Gradio returns: { data: ["response text"] }
+            const fullText = data.data[0];
+            
+            // Split by --- separator
+            const parts = fullText.split('---');
+            const answer = parts[0] || fullText;
+            const sources = parts[1] || '';
+            
+            // Display results
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('resultContent').innerHTML = answer.replace(/\n/g, '<br>').replace(/\*\*/g, '<strong>').replace(/\*/g, '');
+            document.getElementById('resultSources').innerHTML = sources.replace(/\n/g, '<br>');
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('loading').classList.remove('active');
+            
+            // Show error message to user
+            alert('Unable to connect to search backend. Please ensure Colab is running and try again.');
+        }
+    }
+
+    function showSampleResponse(query) {
+        const sampleResponse = `<strong>AMH and Ovarian Reserve</strong><br><br>
+
+Anti-Müllerian hormone (AMH) is a marker of ovarian reserve. According to ASRM guidelines:<br><br>
+
+<strong>Interpretation:</strong><br>
+- Low reserve: AMH <0.5-1.0 ng/mL (assay-dependent)<br>
+- Normal reserve: AMH 1.0-3.5 ng/mL<br>
+- High reserve: AMH >3.5 ng/mL<br><br>
+
+<strong>Clinical Context:</strong><br>
+For a 32-year-old woman, AMH should be interpreted with antral follicle count, FSH levels, and patient's fertility goals.<br><br>
+
+<strong>Recommendation:</strong><br>
+Specialist referral appropriate for comprehensive fertility evaluation.`;
+
+        const sampleSources = `<div class="result-sources-label">Sources</div>
+            <div class="source">1. ASRM - Testing and Interpreting Ovarian Reserve · Page 5</div>
+            <div class="source">2. RANZCOG - Fertility Assessment Guidelines · Page 12</div>
+            <div class="source">3. ESHRE Guidelines on Ovarian Stimulation · Page 8</div>`;
+
+        document.getElementById('resultContent').innerHTML = sampleResponse;
+        document.getElementById('resultSources').innerHTML = sampleSources;
+        document.getElementById('results').classList.add('active');
+        
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+</script>
 
             try {
                 // Replace with YOUR Gradio URL from Colab
