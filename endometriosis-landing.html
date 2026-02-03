@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endometriosis and Fertility</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #FAF7F0;
+            --warm-white: #FEFDFB;
+            --soft-beige: #F0EBE3;
+            --sage: #A4B494;
+            --muted-sage: #B8C5AA;
+            --forest: #5F7161;
+            --text: #4A4A4A;
+            --light-text: #7A7A7A;
+            --border: #E5DED3;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .logo {
+            font-family: 'Spectral', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--forest);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .logo-icon {
+            width: 16px;
+            height: 24px;
+            margin: 0 -2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--forest);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .page-header h1 {
+            font-family: 'Spectral', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            font-weight: 300;
+        }
+
+        /* Panel Navigation */
+        .panel-nav {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+        }
+
+        .panel-item {
+            flex: 1;
+            min-width: 140px;
+            padding: 1rem 1.25rem;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--cream);
+        }
+
+        .panel-item:hover {
+            border-color: var(--muted-sage);
+            background: var(--warm-white);
+        }
+
+        .panel-item.active {
+            border-color: var(--forest);
+            background: var(--warm-white);
+            box-shadow: 0 2px 8px rgba(95, 113, 97, 0.15);
+        }
+
+        .panel-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        /* Content Section */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h2 {
+            font-family: 'Spectral', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            font-family: 'Spectral', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin: 2rem 0 1rem;
+        }
+
+        .card p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+
+        .card ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+            line-height: 1.8;
+        }
+
+        .card li {
+            margin-bottom: 0.5rem;
+            color: var(--light-text);
+        }
+
+        /* Subtle Accent Box */
+        .accent-box {
+            background: linear-gradient(135deg, var(--soft-beige) 0%, var(--warm-white) 100%);
+            border-left: 3px solid var(--sage);
+            padding: 1.75rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .accent-box strong {
+            color: var(--forest);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Stats - Minimal Style */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--soft-beige);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-family: 'Spectral', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--forest);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            line-height: 1.4;
+        }
+
+        /* Protocol Timeline Image with Hover */
+        .protocol-timeline-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+
+        .protocol-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .hover-area {
+            position: absolute;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .hover-area:hover {
+            background-color: rgba(164, 180, 148, 0.15);
+            border-radius: 4px;
+        }
+
+        /* Position hover areas over image sections */
+        .area-call {
+            left: 0%;
+            top: 0%;
+            width: 15%;
+            height: 100%;
+        }
+
+        .area-fsh {
+            left: 15%;
+            top: 0%;
+            width: 35%;
+            height: 100%;
+        }
+
+        .area-antagonist {
+            left: 50%;
+            top: 0%;
+            width: 20%;
+            height: 100%;
+        }
+
+        .area-trigger {
+            left: 70%;
+            top: 0%;
+            width: 12%;
+            height: 100%;
+        }
+
+        .area-collection {
+            left: 82%;
+            top: 0%;
+            width: 18%;
+            height: 100%;
+        }
+
+        .protocol-tooltip {
+            position: fixed;
+            background: rgba(95, 113, 97, 0.96);
+            color: white;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            max-width: 350px;
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(-100%);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .protocol-tooltip strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+            font-family: 'Spectral', serif;
+        }
+
+        .protocol-tooltip p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .checkbox-item:hover {
+            background: var(--warm-white);
+            border-color: var(--muted-sage);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            accent-color: var(--forest);
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .checkbox-item.checked {
+            background: var(--warm-white);
+            border-color: var(--forest);
+        }
+
+        /* Tooltip */
+        .checkbox-item::after {
+            content: attr(data-evidence);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 10px);
+            transform: translateX(-50%);
+            background: rgba(95, 113, 97, 0.95);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            width: max-content;
+            max-width: 350px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .checkbox-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 2px);
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: rgba(95, 113, 97, 0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1001;
+        }
+
+        .checkbox-item:hover::after,
+        .checkbox-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Radio Options */
+        .radio-list {
+            margin: 1.5rem 0;
+        }
+
+        .radio-item {
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 0.75rem;
+            background: var(--soft-beige);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .radio-item:hover {
+            background: var(--warm-white);
+            border-color: var(--muted-sage);
+        }
+
+        .radio-item.selected {
+            background: var(--warm-white);
+            border-color: var(--forest);
+        }
+
+        .radio-item input[type="radio"] {
+            display: none;
+        }
+
+        .radio-title {
+            font-weight: 500;
+            color: var(--forest);
+            margin-bottom: 0.25rem;
+        }
+
+        .radio-description {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            line-height: 1.5;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--forest);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--sage);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--soft-beige);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--muted-sage);
+            color: white;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-bar {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .panel-nav {
+                flex-wrap: wrap;
+            }
+
+            .panel-item {
+                min-width: calc(50% - 0.375rem);
+            }
+
+            .card {
+                padding: 1.75rem;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .protocol-timeline {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 2rem 1rem;
+            }
+
+            .protocol-timeline::before {
+                display: none;
+            }
+
+            .timeline-event {
+                width: 100%;
+            }
+
+            .event-label {
+                max-width: 200px;
+            }
+
+            .day-scale {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                height: auto;
+            }
+
+            .day-tick {
+                position: static;
+                transform: none;
+            }
+
+            .timeline-tooltip {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <div class="logo">
+            <span>fert</span>
+            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#5F7161"/>
+                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" 
+                      stroke="#5F7161" 
+                      stroke-width="2.5" 
+                      fill="none" 
+                      stroke-linecap="round"/>
+            </svg>
+            <span>le</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Search</a>
+            <a href="#" class="active">Egg Freezing</a>
+            <a href="#">Assessment</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Endometriosis and Fertility</h1>
+            <p>Understanding egg freezing as an option</p>
+        </div>
+
+        <!-- Panel Navigation -->
+        <div class="panel-nav">
+            <a href="endometriosis-interactive.html" class="panel-item" style="text-decoration: none; color: inherit;">
+                <div class="panel-label">Anatomy</div>
+            </a>
+            <div class="panel-item active" onclick="showSection('overview')">
+                <div class="panel-label">Overview</div>
+            </div>
+            <div class="panel-item" onclick="showSection('impact')">
+                <div class="panel-label">The Impact</div>
+            </div>
+            <div class="panel-item" onclick="showSection('process')">
+                <div class="panel-label">The Process</div>
+            </div>
+            <div class="panel-item" onclick="showSection('timing')">
+                <div class="panel-label">When to Consider</div>
+            </div>
+            <div class="panel-item" onclick="showSection('evidence')">
+                <div class="panel-label">What Works</div>
+            </div>
+            <div class="panel-item" onclick="showSection('next')">
+                <div class="panel-label">Next Steps</div>
+            </div>
+        </div>
+
+        <!-- Section 1: Overview -->
+        <div id="overview" class="content-section active">
+            <div class="card">
+                <h2>Endometriosis and Fertility Preservation</h2>
+                <p>Endometriosis is associated with subfertility in 30-50% of affected women. Both the disease process and surgical interventions can progressively reduce ovarian reserve.</p>
+                
+                <p>Oocyte cryopreservation provides an opportunity to preserve reproductive potential before further ovarian reserve decline. This is particularly relevant for women planning surgery or those concerned about age-related and disease-related fertility decline.</p>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">30-50%</span>
+                        <span class="stat-label">of women with endometriosis experience subfertility</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">83-85%</span>
+                        <span class="stat-label">oocyte survival rate after vitrification</span>
+                    </div>
+                </div>
+
+                <div class="accent-box">
+                    <strong>Educational resource</strong>
+                    <p>This information is intended to support clinical decision-making. Individual management should be determined in consultation with reproductive endocrinology specialists.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: The Impact -->
+        <div id="impact" class="content-section">
+            <div class="card">
+                <h2>How Endometriosis Affects Fertility</h2>
+                
+                <p>Endometriosis impacts reproductive potential through multiple mechanisms:</p>
+
+                <ul>
+                    <li>Endometriomas cause direct follicular damage and reduce functional ovarian tissue</li>
+                    <li>Chronic peritoneal inflammation creates a hostile environment for gametes and embryos</li>
+                    <li>Pelvic adhesions distort tubo-ovarian anatomy, impairing natural conception</li>
+                    <li>Surgical excision, while often necessary, results in additional follicle loss</li>
+                </ul>
+
+                <h3>Ovarian Reserve Considerations</h3>
+                <p>Women with ovarian endometriomas demonstrate:</p>
+                <ul>
+                    <li>Reduced anti-Müllerian hormone (AMH) levels compared to age-matched controls</li>
+                    <li>Accelerated decline in ovarian reserve markers (0.3 ng/mL/year vs 0.1 ng/mL/year)</li>
+                    <li>Lower antral follicle counts on transvaginal ultrasound</li>
+                </ul>
+
+                <div class="accent-box">
+                    <strong>Clinical consideration</strong>
+                    <p>Significant ovarian reserve compromise occurs from the disease itself, independent of surgical intervention. Fertility preservation prior to surgery may optimize outcomes.</p>
+                </div>
+
+                <p>The clinical dilemma: surgical management may improve natural fertility but unavoidably reduces follicle reserve. This forms the rationale for considering oocyte cryopreservation before surgical intervention.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: The Process -->
+        <div id="process" class="content-section">
+            <div class="card">
+                <h2>Oocyte Cryopreservation Protocol</h2>
+                
+                <p style="text-align: center; margin-bottom: 2.5rem; color: var(--light-text);">Typical stimulation cycle: 10-14 days</p>
+
+                <!-- Protocol Timeline Image with Hover Areas -->
+                <div class="protocol-timeline-container">
+                    <img src="protocol-timeline.png" alt="IVF Protocol Timeline" class="protocol-image">
+                    
+                    <!-- Invisible hover areas positioned over image sections -->
+                    <div class="hover-area area-call" data-info="period"></div>
+                    <div class="hover-area area-fsh" data-info="fsh"></div>
+                    <div class="hover-area area-antagonist" data-info="antagonist"></div>
+                    <div class="hover-area area-trigger" data-info="trigger"></div>
+                    <div class="hover-area area-collection" data-info="collection"></div>
+                    
+                    <!-- Tooltip -->
+                    <div class="protocol-tooltip" id="protocol-tooltip"></div>
+                </div>
+
+                <!-- Clinical Details -->
+                <div style="margin-top: 3rem;">
+                    <div class="accent-box">
+                        <strong>Protocol details</strong>
+                        <p style="margin-top: 0.5rem;">GnRH antagonist protocols minimize cycle length and OHSS risk. Serial monitoring (ultrasound and estradiol) guides optimal trigger timing for oocyte maturity.</p>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="accent-box">
+                    <strong>Expected cycle requirements</strong>
+                    <p>Most women with endometriosis require 2-3 stimulation cycles to achieve 10-20 mature oocytes, the target number associated with favorable live birth rates.</p>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">9.4</span>
+                        <span class="stat-label">mean oocytes per cycle</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">30-35%</span>
+                        <span class="stat-label">reduction after prior surgery</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">83-85%</span>
+                        <span class="stat-label">post-warming survival</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        // Protocol timeline hover tooltips
+        const tooltipData = {
+            period: {
+                title: "Baseline Assessment",
+                content: "Day 1-2: Menstrual cycle begins. Contact clinic to schedule baseline transvaginal ultrasound and hormone levels (FSH, LH, estradiol) to assess ovarian reserve and confirm readiness to start stimulation."
+            },
+            fsh: {
+                title: "Ovarian Stimulation",
+                content: "Days 3-11: Daily subcutaneous gonadotropin injections (FSH/LH) to stimulate multiple follicles. Typical dose: 150-300 IU based on age, BMI, and ovarian reserve markers."
+            },
+            antagonist: {
+                title: "GnRH Antagonist",
+                content: "Days 8-11: GnRH antagonist (ganirelix/cetrotide) added to prevent premature ovulation. Administered once daily subcutaneously until trigger. May be required earlier if estradiol rises rapidly."
+            },
+            trigger: {
+                title: "Trigger Injection",
+                content: "Day 12: hCG or GnRH agonist administered when ≥3 follicles reach 17-18mm diameter. Induces final oocyte maturation. Retrieval scheduled exactly 34-36 hours later."
+            },
+            collection: {
+                title: "Oocyte Retrieval",
+                content: "Day 14: Transvaginal ultrasound-guided follicular aspiration under conscious sedation (15-30 min procedure). Mature oocytes immediately assessed and vitrified. Post-warming survival: 83-85%."
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.hover-area').forEach(area => {
+                area.addEventListener('mouseenter', function(e) {
+                    const info = tooltipData[this.dataset.info];
+                    const tooltip = document.getElementById('protocol-tooltip');
+                    tooltip.innerHTML = `<strong>${info.title}</strong><p>${info.content}</p>`;
+                    tooltip.style.display = 'block';
+                    tooltip.style.opacity = '1';
+                });
+
+                area.addEventListener('mousemove', function(e) {
+                    const tooltip = document.getElementById('protocol-tooltip');
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+                    tooltip.style.top = (rect.top - 10) + 'px';
+                });
+
+                area.addEventListener('mouseleave', function() {
+                    const tooltip = document.getElementById('protocol-tooltip');
+                    tooltip.style.opacity = '0';
+                    setTimeout(() => {
+                        tooltip.style.display = 'none';
+                    }, 200);
+                });
+            });
+        });
+        </script>
+
+
+        <!-- Section 4: When to Consider -->
+        <div id="timing" class="content-section">
+            <div class="card">
+                <h2>Clinical Indications for Fertility Preservation</h2>
+                
+                <p>Evidence supports consideration of oocyte cryopreservation in women with endometriosis when the following factors are present:</p>
+
+                <div class="checkbox-list">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Bilateral endometriomas associated with 40% reduction in AMH and accelerated reserve decline. Bilateral surgical excision results in substantial follicle loss.">
+                        <input type="checkbox" id="bilateral">
+                        <label for="bilateral">Bilateral ovarian endometriomas</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Prior ovarian surgery reduces oocyte yield by 30-35% per cycle. Each subsequent procedure causes incremental reserve compromise. Pre-surgical preservation optimizes outcomes.">
+                        <input type="checkbox" id="surgery-history">
+                        <label for="surgery-history">History of ovarian surgery</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Recurrent endometriomas indicate progressive disease often requiring repeat interventions. Multiple surgeries result in cumulative follicle depletion.">
+                        <input type="checkbox" id="recurrent">
+                        <label for="recurrent">Recurrent endometriomas post-surgery</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: AMH <1.0 ng/mL or AFC <5 indicates diminished ovarian reserve. Women with endometriosis demonstrate accelerated AMH decline (0.3 vs 0.1 ng/mL/year in controls).">
+                        <input type="checkbox" id="low-reserve">
+                        <label for="low-reserve">Diminished ovarian reserve markers (AMH, AFC)</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Cumulative live birth rates decrease from 95.4% (<35 years) to 79.6% (≥35 years) with ~20 vitrified oocytes. Oocyte quality declines substantially after age 35.">
+                        <input type="checkbox" id="age-35">
+                        <label for="age-35">Age ≥35 years or approaching</label>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Ovarian surgery results in immediate 30% reduction in retrievable oocytes. Pre-surgical cryopreservation captures optimal follicle numbers at younger maternal age.">
+                        <input type="checkbox" id="planned-surgery">
+                        <label for="planned-surgery">Planned surgery affecting ovarian tissue</label>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3>Maternal Age Considerations</h3>
+                <p>Maternal age significantly influences outcomes:</p>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-number">95.4%</span>
+                        <span class="stat-label">cumulative LBR <35 years</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">79.6%</span>
+                        <span class="stat-label">cumulative LBR ≥35 years</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 0.5rem; font-size: 0.85rem; color: var(--light-text);">Cumulative live birth rate with approximately 20 vitrified oocytes</p>
+
+                <div class="accent-box">
+                    <strong>Optimal preservation window: 30-35 years</strong>
+                    <p>This age range balances favorable oocyte quality with clinical relevance for women planning delayed childbearing or requiring ovarian surgery.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Surgical Timing Considerations</h2>
+                
+                <p>For women requiring ovarian surgery for endometriomas, timing of fertility preservation relative to surgery involves balancing competing priorities:</p>
+
+                <div class="radio-list">
+                    <div class="radio-item" onclick="selectRadio(this, 'surgery')">
+                        <input type="radio" name="surgery" value="freeze-first">
+                        <div class="radio-title">Cryopreservation before surgery</div>
+                        <div class="radio-description">Maximizes oocyte yield by preserving before surgical follicle loss</div>
+                    </div>
+                    <div class="radio-item" onclick="selectRadio(this, 'surgery')">
+                        <input type="radio" name="surgery" value="surgery-first">
+                        <div class="radio-title">Surgery before cryopreservation</div>
+                        <div class="radio-description">Addresses symptoms urgently; may improve spontaneous conception probability</div>
+                    </div>
+                    <div class="radio-item" onclick="selectRadio(this, 'surgery')">
+                        <input type="radio" name="surgery" value="discuss">
+                        <div class="radio-title">Individualized specialist assessment</div>
+                        <div class="radio-description">Decision depends on symptom burden, ovarian reserve status, age, and reproductive timeline</div>
+                    </div>
+                </div>
+
+                <div class="accent-box">
+                    <strong>Multidisciplinary approach recommended</strong>
+                    <p>Optimal management requires coordinated decision-making between gynecology and reproductive endocrinology specialists.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Evidence -->
+        <div id="evidence" class="content-section">
+            <div class="card">
+                <h2>Evidence Base</h2>
+                
+                <p>Recent literature on oocyte cryopreservation outcomes in women with endometriosis:</p>
+
+                <div class="accent-box">
+                    <strong>Comparable outcomes with adequate oocyte numbers</strong>
+                    <p>When similar numbers of mature oocytes are vitrified, women with endometriosis achieve live birth rates comparable to those undergoing elective fertility preservation. The primary impact is quantitative (reduced yield per cycle) rather than qualitative (oocyte competence).</p>
+                </div>
+
+                <h3>Key Outcome Data (La Marca et al. 2025)</h3>
+                <ul>
+                    <li>Post-warming oocyte survival: 83-85%</li>
+                    <li>Cumulative live birth rate: 46.4% (age-dependent)</li>
+                    <li>Embryo quality metrics: comparable to age-matched controls without endometriosis</li>
+                    <li>Early pregnancy loss rates: similar to age-matched controls</li>
+                </ul>
+
+                <h3>Impact of Prior Surgery</h3>
+                <p>Previous ovarian surgery for endometriomas consistently reduces oocyte yield:</p>
+                <ul>
+                    <li>No prior surgery: 9.4 ± 0.6 mature oocytes per cycle (mean ± SEM)</li>
+                    <li>Prior ovarian surgery: 30-35% reduction in oocytes retrieved</li>
+                    <li>Multiple surgeries: cumulative progressive decline</li>
+                </ul>
+
+                <div class="accent-box">
+                    <strong>Clinical implications</strong>
+                    <p>Women with previous ovarian surgery typically require additional stimulation cycles (3-4 vs 2-3) to achieve target oocyte numbers. Successful outcomes remain achievable with appropriate cycle planning.</p>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3>Safety Profile</h3>
+                <p>Controlled ovarian stimulation for fertility preservation:</p>
+                <ul>
+                    <li>Does not accelerate endometriosis disease progression</li>
+                    <li>Does not exacerbate symptoms during or after treatment</li>
+                    <li>No evidence of increased recurrence rates post-stimulation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 6: Next Steps -->
+        <div id="next" class="content-section">
+            <div class="card">
+                <h2>Clinical Pathway</h2>
+                
+                <h3>1. Ovarian Reserve Assessment</h3>
+                <p>Initial evaluation should include:</p>
+                <ul>
+                    <li>Serum anti-Müllerian hormone (AMH)</li>
+                    <li>Transvaginal ultrasound antral follicle count (AFC)</li>
+                    <li>Early follicular phase FSH and estradiol (day 2-5)</li>
+                </ul>
+
+                <div class="divider"></div>
+
+                <h3>2. Reproductive Endocrinology Consultation</h3>
+                <p>Referral to specialist experienced in endometriosis-related infertility. Discussion points:</p>
+                <ul>
+                    <li>Expected oocyte yield based on current reserve markers and surgical history</li>
+                    <li>Recommended number of stimulation cycles to achieve target oocyte number</li>
+                    <li>Optimal timing relative to planned surgical intervention</li>
+                    <li>Predicted cumulative live birth rate based on age and anticipated yield</li>
+                </ul>
+
+                <div class="divider"></div>
+
+                <h3>3. Multidisciplinary Coordination</h3>
+                <p>Communication between gynecology and reproductive endocrinology regarding:</p>
+                <ul>
+                    <li>Surgical approach and timing considerations</li>
+                    <li>Current medical management and symptom control</li>
+                    <li>Disease stage and progression risk</li>
+                    <li>Integrated fertility preservation and treatment strategy</li>
+                </ul>
+
+                <div class="divider"></div>
+
+                <h3>Financial Considerations</h3>
+                <p>Oocyte cryopreservation involves substantial out-of-pocket costs in most jurisdictions:</p>
+                <ul>
+                    <li>Stimulation cycle: $10,000-$15,000 AUD (including medications)</li>
+                    <li>Annual storage fees: $500-$1,000 AUD</li>
+                    <li>Multiple cycles: typically 2-4 cycles required</li>
+                    <li>Future warming and IVF: $5,000-$10,000 AUD per attempt</li>
+                </ul>
+
+                <div class="accent-box">
+                    <strong>Insurance coverage</strong>
+                    <p>Some private health insurance policies provide partial coverage for medically indicated fertility preservation. Patients should verify benefits and explore available payment options during initial consultation.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Summary</h2>
+                
+                <div class="accent-box">
+                    <p style="margin-bottom: 0.75rem;"><strong>Oocyte cryopreservation is feasible and effective for women with endometriosis</strong></p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Outcomes are primarily determined by maternal age and ovarian reserve at cryopreservation</strong></p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Multiple stimulation cycles typically required; excellent outcomes achievable with adequate planning</strong></p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Optimal results achieved before age 35 and before multiple ovarian surgeries</strong></p>
+                    <p style="margin-bottom: 0;"><strong>Individualized approach requiring specialist multidisciplinary input</strong></p>
+                </div>
+
+                <div class="divider"></div>
+
+                <p>This resource provides evidence-based information to facilitate shared decision-making. Individual management should be determined collaboratively with reproductive endocrinology and gynecology specialists based on comprehensive clinical assessment.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all panels
+            document.querySelectorAll('.panel-item').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked panel
+            event.currentTarget.classList.add('active');
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                element.classList.add('checked');
+            } else {
+                element.classList.remove('checked');
+            }
+        }
+
+        function selectRadio(element, groupName) {
+            // Remove selected class from all items in group
+            document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+                radio.closest('.radio-item').classList.remove('selected');
+            });
+
+            // Add selected class to clicked item
+            element.classList.add('selected');
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+        }
+
+        // Timeline hover tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            const events = document.querySelectorAll('.timeline-event[data-info]');
+            const tooltip = document.querySelector('.timeline-tooltip');
+            
+            if (!tooltip) return;
+            
+            events.forEach(event => {
+                event.addEventListener('mouseenter', function(e) {
+                    const info = this.getAttribute('data-info');
+                    if (info) {
+                        tooltip.textContent = info;
+                        tooltip.classList.add('show');
+                        
+                        // Position tooltip above the hovered event
+                        const rect = this.getBoundingClientRect();
+                        const timelineRect = this.closest('.protocol-timeline').getBoundingClientRect();
+                        const leftPos = rect.left - timelineRect.left + (rect.width / 2);
+                        
+                        tooltip.style.left = leftPos + 'px';
+                        tooltip.style.transform = 'translateX(-50%)';
+                    }
+                });
+                
+                event.addEventListener('mouseleave', function() {
+                    tooltip.classList.remove('show');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
