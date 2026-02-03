@@ -285,6 +285,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            position: relative;
         }
 
         .checkbox-item:hover {
@@ -308,6 +309,47 @@
         .checkbox-item.checked {
             background: var(--warm-white);
             border-color: var(--forest);
+        }
+
+        /* Tooltip */
+        .checkbox-item::after {
+            content: attr(data-evidence);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 10px);
+            transform: translateX(-50%);
+            background: rgba(95, 113, 97, 0.95);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            width: max-content;
+            max-width: 350px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .checkbox-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 2px);
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: rgba(95, 113, 97, 0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1001;
+        }
+
+        .checkbox-item:hover::after,
+        .checkbox-item:hover::before {
+            opacity: 1;
         }
 
         /* Radio Options */
@@ -580,27 +622,27 @@
                 <p>Based on recent research, these factors indicate benefit:</p>
 
                 <div class="checkbox-list">
-                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Bilateral endometriomas show 40% lower AMH levels and 2x faster ovarian reserve decline. Surgery on both ovaries causes significant egg loss.">
                         <input type="checkbox" id="bilateral">
                         <label for="bilateral">Endometriomas on both ovaries</label>
                     </div>
-                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Previous surgery reduces eggs retrieved by 30-35%. Each additional surgery causes further decline. Fertility preservation before surgery protects maximum reserve.">
                         <input type="checkbox" id="surgery-history">
                         <label for="surgery-history">Previous ovarian surgery</label>
                     </div>
-                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Recurrent endometriomas indicate aggressive disease. Patients often need multiple surgeries, each reducing reserve further. Early freezing preserves options.">
                         <input type="checkbox" id="recurrent">
                         <label for="recurrent">Recurrent disease after initial surgery</label>
                     </div>
-                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: AMH <1.0 ng/mL or <5 antral follicles indicates reduced reserve. Endometriosis patients show faster AMH decline (0.3 ng/mL/year vs 0.1 normal).">
                         <input type="checkbox" id="low-reserve">
                         <label for="low-reserve">Low ovarian reserve testing (AMH, follicle count)</label>
                     </div>
-                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Success rates drop from 95% (under 35) to 80% (over 35) with 20 eggs frozen. Egg quality declines sharply after 35 regardless of quantity.">
                         <input type="checkbox" id="age-35">
                         <label for="age-35">Age 35 or approaching 35</label>
                     </div>
-                    <div class="checkbox-item" onclick="toggleCheck(this)">
+                    <div class="checkbox-item" onclick="toggleCheck(this)" data-evidence="Evidence: Surgery causes immediate 30% loss in eggs retrieved. Freezing before surgery captures maximum reserve while eggs are younger and more plentiful.">
                         <input type="checkbox" id="planned-surgery">
                         <label for="planned-surgery">Upcoming surgery that will affect ovaries</label>
                     </div>
