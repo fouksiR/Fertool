@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding AMH - Fertool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #FAF7F0;
+            --warm-white: #FEFDFB;
+            --soft-beige: #F0EBE3;
+            --sage: #A4B494;
+            --muted-sage: #B8C5AA;
+            --forest: #5F7161;
+            --text: #4A4A4A;
+            --light-text: #7A7A7A;
+            --border: #E5DED3;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .logo {
+            font-family: 'Spectral', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--forest);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .logo-icon {
+            width: 16px;
+            height: 24px;
+            margin: 0 -2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--forest);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Spectral', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            font-weight: 300;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        h2 {
+            font-family: 'Spectral', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-family: 'Spectral', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin: 2rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+            line-height: 1.8;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Accent Box */
+        .accent-box {
+            background: var(--soft-beige);
+            border-left: 4px solid var(--sage);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .accent-box strong {
+            display: block;
+            color: var(--forest);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Normogram Container */
+        .normogram-container {
+            position: relative;
+            width: 100%;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .normogram-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Hover zones on normogram */
+        .hover-zone {
+            position: absolute;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .hover-zone:hover {
+            background-color: rgba(164, 180, 148, 0.1);
+        }
+
+        .zone-pcos {
+            left: 20%;
+            top: 15%;
+            width: 40%;
+            height: 20%;
+        }
+
+        .zone-normal {
+            left: 20%;
+            top: 35%;
+            width: 40%;
+            height: 25%;
+        }
+
+        .zone-low {
+            left: 20%;
+            top: 60%;
+            width: 40%;
+            height: 25%;
+        }
+
+        .amh-tooltip {
+            position: fixed;
+            background: rgba(95, 113, 97, 0.96);
+            color: white;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            max-width: 350px;
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .amh-tooltip strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+            font-family: 'Spectral', serif;
+        }
+
+        .amh-tooltip p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-bar {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <div class="logo">
+            <span>fert</span>
+            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#5F7161"/>
+                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" 
+                      stroke="#5F7161" 
+                      stroke-width="2.5" 
+                      fill="none" 
+                      stroke-linecap="round"/>
+            </svg>
+            <span>le</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Search</a>
+            <a href="egg-freezing-calculator.html">Egg Freezing</a>
+            <a href="endometriosis-landing.html">Endometriosis</a>
+            <a href="fertility-assessment.html">Assessment</a>
+            <a href="amh-guide.html" class="active">AMH Guide</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Anti-Müllerian Hormone (AMH)</h1>
+            <p>Understanding your ovarian reserve</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <p>AMH is produced by follicles in your ovaries. Your AMH level reflects how many eggs remain in your ovaries—called your ovarian reserve. Like egg count, AMH naturally declines with age.</p>
+
+            <h3>What AMH tells you</h3>
+            <ul>
+                <li>Your approximate egg supply</li>
+                <li>Whether you might reach menopause earlier than average</li>
+                <li>How many eggs might be retrieved in an egg freezing cycle</li>
+            </ul>
+
+            <p>This information is particularly valuable if you've had ovarian surgery, chemotherapy, radiation, or have only one ovary.</p>
+
+            <h3>What AMH doesn't tell you</h3>
+            <ul>
+                <li>Your egg quality (no test can measure this)</li>
+                <li>Your actual chances of conceiving</li>
+                <li>How quickly your egg count is declining</li>
+                <li>Whether other fertility factors are present</li>
+            </ul>
+
+            <div class="divider"></div>
+
+            <h2>AMH by Age: Normogram</h2>
+            <p style="margin-bottom: 2rem;">Hover over different zones to learn what AMH levels mean at different ages.</p>
+
+            <!-- Interactive Normogram -->
+            <div class="normogram-container">
+                <img src="amh-normogram.png" alt="AMH Normogram by Age" class="normogram-image">
+                
+                <!-- Hover zones -->
+                <div class="hover-zone zone-pcos" data-zone="pcos"></div>
+                <div class="hover-zone zone-normal" data-zone="normal"></div>
+                <div class="hover-zone zone-low" data-zone="low"></div>
+                
+                <!-- Tooltip -->
+                <div class="amh-tooltip" id="amh-tooltip"></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h3>Understanding your result</h3>
+            <p>AMH should always be considered alongside your age. Normal AMH for your age doesn't guarantee fertility, as it only reflects quantity, not quality.</p>
+
+            <p><strong>High AMH</strong> may indicate polycystic ovarian syndrome (PCOS), which can actually reduce fertility. PCOS is diagnosed through symptoms (irregular periods, excess male hormones) and ultrasound.</p>
+
+            <p><strong>Low AMH</strong> suggests lower ovarian reserve. You can still conceive naturally, but you may reach menopause earlier. If children are in your future plans, consider discussing timing with your doctor.</p>
+
+            <div class="accent-box">
+                <strong>Important note</strong>
+                <p>PCOS can mask low AMH, producing misleadingly normal results.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Clinical Context</h2>
+            <p>AMH testing is most useful when:</p>
+            <ul>
+                <li>Planning the timing of fertility preservation</li>
+                <li>Assessing likelihood of ovarian response to stimulation</li>
+                <li>Evaluating women with suspected premature ovarian insufficiency</li>
+                <li>Monitoring ovarian reserve after gonadotoxic treatment</li>
+            </ul>
+
+            <div class="accent-box">
+                <strong>For healthcare providers</strong>
+                <p>AMH values should be interpreted in conjunction with age, antral follicle count, and clinical context. Isolated AMH values have limited predictive value for natural fertility in regularly cycling women.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AMH zone tooltips
+        const zoneData = {
+            pcos: {
+                title: "Probably Polycystic Ovary Syndrome",
+                content: "AMH levels above the upper limit (dashed line) suggest PCOS. Women with PCOS typically have numerous small follicles and elevated AMH. This may affect ovulation regularity and fertility despite high egg numbers."
+            },
+            normal: {
+                title: "Likely Normal Ovarian Reserve",
+                content: "AMH levels between the median (solid line) and upper limit suggest normal ovarian reserve for age. This indicates a typical number of remaining follicles. Note: normal AMH doesn't guarantee egg quality or fertility."
+            },
+            low: {
+                title: "Low Ovarian Reserve",
+                content: "AMH levels below the lower limit (dashed line) suggest diminished ovarian reserve. This may indicate fewer eggs available for retrieval or earlier menopause. However, natural conception is still possible, particularly at younger ages."
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.hover-zone').forEach(zone => {
+                zone.addEventListener('mouseenter', function(e) {
+                    const info = zoneData[this.dataset.zone];
+                    const tooltip = document.getElementById('amh-tooltip');
+                    tooltip.innerHTML = `<strong>${info.title}</strong><p>${info.content}</p>`;
+                    tooltip.style.display = 'block';
+                    tooltip.style.opacity = '1';
+                });
+
+                zone.addEventListener('mousemove', function(e) {
+                    const tooltip = document.getElementById('amh-tooltip');
+                    tooltip.style.left = (e.pageX + 15) + 'px';
+                    tooltip.style.top = (e.pageY + 15) + 'px';
+                });
+
+                zone.addEventListener('mouseleave', function() {
+                    const tooltip = document.getElementById('amh-tooltip');
+                    tooltip.style.opacity = '0';
+                    setTimeout(() => {
+                        tooltip.style.display = 'none';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
