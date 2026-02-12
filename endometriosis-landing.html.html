@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertility Preservation in Endometriosis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6b5b95;
+            --primary-light: #8b7db5;
+            --accent: #4a6741;
+            --bg-light: #f8f7f5;
+            --text-dark: #2c2c2c;
+            --text-light: #666;
+            --card-bg: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f8f7f5;
+            min-height: 100vh;
+            color: var(--text-dark);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo */
+        .logo {
+            display: block;
+            width: 200px;
+            margin: 20px auto 30px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            margin-top: 40px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            line-height: 1.2;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+
+        .disclaimer {
+            display: inline-block;
+            background: var(--card-bg);
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            margin-top: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Impact Statement */
+        .impact-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.6s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .impact-card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 24px;
+            letter-spacing: 0;
+        }
+
+        .impact-card p {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .stat-highlight {
+            background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .references {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 2px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .references h4 {
+            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .references ol {
+            margin-left: 24px;
+            font-size: 13px;
+            color: #000000;
+            line-height: 1.8;
+        }
+
+        .references li {
+            margin-bottom: 12px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 50px 0;
+            animation: fadeIn 0.6s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(93, 124, 58, 0.4);
+        }
+
+        .stage-indicator {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
+        }
+
+        /* Stage Container */
+        .stage {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stage.active {
+            display: block;
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .criteria-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .criteria-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .criteria-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary-light);
+        }
+
+        .criteria-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .criteria-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .criteria-card:hover h3 {
+            color: var(--primary);
+        }
+
+        .criteria-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .criteria-card li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .criteria-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .criteria-card:hover li::before {
+            transform: translateX(4px);
+        }
+
+        /* Normogram Container */
+        .visual-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .visual-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .visual-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .visual-section p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+
+        .visual-section img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .visual-section img[src*=".png"],
+        .visual-section img[src*=".jpg"] {
+            background: #f8f7f5;
+            padding: 10px;
+        }
+
+        /* Treatment Option Card */
+        .treatment-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1.5rem auto;
+            max-width: 900px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .treatment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .treatment-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .treatment-card p {
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .treatment-card strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .funding-badge {
+            background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Summary List */
+        .summary-list {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 0 auto;
+            max-width: 900px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .summary-list h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        .summary-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .summary-list li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .summary-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .summary-list li:hover {
+            padding-left: 36px;
+        }
+
+        .summary-list li:hover::before {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        /* WhatsApp Contact */
+        .contact-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 900px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .contact-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .contact-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .contact-section p {
+            color: var(--text-dark);
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .whatsapp-button img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 4px solid white;
+        }
+
+        .contact-info {
+            margin-top: 24px;
+            font-size: 16px;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .contact-info strong {
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 14px 32px;
+            border-radius: 25px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 91, 149, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid var(--primary-light);
+        }
+
+        .btn-secondary:hover {
+            background: #f8f7f5;
+            border-color: var(--primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .impact-card,
+            .visual-section {
+                padding: 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                max-width: 100%;
+            }
+        }
+
+        /* Floating WhatsApp Widget */
+        .whatsapp-widget-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 5s forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .whatsapp-widget-float.active {
+            cursor: pointer;
+        }
+
+        .whatsapp-float-button {
+            position: relative;
+            display: block;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        .whatsapp-float-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .whatsapp-float-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .whatsapp-float-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(37, 211, 102, 0.3) 0%, transparent 70%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 12px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .whatsapp-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 8px 0 8px 8px;
+            border-color: transparent transparent transparent white;
+        }
+
+        .whatsapp-widget-float:hover .whatsapp-tooltip {
+            opacity: 1;
+            right: 90px;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-widget-float {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .whatsapp-float-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .whatsapp-tooltip {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo - Top Left -->
+    <img src="fertile-logo.png" alt="Fert le" class="logo">
+
+    <div class="container">
+        <div class="header">
+            <div class="badge">AGES / GP / Specialist Tutorial</div>
+            <h1>Fertility Preservation in Endometriosis</h1>
+            <p class="subtitle">Evidence-based guidance for optimal patient outcomes</p>
+            <div class="disclaimer">Educational tool — does not replace clinical judgment</div>
+        </div>
+
+        <!-- Impact Statement - ONLY SHOWN ON PAGE 1 -->
+        <div class="impact-card" id="impactCard">
+            <h2>The Clinical Challenge with Fertility Preservation in Endometriosis</h2>
+            
+            <p>Endometriosis affects 10% of reproductive-aged women and frequently requires surgical management. However, surgical treatment carries significant risks to ovarian reserve and future fertility.</p>
+            
+            <div class="stat-highlight">
+                Up to 13% of women undergoing endometriosis surgery may develop premature ovarian insufficiency (POI)
+            </div>
+            
+            <p>Despite this substantial risk, there remains conflicting evidence and a lack of clear international guidelines on when to counsel patients about fertility preservation.</p>
+            
+            <p>This tutorial synthesizes leading research to provide practical, evidence-based guidance for identifying patients who may benefit from fertility preservation consultation.</p>
+
+            <div class="references">
+                <h4>KEY EVIDENCE BASE</h4>
+                <ol>
+                    <li>La Marca A, et al. How Much Does AMH Really Vary in Normal Women? Int J Endocrinol. 2013</li>
+                    <li>Somigliana E, et al. Risks of conservative management in women with ovarian endometriomas undergoing IVF. Hum Reprod Update. 2015</li>
+                    <li>As-Sanie S, Mackenzie SC, Morrison L, et al. Endometriosis: A Review. JAMA. 2025;334(1):64-78. doi:10.1001/jama.2025.2975</li>
+                    <li>Casalechi M, Di Stefano G, Fornelli G, Somigliana E, Viganò P. Impact of endometriosis on the ovarian follicles. Best Pract Res Clin Obstet Gynaecol. 2023. doi:10.1016/j.bpobgyn.2023.102430</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 20%"></div>
+            </div>
+            <div class="stage-indicator" id="stageIndicator">Introduction</div>
+        </div>
+
+        <!-- STAGE 1: Introduction (First page - just the button) -->
+        <div class="stage active" id="stage1">
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" disabled>← Previous</button>
+                <button class="btn btn-primary" onclick="nextStage(1)">Begin Tutorial →</button>
+            </div>
+        </div>
+
+        <!-- STAGE 2: When to Refer -->
+        <div class="stage" id="stage2">
+            <div class="visual-section" style="margin-bottom: 50px;">
+                <h2 style="font-family: 'Helvetica Neue', 'Arial Black', 'Arial', sans-serif; font-size: 36px; font-weight: 900; color: #000000; text-align: center; margin-bottom: 20px;">Clinical Scenarios for Fertility Preservation Consideration</h2>
+                <p style="text-align: center; color: #000000; font-size: 17px; line-height: 1.8; max-width: 900px; margin: 0 auto;">
+                    A growing body of evidence suggests potential benefits of fertility preservation in the following scenarios. Surgery for endometriosis has been associated with decreased ovarian reserve, particularly in certain patient populations.
+                </p>
+            </div>
+
+            <div class="bubble-visualization">
+                <svg class="bubble-connections" width="100%" height="650">
+                    <!-- Connection lines -->
+                    <line x1="25%" y1="30%" x2="35%" y2="60%" class="connection-line" />
+                    <line x1="50%" y1="20%" x2="50%" y2="45%" class="connection-line" />
+                    <line x1="50%" y1="20%" x2="65%" y2="60%" class="connection-line" />
+                    <line x1="75%" y1="30%" x2="50%" y2="45%" class="connection-line" />
+                    <line x1="35%" y1="60%" x2="65%" y2="60%" class="connection-line" />
+                    <line x1="50%" y1="45%" x2="65%" y2="60%" class="connection-line" />
+                    <line x1="50%" y1="20%" x2="75%" y2="30%" class="connection-line" />
+                    <line x1="65%" y1="60%" x2="85%" y2="50%" class="connection-line" />
+                    <line x1="35%" y1="60%" x2="15%" y2="50%" class="connection-line" />
+                    <line x1="50%" y1="45%" x2="30%" y2="85%" class="connection-line" />
+                    <line x1="65%" y1="60%" x2="75%" y2="75%" class="connection-line" />
+                    <line x1="85%" y1="50%" x2="90%" y2="65%" class="connection-line" />
+                </svg>
+                
+                <div class="bubble-container">
+                    <!-- Central large bubbles -->
+                    <div class="bubble central" data-info="Age over 35 years" style="--size: 120px; --color: #6b5b95; --x: 25%; --y: 30%;">
+                        <span>Age over 35</span>
+                    </div>
+                    <div class="bubble central" data-info="Bilateral endometriomas before surgery" style="--size: 120px; --color: #6b5b95; --x: 50%; --y: 20%;">
+                        <span>Bilateral<br>endometriomas</span>
+                    </div>
+                    <div class="bubble central" data-info="History or risk of multiple surgeries" style="--size: 120px; --color: #6b5b95; --x: 75%; --y: 30%;">
+                        <span>Multiple<br>surgeries</span>
+                    </div>
+                    <div class="bubble central" data-info="Preoperative reduced ovarian reserve" style="--size: 120px; --color: #6b5b95; --x: 35%; --y: 60%;">
+                        <span>Reduced ovarian<br>reserve</span>
+                    </div>
+                    <div class="bubble central large" data-info="Ovarian endometrioma and reduced ovarian reserve" style="--size: 130px; --color: #8b7db5; --x: 65%; --y: 60%;">
+                        <span>Endometrioma +<br>reduced reserve</span>
+                    </div>
+                    
+                    <!-- Supporting smaller bubbles -->
+                    <div class="bubble support" data-info="Previous unilateral endometrioma surgery" style="--size: 90px; --color: #4a6741; --x: 15%; --y: 50%;">
+                        <span>Previous<br>unilateral surgery</span>
+                    </div>
+                    <div class="bubble support" data-info="Recurrent endometrioma before surgery" style="--size: 90px; --color: #4a6741; --x: 50%; --y: 45%;">
+                        <span>Recurrent<br>endometrioma</span>
+                    </div>
+                    <div class="bubble support" data-info="Severe endometriosis diagnosis" style="--size: 90px; --color: #4a6741; --x: 85%; --y: 50%;">
+                        <span>Severe<br>endometriosis</span>
+                    </div>
+                    <div class="bubble support" data-info="Ovarian endometrioma larger than 4 cm" style="--size: 85px; --color: #5a7c5a; --x: 10%; --y: 75%;">
+                        <span>Endometrioma<br>> 4cm</span>
+                    </div>
+                    <div class="bubble support" data-info="Unlikely postoperative natural conception" style="--size: 85px; --color: #5a7c5a; --x: 30%; --y: 85%;">
+                        <span>Unlikely natural<br>conception</span>
+                    </div>
+                    <div class="bubble support" data-info="Severe cases identified via surgery" style="--size: 80px; --color: #5a7c5a; --x: 55%; --y: 80%;">
+                        <span>Severe on<br>surgery</span>
+                    </div>
+                    <div class="bubble support" data-info="Low EFI score" style="--size: 80px; --color: #5a7c5a; --x: 75%; --y: 75%;">
+                        <span>Low EFI<br>score</span>
+                    </div>
+                    <div class="bubble support" data-info="Endometriosis stages III and IV" style="--size: 80px; --color: #5a7c5a; --x: 90%; --y: 65%;">
+                        <span>Stage<br>III-IV</span>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .bubble-visualization {
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                    margin: 30px auto;
+                    padding: 20px;
+                    max-width: 100%;
+                    position: relative;
+                }
+
+                .bubble-connections {
+                    position: absolute;
+                    top: 20px;
+                    left: 0;
+                    pointer-events: none;
+                    z-index: 1;
+                }
+
+                .connection-line {
+                    stroke: #e0e0e0;
+                    stroke-width: 2;
+                    opacity: 0.5;
+                }
+
+                .bubble-container {
+                    position: relative;
+                    width: 100%;
+                    height: 650px;
+                    overflow: hidden;
+                    z-index: 2;
+                }
+
+                .bubble {
+                    position: absolute;
+                    width: var(--size);
+                    height: var(--size);
+                    background: var(--color);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-align: center;
+                    padding: 15px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    border: 3px solid white;
+                    cursor: pointer;
+                    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    left: var(--x);
+                    top: var(--y);
+                    transform: translate(-50%, -50%);
+                    opacity: 0.9;
+                    animation: floatIn 0.8s ease-out forwards;
+                }
+
+                @keyframes floatIn {
+                    from {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0.5);
+                    }
+                    to {
+                        opacity: 0.9;
+                        transform: translate(-50%, -50%) scale(1);
+                    }
+                }
+
+                .bubble.central {
+                    font-weight: 700;
+                    font-size: 14px;
+                    z-index: 3;
+                    letter-spacing: 0.3px;
+                }
+
+                .bubble.large {
+                    font-size: 14px;
+                    font-weight: 700;
+                }
+
+                .bubble span {
+                    line-height: 1.3;
+                    position: relative;
+                    z-index: 1;
+                    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+                }
+
+                .bubble:hover {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1.15);
+                    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+                    border-width: 5px;
+                    z-index: 10;
+                    animation: float 2s ease-in-out infinite;
+                }
+
+                @keyframes float {
+                    0%, 100% {
+                        transform: translate(-50%, -50%) scale(1.15) translateY(0px);
+                    }
+                    50% {
+                        transform: translate(-50%, -50%) scale(1.15) translateY(-10px);
+                    }
+                }
+
+                .bubble::after {
+                    content: attr(data-info);
+                    position: absolute;
+                    bottom: calc(100% + 15px);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0,0,0,0.9);
+                    color: white;
+                    padding: 10px 16px;
+                    border-radius: 8px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.3s;
+                    z-index: 100;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                }
+
+                .bubble:hover::after {
+                    opacity: 1;
+                }
+
+                @media (max-width: 768px) {
+                    .bubble-container {
+                        height: 800px;
+                    }
+                    
+                    .bubble {
+                        font-size: 11px;
+                    }
+                    
+                    .bubble.central {
+                        font-size: 12px;
+                    }
+                }
+            </style>
+
+            <div class="visual-section" style="margin-top: 50px;">
+                <h3 style="font-weight: 700;">Key Principle</h3>
+                <div style="text-align: left; padding: 24px; background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(212, 165, 116, 0.05)); border-radius: 16px; border-left: 4px solid #d4a574; margin-top: 20px;">
+                    <p style="font-size: 17px; line-height: 1.8; color: #000000; margin: 0;">
+                        <strong style="font-size: 19px; display: block; margin-bottom: 12px;">Fertility preservation counseling should be discussed before ovarian surgery</strong>
+                        Research indicates that each surgical procedure is associated with approximately <strong>40% reduction</strong> in ovarian reserve markers. Early referral allows optimal timing, comprehensive counseling, and preserves maximum fertility potential. However, individual patient circumstances vary, and fertility preservation may not be appropriate or desired by all patients.
+                    </p>
+                </div>
+            </div>
+
+            <div class="impact-card" style="margin-top: 50px;">
+                <div class="references">
+                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px;">EVIDENCE BASE</h4>
+                    <p style="font-size: 14px; color: #000000; margin-bottom: 20px; font-style: italic;">Clinical scenarios listed in order of prevalence across multiple studies. Full reference list below supports the evidence for fertility preservation consideration in these patient populations.</p>
+                    <ol style="font-size: 13px; line-height: 2; color: #000000;">
+                        <li>Somigliana E, Benaglia L, Paffoni A, Busnelli A, Viganò P, Vercellini P. Risks of conservative management in women with ovarian endometriomas undergoing IVF. Hum Reprod Update. 2015;21:486–499.</li>
+                        <li>Carrillo L, Seidman DS, Cittadini E, Meirow D. The role of fertility preservation in patients with endometriosis. J Assist Reprod Genet. 2016;33:317–323.</li>
+                        <li>Llarena NC, Falcone T, Flyckt RL. Fertility preservation in women with endometriosis. Clin Med Insights Reprod Health. 2019;13:1179558119873386.</li>
+                        <li>Pluchino N, Roman H. Oocyte vitrification offers more space for a tailored surgical management of endometriosis. Reprod Biomed Online. 2020;41:753–755.</li>
+                        <li>Mathieu d'Argent E, Ferrier C, Zacharopoulou C, et al. Outcomes of fertility preservation in women with endometriosis. J Ovarian Res. 2020;13:18.</li>
+                        <li>Kim SJ, Kim SK, Lee JR, Suh CS, Kim SH. Oocyte cryopreservation for fertility preservation in women with ovarian endometriosis. Reprod Biomed Online. 2020;40:827–834.</li>
+                        <li>Cobo A, Giles J, Paolelli S, Pellicer A, Remohí J, García-Velasco JA. Oocyte vitrification for fertility preservation in women with endometriosis: an observational study. Fertil Steril. 2020;113:836–844.</li>
+                        <li>Santulli P, Bourdon M, Koutchinsky S, et al. Fertility preservation for patients affected by endometriosis should ideally be carried out before surgery. Reprod Biomed Online. 2021;43:853–863.</li>
+                        <li>Elizur SE, Aizer A, Yonish M, et al. Fertility preservation for women with ovarian endometriosis: results from a retrospective cohort study. Reprod Biomed Online. 2023;46:332–337.</li>
+                        <li>Carneiro MM, Filho JSLdC, Petta CA, et al. Fertility preservation in women with endometriosis. Rev Bras Ginecol Obstet. 2021;43:796–802.</li>
+                        <li>Fouks Y, Goaz S, Ryley D, et al. Fertility preservation in endometriosis: does patient symptomatology affect the extent of the ovarian response? Reprod Sci. 2023;30:2439–2448.</li>
+                        <li>Goyri E, Kohls G, Garcia-Velasco J. IVF stimulation protocols and outcomes in women with endometriosis. Best Pract Res Clin Obstet Gynaecol. 2024;92:102429.</li>
+                        <li>Mifsud JM, Pellegrini L, Cozzolino M. Oocyte cryopreservation in women with ovarian endometriosis. J Clin Med. 2023;12:6767.</li>
+                        <li>Sänger N, Menabrito M, Di Spiezo Sardo A, Estadella J, Verguts J. Fertility preservation counselling for women with endometriosis: a European online survey. Arch Gynecol Obstet. 2023;307:73–85.</li>
+                        <li>Calagna G, Della Corte L, Giampaolino P, Maranto M, Perino A. Endometriosis and strategies of fertility preservation: a systematic review of the literature. Eur J Obstet Gynecol Reprod Biol. 2020;254:218–225.</li>
+                        <li>Benaglia L, Somigliana E, Vighi V, Ragni G, Vercellini P, Fedele L. Rate of severe ovarian damage following surgery for endometriomas. Hum Reprod. 2010;25:678–682.</li>
+                        <li>Raffi F, Metwally M, Amer S. The impact of excision of ovarian endometrioma on ovarian reserve: a systematic review and meta-analysis. J Clin Endocrinol Metab. 2012;97:3146–3154.</li>
+                        <li>Muzii L, Achilli C, Lecce F, et al. Second surgery for recurrent endometriomas is more harmful to healthy ovarian tissue and ovarian reserve than first surgery. Fertil Steril. 2015;103:738–743.</li>
+                        <li>Goodman LR, Goldberg JM, Flyckt RL, et al. Effect of surgery on ovarian reserve in women with endometriomas, endometriosis and controls. Am J Obstet Gynecol. 2016;215:589.e1–589.e6.</li>
+                        <li>Kasapoglu I, Ata B, Uyaniklar O, et al. Endometrioma-related reduction in ovarian reserve (ERROR): a prospective longitudinal study. Fertil Steril. 2018;110:122–127.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="prevStage(2)">← Previous</button>
+                <button class="btn btn-primary" onclick="nextStage(2)">Next →</button>
+            </div>
+        </div>
+
+        <style>
+        .checklist-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            margin: 10px 0;
+            background: #f8f7f5;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(4px);
+            background: white;
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 14px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .checklist-item label {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .checklist-item input[type="checkbox"]:checked + label {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        </style>
+            </div>
+        </div>
+
+        <!-- STAGE 3: Treatment Options -->
+        <div class="stage" id="stage3">
+            <div class="visual-section">
+                <h3>AMH Levels by Age</h3>
+                <p>Reference ranges for ovarian reserve assessment</p>
+                <img src="amh-normogram.png" alt="AMH Normogram">
+            </div>
+
+            <div class="treatment-card">
+                <h4>Oocyte Cryopreservation (Egg Freezing)</h4>
+                <p><strong>Best for:</strong> Women not in a relationship or preserving before surgery</p>
+                <p><strong>Process:</strong> Ovarian stimulation (10-14 days) → Egg retrieval → Vitrification</p>
+                <p><strong>Note:</strong> May require multiple cycles for optimal numbers, especially with diminished reserve</p>
+                <div class="funding-badge">
+                    Public Funding: Available through Medicare for documented POI — criteria may change over time
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <a href="egg-freezing-calculator.html" style="display: inline-block; padding: 12px 32px; background: linear-gradient(135deg, #6b5b95, #8b7db5); color: white; text-decoration: none; border-radius: 25px; font-weight: 500; font-size: 14px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(107, 91, 149, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(107, 91, 149, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(107, 91, 149, 0.3)'">
+                        📊 Calculate Your Egg Freezing Success Rate
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="prevStage(3)">← Previous</button>
+                <button class="btn btn-primary" onclick="nextStage(3)">Next →</button>
+            </div>
+        </div>
+
+        <!-- STAGE 4: Summary -->
+        <div class="stage" id="stage4">
+            <div class="summary-list">
+                <h2>Key Takeaways</h2>
+                <ul>
+                    <li>Discuss preservation before ovarian surgery</li>
+                    <li>Bilateral endometriomas & Stage III-IV carry highest risk</li>
+                    <li>Document AMH before surgery for potential public funding eligibility</li>
+                    <li>Even poor responders benefit from counseling</li>
+                    <li>Early referral allows optimal timing and planning</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="prevStage(4)">← Previous</button>
+                <button class="btn btn-primary" onclick="nextStage(4)">Next →</button>
+            </div>
+        </div>
+
+        <!-- STAGE 5: Contact & Information -->
+        <div class="stage" id="stage5">
+            <div class="visual-section">
+                <h3>Medicare Coverage Note</h3>
+                <div style="text-align: left; padding: 1rem 1.25rem; background: linear-gradient(135deg, #f0f4ff, #e8eeff); border-radius: 10px; border-left: 4px solid #6b5b95;">
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #2c2c2c; margin: 0;">
+                        Fertility preservation may be covered by Medicare in the context of endometriosis or benign gynecological disease when there is documented evidence of POI (lower than 10th percentile for AMH).
+                    </p>
+                </div>
+            </div>
+
+            <div class="contact-section">
+                <h3>For Fertility Preservation Referrals</h3>
+                <p>Clinical consultation available for fertility preservation counseling in endometriosis patients</p>
+                <a href="https://wa.me/61XXXXXXXXX?text=Hello%20Dr%20Fouks%2C%20I%20would%20like%20to%20refer%20a%20patient%20for%20fertility%20preservation%20counseling" class="whatsapp-button">
+                    <img src="whatsapp-profile.png" alt="Contact via WhatsApp">
+                </a>
+                <div class="contact-info">
+                    <strong>Dr Yuval Fouks</strong>
+                    Fertility Specialist<br>
+                    Melbourne IVF
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="prevStage(5)">← Previous</button>
+                <button class="btn btn-primary" onclick="window.location.href='#'">Finish Tutorial</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 1;
+        const totalStages = 5;
+
+        function updateProgress() {
+            const progress = (currentStage / totalStages) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            const labels = ['Introduction', 'When to Refer', 'Treatment Options', 'Summary', 'Contact'];
+            document.getElementById('stageIndicator').textContent = labels[currentStage - 1];
+        }
+
+        function nextStage(stage) {
+            if (stage < totalStages) {
+                // Hide impact card when leaving page 1
+                if (stage === 1) {
+                    document.getElementById('impactCard').style.display = 'none';
+                }
+                
+                document.getElementById('stage' + stage).classList.remove('active');
+                document.getElementById('stage' + (stage + 1)).classList.add('active');
+                currentStage = stage + 1;
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function prevStage(stage) {
+            if (stage > 1) {
+                document.getElementById('stage' + stage).classList.remove('active');
+                document.getElementById('stage' + (stage - 1)).classList.add('active');
+                currentStage = stage - 1;
+                
+                // Show impact card when going back to page 1
+                if (currentStage === 1) {
+                    document.getElementById('impactCard').style.display = 'block';
+                }
+                
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        updateProgress();
+    </script>
+
+    <!-- Floating WhatsApp Widget -->
+    <div class="whatsapp-widget-float active" id="whatsappWidget">
+        <div class="whatsapp-tooltip">Chat with Dr Fouks</div>
+        <a href="https://wa.me/61XXXXXXXXX?text=Hello%20Dr%20Fouks%2C%20I%20would%20like%20to%20refer%20a%20patient%20for%20fertility%20preservation%20counseling" class="whatsapp-float-button" target="_blank">
+            <img src="whatsapp-profile.png" alt="Contact Dr Fouks on WhatsApp">
+        </a>
+    </div>
+</body>
+</html>
