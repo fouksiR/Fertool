@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding AMH - Fertool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #FAF7F0;
+            --warm-white: #FEFDFB;
+            --soft-beige: #F0EBE3;
+            --sage: #A4B494;
+            --muted-sage: #B8C5AA;
+            --forest: #5F7161;
+            --text: #4A4A4A;
+            --light-text: #7A7A7A;
+            --border: #E5DED3;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .logo {
+            font-family: 'Spectral', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--forest);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .logo-icon {
+            width: 16px;
+            height: 24px;
+            margin: 0 -2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--forest);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Spectral', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            font-weight: 300;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        h2 {
+            font-family: 'Spectral', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-family: 'Spectral', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin: 2rem 0 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+            line-height: 1.8;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Accent Box */
+        .accent-box {
+            background: var(--soft-beige);
+            border-left: 4px solid var(--sage);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .accent-box strong {
+            display: block;
+            color: var(--forest);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Normogram Container */
+        .normogram-container {
+            position: relative;
+            width: 100%;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        #amh-chart {
+            width: 100%;
+            height: 480px;
+        }
+
+        /* Chart Legend */
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            padding: 16px 20px;
+            background: var(--soft-beige);
+            border-top: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+
+        .legend-line {
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .legend-line.upper { 
+            background: #8FB872; 
+            background: repeating-linear-gradient(90deg, #8FB872, #8FB872 4px, transparent 4px, transparent 8px);
+        }
+        .legend-line.median { background: #5F7161; }
+        .legend-line.lower { 
+            background: #C45C3E; 
+            height: 4px;
+            background: repeating-linear-gradient(90deg, #C45C3E, #C45C3E 4px, transparent 4px, transparent 8px);
+        }
+
+        .legend-zone {
+            width: 16px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        .legend-zone.pcos { background: rgba(200, 220, 180, 0.6); }
+        .legend-zone.normal { background: white; border: 1px solid #E0E0E0; }
+        .legend-zone.low { background: rgba(196, 92, 62, 0.15); }
+
+        .percentile-note {
+            text-align: center;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #FFF8F6 0%, #FFEFEA 100%);
+            border-left: 4px solid #C45C3E;
+            margin: 0;
+            font-size: 0.85rem;
+            color: #8B3D2A;
+        }
+
+        .percentile-note strong {
+            color: #C45C3E;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-bar {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.75rem;
+            }
+
+            #amh-chart {
+                height: 400px;
+            }
+
+            .chart-legend {
+                gap: 12px;
+                padding: 12px 16px;
+            }
+
+            .legend-item {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <div class="logo">
+            <span>fert</span>
+            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#5F7161"/>
+                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" 
+                      stroke="#5F7161" 
+                      stroke-width="2.5" 
+                      fill="none" 
+                      stroke-linecap="round"/>
+            </svg>
+            <span>le</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Search</a>
+            <a href="egg-freezing-calculator.html">Egg Freezing</a>
+            <a href="endometriosis-landing.html">Endometriosis</a>
+            <a href="fertility-assessment.html">Assessment</a>
+            <a href="amh-guide.html" class="active">AMH Guide</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Anti-Müllerian Hormone (AMH)</h1>
+            <p>Understanding your ovarian reserve</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card">
+            <p>AMH is produced within the follicles in your ovaries. This often correlates with your ovarian reserve, or egg reserve.</p>
+
+            <h3>What AMH tells you</h3>
+            <ul>
+                <li>Your approximate response to fertility stimulation treatment—broadly, an estimate of eggs to be collected or even frozen in a cycle</li>
+            </ul>
+
+            <p>By no means can AMH tell if you are less fertile in natural conception attempts.</p>
+
+            <p>This information is particularly valuable if you've had ovarian surgery, chemotherapy, radiation, or have only one ovary.</p>
+
+            <h3>What AMH doesn't tell you</h3>
+            <ul>
+                <li>Your egg quality (no test can measure this)</li>
+                <li>Your actual chances of conceiving</li>
+                <li>How quickly your egg count is declining</li>
+                <li>Whether other fertility factors are present</li>
+            </ul>
+
+            <div class="divider"></div>
+
+            <h2>AMH by Age: Normogram</h2>
+            <p style="margin-bottom: 1.5rem;">Hover over the curves to see age-specific AMH values in pmol/L.</p>
+
+            <!-- Interactive Normogram -->
+            <div class="normogram-container">
+                <div id="amh-chart"></div>
+                
+                <div class="percentile-note">
+                    <strong>10th Percentile (Lower Limit)</strong> — Values below this line may indicate reduced ovarian reserve
+                </div>
+                
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-line upper"></div>
+                        <span>90th Percentile</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line median"></div>
+                        <span>50th Percentile (Median)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line lower"></div>
+                        <span>10th Percentile</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-zone pcos"></div>
+                        <span>Consider PCOS</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-zone normal"></div>
+                        <span>Typical range</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-zone low"></div>
+                        <span>Low reserve</span>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--light-text); font-style: italic; text-align: center; margin-top: 1rem;">
+                * Reference data from patients who conceived naturally. Individual results should be interpreted in clinical context.
+            </p>
+
+            <div class="divider"></div>
+
+            <h3>Understanding your result</h3>
+            <p>AMH should always be considered alongside your age. Normal AMH for your age doesn't guarantee fertility, as it only reflects quantity, not quality.</p>
+
+            <p><strong>High AMH</strong> may indicate polycystic ovarian syndrome (PCOS), which can sometimes signal reduced ovulation. PCOS is diagnosed through symptoms (irregular periods, excess male hormones) and ultrasound.</p>
+
+            <p><strong>Low AMH</strong> suggests lower ovarian reserve. You can still conceive naturally, but you may reach menopause earlier. If children are in your future plans, consider discussing timing with your doctor.</p>
+
+            <div class="accent-box">
+                <strong>Important note</strong>
+                <p>Pills and exposure to hormones can mask higher AMH. PCOS can mask low AMH, producing misleadingly normal results.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Clinical Context</h2>
+            <p>AMH testing is most useful when:</p>
+            <ul>
+                <li>Planning the timing of fertility preservation</li>
+                <li>Assessing likelihood of ovarian response to stimulation</li>
+                <li>Evaluating women with suspected premature ovarian insufficiency</li>
+                <li>Monitoring ovarian reserve after gonadotoxic treatment</li>
+            </ul>
+
+            <div class="accent-box">
+                <strong>For healthcare providers</strong>
+                <p>AMH values should be interpreted in conjunction with age, antral follicle count, and clinical context. Isolated AMH values have limited predictive value for natural fertility in regularly cycling women.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AMH Normogram Data (pmol/L - Australian units)
+        const ages = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42];
+        const upperLimit = [44, 45, 46, 47, 47, 46.5, 46, 45, 44, 42, 40, 38, 35, 32, 29, 26, 23, 21, 18, 16];
+        const median = [17, 18, 19, 20, 21, 21, 20.5, 20, 19.5, 19, 18, 17, 15.5, 14, 12.5, 11, 9.5, 8, 7, 6.5];
+        const lowerLimit = [8, 8.5, 9, 9.5, 10, 10, 9.5, 9, 8.5, 7.5, 6.5, 5.5, 4.5, 3.5, 3, 2.5, 2, 1.5, 1.2, 1];
+
+        const data = [
+            // PCOS zone (above upper limit)
+            {
+                x: [...ages, ...ages.slice().reverse()],
+                y: [...upperLimit.map(() => 60), ...upperLimit.slice().reverse()],
+                fill: 'toself',
+                fillcolor: 'rgba(200, 220, 180, 0.5)',
+                line: { color: 'transparent' },
+                hoverinfo: 'skip',
+                showlegend: false,
+                name: 'PCOS Zone'
+            },
+            // Normal zone (between upper and lower) - WHITE
+            {
+                x: [...ages, ...ages.slice().reverse()],
+                y: [...upperLimit, ...lowerLimit.slice().reverse()],
+                fill: 'toself',
+                fillcolor: 'rgba(255, 255, 255, 1)',
+                line: { color: 'transparent' },
+                hoverinfo: 'skip',
+                showlegend: false,
+                name: 'Normal Zone'
+            },
+            // Low zone (below lower limit)
+            {
+                x: [...ages, ...ages.slice().reverse()],
+                y: [...lowerLimit, ...ages.map(() => 0).slice().reverse()],
+                fill: 'toself',
+                fillcolor: 'rgba(196, 92, 62, 0.1)',
+                line: { color: 'transparent' },
+                hoverinfo: 'skip',
+                showlegend: false,
+                name: 'Low Zone'
+            },
+            // Upper limit line (90th percentile)
+            {
+                x: ages,
+                y: upperLimit,
+                mode: 'lines',
+                name: '90th Percentile',
+                line: { color: '#8FB872', width: 2.5, dash: 'dash', shape: 'spline' },
+                hovertemplate: '<b>Age %{x}</b><br>90th Percentile: <b>%{y:.1f} pmol/L</b><br><i>Upper limit of typical range</i><extra></extra>'
+            },
+            // Median line (50th percentile)
+            {
+                x: ages,
+                y: median,
+                mode: 'lines',
+                name: '50th Percentile',
+                line: { color: '#5F7161', width: 3, shape: 'spline' },
+                hovertemplate: '<b>Age %{x}</b><br>Median AMH: <b>%{y:.1f} pmol/L</b><br><i>Average for age</i><extra></extra>'
+            },
+            // Lower limit line (10th percentile) - HIGHLIGHTED
+            {
+                x: ages,
+                y: lowerLimit,
+                mode: 'lines',
+                name: '10th Percentile',
+                line: { color: '#C45C3E', width: 3.5, dash: 'dash', shape: 'spline' },
+                hovertemplate: '<b>Age %{x}</b><br>10th Percentile: <b>%{y:.1f} pmol/L</b><br><i>Below this → reduced reserve</i><extra></extra>'
+            },
+            // Key markers on 10th percentile
+            {
+                x: [25, 30, 35, 40],
+                y: [9, 9, 4.5, 1.5],
+                mode: 'markers+text',
+                marker: { color: '#C45C3E', size: 10, line: { color: 'white', width: 2 } },
+                text: ['9.0', '9.0', '4.5', '1.5'],
+                textposition: 'bottom center',
+                textfont: { color: '#C45C3E', size: 10, family: 'Inter' },
+                hovertemplate: '<b>Age %{x}</b><br>10th Percentile: <b>%{y:.1f} pmol/L</b><extra></extra>',
+                showlegend: false
+            }
+        ];
+
+        const layout = {
+            autosize: true,
+            height: 480,
+            margin: { l: 60, r: 30, t: 30, b: 50 },
+            xaxis: {
+                title: { text: 'Age in years', font: { family: 'Inter', size: 13, color: '#4A4A4A' }, standoff: 10 },
+                range: [20, 45],
+                dtick: 5,
+                gridcolor: '#E8E8E8',
+                gridwidth: 1,
+                zeroline: false,
+                tickfont: { family: 'Inter', size: 11, color: '#7A7A7A' }
+            },
+            yaxis: {
+                title: { text: 'AMH level (pmol/L)', font: { family: 'Inter', size: 13, color: '#4A4A4A' }, standoff: 10 },
+                range: [0, 62],
+                dtick: 10,
+                gridcolor: '#E8E8E8',
+                gridwidth: 1,
+                zeroline: false,
+                tickfont: { family: 'Inter', size: 11, color: '#7A7A7A' }
+            },
+            font: { family: 'Inter, sans-serif' },
+            showlegend: false,
+            hovermode: 'closest',
+            plot_bgcolor: 'white',
+            paper_bgcolor: 'white',
+            annotations: [
+                {
+                    x: 32, y: 54,
+                    text: '<b>Probably polycystic</b><br><b>ovary syndrome</b>',
+                    showarrow: false,
+                    font: { size: 11, color: '#5F7161', family: 'Spectral' },
+                    xanchor: 'center'
+                },
+                {
+                    x: 32, y: 26,
+                    text: '<b>Likely normal</b><br><b>ovarian reserve</b>',
+                    showarrow: false,
+                    font: { size: 11, color: '#5F7161', family: 'Spectral' },
+                    xanchor: 'center'
+                },
+                {
+                    x: 28, y: 4,
+                    text: '<b>Low ovarian reserve</b>',
+                    showarrow: false,
+                    font: { size: 10, color: '#C45C3E', family: 'Spectral' },
+                    xanchor: 'center'
+                }
+            ],
+            shapes: [
+                { type: 'line', x0: 25, y0: 0, x1: 25, y1: 60, line: { color: '#E0E0E0', width: 1, dash: 'dot' } },
+                { type: 'line', x0: 40, y0: 0, x1: 40, y1: 60, line: { color: '#E0E0E0', width: 1, dash: 'dot' } }
+            ]
+        };
+
+        const config = {
+            responsive: true,
+            displayModeBar: false,
+            staticPlot: false
+        };
+
+        Plotly.newPlot('amh-chart', data, layout, config);
+
+        // Handle resize
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize('amh-chart');
+        });
+    </script>
+</body>
+</html>
