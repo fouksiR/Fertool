@@ -734,7 +734,8 @@
                 let sourcesHtml = '<div class="result-sources-label">Sources</div>';
                 if (data.sources && data.sources.length > 0) {
                     data.sources.forEach((source, i) => {
-                        sourcesHtml += `<div class="source">${i + 1}. ${source.source} (p. ${source.page}) — Relevance: ${(source.relevance_score * 100).toFixed(0)}%</div>`;
+                        const layerIcon = source.layer === 'guideline' ? '📗 Guideline' : source.layer === 'specialist' ? '📘 Specialist' : '📙 Clinical Rule';
+                        sourcesHtml += `<div class="source">${i + 1}. ${layerIcon}: ${source.title} (${(source.relevance_score * 100).toFixed(0)}%)</div>`;
                     });
                 }
                 document.getElementById('resultSources').innerHTML = sourcesHtml;
