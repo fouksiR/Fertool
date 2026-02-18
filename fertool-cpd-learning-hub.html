@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fertool CPD Learning Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FAF7F2;
+  --sage: #8FB872;
+  --forest: #3A5A2C;
+  --terracotta: #C45C3E;
+  --warm-gray: #6B6560;
+  --dark: #2A2520;
+  --light-sage: #E8F0E2;
+  --light-terra: #F5E6E0;
+  --border: #D8D3CD;
+  --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  line-height: 1.65;
+  font-size: 15.5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Spectral', serif;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ── Navigation ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,247,242,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+.nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+.nav-inner {
+  max-width: 1120px; margin: 0 auto;
+  padding: 0 24px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--forest);
+}
+.nav-brand svg { width: 28px; height: 28px; }
+.nav-brand span {
+  font-family: 'Spectral', serif;
+  font-weight: 700; font-size: 18px; letter-spacing: -0.3px;
+}
+.nav-brand small {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10.5px; font-weight: 500;
+  color: var(--warm-gray);
+  text-transform: uppercase; letter-spacing: 1.2px;
+  display: block; margin-top: -2px;
+}
+.nav-links { display: flex; gap: 6px; align-items: center; }
+.nav-links a {
+  font-size: 13.5px; font-weight: 500;
+  color: var(--warm-gray); text-decoration: none;
+  padding: 7px 14px; border-radius: 6px;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--forest); background: var(--light-sage);
+}
+.nav-return {
+  font-size: 12.5px; color: var(--warm-gray);
+  text-decoration: none; display: flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px;
+  transition: all 0.2s;
+}
+.nav-return:hover { border-color: var(--sage); color: var(--forest); }
+
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 20px; height: 2px; background: var(--dark); margin: 4px 0; transition: 0.3s; }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    flex-direction: column; padding: 16px 24px; gap: 4px;
+    transform: translateY(-110%); transition: transform 0.3s;
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-links a { padding: 10px 14px; }
+}
+
+/* ── Sections ── */
+.page { display: none; }
+.page.active { display: block; }
+
+.container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.hero {
+  padding: 120px 0 80px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(32px, 4.5vw, 52px);
+  color: var(--forest);
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.hero .subtitle {
+  font-size: 17px; color: var(--warm-gray);
+  max-width: 640px; margin: 0 auto 36px;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 20px;
+  background: var(--light-sage);
+  color: var(--forest);
+  font-size: 13px; font-weight: 600;
+}
+.badge svg { width: 14px; height: 14px; }
+
+/* ── Module Cards ── */
+.modules-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 28px; padding: 40px 0 80px;
+}
+.mod-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px 32px;
+  transition: all 0.25s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.mod-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--sage);
+  transition: height 0.3s;
+}
+.mod-card:hover::before { height: 6px; }
+.mod-card:hover {
+  border-color: var(--sage);
+  box-shadow: 0 8px 30px rgba(58,90,44,0.08);
+  transform: translateY(-2px);
+}
+.mod-card .mod-num {
+  font-family: 'Spectral', serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--sage);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+.mod-card h3 {
+  font-size: 22px; color: var(--dark);
+  margin-bottom: 12px;
+}
+.mod-card p {
+  color: var(--warm-gray);
+  font-size: 14.5px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.mod-meta {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--warm-gray);
+}
+.mod-meta span {
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ── Module Player ── */
+.player-wrap {
+  padding: 100px 0 60px;
+}
+.player-header {
+  margin-bottom: 32px;
+}
+.player-header .back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--warm-gray); text-decoration: none;
+  font-size: 13.5px; font-weight: 500;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+.player-header .back-link:hover { color: var(--forest); }
+.player-header h2 {
+  font-size: 28px; color: var(--forest);
+  margin-bottom: 6px;
+}
+.player-header .player-sub {
+  color: var(--warm-gray); font-size: 14px;
+}
+
+.progress-bar-wrap {
+  width: 100%; height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  margin: 20px 0 32px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--sage);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.player-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .player-body { grid-template-columns: 1fr; }
+}
+
+.step-content {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px 32px;
+  animation: fadeIn 0.35s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-content h3 {
+  font-size: 22px; color: var(--forest);
+  margin-bottom: 16px;
+}
+.step-content h4 {
+  font-size: 17px; color: var(--dark);
+  margin-bottom: 12px;
+  margin-top: 20px;
+}
+.step-content p {
+  margin-bottom: 14px;
+  color: var(--dark);
+  line-height: 1.7;
+}
+.step-content ul, .step-content ol {
+  margin: 0 0 14px 20px;
+  line-height: 1.7;
+}
+.step-content li { margin-bottom: 6px; }
+
+.clinical-scenario {
+  background: var(--light-sage);
+  border-left: 4px solid var(--sage);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+.clinical-scenario strong {
+  display: block;
+  font-family: 'Spectral', serif;
+  color: var(--forest);
+  margin-bottom: 6px;
+}
+
+.key-point {
+  background: #FFF8F0;
+  border-left: 4px solid var(--terracotta);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 14.5px;
+}
+.key-point strong { color: var(--terracotta); }
+
+.evidence-box {
+  background: #F0F4ED;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.evidence-box strong {
+  color: var(--forest);
+  font-weight: 600;
+}
+
+/* MCQ */
+.mcq-options { margin: 20px 0; }
+.mcq-option {
+  display: block; width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  color: var(--dark);
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.5;
+}
+.mcq-option:hover:not(:disabled) {
+  border-color: var(--sage);
+  background: var(--light-sage);
+}
+.mcq-option:disabled { cursor: default; opacity: 0.7; }
+.mcq-option.correct {
+  border-color: var(--sage) !important;
+  background: var(--light-sage) !important;
+  opacity: 1 !important;
+  font-weight: 600;
+}
+.mcq-option.incorrect {
+  border-color: var(--terracotta) !important;
+  background: var(--light-terra) !important;
+  opacity: 1 !important;
+}
+
+.mcq-feedback {
+  margin-top: 16px;
+  padding: 18px 22px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  display: none;
+}
+.mcq-feedback.show { display: block; }
+.mcq-feedback.correct-fb {
+  background: var(--light-sage);
+  border: 1px solid var(--sage);
+}
+.mcq-feedback.incorrect-fb {
+  background: var(--light-terra);
+  border: 1px solid #E0A090;
+}
+
+.step-nav {
+  display: flex; justify-content: space-between;
+  margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 22px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+  cursor: pointer; border: none;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background: var(--forest);
+  color: var(--white);
+}
+.btn-primary:hover { background: #2E4A22; }
+.btn-secondary {
+  background: transparent;
+  color: var(--warm-gray);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--sage); color: var(--forest); }
+
+/* Guideline Panel */
+.guideline-panel {
+  position: sticky; top: 88px;
+}
+.guideline-panel h4 {
+  font-size: 14px; color: var(--forest);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.ref-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.ref-card .ref-source {
+  font-weight: 700;
+  color: var(--forest);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.ref-card .ref-grade {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.grade-strong { background: var(--light-sage); color: var(--forest); }
+.grade-conditional { background: #FFF3E6; color: #9A6D30; }
+.ref-card p { color: var(--warm-gray); margin: 0; }
+
+.disclaimer-bar {
+  background: #F5F0EA;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--warm-gray);
+  line-height: 1.5;
+}
+
+/* ── About Page ── */
+.about-page { padding: 100px 0 80px; }
+.about-page h2 {
+  font-size: 32px; color: var(--forest);
+  margin-bottom: 32px;
+}
+.about-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.about-section h3 {
+  font-size: 19px; color: var(--forest);
+  margin-bottom: 14px;
+}
+.about-section p {
+  color: var(--warm-gray);
+  margin-bottom: 12px;
+  line-height: 1.65;
+}
+
+/* ── Certificate ── */
+.cert-page { padding: 100px 0 80px; }
+.cert-page h2 {
+  font-size: 32px; color: var(--forest);
+  margin-bottom: 12px;
+}
+.cert-page .cert-intro {
+  color: var(--warm-gray); margin-bottom: 32px;
+}
+.cert-form {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; font-size: 13.5px; font-weight: 600;
+  color: var(--dark); margin-bottom: 6px;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: 'DM Sans', sans-serif; font-size: 14.5px;
+  background: var(--cream);
+  transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--sage);
+}
+
+.cert-preview {
+  display: none;
+  background: var(--white);
+  border: 2px solid var(--forest);
+  border-radius: 12px;
+  padding: 60px 48px;
+  max-width: 700px;
+  text-align: center;
+}
+.cert-preview.show { display: block; }
+.cert-preview .cert-logo {
+  font-family: 'Spectral', serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 8px;
+}
+.cert-preview .cert-sub {
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--warm-gray);
+  margin-bottom: 32px;
+}
+.cert-preview .cert-title {
+  font-family: 'Spectral', serif;
+  font-size: 20px; color: var(--dark);
+  margin-bottom: 24px;
+}
+.cert-preview .cert-name {
+  font-family: 'Spectral', serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--forest);
+  font-style: italic;
+  margin-bottom: 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+.cert-preview .cert-detail {
+  font-size: 14px; color: var(--warm-gray);
+  margin-bottom: 8px;
+}
+.cert-preview .cert-ref {
+  font-size: 12px; color: var(--warm-gray);
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.cert-preview .cert-disclaimer {
+  font-size: 11px; color: #999;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+.print-btn {
+  margin-top: 20px;
+}
+
+/* ── Footer ── */
+.footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--warm-gray);
+}
+.footer a { color: var(--warm-gray); }
+
+/* ── Modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(42,37,32,0.5);
+  z-index: 200;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.show {
+  display: flex;
+}
+.modal-box {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 36px 32px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+}
+.modal-box h3 {
+  font-size: 20px; color: var(--forest);
+  margin-bottom: 8px;
+}
+.modal-box p {
+  color: var(--warm-gray);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.modal-box input {
+  width: 100%; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: 'DM Sans', sans-serif; font-size: 14.5px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.modal-box input:focus { outline: none; border-color: var(--sage); }
+
+/* Print */
+@media print {
+  .nav, .footer, .no-print { display: none !important; }
+  .cert-preview { border: 2px solid #000; page-break-inside: avoid; }
+  body { background: white; }
+}
+
+.learning-outcomes {
+  background: var(--light-sage);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.learning-outcomes h4 {
+  color: var(--forest);
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.reflection-prompt {
+  background: #F8F4FF;
+  border-left: 4px solid #8B6EB0;
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-style: italic;
+  color: #5A4670;
+  font-size: 14.5px;
+}
+.reflection-prompt strong {
+  font-style: normal;
+  color: #6B4F8A;
+}
+
+.step-counter {
+  font-size: 12px;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand" onclick="showPage('home');return false">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.5"/><path d="M9 14c0-3 2.5-5.5 5-5.5s5 2.5 5 5.5-2.5 5.5-5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="currentColor"/></svg>
+      <div><span>Fertool</span><small>CPD Learning Hub</small></div>
+    </a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('home');return false" class="active" data-page="home">Home</a>
+      <a href="#" onclick="showPage('modules');return false" data-page="modules">Modules</a>
+      <a href="#" onclick="showPage('about');return false" data-page="about">About</a>
+      <a href="#" onclick="showPage('certificate');return false" data-page="certificate">Certificate</a>
+      <a href="https://fertool.com.au" class="nav-return" target="_blank">↗ Fertool</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Home ── -->
+<div class="page active" id="page-home">
+  <div class="container">
+    <div class="hero">
+      <div class="badge" style="margin-bottom:20px">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 5h5l-4 3.5 1.5 5L8 10.5 3.5 13.5 5 8.5 1 5h5z"/></svg>
+        RACGP CPD Activity Standards — Accreditation Pending
+      </div>
+      <h1>Evidence-Based Fertility &amp; Pre-Pregnancy Education</h1>
+      <p class="subtitle">Clinically rigorous case-based modules for GPs and O&amp;G practitioners, grounded in ASRM and RANZCOG guidelines. Designed for DRANZCOG fellows and women's health professionals.</p>
+      <button class="btn btn-primary" onclick="showPage('modules')">Browse Modules →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Module List ── -->
+<div class="page" id="page-modules">
+  <div class="container">
+    <div style="padding:100px 0 0">
+      <h2 style="font-size:32px;color:var(--forest);margin-bottom:8px">Module Library</h2>
+      <p style="color:var(--warm-gray);margin-bottom:0">Two comprehensive case-based modules aligned with current clinical guidelines.</p>
+    </div>
+    <div class="modules-grid" id="moduleGrid"></div>
+  </div>
+</div>
+
+<!-- ── Module Player ── -->
+<div class="page" id="page-player">
+  <div class="container player-wrap">
+    <div class="player-header">
+      <a href="#" class="back-link" onclick="showPage('modules');return false">← Back to Modules</a>
+      <h2 id="playerTitle"></h2>
+      <div class="player-sub" id="playerSub"></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="player-body">
+      <div id="stepContent" class="step-content"></div>
+      <div class="guideline-panel" id="guidelinePanel">
+        <h4>Guideline References</h4>
+        <div id="refCards"></div>
+        <div class="disclaimer-bar">This educational content is designed to support professional development. It does not replace clinical judgement or constitute medical advice.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── About ── -->
+<div class="page" id="page-about">
+  <div class="container about-page">
+    <h2>About &amp; Governance</h2>
+
+    <div class="about-section">
+      <h3>Educational Purpose (RACGP Standard 1)</h3>
+      <p>The Fertool CPD Learning Hub provides independent, evidence-based continuing professional development for GPs and obstetricians/gynaecologists. All module content is developed to meet RACGP CPD Activity Standards and supports maintenance of professional competence in fertility and pre-pregnancy care.</p>
+      <p>This platform operates independently of any commercial fertility service. There is no commercial sponsorship, no product endorsement, and no promotional content within any educational module. Content decisions are made solely by the clinical education team.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Clinical Content Oversight</h3>
+      <p>Module content is developed by specialist GPs holding the Diploma of RANZCOG (DRANZCOG) and reviewed by a multidisciplinary panel including fertility specialists and general O&amp;G practitioners. All clinical recommendations reference published, peer-reviewed guidelines including RANZCOG C-Obs 3a (2024), the ASRM Committee Opinion on Optimizing Natural Fertility (2022), and RANZCOG patient resources.</p>
+      <p><strong>Conflict of Interest Declaration:</strong> No members of the content development team hold financial interests in fertility clinics, pharmaceutical companies, or medical device manufacturers. No commercial entity has editorial influence over module content.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Educational Design (RACGP Standard 2)</h3>
+      <p>Each module is structured as an Educational Activity (EA) under the MBA CPD framework, with defined learning outcomes aligned to professional development needs in fertility and pre-pregnancy care. Modules use case-based clinical scenarios to contextualise guideline recommendations, with assessment via multiple-choice questions and reflective prompts. All content is referenced to published clinical guidelines with GRADE ratings where available.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Completion &amp; Records (RACGP Standard 3)</h3>
+      <p>On completing a module, learners can generate a Statement of Completion containing their name (as registered with AHPRA), module title, date, CPD hours, MBA activity type, and a unique reference number. Learners should retain these records in their CPD portfolio for AHPRA audit purposes.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Target Audience</h3>
+      <p>GPs (especially DRANZCOG fellows), GP registrars in women's health training, generalist O&amp;G practitioners, and other registered health professionals involved in pre-pregnancy and fertility care.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Complaints &amp; Appeals</h3>
+      <p>Any concerns about module content, assessment, or completion records can be directed to <strong>cpd@fertool.com.au</strong>. Complaints are acknowledged within 5 business days, investigated within 20 business days, and clinical accuracy concerns are referred to the review panel.</p>
+    </div>
+
+    <div class="about-section">
+      <h3>Privacy</h3>
+      <p>Minimal data is collected (name and completion records only). Data is stored securely and is not shared with third parties. No advertising cookies or tracking are used on this platform.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Certificate ── -->
+<div class="page" id="page-certificate">
+  <div class="container cert-page">
+    <h2>Generate Certificate</h2>
+    <p class="cert-intro">Complete the form below to generate your Statement of Completion for a finished module.</p>
+    <div class="cert-form">
+      <div class="form-group">
+        <label>Full Name (as registered with AHPRA)</label>
+        <input type="text" id="certName" placeholder="Dr Jane Smith">
+      </div>
+      <div class="form-group">
+        <label>Completed Module</label>
+        <select id="certModule">
+          <option value="">Select a module…</option>
+          <option value="mod1">Module 1: Fertility Workup in Primary Care</option>
+          <option value="mod2">Module 2: Pre-Pregnancy Counselling</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date of Completion</label>
+        <input type="date" id="certDate">
+      </div>
+      <button class="btn btn-primary" onclick="generateCert()">Generate Certificate</button>
+    </div>
+    <div class="cert-preview" id="certPreview">
+      <div class="cert-logo">Fertool CPD Learning Hub</div>
+      <div class="cert-sub">Statement of Completion</div>
+      <div class="cert-title">This certifies that</div>
+      <div class="cert-name" id="certDisplayName"></div>
+      <div class="cert-detail" id="certDisplayModule"></div>
+      <div class="cert-detail" id="certDisplayDate"></div>
+      <div class="cert-detail" id="certDisplayHours"></div>
+      <div class="cert-detail"><strong>MBA Activity Type:</strong> Educational Activity (EA)</div>
+      <div class="cert-ref" id="certDisplayRef"></div>
+      <div class="cert-disclaimer">This activity is designed to meet RACGP CPD Activity Standards. Accreditation pending. Dual recognition: may count toward RANZCOG women's health continuing education for eligible participants.</div>
+      <button class="btn btn-secondary print-btn no-print" onclick="window.print()">🖨 Print Certificate</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Name Modal ── -->
+<div class="modal-overlay" id="nameModal">
+  <div class="modal-box">
+    <h3>Welcome</h3>
+    <p>Please enter your name to begin the module. This will appear on your certificate.</p>
+    <input type="text" id="learnerNameInput" placeholder="Dr Jane Smith">
+    <button class="btn btn-primary" onclick="confirmName()" style="width:100%">Start Module</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>© 2026 Fertool CPD Learning Hub · <a href="#" onclick="showPage('about');return false">About &amp; Governance</a> · <a href="https://fertool.com.au" target="_blank">Return to Fertool</a></p>
+  </div>
+</footer>
+
+<script>
+// ──────────── MODULE DATA ────────────
+const MODULES = {
+  mod1: {
+    title: "Fertility Workup in Primary Care",
+    num: "Module 1",
+    desc: "A comprehensive case-based module on assessing fertility in general practice: timing intercourse, ovulation detection, lifestyle factors, referral thresholds, and when to escalate to specialist care. Primarily grounded in the ASRM Committee Opinion on Optimizing Natural Fertility (2022), with supporting RANZCOG recommendations.",
+    hours: "2.0",
+    steps: 12,
+    tags: ["GP focused", "ASRM 2022", "RANZCOG C-Obs 3a"],
+    content: [
+      // STEP 1: Introduction
+      {
+        title: "Introduction & Learning Outcomes",
+        html: `
+          <p>This module addresses one of the most common presentations in general practice: a couple who want to conceive and are seeking guidance — or who are concerned they may have a problem. As a GP, you play a critical role in the initial assessment, counselling, and decision about when to refer.</p>
+          <p>This module draws primarily on the <strong>ASRM Committee Opinion: Optimizing Natural Fertility (2022)</strong>, a consensus document providing evidence-based recommendations for counselling couples attempting conception with no evidence of infertility. It is supplemented by RANZCOG C-Obs 3a (2024) recommendations on pre-pregnancy care.</p>
+          <div class="learning-outcomes">
+            <h4>Learning Outcomes</h4>
+            <ol>
+              <li>Describe the relationship between age, time, and natural fertility</li>
+              <li>Explain the fertile window and evidence-based intercourse timing</li>
+              <li>Compare ovulation detection methods and their evidence base</li>
+              <li>Counsel on modifiable lifestyle factors affecting fertility</li>
+              <li>Apply referral thresholds based on age and duration of trying</li>
+              <li>Identify environmental and dietary considerations in fertility counselling</li>
+            </ol>
+          </div>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "Committee Opinion: Optimizing Natural Fertility. Fertil Steril 2022;117:53–63. Consensus recommendations for couples attempting conception with no evidence of infertility." },
+          { source: "RANZCOG C-Obs 3a (2024)", text: "Pre-Pregnancy Counselling. Version 13.1, November 2024. GRADE-rated evidence-based recommendations." }
+        ]
+      },
+      // STEP 2: Clinical Scenario
+      {
+        title: "Clinical Scenario — Meet Sarah & Tom",
+        html: `
+          <div class="clinical-scenario">
+            <strong>Clinical Scenario</strong>
+            Sarah, 33, presents with her partner Tom, 35. They have been trying to conceive for 8 months with regular unprotected intercourse. Sarah reports regular 28–30 day menstrual cycles. She has no significant past medical history, takes no regular medications, and has never been pregnant. Her BMI is 26. She drinks 2–3 glasses of wine per week and 2 cups of coffee daily. She is not taking any supplements. Tom smokes 5 cigarettes per day.
+          </div>
+          <p>Sarah says: <em>"We thought it would happen quickly. Some months we try to have sex every day around when I think I'm ovulating, but other months we're both so busy it's more like once a week. Should we be worried? Do we need IVF?"</em></p>
+          <p>This is a very common consultation scenario. Before considering investigation or referral, there is substantial evidence-based counselling you can provide in primary care.</p>
+          <div class="reflection-prompt">
+            <strong>Pause &amp; Reflect:</strong> What is your usual approach when a couple presents after 8 months of trying? What questions would you routinely ask? Think about what information you'd want before deciding next steps.
+          </div>
+          <p>Let's start by reviewing what the evidence tells us about natural fertility and realistic expectations.</p>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "Any patient encounter with nonpregnant women or men with reproductive potential is an opportunity to counsel them about wellness and healthy habits to optimize reproductive outcomes." },
+          { source: "ASRM 2022", text: "Approximately 80% of couples will conceive in the first 6 months of attempting pregnancy. Monthly fecundability is greatest in the first 3 months." }
+        ]
+      },
+      // STEP 3: Fertility & Aging
+      {
+        title: "Fertility, Aging & Realistic Expectations",
+        html: `
+          <h4>What are realistic expectations?</h4>
+          <p>Understanding the natural timeline of fertility is essential for reassuring couples like Sarah and Tom — and for knowing when concern is warranted.</p>
+          <div class="evidence-box">
+            <strong>Key data (ASRM 2022):</strong> Approximately 80% of couples will conceive within the first 6 months of attempting pregnancy. Monthly fecundability (the probability of conceiving per cycle) is greatest in the first 3 months of trying, then gradually declines.
+          </div>
+          <p>This means that at 8 months, Sarah and Tom are not yet at the formal threshold for infertility — but they are past the period of highest per-cycle probability. Reassurance is appropriate, but targeted counselling about timing and lifestyle factors may help.</p>
+
+          <h4>The impact of age</h4>
+          <p>Age is the single most important factor affecting natural fertility — and its effects are far more pronounced in women than in men.</p>
+          <div class="evidence-box">
+            <strong>Age-related decline (ASRM 2022):</strong> Relative fertility is decreased by about half at age 40 compared with women in their late 20s and early 30s — the period of peak fertility. There is an age-related decline in the chances of pregnancy and live birth, corresponding to an increased risk of aneuploidy and miscarriage with maternal aging.
+          </div>
+          <p>In a landmark study of Hutterites (a community whose societal norm is to reproduce until menopause), pregnancies occurred rarely during the 40s, with the average age of the mother at her last pregnancy just before turning 41.</p>
+
+          <div class="key-point">
+            <strong>Clinical pearl:</strong> Markers of ovarian reserve (such as AMH) decline with age but are poor predictors of fecundity in non-infertile women (ASRM 2022). They should not be used to reassure or alarm women in the general population.
+          </div>
+
+          <h4>Male age</h4>
+          <p>While semen parameters in men decline detectably after 35, male fertility does not appear to be appreciably affected before the age of approximately 50 (ASRM 2022). Tom's age of 35 is unlikely to be a significant factor.</p>
+
+          <h4>Defining infertility & referral thresholds</h4>
+          <p>Infertility is defined as the failure to achieve a successful pregnancy after 12 months or more of regular unprotected vaginal intercourse. However, <strong>earlier evaluation and treatment is warranted after 6 months of trying for women aged 35 and older</strong> due to the age-related decline in fertility.</p>
+          <div class="key-point">
+            <strong>RANZCOG PP7:</strong> Women over 35 who have not been able to conceive after 6 months of trying should be offered referral to a fertility specialist.
+          </div>
+          <p>For Sarah at 33, she has not yet reached the 12-month threshold, but targeted optimisation of modifiable factors is appropriate now.</p>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "Approximately 80% of couples conceive in the first 6 months. Monthly fecundability is greatest in the first 3 months." },
+          { source: "ASRM 2022", text: "Relative fertility decreased by about half at age 40 vs late 20s/early 30s. Markers of ovarian reserve are poor predictors of fecundity in noninfertile women." },
+          { source: "ASRM 2022", text: "Infertility: failure to conceive after 12 months regular unprotected intercourse. Earlier evaluation warranted after 6 months for women ≥35.", grade: "Definition" },
+          { source: "RANZCOG C-Obs 3a", text: "PP7: Women over 35 who have not conceived after 6 months of trying should be offered referral to a fertility specialist.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 4: MCQ — Referral thresholds
+      {
+        title: "Assessment — Referral Thresholds",
+        html: `
+          <p class="step-counter" id="mcqLabel4"></p>
+          <h4>Given what you know about Sarah (33, trying 8 months, regular cycles), which of the following is the most appropriate next step?</h4>
+          <div class="mcq-options" id="mcq4"></div>
+          <div class="mcq-feedback" id="fb4"></div>
+        `,
+        mcq: {
+          id: "mcq4",
+          fbId: "fb4",
+          correct: 1,
+          options: [
+            "Refer immediately to a fertility specialist — 8 months is too long",
+            "Reassure that she hasn't reached the 12-month threshold, but optimise modifiable factors and review in 4 months",
+            "Order AMH and antral follicle count to check her ovarian reserve",
+            "Advise the couple to keep trying without any changes and return in 12 months"
+          ],
+          correctFb: "<strong>Correct.</strong> At 33, the formal threshold for infertility investigation is 12 months (ASRM 2022). Sarah has not reached this yet. However, the consultation is an excellent opportunity to optimise modifiable factors — intercourse timing, lifestyle, supplements — and to arrange review. If she were 35 or older, referral after 6 months would be appropriate (RANZCOG PP7). AMH testing is not recommended for reassurance or screening in non-infertile women.",
+          incorrectFb: "<strong>Not quite.</strong> At 33, the formal threshold is 12 months of trying before infertility is diagnosed (ASRM 2022). At this stage, the best approach is to reassure, optimise modifiable factors, and plan for review. AMH testing is not recommended for screening in women with no evidence of infertility. However, if she were ≥35, referral after 6 months would be appropriate (RANZCOG PP7)."
+        },
+        refs: [
+          { source: "ASRM 2022", text: "Infertility defined as failure to conceive after 12 months regular unprotected intercourse. Earlier evaluation warranted after 6 months for women ≥35.", grade: "Consensus" },
+          { source: "RANZCOG C-Obs 3a", text: "PP7: Women over 35 who have not conceived after 6 months should be offered referral to a fertility specialist.", grade: "Practice Point" },
+          { source: "ASRM 2022", text: "Markers of ovarian reserve decline with age but are poor predictors of fecundity in noninfertile women.", grade: "Consensus" }
+        ]
+      },
+      // STEP 5: The Fertile Window
+      {
+        title: "The Fertile Window & Intercourse Timing",
+        html: `
+          <p>One of the highest-value interventions in primary care is simply ensuring the couple understands when and how often to have intercourse.</p>
+
+          <h4>Defining the fertile window</h4>
+          <p>The fertile window is best defined as the <strong>6-day interval ending on the day of ovulation</strong> (ASRM 2022). Peak fecundability — the highest probability of conceiving from a single act of intercourse — occurs when intercourse takes place within the 2 days before ovulation.</p>
+          <div class="evidence-box">
+            <strong>ASRM 2022:</strong> The probability of clinical pregnancy increases from 3.2% on cycle day 8 to 9.4% on cycle day 12 and decreases to less than 2% on cycle day 21. Importantly, age does not appear to affect the length or timing of the fertile window relative to ovulation — but the probability of conception at each point decreases with age.
+          </div>
+
+          <h4>How often should couples have intercourse?</h4>
+          <p>This is one of the most common questions couples ask — and an area where misconceptions are prevalent.</p>
+          <div class="evidence-box">
+            <strong>Frequency evidence (ASRM 2022):</strong> Reproductive efficiency increases with the frequency of intercourse and is highest when intercourse occurs every 1 to 2 days during the fertile window. However, cycle fecundity was similar with intercourse that occurred daily, every other day, and even every 3 days during the fertile window — but was lowest when intercourse occurred only once during the fertile window.
+          </div>
+          <div class="key-point">
+            <strong>Dispelling a common myth:</strong> A widely held misconception is that frequent ejaculations decrease male fertility. A retrospective study of almost 10,000 semen specimens found that in men with normal semen quality, sperm concentration and motility remained normal even with daily ejaculation. In men with oligozoospermia, sperm concentration and motility may actually be <em>highest</em> with daily ejaculation (Levitas et al. 2005). Abstinence intervals of 2 days or more are associated with normal sperm densities, but abstinence >10 days may deteriorate semen parameters.
+          </div>
+          <p>The practical advice for Sarah and Tom: <strong>intercourse every 1–2 days during the fertile window is ideal</strong>, but couples should not feel pressured into strict schedules. The optimal frequency is best defined by their own preference. They should not be advised to limit frequency.</p>
+
+          <h4>Coital practices — what doesn't matter</h4>
+          <p>Sperm deposited at the cervix at midcycle reach the fallopian tubes within 15 minutes (Settlage et al. 1973). There is <strong>no evidence</strong> that coital position, remaining supine after intercourse, or female orgasm affects fecundability (ASRM 2022). These are common patient questions and merit clear, evidence-based reassurance.</p>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "The fertile window spans the 6-day interval ending on the day of ovulation. Peak fecundability observed when intercourse occurred within 2 days before ovulation.", grade: "Consensus" },
+          { source: "ASRM 2022", text: "Reproductive efficiency is highest with intercourse every 1–2 days during the fertile window. Daily intercourse does not decrease sperm quality in men with normal parameters.", grade: "Consensus" },
+          { source: "ASRM 2022", text: "No evidence that coital position, remaining supine post-intercourse, or female orgasm affects fecundability.", grade: "Consensus" }
+        ]
+      },
+      // STEP 6: MCQ — Intercourse frequency
+      {
+        title: "Assessment — Intercourse Timing",
+        html: `
+          <p class="step-counter" id="mcqLabel6"></p>
+          <h4>Sarah mentions they sometimes try to have sex every day during her perceived fertile window, but worries this might "use up" the sperm. Tom asks if they should abstain for a few days beforehand to "build up" his count. Based on current evidence, which response is most accurate?</h4>
+          <div class="mcq-options" id="mcq6"></div>
+          <div class="mcq-feedback" id="fb6"></div>
+        `,
+        mcq: {
+          id: "mcq6",
+          fbId: "fb6",
+          correct: 2,
+          options: [
+            "Advise 5 days of abstinence before the fertile window to maximise sperm count",
+            "Recommend intercourse only once during the fertile window to preserve sperm quality",
+            "Reassure that daily intercourse does not reduce sperm quality in men with normal parameters, and intercourse every 1–2 days is optimal",
+            "Suggest intercourse only on the day of ovulation for maximum efficiency"
+          ],
+          correctFb: "<strong>Correct.</strong> The ASRM 2022 Committee Opinion is clear: daily intercourse does not decrease sperm quality in men with normal semen parameters. In fact, a study of almost 10,000 semen specimens showed concentration and motility remained normal with daily ejaculation. Abstinence intervals >5 days may actually adversely affect sperm counts. Couples should be advised that intercourse every 1–2 days during the fertile window yields the highest pregnancy rates, and they should <em>not</em> be told to limit frequency.",
+          incorrectFb: "<strong>Not quite.</strong> The evidence does not support abstinence to 'build up' sperm. Daily intercourse does not decrease sperm quality in men with normal parameters (ASRM 2022). Intercourse every 1–2 days during the fertile window yields the highest pregnancy rates. Timing intercourse to only the ovulation day misses the peak window (2 days before ovulation). Couples should not be advised to limit frequency."
+        },
+        refs: [
+          { source: "ASRM 2022", text: "In men with normal semen quality, sperm concentration and motility remained normal even with daily ejaculation. In men with oligozoospermia, they may be highest with daily ejaculation (Levitas et al. 2005).", grade: "Evidence" },
+          { source: "ASRM 2022", text: "Intercourse every 1–2 days during the fertile window is optimal. Couples should not be advised to limit frequency.", grade: "Consensus" }
+        ]
+      },
+      // STEP 7: Ovulation Detection Methods
+      {
+        title: "Ovulation Detection — Comparing Methods",
+        html: `
+          <p>Sarah says she has been using a popular smartphone app to track her fertile window. She asks whether she should buy ovulation test kits instead. This is an opportunity to discuss the evidence behind different fertility-awareness methods.</p>
+
+          <h4>Calendar method &amp; apps</h4>
+          <p>The calendar method estimates ovulation at cycle day 14 for a 28-day cycle (assuming a 14-day luteal phase), then defines the fertile window as ovulation day ±5 days. Many smartphone apps use this approach.</p>
+          <div class="evidence-box">
+            <strong>ASRM 2022:</strong> A study comparing urinary LH testing with multiple downloadable calendar apps revealed a <strong>maximum accuracy of only 21%</strong> in predicting the day of ovulation. The major pitfall is that these predictors assume timing and duration of the fertile window are consistent and dependent on cycle length, despite knowledge that cycles are much more variable.
+          </div>
+          <p>Apps can help women understand their own cycle characteristics and trends, but patients should receive a candid review of their shortcomings for ovulation prediction.</p>
+
+          <h4>Urinary LH detection kits</h4>
+          <p>These monitor urinary luteinizing hormone (LH) excretion to determine when ovulation is imminent. Some also detect estrone glucuronide to identify additional days of the fertile window.</p>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 1 (Strong, Moderate evidence):</strong> Women under 40 who intend to conceive should consider using a urinary ovulation detection kit, as its use is associated with moderate increases in live birth rate (RR 1.36).
+          </div>
+          <p>A randomised controlled trial demonstrated that use of ovulation detection devices decreased time to pregnancy (Robinson et al. 2007). However, ovulation may occur any time within the 2 days after LH surge, and false-positive results occur in approximately 7% of cycles.</p>
+
+          <h4>Cervical mucus monitoring</h4>
+          <p>The quality of vaginal secretions provides an inexpensive and private index of approaching ovulation. The probability of conception is highest when mucus is slippery and clear — but such mucus is not a prerequisite for pregnancy.</p>
+          <div class="evidence-box">
+            <strong>ASRM 2022:</strong> Pregnancy rates were highest (approximately 38%) when intercourse occurred on the day of peak mucus, and appreciably lower (approximately 15–20%) on the day before or after. Cervical mucus monitoring in retrospective cohort studies is associated with a higher probability of conceiving in a given cycle. One large study found that changes in cervical mucus predicted the day-specific probability of conception as well as or better than basal body temperature or urinary LH monitoring.
+          </div>
+          <p>However, RANZCOG Recommendation 2 (Conditional, Low evidence) notes there is insufficient data to formally recommend fertility awareness-based methods (calendar tracking, cervical mucus, BBT) as primary approaches.</p>
+
+          <h4>Basal body temperature (BBT)</h4>
+          <p>BBT rises after ovulation due to progesterone. This confirms that ovulation has occurred but does not predict it in advance — making it less useful for timing intercourse prospectively.</p>
+
+          <div class="key-point">
+            <strong>Psychological impact:</strong> While some women find fertility-awareness methods empowering, others find they induce unnecessary stress. The stress of trying to conceive can reduce sexual satisfaction, esteem, and frequency of intercourse — further aggravated by strict scheduling linked to ovulation prediction (ASRM 2022). If used, fertility-awareness methods should <em>guide</em> the timing of frequent intercourse, not replace the general recommendation for intercourse every 1–2 days.
+          </div>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Recommendation 1 (Strong, Moderate): Women <40 should consider urinary ovulation detection kits — associated with increased live birth rate (RR 1.36).", grade: "Strong" },
+          { source: "RANZCOG C-Obs 3a", text: "Recommendation 2 (Conditional, Low): Insufficient data to recommend fertility awareness-based methods (calendar, cervical mucus, BBT).", grade: "Conditional" },
+          { source: "ASRM 2022", text: "Calendar apps: maximum accuracy of 21% for predicting ovulation day. Urinary LH kits validated in RCT to decrease time to pregnancy.", grade: "Evidence" },
+          { source: "ASRM 2022", text: "Cervical mucus: pregnancy rates ~38% when intercourse on day of peak mucus. Predicts day-specific conception probability as well as or better than BBT or LH.", grade: "Evidence" }
+        ]
+      },
+      // STEP 8: MCQ — Ovulation detection
+      {
+        title: "Assessment — Ovulation Detection",
+        html: `
+          <p class="step-counter" id="mcqLabel8"></p>
+          <h4>Sarah has been relying on a smartphone calendar app to predict her fertile window. Which of the following statements best reflects the current evidence about ovulation detection methods?</h4>
+          <div class="mcq-options" id="mcq8"></div>
+          <div class="mcq-feedback" id="fb8"></div>
+        `,
+        mcq: {
+          id: "mcq8",
+          fbId: "fb8",
+          correct: 1,
+          options: [
+            "Calendar apps are the most accurate method for predicting ovulation and should be recommended as first-line",
+            "Urinary LH detection kits have the strongest evidence base and are associated with increased live birth rates in an RCT",
+            "Basal body temperature tracking is the most useful method because it predicts ovulation in advance",
+            "All fertility-awareness methods have equivalent evidence and clinical utility"
+          ],
+          correctFb: "<strong>Correct.</strong> Urinary LH detection kits have the strongest evidence. RANZCOG gives this a Strong recommendation with Moderate GRADE evidence — the use of ovulation detection kits is associated with a relative increase in live birth rate (RR 1.36). Calendar apps have a maximum accuracy of only 21% for predicting ovulation day (ASRM 2022). BBT tracking confirms ovulation retrospectively but does not predict it in advance.",
+          incorrectFb: "<strong>Not quite.</strong> Calendar apps have a maximum accuracy of only 21% for predicting ovulation day (ASRM 2022). Urinary LH detection kits have the strongest evidence — RANZCOG Recommendation 1 (Strong, Moderate evidence) endorses their use, with RCT data showing decreased time to pregnancy. BBT confirms ovulation retrospectively, not prospectively. The methods are not equivalent in evidence quality."
+        },
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Recommendation 1 (Strong, Moderate): Urinary ovulation detection kits associated with increased live birth rate (RR 1.36).", grade: "Strong" },
+          { source: "ASRM 2022", text: "Calendar apps: maximum 21% accuracy for predicting ovulation day. Major pitfall: assume consistent cycle timing despite known variability.", grade: "Evidence" }
+        ]
+      },
+      // STEP 9: Lifestyle — Smoking, Alcohol, Caffeine, Cannabis, Diet, BMI
+      {
+        title: "Modifiable Lifestyle Factors",
+        html: `
+          <p>Having addressed timing and detection, the next critical area is modifiable lifestyle factors. For Sarah and Tom, several factors warrant discussion.</p>
+
+          <h4>Smoking — Tom's 5 cigarettes per day</h4>
+          <div class="evidence-box">
+            <strong>ASRM 2022:</strong> A large meta-analysis (10,928 smoking vs 19,128 non-smoking women) found smoking women were significantly more likely to be infertile (OR 1.60; 95% CI 1.34–1.91). Menopause occurs on average 1–4 years earlier in smoking women, suggesting accelerated follicular depletion. Smoking is also associated with increased risk of miscarriage in both natural and ART-conceived pregnancies.
+          </div>
+          <p>While the evidence for direct effects of male smoking on fertility is less conclusive, decreases in sperm density, motility, and abnormalities in morphology have been observed. <strong>Both ASRM and RANZCOG advise smoking cessation for men and women attempting pregnancy.</strong></p>
+
+          <h4>Alcohol — Sarah's 2–3 glasses/week</h4>
+          <p>The evidence on moderate alcohol consumption and female fertility is mixed. Some studies show higher consumption (>2 drinks/day) increases infertility risk (RR 1.59; 95% CI 1.09–2.31), while others have not shown clear effects at moderate levels.</p>
+          <div class="key-point">
+            <strong>RANZCOG C-Obs 53 Recommendation 1 (Conditional, Low):</strong> As there is no known safe level of alcohol consumption in pregnancy, women should be advised not to consume alcohol during any stage of pregnancy, <em>including around the time of conception</em>.
+          </div>
+          <p>For Sarah's 2–3 glasses per week: while this level may not demonstrably impair fertility, the "no known safe level around conception" message is important given she could conceive in any given cycle.</p>
+
+          <h4>Caffeine — Sarah's 2 cups/day</h4>
+          <div class="evidence-box">
+            <strong>ASRM 2022:</strong> High levels of caffeine consumption (>500 mg/day, >5 cups of coffee) are associated with decreased fertility (OR 1.45; 95% CI 1.03–2.04). During pregnancy, consumption over 200–300 mg/day may increase miscarriage risk. However, moderate caffeine consumption (1–2 cups of coffee per day) has <strong>no apparent adverse effects</strong> on fertility or pregnancy outcomes. Caffeine has no effect on semen parameters.
+          </div>
+          <p>Sarah's 2 cups of coffee per day is within the safe range. No change is needed, but she should be aware that heavy consumption (>5 cups/day) is associated with reduced fertility.</p>
+
+          <h4>Cannabis &amp; recreational drugs</h4>
+          <p>One study found increased infertility prevalence in ovulatory women using cannabis (RR 1.7; 95% CI 1.0–3.0). Men who smoke cannabis have been reported to have 29% lower sperm counts, with a dose-dependent effect. Both ACOG and ASRM advise discontinuation of cannabis for women who are pregnant or may become pregnant (ASRM 2022).</p>
+
+          <h4>BMI — Sarah's BMI of 26</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 3 (Conditional, Low):</strong> Women planning pregnancy should aim for a BMI between 18.5 and 24.9 for improved fertility outcomes and reduced adverse maternal/neonatal outcomes.<br><br>
+            <strong>RANZCOG Recommendation 4 (Strong, Moderate):</strong> Women with BMI >30 should be advised that reducing weight before pregnancy could reduce adverse outcomes.
+          </div>
+          <p>Sarah's BMI of 26 is overweight but below 30. A gentle, non-stigmatising conversation about the benefits of a BMI in the healthy range is appropriate (RANZCOG PP5). She is not in the high-risk category, but modest weight optimisation could support conception and reduce pregnancy complications.</p>
+
+          <h4>Diet</h4>
+          <p>Despite popular interest, evidence for specific dietary interventions is limited for naturally fertile women:</p>
+          <div class="evidence-box">
+            <strong>ASRM 2022 Summary:</strong> Although a healthy lifestyle may help improve fertility in women with ovulatory dysfunction, there is little evidence that dietary variations (vegetarian, low-fat, vitamin-enriched, antioxidants, or herbal remedies) improve fertility in women <em>without</em> ovulatory dysfunction. The Nurses' Health Study II "fertility diet" (higher monounsaturated fats, vegetable protein, low-glycemic carbs, high-fat dairy) was associated with lower risk of ovulatory infertility (RR 0.34; 95% CI 0.23–0.48), but this applies primarily to women with ovulatory dysfunction. General dietary and lifestyle modifications may be recommended for overall health.
+          </div>
+
+          <h4>Vaginal lubricants</h4>
+          <p>Some commercially available water-based lubricants inhibit sperm motility in vitro by 60–100% within 60 minutes. Mineral oil and hydroxyethylcellulose-based lubricants have no adverse effect. However, real-world studies have shown lubricant use did not affect cycle fecundability compared to non-use (ASRM 2022). Still, if couples are using lubricants, suggesting sperm-friendly options is reasonable.</p>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "Smoking and infertility: OR 1.60 (95% CI 1.34–1.91). Menopause occurs 1–4 years earlier in smokers.", grade: "Evidence" },
+          { source: "RANZCOG C-Obs 53", text: "Recommendation 1 (Conditional, Low): No known safe level of alcohol in pregnancy including around conception.", grade: "Conditional" },
+          { source: "ASRM 2022", text: "Moderate caffeine (1–2 cups/day) — no apparent adverse effects. High caffeine (>5 cups/day) — OR 1.45 for decreased fertility.", grade: "Evidence" },
+          { source: "RANZCOG C-Obs 3a", text: "Rec 3 (Conditional, Low): Aim BMI 18.5–24.9. Rec 4 (Strong, Moderate): BMI >30 — reduce weight before pregnancy.", grade: "Conditional" },
+          { source: "ASRM 2022", text: "Nurses' Health Study II 'fertility diet' — lower ovulatory infertility risk (RR 0.34). But little evidence dietary variations help women without ovulatory dysfunction.", grade: "Evidence" }
+        ]
+      },
+      // STEP 10: MCQ — Lifestyle
+      {
+        title: "Assessment — Lifestyle Counselling",
+        html: `
+          <p class="step-counter" id="mcqLabel10"></p>
+          <h4>Which of the following lifestyle recommendations for Sarah and Tom has the STRONGEST evidence base?</h4>
+          <div class="mcq-options" id="mcq10"></div>
+          <div class="mcq-feedback" id="fb10"></div>
+        `,
+        mcq: {
+          id: "mcq10",
+          fbId: "fb10",
+          correct: 0,
+          options: [
+            "Tom should stop smoking — smoking is significantly associated with female infertility (OR 1.60) and adverse semen parameters, and cessation is recommended for both partners",
+            "Sarah should eliminate all caffeine immediately — any caffeine consumption reduces fertility",
+            "Sarah should follow a strict 'fertility diet' with high-fat dairy and vegetable proteins to maximise her chances",
+            "Sarah's 2–3 glasses of wine per week is clearly harmful to fertility and she should be told it is causing her difficulty conceiving"
+          ],
+          correctFb: "<strong>Correct.</strong> Smoking cessation has the strongest evidence base among these options. The meta-analysis shows OR 1.60 for infertility in smoking women, plus adverse semen effects in men. Both ASRM and RANZCOG recommend cessation. Sarah's moderate caffeine (2 cups/day) has no apparent adverse effects (ASRM 2022). The 'fertility diet' data applies mainly to ovulatory dysfunction. And while Sarah should be advised about alcohol around conception (no known safe level), her moderate intake has not been clearly shown to impair fertility at this level.",
+          incorrectFb: "<strong>Not quite.</strong> Tom's smoking has the strongest evidence for adverse effects — OR 1.60 for female infertility, with adverse semen effects in men. Moderate caffeine (1–2 cups/day) has no apparent adverse effects on fertility (ASRM 2022). The 'fertility diet' data is mainly relevant to ovulatory dysfunction. And while there's no known safe alcohol level around conception (RANZCOG C-Obs 53), moderate alcohol has not been clearly shown to impair fertility."
+        },
+        refs: [
+          { source: "ASRM 2022", text: "Smoking and female infertility: OR 1.60 (95% CI 1.34–1.91). Semen parameter changes in male smokers.", grade: "Evidence" },
+          { source: "ASRM 2022", text: "Moderate caffeine (1–2 cups/day) — no apparent adverse effects on fertility.", grade: "Consensus" },
+          { source: "RANZCOG C-Obs 53", text: "No known safe level of alcohol in pregnancy including around conception. Conditional recommendation, Low evidence.", grade: "Conditional" }
+        ]
+      },
+      // STEP 11: Environmental exposures & Supplements
+      {
+        title: "Environmental Exposures & Supplements",
+        html: `
+          <h4>Environmental exposures</h4>
+          <p>A growing body of evidence links environmental chemical exposure to reduced fertility. While individual patient counselling is difficult, awareness of these exposures is part of comprehensive pre-pregnancy care.</p>
+          <div class="evidence-box">
+            <strong>ASRM 2022 — Endocrine-disrupting chemicals:</strong> A systematic review found high-level evidence supporting adverse effects of female exposure to polychlorinated biphenyls (PCBs) on time to pregnancy, and weak evidence for effects of polybrominated diphenyl ethers and per-/polyfluoroalkyl substances (PFAS). There was little evidence for organochlorine pesticide effects.
+          </div>
+          <div class="evidence-box">
+            <strong>ASRM 2022 — Air pollution:</strong> Higher exposure to ambient air pollution has been linked to lower fertility rates in Europe, the US, and China. Couples living closer to major roadways have higher infertility risk and longer time to pregnancy. Higher preconception exposure to nitrogen dioxides and fine particulate matter is associated with decreased fecundability and higher miscarriage risk.
+          </div>
+          <p>The practical message: reproductive-aged men and women should be encouraged, where possible, to limit exposure to endocrine-disrupting chemicals in food, water, air, and personal care products.</p>
+
+          <h4>Folic acid supplementation</h4>
+          <div class="key-point">
+            <strong>RANZCOG Recommendation 7 (Strong, Moderate):</strong> Women seeking to become pregnant should take a daily folic acid supplement to decrease the risk of fetal neural tube defects.
+          </div>
+          <p>The recommended dose is 0.4–0.8 mg daily for women with no risk factors (RANZCOG PP8), starting at least 4 weeks before conception. Women at increased risk (anticonvulsants, diabetes, BMI >30, previous NTD, family history) should take 5 mg daily (RANZCOG PP9). Supplementation should continue for the first 12 weeks of pregnancy (PP10).</p>
+          <p><strong>Sarah is not currently taking folic acid.</strong> This is an important gap — she should start immediately given she is actively trying to conceive.</p>
+
+          <h4>Other supplements</h4>
+          <p><strong>Iodine (RANZCOG PP11):</strong> 150 mcg/day supplementation or iodine-rich diet is recommended during preconception, pregnancy, and breastfeeding — particularly in Australia and New Zealand where soil iodine levels may be insufficient.</p>
+          <p><strong>Iron (RANZCOG PP13):</strong> Offer ferritin and haemoglobin measurement; shared decision-making on supplementation based on levels, diet, and preferences.</p>
+          <p><strong>Vitamin D (RANZCOG Rec 8, Conditional, Low):</strong> Limited evidence for pre-pregnancy Vitamin D supplementation benefit. Routine pre-pregnancy measurement is not recommended (PP12).</p>
+
+          <div class="reflection-prompt">
+            <strong>Pause &amp; Reflect:</strong> How do you currently approach supplement counselling in your pre-pregnancy consultations? Is folic acid discussed routinely even when fertility is not the presenting concern?
+          </div>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "High-level evidence: PCB exposure adversely affects time to pregnancy in women. Air pollution linked to lower fertility rates and longer time to pregnancy.", grade: "Evidence" },
+          { source: "RANZCOG C-Obs 3a", text: "Rec 7 (Strong, Moderate): Daily folic acid to decrease NTD risk. PP8: 0.4–0.8mg daily (no risk factors). PP9: 5mg for high-risk women.", grade: "Strong" },
+          { source: "RANZCOG C-Obs 3a", text: "PP11: Iodine 150mcg/day. PP13: Offer ferritin/Hb measurement. Rec 8 (Conditional, Low): Limited evidence for Vitamin D supplementation.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 12: Summary & Management Plan
+      {
+        title: "Summary — Putting It All Together for Sarah & Tom",
+        html: `
+          <h4>Your management plan</h4>
+          <p>Based on the evidence reviewed in this module, here is a comprehensive approach for Sarah and Tom:</p>
+
+          <div class="evidence-box">
+            <strong>1. Reassurance with realistic expectations</strong><br>
+            At 33 with regular cycles and 8 months of trying, Sarah has not reached the 12-month threshold for infertility diagnosis. ~80% of couples conceive within 6 months, but success rates continue beyond this. Optimising modifiable factors is the priority. If she were ≥35, referral after 6 months would be appropriate.
+          </div>
+
+          <div class="evidence-box">
+            <strong>2. Intercourse timing &amp; frequency</strong><br>
+            Advise intercourse every 1–2 days during the fertile window (6-day interval ending on ovulation day). Reassure that daily intercourse does not reduce sperm quality. Do not recommend strict abstinence schedules.
+          </div>
+
+          <div class="evidence-box">
+            <strong>3. Ovulation detection</strong><br>
+            Recommend urinary LH detection kits (RANZCOG Rec 1 — Strong, Moderate). Advise that her current calendar app has a maximum accuracy of 21%. LH kits are validated in RCT to decrease time to pregnancy.
+          </div>
+
+          <div class="evidence-box">
+            <strong>4. Smoking cessation for Tom</strong><br>
+            Provide smoking cessation support (meta-analysis: OR 1.60 for infertility in smokers). Discuss that even 5 cigarettes/day may affect semen parameters and her exposure to second-hand smoke.
+          </div>
+
+          <div class="evidence-box">
+            <strong>5. Alcohol counselling</strong><br>
+            Advise on the "no known safe level around conception" message (RANZCOG C-Obs 53). Her 2–3 glasses/week is moderate, but reducing or ceasing is prudent given she could conceive in any cycle.
+          </div>
+
+          <div class="evidence-box">
+            <strong>6. Supplements — start today</strong><br>
+            Folic acid 0.4–0.8 mg daily (Rec 7 — Strong). Iodine 150 mcg/day (PP11). Consider ferritin/Hb check (PP13). Her caffeine intake (2 cups/day) is fine.
+          </div>
+
+          <div class="evidence-box">
+            <strong>7. Weight — gentle discussion</strong><br>
+            BMI 26 is overweight but below 30. Non-stigmatising advice about benefits of healthy weight range (PP5). Not urgent, but supporting modest weight optimisation is reasonable.
+          </div>
+
+          <div class="evidence-box">
+            <strong>8. Review &amp; referral plan</strong><br>
+            Arrange review at 12 months total (4 months from now). If no pregnancy by then, commence fertility workup (semen analysis, hormone profile, imaging). If Sarah were ≥35, earlier referral at 6 months would apply. If any red flags emerge (irregular cycles, pelvic pain, sexual dysfunction), investigate earlier.
+          </div>
+
+          <div class="reflection-prompt">
+            <strong>Final Reflection:</strong> Consider how this structured approach compares to your current practice. Are there elements you would add or prioritise differently? How might you adapt this framework for women of different ages, BMIs, or risk profiles?
+          </div>
+
+          <div class="key-point">
+            <strong>Module complete.</strong> You can now generate a Statement of Completion from the Certificate page. Key references: ASRM Committee Opinion: Optimizing Natural Fertility (Fertil Steril 2022;117:53–63) and RANZCOG Pre-Pregnancy Counselling C-Obs 3a (Version 13.1, November 2024).
+          </div>
+        `,
+        refs: [
+          { source: "ASRM 2022", text: "Summary: Time to conception increases with age. Intercourse every 1–2 days in fertile window. Smoking and recreational drugs discouraged. Healthy lifestyle encouraged. Folic acid ≥400mcg daily.", grade: "Consensus" },
+          { source: "RANZCOG C-Obs 3a", text: "Pre-pregnancy checklist: medical conditions, ovulation detection, substance use, BMI, age/referral, vaccinations, medications, folic acid, iodine, iron, IPI, carrier screening, mental health, IPV, oral health.", grade: "Checklist" }
+        ]
+      }
+    ]
+  },
+
+  mod2: {
+    title: "Pre-Pregnancy Counselling",
+    num: "Module 2",
+    desc: "A comprehensive case-based module on holistic pre-pregnancy counselling: vitamins and supplements, BMI and weight, interpregnancy intervals, mental health screening, intimate partner violence, vaccinations, medications, oral health, and environmental factors. Based on RANZCOG C-Obs 3a (2024) and the RANZCOG Planning for Pregnancy patient resource.",
+    hours: "2.0",
+    steps: 14,
+    tags: ["GP + O&G", "RANZCOG C-Obs 3a 2024", "Planning for Pregnancy"],
+    content: [
+      // STEP 1: Introduction
+      {
+        title: "Introduction & Learning Outcomes",
+        html: `
+          <p>Pre-pregnancy counselling is one of the most impactful — yet underutilised — opportunities in primary care. The evidence is clear: steps taken before conception to optimise a woman's health can have significant, lasting benefits for both mother and child.</p>
+          <p>This module is grounded in the <strong>RANZCOG Pre-Pregnancy Counselling Clinical Guideline C-Obs 3a (Version 13.1, November 2024)</strong>, a comprehensive evidence-based guideline developed using GRADE methodology, together with the <strong>RANZCOG Planning for Pregnancy patient information resource</strong>.</p>
+          <div class="learning-outcomes">
+            <h4>Learning Outcomes</h4>
+            <ol>
+              <li>Apply the RANZCOG pre-pregnancy checklist systematically</li>
+              <li>Recommend appropriate vitamin and mineral supplementation with correct dosing</li>
+              <li>Counsel on BMI targets using evidence on maternal and neonatal outcomes</li>
+              <li>Advise on optimal interpregnancy intervals using GRADE-rated evidence</li>
+              <li>Screen for perinatal mental health conditions and intimate partner violence</li>
+              <li>Integrate vaccination, medication review, oral health, and environmental counselling</li>
+            </ol>
+          </div>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a (2024)", text: "Pre-Pregnancy Counselling. Version 13.1, November 2024. 153-page GRADE-rated guideline for registered health professionals." },
+          { source: "RANZCOG", text: "Planning for Pregnancy — Patient information resource. Covers diet, exercise, weight, supplements, smoking, alcohol, medications, male partner health, environmental exposures." }
+        ]
+      },
+      // STEP 2: Clinical Scenario
+      {
+        title: "Clinical Scenario — Meet Priya",
+        html: `
+          <div class="clinical-scenario">
+            <strong>Clinical Scenario</strong>
+            Priya, 31, presents for a pre-pregnancy consultation. She delivered her first child 10 months ago by emergency caesarean section following a failed induction for gestational diabetes. She is currently breastfeeding. Her BMI is 32. She takes no regular medications and is not currently using contraception. She has a history of postnatal depression following her first birth, managed with counselling (now discharged). She asks: "We want another baby — can we start trying now?"
+          </div>
+          <p>This scenario touches on many of the core domains of pre-pregnancy counselling: interpregnancy intervals, BMI, previous obstetric complications, mental health history, breastfeeding, and supplement needs.</p>
+
+          <h4>The RANZCOG Pre-Pregnancy Checklist</h4>
+          <p>RANZCOG provides a structured checklist designed to ensure comprehensive pre-pregnancy care. The key domains are:</p>
+          <ul>
+            <li>Pre-existing medical conditions and obstetric history</li>
+            <li>Ovulation detection</li>
+            <li>Substance use (alcohol, nicotine, other drugs)</li>
+            <li>BMI calculation and weight management</li>
+            <li>Age-related fertility counselling and referral thresholds</li>
+            <li>Vaccinations</li>
+            <li>Medication safety review</li>
+            <li>Folic acid, iodine, iron supplementation</li>
+            <li>Interpregnancy intervals</li>
+            <li>Reproductive carrier screening</li>
+            <li>Depression and anxiety screening</li>
+            <li>Intimate partner violence screening</li>
+            <li>Oral health</li>
+            <li>Travel advice</li>
+          </ul>
+          <div class="reflection-prompt">
+            <strong>Pause &amp; Reflect:</strong> How many of these domains do you routinely cover in your pre-pregnancy consultations? Are there areas you tend to overlook? Consider whether a structured approach using this checklist would improve the comprehensiveness of your care.
+          </div>
+          <p>RANZCOG acknowledges this is time-intensive. Longer appointments should be booked, or an additional pre-conception care appointment made when discussions require it.</p>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "PP1: Assessment of pre-existing medical conditions. Consideration of past obstetric history including GDM and hypertensive disorders.", grade: "Practice Point" },
+          { source: "RANZCOG C-Obs 3a", text: "Pre-pregnancy checklist covers 15+ domains for comprehensive pre-conception care.", grade: "Checklist" }
+        ]
+      },
+      // STEP 3: Vitamins & Supplements
+      {
+        title: "Vitamins & Mineral Supplementation",
+        html: `
+          <p>Priya is not currently taking any supplements. This is a critical gap to address.</p>
+
+          <h4>Folic acid</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 7 (Strong, Moderate evidence):</strong> Women seeking to become pregnant should take a daily folic acid supplement to decrease the risk of fetal neural tube defects.
+          </div>
+          <p><strong>Standard dose (PP8):</strong> 0.4–0.8 mg daily for women with no risk factors, starting at least 4 weeks before trying for pregnancy.</p>
+          <p><strong>High dose (PP9):</strong> 5 mg daily for women at increased risk of NTDs:</p>
+          <ul>
+            <li>Taking anticonvulsant medication</li>
+            <li>Diabetes (including previous GDM)</li>
+            <li>BMI > 30</li>
+            <li>Previous pregnancy affected by NTD</li>
+            <li>Family history of NTD</li>
+            <li>Risk of poor absorption</li>
+          </ul>
+          <div class="key-point">
+            <strong>For Priya:</strong> With a BMI of 32 and a history of gestational diabetes, she meets criteria for high-dose folic acid (5 mg daily). This should be started at least 4 weeks before attempting conception. Supplementation should continue for the first 12 weeks of pregnancy (PP10).
+          </div>
+
+          <h4>Iodine</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG PP11:</strong> Women seeking to become pregnant should be advised of the increased need for iodine during preconception, pregnancy, and breastfeeding. Iodine supplementation of 150 mcg/day or an iodine-rich diet is recommended, particularly in Australia and New Zealand where soil iodine levels may be insufficient. Women choosing supplementation should be informed of possible digestive intolerance.
+          </div>
+          <p>The RANZCOG Planning for Pregnancy resource emphasises iodine's importance for fetal brain development.</p>
+
+          <h4>Iron</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG PP13:</strong> Women should be offered measurement of ferritin and haemoglobin levels. Shared decision-making on iron supplementation should be informed by serum levels, lifestyle factors (including diet), and patient preferences. Digestive intolerance is possible.
+          </div>
+          <p>For Priya, who is still breastfeeding and had a caesarean delivery with potential blood loss, checking iron stores is particularly important.</p>
+
+          <h4>Vitamin D</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 8 (Conditional, Low):</strong> Limited evidence for the association between preconception Vitamin D levels and adverse pregnancy outcomes. No evidence of benefit with Vitamin D supplementation.<br><br>
+            <strong>PP12:</strong> Routine measurement of pre-pregnancy Vitamin D levels is <em>not</em> recommended.
+          </div>
+          <p>This is a common area of over-investigation. Unless specific risk factors for Vitamin D deficiency are present, routine testing is not warranted.</p>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 7 (Strong, Moderate): Daily folic acid to decrease NTD risk. PP8: 0.4–0.8mg (standard). PP9: 5mg for high-risk (BMI >30, diabetes, anticonvulsants, previous NTD).", grade: "Strong" },
+          { source: "RANZCOG C-Obs 3a", text: "PP11: Iodine 150mcg/day supplementation. PP13: Offer ferritin/Hb measurement; shared decision-making on iron.", grade: "Practice Point" },
+          { source: "RANZCOG C-Obs 3a", text: "Rec 8 (Conditional, Low): Limited evidence for pre-pregnancy Vitamin D supplementation. PP12: Routine measurement not recommended.", grade: "Conditional" }
+        ]
+      },
+      // STEP 4: MCQ — Supplements
+      {
+        title: "Assessment — Supplementation",
+        html: `
+          <p class="step-counter" id="mcqLabel4b"></p>
+          <h4>Priya has a BMI of 32 and a history of gestational diabetes. What is the appropriate folic acid dosing recommendation?</h4>
+          <div class="mcq-options" id="mcq4b"></div>
+          <div class="mcq-feedback" id="fb4b"></div>
+        `,
+        mcq: {
+          id: "mcq4b",
+          fbId: "fb4b",
+          correct: 2,
+          options: [
+            "0.4 mg daily — standard dose for all women planning pregnancy",
+            "0.8 mg daily — upper end of standard range is sufficient for her risk level",
+            "5 mg daily — she has two risk factors for NTDs (BMI >30 and previous GDM/diabetes history)",
+            "No supplementation needed — folic acid is only necessary once pregnancy is confirmed"
+          ],
+          correctFb: "<strong>Correct.</strong> RANZCOG PP9 recommends 5 mg daily folic acid for women at increased risk of NTDs. Risk factors include BMI >30, diabetes (including previous GDM), anticonvulsant use, previous NTD-affected pregnancy, and family history of NTDs. Priya has two risk factors: BMI >30 and a history of GDM. Supplementation should start at least 4 weeks before conception and continue for the first 12 weeks of pregnancy (PP10).",
+          incorrectFb: "<strong>Not quite.</strong> Standard dosing (0.4–0.8 mg) is for women with no risk factors (PP8). Priya has two risk factors for NTDs: BMI >30 and previous GDM. RANZCOG PP9 recommends 5 mg daily for high-risk women. Folic acid should start before conception (at least 4 weeks prior) — it cannot protect against NTDs if started only after pregnancy is confirmed."
+        },
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "PP8: Standard dose 0.4–0.8mg for women with no risk factors. PP9: 5mg for high-risk (BMI >30, diabetes, anticonvulsants, previous NTD). PP10: Continue for first 12 weeks of pregnancy.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 5: BMI & Weight
+      {
+        title: "BMI, Weight & Pregnancy Outcomes",
+        html: `
+          <p>Priya's BMI of 32 places her in the obese category. This is relevant both for her fertility and for the outcomes of her next pregnancy.</p>
+
+          <h4>RANZCOG evidence on BMI and outcomes</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 3 (Conditional, Low):</strong> Women planning to become pregnant should aim for a BMI between 18.5 and 24.9, as this may be associated with improved fertility outcomes and reduced adverse maternal and neonatal outcomes.<br><br>
+            <strong>RANZCOG Recommendation 4 (Strong, Moderate):</strong> Women with BMI >30 should be advised that reducing weight before becoming pregnant could reduce the risk of adverse maternal and neonatal outcomes.
+          </div>
+
+          <h4>What outcomes are affected?</h4>
+          <p>RANZCOG Table 1 summarises the evidence for BMI and maternal/neonatal outcomes. Increasing BMI is associated with increased risk of:</p>
+          <ul>
+            <li>Recurrent miscarriage</li>
+            <li>Gestational diabetes mellitus (GDM)</li>
+            <li>Gestational hypertension and preeclampsia</li>
+            <li>Caesarean birth (and decreased likelihood of vaginal birth)</li>
+            <li>Macrosomia (large for gestational age)</li>
+            <li>NICU admission</li>
+            <li>Higher anaesthetic risks</li>
+            <li>Excessive bleeding and blood clots</li>
+          </ul>
+          <p>Priya has already experienced one of these complications — GDM in her first pregnancy, which was delivered by emergency caesarean. Her risk of recurrent GDM is elevated, and her BMI of 32 further increases this risk.</p>
+
+          <h4>How to approach the conversation</h4>
+          <div class="key-point">
+            <strong>RANZCOG PP5:</strong> Clinicians should ensure that <em>non-stigmatising</em> advice and support is offered to help women achieve a healthy weight before becoming pregnant.
+          </div>
+          <p>The RANZCOG Planning for Pregnancy patient resource states: "Weight is a very sensitive issue for many women. However, because of the great benefit to the mother and her future baby, it is recommended that steps should be taken to lose weight in a healthy manner. These steps include dietary change (help from a dietician can be valuable) and exercise."</p>
+          <p>For Priya, the conversation should frame weight management as protective — reducing her risk of recurrent GDM, further caesarean delivery, and neonatal complications — while being sensitive to her current circumstances (breastfeeding, caring for a baby, postnatal depression history).</p>
+
+          <div class="evidence-box">
+            <strong>PP6:</strong> For women who are underweight, assessment for the underlying cause and appropriate treatment should be offered. Consider eating disorders, malabsorption, and chronic illness.
+          </div>
+          <p><strong>PP2:</strong> Offer HbA1c screening for type 2 diabetes in women with risk factors (including previous GDM and BMI >30) prior to becoming pregnant. This is directly relevant for Priya.</p>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 3 (Conditional, Low): Aim BMI 18.5–24.9. Rec 4 (Strong, Moderate): BMI >30 — reducing weight before pregnancy reduces adverse outcomes.", grade: "Strong" },
+          { source: "RANZCOG C-Obs 3a", text: "Table 1: Increasing BMI → increased GDM, hypertension, preeclampsia, caesarean, macrosomia, NICU admission, recurrent miscarriage.", grade: "Evidence" },
+          { source: "RANZCOG C-Obs 3a", text: "PP5: Non-stigmatising advice and support for weight management. PP2: HbA1c screening for women with diabetes risk factors.", grade: "Practice Point" },
+          { source: "RANZCOG Planning for Pregnancy", text: "Overweight and obesity: can reduce fertility, increase miscarriage risk, higher anaesthetic risks, greater likelihood of caesarean. Dietary change + exercise recommended.", grade: "Patient Resource" }
+        ]
+      },
+      // STEP 6: Interpregnancy Intervals
+      {
+        title: "Interpregnancy Intervals — The Evidence",
+        html: `
+          <p>Priya's first child is 10 months old, delivered by caesarean. If she conceived now, her interpregnancy interval (IPI — defined as time from delivery to next conception) would be approximately 10 months. Is this safe?</p>
+
+          <h4>Short interpregnancy intervals (&lt;6 months)</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 9 (Strong, Moderate evidence):</strong> Women should be informed about the increased risks of adverse outcomes (maternal, perinatal, and infant) associated with an interpregnancy interval <6 months.<br><br>
+            <strong>RANZCOG Table 3 data for IPI &lt;6 months vs 12–24 months:</strong><br>
+            • Preterm birth: OR 1.55<br>
+            • Low birthweight: OR 1.42<br>
+            • Small for gestational age: increased risk<br>
+            • Neonatal deaths: OR 1.60<br>
+            • Stillbirth: increased risk
+          </div>
+
+          <h4>Optimal interval: 12–24 months</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 10 (Conditional, Low evidence):</strong> An interpregnancy interval of 12–24 months is not clearly associated with adverse pregnancy outcomes. This is generally considered the optimal range.
+          </div>
+
+          <h4>Long interpregnancy intervals (&gt;60 months)</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 11 (Conditional, Low evidence):</strong> An IPI >60 months may be associated with increased risk of preterm birth, small for gestational age, low birthweight, gestational diabetes, hypertensive pregnancy, and caesarean birth.
+          </div>
+
+          <div class="key-point">
+            <strong>For Priya:</strong> At 10 months postpartum, if she conceived immediately, her IPI would be ~10 months — past the high-risk zone of &lt;6 months, but below the optimal 12–24 months. Given her caesarean history, many clinicians would also consider uterine scar healing when counselling. A reasonable approach: she is close to the optimal window. Waiting 2–4 more months would bring her into the 12–24 month range. This should be weighed against her age (31 — time is on her side) and her specific risk factors.
+          </div>
+
+          <h4>Postpartum contraception</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG PP14:</strong> All women should be offered effective postpartum contraception in order to plan optimal birth spacing.
+          </div>
+          <p>Even though Priya is planning another pregnancy, the discussion about IPI and timing helps her make an informed decision about when to start trying.</p>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 9 (Strong, Moderate): IPI <6 months — increased adverse outcomes. Preterm birth OR 1.55, LBW OR 1.42, neonatal deaths OR 1.60.", grade: "Strong" },
+          { source: "RANZCOG C-Obs 3a", text: "Rec 10 (Conditional, Low): IPI 12–24 months not clearly associated with adverse outcomes (optimal range).", grade: "Conditional" },
+          { source: "RANZCOG C-Obs 3a", text: "Rec 11 (Conditional, Low): IPI >60 months — increased risk of preterm birth, SGA, GDM, hypertensive pregnancy, caesarean.", grade: "Conditional" },
+          { source: "RANZCOG C-Obs 3a", text: "PP14: Offer effective postpartum contraception for optimal birth spacing.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 7: MCQ — IPI
+      {
+        title: "Assessment — Interpregnancy Intervals",
+        html: `
+          <p class="step-counter" id="mcqLabel7b"></p>
+          <h4>Priya asks: "Is it dangerous to get pregnant again so soon after having a caesarean?" Her child is 10 months old. Which statement best reflects the RANZCOG evidence on interpregnancy intervals?</h4>
+          <div class="mcq-options" id="mcq7b"></div>
+          <div class="mcq-feedback" id="fb7b"></div>
+        `,
+        mcq: {
+          id: "mcq7b",
+          fbId: "fb7b",
+          correct: 2,
+          options: [
+            "Any IPI under 24 months is dangerous and she should be strongly discouraged from trying",
+            "IPI doesn't matter — she can try whenever she feels ready",
+            "IPI <6 months carries the highest risk (OR 1.55 preterm birth, OR 1.60 neonatal death). At 10 months postpartum, she is past the highest-risk window but ideally would wait until 12–24 months for optimal outcomes",
+            "She must wait at least 3 years after a caesarean before trying again"
+          ],
+          correctFb: "<strong>Correct.</strong> RANZCOG Recommendation 9 (Strong, Moderate) identifies IPI <6 months as the highest-risk period (preterm birth OR 1.55, neonatal death OR 1.60). Recommendation 10 (Conditional, Low) indicates that IPI 12–24 months is not clearly associated with adverse outcomes — this is the generally accepted optimal range. At 10 months postpartum, Priya is past the highest-risk zone but would benefit from waiting 2–4 more months to enter the optimal range. There is no evidence supporting a mandatory 3-year wait.",
+          incorrectFb: "<strong>Not quite.</strong> The evidence is nuanced: IPI <6 months carries the highest risk (Rec 9 — Strong, Moderate: preterm birth OR 1.55, neonatal death OR 1.60). IPI 12–24 months is optimal (Rec 10 — Conditional, Low). IPI >60 months also carries some increased risk (Rec 11). At 10 months postpartum, Priya is past the highest-risk period. Waiting 2–4 more months would bring her into the optimal 12–24 month range."
+        },
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 9 (Strong, Moderate): IPI <6 months — highest risk. Rec 10 (Conditional, Low): IPI 12–24 months — optimal. Rec 11 (Conditional, Low): IPI >60 months — increased risk.", grade: "Strong" }
+        ]
+      },
+      // STEP 8: Mental Health Screening
+      {
+        title: "Mental Health Screening in Pre-Pregnancy Care",
+        html: `
+          <p>Priya has a history of postnatal depression following her first birth. This makes mental health screening in the pre-pregnancy period especially important.</p>
+
+          <h4>Depression screening</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 12 (Strong, Moderate evidence):</strong> Women seeking to become pregnant should be offered screening for depression and appropriate treatment if indicated. There is evidence that universal screening in the general population followed by treatment reduces depression and increases remission.
+          </div>
+          <p>This is one of the strongest recommendations in the guideline — universal depression screening as part of pre-pregnancy care, not just for women with known history.</p>
+
+          <h4>Anxiety screening</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG PP15:</strong> Registered health professionals should consider offering screening for anxiety, and treatment if indicated, to women seeking to become pregnant.
+          </div>
+
+          <h4>Screening tools</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG PP16:</strong> Short questionnaires (2 questions) may be favoured:<br>
+            • <strong>PHQ-2</strong> or <strong>Whooley questions</strong> for depression<br>
+            • <strong>GAD-2</strong> for anxiety<br>
+            Consider self-administration prior to consultation to save time and improve honesty.
+          </div>
+
+          <div class="key-point">
+            <strong>For Priya:</strong> Given her history of postnatal depression, screening is essential. The PHQ-2 can be administered quickly. If she screens positive, full assessment and potential re-referral to psychological services or consideration of pharmacological management (with attention to pregnancy safety) is warranted. Her previous depression also places her at higher risk for recurrent postnatal depression — this should be part of pregnancy planning.
+          </div>
+
+          <div class="reflection-prompt">
+            <strong>Pause &amp; Reflect:</strong> How routinely do you screen for depression and anxiety in pre-pregnancy consultations? Do you have a preferred screening tool? Consider incorporating PHQ-2 or Whooley questions as a standard part of your pre-pregnancy assessment.
+          </div>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 12 (Strong, Moderate): Universal depression screening. Evidence that screening + treatment reduces depression and increases remission.", grade: "Strong" },
+          { source: "RANZCOG C-Obs 3a", text: "PP15: Consider anxiety screening. PP16: Short tools — PHQ-2/Whooley for depression, GAD-2 for anxiety. Consider self-administration.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 9: IPV Screening
+      {
+        title: "Intimate Partner & Family Violence Screening",
+        html: `
+          <p>Screening for intimate partner violence (IPV) is an often-overlooked component of pre-pregnancy care. RANZCOG includes it explicitly in the pre-pregnancy checklist.</p>
+
+          <h4>The recommendation</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG Recommendation 18 (Conditional, Low evidence):</strong> Screening during pre-pregnancy consultations could be offered, as it is an opportunity to identify intimate partner violence and provide appropriate support.
+          </div>
+
+          <h4>How to screen safely</h4>
+          <div class="evidence-box">
+            <strong>PP17:</strong> When IPV screening is undertaken, it must be facilitated in a <strong>safe, culturally appropriate and private environment</strong>. Women should be aware of potential legal implications (such as child protection/mandatory disclosure obligations where the woman already has children) of disclosing IPV.
+          </div>
+          <p>This means:</p>
+          <ul>
+            <li>Screening must occur when the woman is alone (not with partner present)</li>
+            <li>The environment must feel safe and confidential</li>
+            <li>Cultural sensitivity is essential — consider language, beliefs, and community context</li>
+            <li>Women must be informed about mandatory reporting obligations before disclosing, particularly if they already have children</li>
+          </ul>
+
+          <h4>If current IPV is disclosed</h4>
+          <div class="evidence-box">
+            <strong>PP18:</strong> Women who disclose current IPV should, with their consent and taking care to maximise privacy and safety, be immediately referred to appropriate support services — counselling, women's shelters, community social workers, helplines.
+          </div>
+
+          <h4>If past (but not current) IPV is disclosed</h4>
+          <div class="evidence-box">
+            <strong>PP19:</strong> Women identified as having a past but no current history of IPV should be offered referral to appropriate support services, such as trauma-informed counselling.
+          </div>
+
+          <div class="key-point">
+            <strong>Practical point:</strong> IPV screening in pre-pregnancy consultations is an opportunity to intervene before the vulnerability of pregnancy. Pregnancy is a known risk factor for escalation of violence. Early identification and support can significantly improve outcomes for both mother and child.
+          </div>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 18 (Conditional, Low): Pre-pregnancy IPV screening could be offered as an opportunity to identify and support.", grade: "Conditional" },
+          { source: "RANZCOG C-Obs 3a", text: "PP17: Safe, culturally appropriate, private environment. Aware of legal implications. PP18: Current IPV → immediate referral. PP19: Past IPV → offer support.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 10: MCQ — Mental Health & IPV
+      {
+        title: "Assessment — Mental Health & IPV Screening",
+        html: `
+          <p class="step-counter" id="mcqLabel10b"></p>
+          <h4>Which of the following statements about pre-pregnancy mental health and IPV screening is correct?</h4>
+          <div class="mcq-options" id="mcq10b"></div>
+          <div class="mcq-feedback" id="fb10b"></div>
+        `,
+        mcq: {
+          id: "mcq10b",
+          fbId: "fb10b",
+          correct: 0,
+          options: [
+            "Universal depression screening is a Strong recommendation (Moderate evidence) — it should be offered to all women seeking to become pregnant, not just those with a history of depression",
+            "Depression screening should only be offered to women with a known history of depression or anxiety",
+            "IPV screening requires a comprehensive questionnaire that takes at least 20 minutes to administer properly",
+            "If a woman discloses IPV, the clinician should immediately inform her partner to facilitate a safe conversation"
+          ],
+          correctFb: "<strong>Correct.</strong> RANZCOG Recommendation 12 (Strong, Moderate evidence) specifies <em>universal</em> depression screening — for all women seeking to become pregnant, not just those with known history. Evidence shows that universal screening followed by treatment reduces depression and increases remission. Short tools like the PHQ-2 or Whooley questions (2 questions) can be self-administered before consultation (PP16). If IPV is disclosed, referral should be made with the woman's consent while maximising safety — never involving the partner.",
+          incorrectFb: "<strong>Not quite.</strong> Depression screening is recommended universally — for all women planning pregnancy, not just those with known history (Rec 12, Strong, Moderate). Screening tools like PHQ-2 and Whooley questions are brief (2 questions), not lengthy. If IPV is disclosed, referral is made with the woman's consent, maximising privacy and safety (PP18) — the partner should never be informed or involved in the disclosure process."
+        },
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Rec 12 (Strong, Moderate): Universal depression screening. PP16: PHQ-2, Whooley (2 questions). PP18: Current IPV disclosure → referral with consent, maximising safety.", grade: "Strong" }
+        ]
+      },
+      // STEP 11: Substance use, Vaccinations, Medications, Oral Health
+      {
+        title: "Substance Use, Vaccinations, Medications & Oral Health",
+        html: `
+          <p>Several other domains in the pre-pregnancy checklist deserve attention for Priya.</p>
+
+          <h4>Substance use</h4>
+          <p>RANZCOG signposts to C-Obs 53 (Substance Use in Pregnancy) for detailed guidance. The key recommendation relevant to pre-pregnancy care:</p>
+          <div class="evidence-box">
+            <strong>C-Obs 53, Recommendation 1 (Conditional, Low):</strong> As there is no known safe level of alcohol consumption in pregnancy, women should be advised not to consume alcohol during any stage of pregnancy, including around the time of conception.
+          </div>
+          <p>The Planning for Pregnancy resource is direct: "For women who are pregnant or planning a pregnancy, not drinking alcohol at all is the safest option." Cigarette smoking, vaping, and illicit drug use should also be addressed. Smoking affects egg quality, sperm quality, and placental function, with long-term consequences for the child.</p>
+
+          <h4>Vaccinations</h4>
+          <p>Clinicians should ensure all women seeking to become pregnant are up to date with recommended vaccinations. Immunity status should be checked via serological testing if unknown. Key vaccinations include:</p>
+          <ul>
+            <li><strong>Rubella</strong> — serious congenital harm if infected during pregnancy. Vaccinate at least 4 weeks prior to conception. Do not vaccinate if pregnant or likely to become pregnant within 4 weeks.</li>
+            <li><strong>Varicella (chickenpox)</strong> — similar risks and vaccination timing requirements.</li>
+            <li><strong>Pertussis, influenza</strong> — as per current immunisation schedule.</li>
+          </ul>
+          <p>RANZCOG notes: while some live-attenuated vaccines list pregnancy within a month as a contraindication, women can be reassured there is no evidence of adverse fetal outcomes from vaccination that occurred during pregnancy.</p>
+
+          <h4>Medication review</h4>
+          <p>All current medications — including over-the-counter preparations — should be reviewed for safety in pregnancy. Some women may need to change medications before trying to conceive. Key points:</p>
+          <ul>
+            <li>Avoid stopping long-term medications abruptly without medical advice</li>
+            <li>Consider teratogenicity profiles (e.g. retinoids, warfarin, some anticonvulsants, ACE inhibitors)</li>
+            <li>RANZCOG signposts to MotherSafe and Therapeutic Goods Administration resources</li>
+          </ul>
+          <p>For Priya (no current medications): this is a brief discussion, but worth confirming including supplements, herbal remedies, and OTC products.</p>
+
+          <h4>Oral health</h4>
+          <div class="evidence-box">
+            <strong>RANZCOG PP20:</strong> It is suggested that women planning to conceive have an oral health check-up as part of routine pre-pregnancy care.
+          </div>
+          <p>Periodontal disease has been associated with adverse pregnancy outcomes in some studies. A dental check-up is a simple, often-overlooked recommendation.</p>
+
+          <h4>Prevention of perinatal infections</h4>
+          <p>Women planning pregnancy should be informed about screening and prevention of perinatal infections including CMV, STIs (syphilis), and blood-borne viruses (Hepatitis B, C, HIV).</p>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 53", text: "Recommendation 1: No known safe level of alcohol in pregnancy including around conception.", grade: "Conditional" },
+          { source: "RANZCOG C-Obs 3a", text: "Vaccinations: check immunity, serological testing if unknown. Rubella and varicella — vaccinate ≥4 weeks before conception.", grade: "Signpost" },
+          { source: "RANZCOG C-Obs 3a", text: "PP20: Oral health check-up as part of routine pre-pregnancy care.", grade: "Practice Point" },
+          { source: "RANZCOG Planning for Pregnancy", text: "Review all medications including OTC. Avoid stopping long-term meds abruptly. Check environmental toxin exposure. Ensure vaccinations up to date.", grade: "Patient Resource" }
+        ]
+      },
+      // STEP 12: MCQ — Comprehensive
+      {
+        title: "Assessment — Comprehensive Pre-Pregnancy Care",
+        html: `
+          <p class="step-counter" id="mcqLabel12b"></p>
+          <h4>Priya mentions she had gestational diabetes in her first pregnancy and her BMI is 32. Beyond folic acid supplementation, which of the following additional pre-pregnancy investigations or actions is MOST important to offer her?</h4>
+          <div class="mcq-options" id="mcq12b"></div>
+          <div class="mcq-feedback" id="fb12b"></div>
+        `,
+        mcq: {
+          id: "mcq12b",
+          fbId: "fb12b",
+          correct: 1,
+          options: [
+            "Routine Vitamin D level measurement to assess for deficiency",
+            "HbA1c screening for type 2 diabetes, given her history of GDM and BMI >30",
+            "Urinary ovulation detection kits immediately, as she should start trying as soon as possible",
+            "Comprehensive dietary analysis with referral to a naturopath"
+          ],
+          correctFb: "<strong>Correct.</strong> RANZCOG PP2 recommends offering a screening test for type 2 diabetes (HbA1c) to women with risk factors for diabetes prior to becoming pregnant. Priya has two major risk factors: previous GDM and BMI >30. This is crucial because undiagnosed type 2 diabetes in early pregnancy carries significant risks for the fetus — good glycaemic control prior to and during the first trimester is essential. Routine Vitamin D testing is not recommended (PP12). While ovulation detection is useful, addressing her metabolic health first is the priority.",
+          incorrectFb: "<strong>Not quite.</strong> RANZCOG PP2 recommends HbA1c screening for women with diabetes risk factors before pregnancy. With previous GDM and BMI >30, Priya is at significant risk of having developed type 2 diabetes. Undiagnosed diabetes in early pregnancy carries major fetal risks. Routine Vitamin D testing is not recommended (PP12). While ovulation detection can help, metabolic health assessment takes priority."
+        },
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "PP2: Offer HbA1c screening for type 2 diabetes in women with risk factors (including previous GDM, BMI >30) prior to pregnancy.", grade: "Practice Point" },
+          { source: "RANZCOG C-Obs 3a", text: "PP12: Routine Vitamin D measurement not recommended. Rec 8 (Conditional, Low): Limited evidence for Vitamin D supplementation benefit.", grade: "Practice Point" }
+        ]
+      },
+      // STEP 13: Environmental & Male Partner
+      {
+        title: "Environmental Factors & Male Partner Health",
+        html: `
+          <h4>Environmental exposures</h4>
+          <p>The RANZCOG Planning for Pregnancy resource recommends that couples check and reduce the risk of exposure to toxins, infections, or radiation — in the household, workplace, and during recreational activities.</p>
+          <p>Specific concerns include:</p>
+          <ul>
+            <li>Travel to areas with infection risk (e.g. Zika virus) — specific medical advice may be required, and pregnancy should be avoided until safe to conceive</li>
+            <li>Occupational exposures to chemicals, radiation, or biological hazards</li>
+            <li>Household exposures (pesticides, cleaning chemicals, lead paint)</li>
+          </ul>
+
+          <h4>Male partner health</h4>
+          <p>The Planning for Pregnancy resource emphasises that the future father's health matters too:</p>
+          <div class="evidence-box">
+            <strong>RANZCOG Planning for Pregnancy:</strong> Obesity, cigarette smoking, excessive alcohol use, some medications, illicit drug use, and a poor diet all may affect a man's fertility and may also affect pregnancy outcomes. A healthy lifestyle with regular exercise and a healthy diet is just as important for men.
+          </div>
+          <p>This extends the conversation beyond the woman to a whole-couple approach. For Priya, exploring her partner's health status, medications, and lifestyle factors is a valuable addition to the consultation.</p>
+
+          <h4>Reproductive carrier screening</h4>
+          <p>Pre-pregnancy planning is an ideal time to discuss options for screening for genetic conditions. RANZCOG C-Obs 63 provides guidance on carrier screening, including for those with family history and the three-gene carrier test. This conversation should be offered to all women and couples, particularly those from backgrounds with higher prevalence of specific genetic conditions (e.g. Cystic Fibrosis, Thalassemia, Spinal Muscular Atrophy).</p>
+
+          <div class="reflection-prompt">
+            <strong>Pause &amp; Reflect:</strong> How often do you discuss carrier screening in pre-pregnancy consultations? Do you offer the three-gene carrier test routinely? Consider how you might integrate this into your standard approach.
+          </div>
+        `,
+        refs: [
+          { source: "RANZCOG Planning for Pregnancy", text: "Check environmental exposures: toxins, infections, radiation. Travel advice (e.g. Zika). Male partner health: obesity, smoking, alcohol, medications all affect fertility and outcomes.", grade: "Patient Resource" },
+          { source: "RANZCOG C-Obs 63", text: "Reproductive carrier screening — pre-pregnancy is ideal time. Consider family history, ethnic background, three-gene carrier test.", grade: "Signpost" }
+        ]
+      },
+      // STEP 14: Summary
+      {
+        title: "Summary — Priya's Pre-Pregnancy Plan",
+        html: `
+          <h4>Putting it all together</h4>
+          <p>Here is a comprehensive pre-pregnancy management plan for Priya, mapping to the RANZCOG checklist domains:</p>
+
+          <div class="evidence-box">
+            <strong>1. Interpregnancy interval</strong><br>
+            Currently 10 months postpartum. Past the highest-risk zone (&lt;6 months, Rec 9). Ideally wait 2–4 more months to enter the 12–24 month optimal range (Rec 10). Weigh against individual factors and patient preference.
+          </div>
+
+          <div class="evidence-box">
+            <strong>2. Supplements — start now</strong><br>
+            Folic acid 5 mg daily (PP9 — high-risk: BMI >30 + GDM history). Iodine 150 mcg/day (PP11). Check ferritin and Hb (PP13) — especially important given breastfeeding and surgical delivery.
+          </div>
+
+          <div class="evidence-box">
+            <strong>3. BMI &amp; metabolic health</strong><br>
+            BMI 32 — non-stigmatising weight management counselling (Rec 4, PP5). HbA1c screening for type 2 diabetes (PP2 — previous GDM + BMI >30). Dietitian referral. Moderate exercise.
+          </div>
+
+          <div class="evidence-box">
+            <strong>4. Mental health</strong><br>
+            Screen for depression (Rec 12 — universal, Strong) and anxiety (PP15) using PHQ-2 and GAD-2. Given postnatal depression history: plan for increased monitoring in next pregnancy, consider psychological support, discuss medication safety if needed.
+          </div>
+
+          <div class="evidence-box">
+            <strong>5. IPV screening</strong><br>
+            Offer in safe, private environment (Rec 18, PP17). Ensure aware of mandatory reporting obligations.
+          </div>
+
+          <div class="evidence-box">
+            <strong>6. Vaccinations &amp; infections</strong><br>
+            Check rubella and varicella immunity. Ensure up to date with pertussis and influenza. Screen for relevant infections.
+          </div>
+
+          <div class="evidence-box">
+            <strong>7. Medication &amp; substance review</strong><br>
+            Confirm no medications (including OTC/herbal). Discuss alcohol (no known safe level around conception — C-Obs 53). Assess smoking status and partner's habits.
+          </div>
+
+          <div class="evidence-box">
+            <strong>8. Other</strong><br>
+            Oral health check-up (PP20). Discuss carrier screening (C-Obs 63). Assess partner health. Consider environmental exposures. Review previous pregnancy outcomes and plan for GDM surveillance.
+          </div>
+
+          <div class="reflection-prompt">
+            <strong>Final Reflection:</strong> Consider a woman in your practice who might benefit from this comprehensive approach. How could you structure your pre-pregnancy consultations to ensure these domains are covered — perhaps over two appointments? What systems or templates might help?
+          </div>
+
+          <div class="key-point">
+            <strong>Module complete.</strong> You can now generate a Statement of Completion from the Certificate page. Key references: RANZCOG Pre-Pregnancy Counselling C-Obs 3a (Version 13.1, November 2024) and RANZCOG Planning for Pregnancy patient resource.
+          </div>
+        `,
+        refs: [
+          { source: "RANZCOG C-Obs 3a", text: "Comprehensive pre-pregnancy checklist: 15+ domains including medical history, supplements, BMI, IPI, mental health, IPV, vaccinations, medications, carrier screening, oral health.", grade: "Checklist" },
+          { source: "RANZCOG C-Obs 3a", text: "Key Strong recommendations: Rec 1 (ovulation detection), Rec 4 (BMI >30 weight reduction), Rec 7 (folic acid), Rec 9 (IPI <6 months), Rec 12 (depression screening).", grade: "Summary" }
+        ]
+      }
+    ]
+  }
+};
+
+// ──────────── APP STATE ────────────
+let currentModule = null;
+let currentStep = 0;
+let learnerName = "";
+let pendingModId = null;
+
+// ──────────── NAVIGATION ────────────
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+  document.querySelector('.nav-links').classList.remove('open');
+  window.scrollTo(0, 0);
+}
+
+// ──────────── MODULE GRID ────────────
+function renderModuleGrid() {
+  const grid = document.getElementById('moduleGrid');
+  grid.innerHTML = '';
+  for (const [id, mod] of Object.entries(MODULES)) {
+    grid.innerHTML += `
+      <div class="mod-card" onclick="startModule('${id}')">
+        <div class="mod-num">${mod.num}</div>
+        <h3>${mod.title}</h3>
+        <p>${mod.desc}</p>
+        <div class="mod-meta">
+          <span>⏱ ${mod.hours} hrs EA</span>
+          <span>📋 ${mod.steps} steps</span>
+          <span>📚 ${mod.tags.join(', ')}</span>
+        </div>
+      </div>`;
+  }
+}
+
+// ──────────── START MODULE ────────────
+function startModule(modId) {
+  pendingModId = modId;
+  if (!learnerName) {
+    document.getElementById('nameModal').classList.add('show');
+    document.getElementById('learnerNameInput').focus();
+  } else {
+    launchModule(modId);
+  }
+}
+
+function confirmName() {
+  const name = document.getElementById('learnerNameInput').value.trim();
+  if (!name) return;
+  learnerName = name;
+  document.getElementById('nameModal').classList.remove('show');
+  if (pendingModId) launchModule(pendingModId);
+}
+
+function launchModule(modId) {
+  currentModule = MODULES[modId];
+  currentStep = 0;
+  document.getElementById('playerTitle').textContent = currentModule.title;
+  document.getElementById('playerSub').textContent = `${currentModule.num} · ${currentModule.hours} hours EA · ${currentModule.steps} steps`;
+  showPage('player');
+  renderStep();
+}
+
+// ──────────── RENDER STEP ────────────
+function renderStep() {
+  const step = currentModule.content[currentStep];
+  const total = currentModule.content.length;
+  const pct = ((currentStep + 1) / total * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  let html = `<div class="step-counter">Step ${currentStep + 1} of ${total}</div>`;
+  html += `<h3>${step.title}</h3>`;
+  html += step.html;
+
+  // Navigation
+  html += `<div class="step-nav">`;
+  if (currentStep > 0) {
+    html += `<button class="btn btn-secondary" onclick="prevStep()">← Previous</button>`;
+  } else {
+    html += `<span></span>`;
+  }
+  if (currentStep < total - 1) {
+    html += `<button class="btn btn-primary" onclick="nextStep()">Next →</button>`;
+  } else {
+    html += `<button class="btn btn-primary" onclick="showPage('certificate')">Generate Certificate →</button>`;
+  }
+  html += `</div>`;
+
+  document.getElementById('stepContent').innerHTML = html;
+
+  // References
+  let refHtml = '';
+  if (step.refs) {
+    step.refs.forEach(r => {
+      refHtml += `<div class="ref-card">
+        <div class="ref-source">${r.source}</div>
+        <p>${r.text}</p>
+        ${r.grade ? `<span class="ref-grade ${r.grade === 'Strong' ? 'grade-strong' : 'grade-conditional'}">${r.grade}</span>` : ''}
+      </div>`;
+    });
+  }
+  document.getElementById('refCards').innerHTML = refHtml;
+
+  // MCQ setup
+  if (step.mcq) {
+    const m = step.mcq;
+    const container = document.getElementById(m.id);
+    if (container) {
+      container.innerHTML = '';
+      m.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'mcq-option';
+        btn.textContent = opt;
+        btn.onclick = () => handleMCQ(m, i);
+        container.appendChild(btn);
+      });
+    }
+  }
+
+  window.scrollTo(0, 0);
+}
+
+function handleMCQ(m, selected) {
+  const container = document.getElementById(m.id);
+  const buttons = container.querySelectorAll('.mcq-option');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === m.correct) btn.classList.add('correct');
+    if (i === selected && i !== m.correct) btn.classList.add('incorrect');
+  });
+  const fb = document.getElementById(m.fbId);
+  fb.innerHTML = selected === m.correct ? m.correctFb : m.incorrectFb;
+  fb.className = 'mcq-feedback show ' + (selected === m.correct ? 'correct-fb' : 'incorrect-fb');
+}
+
+function nextStep() {
+  if (currentStep < currentModule.content.length - 1) {
+    currentStep++;
+    renderStep();
+  }
+}
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    renderStep();
+  }
+}
+
+// ──────────── CERTIFICATE ────────────
+function generateCert() {
+  const name = document.getElementById('certName').value.trim();
+  const modSel = document.getElementById('certModule').value;
+  const date = document.getElementById('certDate').value;
+  if (!name || !modSel || !date) { alert('Please complete all fields.'); return; }
+
+  const mod = MODULES[modSel];
+  const refNum = 'FT-CPD-' + modSel.toUpperCase() + '-' + date.replace(/-/g, '') + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+
+  document.getElementById('certDisplayName').textContent = name;
+  document.getElementById('certDisplayModule').innerHTML = `<strong>Module:</strong> ${mod.title}`;
+  document.getElementById('certDisplayDate').innerHTML = `<strong>Date:</strong> ${new Date(date).toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+  document.getElementById('certDisplayHours').innerHTML = `<strong>CPD Hours:</strong> ${mod.hours} hours`;
+  document.getElementById('certDisplayRef').innerHTML = `Reference: ${refNum}`;
+  document.getElementById('certPreview').classList.add('show');
+}
+
+// ──────────── INIT ────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+document.getElementById('learnerNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmName();
+});
+
+renderModuleGrid();
+</script>
+</body>
+</html>
