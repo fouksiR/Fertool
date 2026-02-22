@@ -9,11 +9,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -28,6 +24,9 @@
             background: rgba(248, 247, 245, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(44, 44, 44, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
@@ -46,18 +45,12 @@
             display: flex;
             align-items: center;
             gap: 2px;
+            text-decoration: none;
         }
 
-        .logo-icon {
-            width: 16px;
-            height: 24px;
-            margin: 0 -2px;
-        }
+        .logo-icon { width: 16px; height: 24px; margin: 0 -2px; }
 
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
+        nav { display: flex; gap: 2rem; }
 
         nav a {
             color: #4a6741;
@@ -67,9 +60,7 @@
             transition: opacity 0.2s;
         }
 
-        nav a:hover {
-            opacity: 0.7;
-        }
+        nav a:hover { opacity: 0.7; }
 
         .container {
             max-width: 900px;
@@ -90,16 +81,13 @@
             margin-bottom: 1rem;
         }
 
-        .hero p {
-            font-size: 1rem;
-            color: #666;
-        }
+        .hero p { font-size: 1rem; color: #666; }
 
         .search-card {
             background: #fff;
             border-radius: 16px;
             padding: 3rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             margin-bottom: 3rem;
         }
 
@@ -139,14 +127,8 @@
             background: #f8f7f5;
         }
 
-        .search-input:focus {
-            outline: none;
-            border-color: #4a6741;
-        }
-
-        .search-input::placeholder {
-            color: #999;
-        }
+        .search-input:focus { outline: none; border-color: #4a6741; }
+        .search-input::placeholder { color: #999; }
 
         .search-button {
             position: absolute;
@@ -164,9 +146,7 @@
             transition: opacity 0.2s;
         }
 
-        .search-button:hover {
-            opacity: 0.9;
-        }
+        .search-button:hover { opacity: 0.9; }
 
         .quick-searches {
             display: flex;
@@ -192,12 +172,6 @@
             color: #2c2c2c;
         }
 
-        .search-meta {
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 1rem;
-        }
-
         .results-container {
             display: none;
             margin-top: 2rem;
@@ -205,9 +179,7 @@
             border-top: 1px solid #e8e8e8;
         }
 
-        .results-container.active {
-            display: block;
-        }
+        .results-container.active { display: block; }
 
         .result-label {
             font-size: 0.75rem;
@@ -218,12 +190,7 @@
             margin-bottom: 1rem;
         }
 
-        .result-content {
-            font-size: 1rem;
-            color: #2c2c2c;
-            line-height: 1.85;
-        }
-
+        /* ── Layer Cards ── */
         .response-section {
             border-radius: 12px;
             padding: 1.5rem 1.75rem;
@@ -245,11 +212,6 @@
             border-left: 4px solid #c8a45e;
         }
 
-        .response-section.general {
-            background: #f8f7f5;
-            border-left: 4px solid #999;
-        }
-
         .section-header {
             display: inline-flex;
             align-items: center;
@@ -264,33 +226,11 @@
             color: #fff;
         }
 
-        .section-header.guideline {
-            background: #4a6741;
-        }
+        .section-header.guideline { background: #4a6741; }
+        .section-header.specialist { background: #6b5b95; }
+        .section-header.clinical   { background: #c8a45e; }
 
-        .section-header.specialist {
-            background: #6b5b95;
-        }
-
-        .section-header.clinical {
-            background: #c8a45e;
-        }
-
-        .section-header.general {
-            background: #999;
-        }
-
-        .section-header-icon {
-            font-size: 0.85rem;
-        }
-
-        .response-section h4 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #2c2c2c;
-            margin-bottom: 0.75rem;
-        }
+        .section-header-icon { font-size: 0.85rem; }
 
         .response-section p,
         .response-section li {
@@ -305,15 +245,95 @@
             margin-bottom: 0.75rem;
         }
 
-        .response-section li {
+        .response-section li { margin-bottom: 0.35rem; }
+        .response-section strong { color: #1a1a1a; font-weight: 600; }
+
+        /* ── Calculator Result Card ── */
+        .calc-card {
+            background: rgba(0,0,0,0.04);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .calc-card-title {
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #555;
             margin-bottom: 0.35rem;
         }
 
-        .response-section strong {
-            color: #1a1a1a;
-            font-weight: 600;
+        .calc-row { margin-bottom: 0.2rem; }
+        .calc-key { color: #777; }
+        .calc-val { font-weight: 600; color: #1a1a1a; }
+
+        /* ── Referral Badge ── */
+        .referral-badge {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
         }
 
+        .referral-badge.urgent  { background: rgba(220,53,69,0.1);  border-left: 3px solid #dc3545; }
+        .referral-badge.standard { background: rgba(255,193,7,0.12); border-left: 3px solid #ffc107; }
+        .referral-badge.not_needed { background: rgba(74,103,65,0.1); border-left: 3px solid #4a6741; }
+
+        /* ── Safety Flags ── */
+        .safety-box {
+            background: rgba(220,53,69,0.07);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+        }
+
+        /* ── GP Script ── */
+        .gp-script {
+            background: rgba(74,103,65,0.07);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* ── Feedback Row ── */
+        .feedback-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .feedback-label { font-size: 0.8rem; color: #999; }
+
+        .feedback-btn {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .feedback-btn:hover { background: #e0e0e0; }
+        .feedback-btn.active-up   { background: #d4edda; }
+        .feedback-btn.active-down { background: #f8d7da; }
+
+        .meta-row {
+            text-align: right;
+            font-size: 0.72rem;
+            color: #bbb;
+            margin-top: 0.5rem;
+        }
+
+        /* ── Sources ── */
         .result-sources {
             margin-top: 1.5rem;
             padding-top: 1.5rem;
@@ -327,27 +347,13 @@
             margin-bottom: 0.75rem;
         }
 
-        .source {
-            font-size: 0.85rem;
-            color: #666;
-            padding: 0.5rem 0;
-        }
+        .source { font-size: 0.85rem; color: #666; padding: 0.5rem 0; }
 
-        .loading {
-            display: none;
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
-        .loading-text {
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 1rem;
-        }
+        /* ── Loading ── */
+        .loading { display: none; margin-top: 2rem; text-align: center; }
+        .loading.active { display: block; }
+        .loading-text { font-size: 0.9rem; color: #888; margin-bottom: 1rem; }
+        .loading-steps { font-size: 0.8rem; color: #bbb; margin-bottom: 1rem; min-height: 1.2rem; }
 
         .loading-spinner {
             width: 40px;
@@ -359,13 +365,10 @@
             margin: 0 auto;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .tools-section {
-            margin-top: 4rem;
-        }
+        /* ── Tool Cards ── */
+        .tools-section { margin-top: 4rem; }
 
         .tools-label {
             font-size: 0.75rem;
@@ -387,7 +390,7 @@
             background: #fff;
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             text-decoration: none;
             color: inherit;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -398,33 +401,23 @@
 
         .tool-card-video {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
             z-index: 0;
             opacity: 0.45;
-            filter: blur(0px);
         }
 
         .tool-card-content {
             position: relative;
             z-index: 1;
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255,255,255,0.82);
             padding: 1.25rem 1.5rem;
             border-radius: 12px;
         }
 
-        .tool-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .tool-card:hover .tool-card-video {
-            opacity: 0.55;
-            filter: blur(0px);
-        }
+        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+        .tool-card:hover .tool-card-video { opacity: 0.55; }
 
         .tool-badge {
             display: inline-block;
@@ -446,23 +439,15 @@
             margin-bottom: 0.75rem;
         }
 
-        .tool-card p {
-            font-size: 0.9rem;
-            color: #444;
-            margin-bottom: 1rem;
-        }
+        .tool-card p { font-size: 0.9rem; color: #444; margin-bottom: 1rem; }
+        .tool-meta { font-size: 0.8rem; color: #777; }
 
-        .tool-meta {
-            font-size: 0.8rem;
-            color: #777;
-        }
-
+        /* ── Footer ── */
         footer {
-            background: rgba(248, 247, 245, 0.95);
-            border-top: 1px solid rgba(44, 44, 44, 0.1);
+            background: rgba(248,247,245,0.95);
+            border-top: 1px solid rgba(44,44,44,0.1);
             padding: 3rem 5%;
             margin-top: 4rem;
-            text-align: left;
         }
 
         .footer-text {
@@ -473,47 +458,12 @@
             margin: 0 auto;
         }
 
-        .footer-text strong {
-            color: #2c2c2c;
-            font-weight: 600;
-            display: block;
-            margin-top: 0.5rem;
-        }
+        .footer-text strong { color: #2c2c2c; font-weight: 600; display: block; margin-top: 0.5rem; }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .search-card {
-                padding: 2rem 1.5rem;
-            }
-
-            .search-container {
-                margin-bottom: 1rem;
-            }
-
-            .search-button {
-                position: static;
-                transform: none;
-                width: 100%;
-                margin-top: 0.75rem;
-            }
-
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-
-            nav {
-                display: none;
-            }
-        }
-
-        /* WhatsApp Floating Widget */
+        /* ── WhatsApp ── */
         .whatsapp-widget {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 30px; right: 30px;
             z-index: 1000;
             display: none;
             align-items: center;
@@ -521,29 +471,20 @@
             animation: fadeInUp 0.5s ease-out;
         }
 
-        .whatsapp-widget.active {
-            display: flex;
-        }
+        .whatsapp-widget.active { display: flex; }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .whatsapp-button {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -552,20 +493,13 @@
             border: 3px solid #25D366;
         }
 
-        .whatsapp-button img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+        .whatsapp-button img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
         .whatsapp-button::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 20px;
-            height: 20px;
+            bottom: -2px; right: -2px;
+            width: 20px; height: 20px;
             background-color: #25D366;
             border-radius: 50%;
             border: 2px solid white;
@@ -575,20 +509,13 @@
             background-repeat: no-repeat;
         }
 
-        .whatsapp-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .whatsapp-button svg {
-            display: none;
-        }
+        .whatsapp-button:hover { transform: scale(1.1); }
 
         .whatsapp-tooltip {
-            background-color: #fff;
+            background: #fff;
             padding: 12px 20px;
             border-radius: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             font-size: 0.9rem;
             font-weight: 500;
             color: #2c2c2c;
@@ -599,350 +526,426 @@
             pointer-events: none;
         }
 
-        .whatsapp-widget:hover .whatsapp-tooltip {
-            opacity: 1;
-            transform: translateX(0);
-        }
+        .whatsapp-widget:hover .whatsapp-tooltip { opacity: 1; transform: translateX(0); }
 
         @media (max-width: 768px) {
-            .whatsapp-widget {
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .whatsapp-button {
-                width: 55px;
-                height: 55px;
-                border-width: 2px;
-            }
-
-            .whatsapp-button::after {
-                width: 18px;
-                height: 18px;
-                background-size: 10px 10px;
-            }
-
-            .whatsapp-tooltip {
-                display: none;
-            }
+            .hero h1 { font-size: 2rem; }
+            .search-card { padding: 2rem 1.5rem; }
+            .search-button { position: static; transform: none; width: 100%; margin-top: 0.75rem; }
+            .tools-grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .whatsapp-widget { bottom: 20px; right: 20px; }
+            .whatsapp-button { width: 55px; height: 55px; border-width: 2px; }
+            .whatsapp-tooltip { display: none; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <span>fert</span>
-                <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="8" cy="8" rx="5" ry="7" fill="#2c2c2c"/>
-                    <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" 
-                          stroke="#2c2c2c" 
-                          stroke-width="2.5" 
-                          fill="none" 
-                          stroke-linecap="round"/>
-                </svg>
-                <span>le</span>
-            </a>
-            <nav>
-                <a href="index.html" class="active">Search</a>
-                <a href="egg-freezing-calculator.html">Egg Freezing</a>
-                <a href="endometriosis-landing.html">Endometriosis</a>
-                <a href="fertility-assessment.html">Assessment</a>
-                <a href="amh-guide.html">AMH Guide</a>
-                <a href="fertool-cpd-learning-hub.html">CPD Hub</a>
-            </nav>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="hero">
-            <h1>Clinical Support for Fertility Care</h1>
-            <p>Evidence-based guidance</p>
-        </div>
-
-        <div class="search-card" id="search">
-            <span class="search-label">Guidelines</span>
-            <h2 class="search-title">How can I help?</h2>
-            
-            <div class="search-container">
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="searchInput"
-                    placeholder="Ask about AMH, referral criteria, initial investigations..."
-                    onkeypress="handleEnter(event)"
-                >
-                <button class="search-button" onclick="performSearch()">Search</button>
-            </div>
-
-            <div class="quick-searches">
-                <span class="quick-search" onclick="quickSearch('AMH interpretation')">AMH interpretation</span>
-                <span class="quick-search" onclick="quickSearch('When to refer')">Referral criteria</span>
-                <span class="quick-search" onclick="quickSearch('Initial workup')">Initial workup</span>
-            </div>
-
-            <div class="loading" id="loading">
-                <div class="loading-text">Searching guidelines...</div>
-                <div class="loading-spinner"></div>
-            </div>
-
-            <div class="results-container" id="results">
-                <div class="result-label">Response</div>
-                <div class="result-content" id="resultContent"></div>
-                <div class="result-sources" id="resultSources"></div>
-            </div>
-        </div>
-
-        <div class="tools-section">
-            <div class="tools-label">Additional Tools</div>
-            <div class="tools-grid">
-                <a href="amh-guide.html" class="tool-card">
-                    <video class="tool-card-video" autoplay loop muted playsinline>
-                        <source src="AMH.mp4" type="video/mp4">
-                    </video>
-                    <div class="tool-card-content">
-                        <span class="tool-badge">Guide</span>
-                        <h3>Understanding AMH</h3>
-                        <p>Interactive guide to ovarian reserve testing</p>
-                        <div class="tool-meta">Age-specific normograms</div>
-                    </div>
-                </a>
-
-                <a href="egg-freezing-calculator.html" class="tool-card">
-                    <video class="tool-card-video" autoplay loop muted playsinline>
-                        <source src="Egg_freezing_outcomes.mp4" type="video/mp4">
-                    </video>
-                    <div class="tool-card-content">
-                        <span class="tool-badge">Calculator</span>
-                        <h3>Egg Freezing Outcomes</h3>
-                        <p>Success rates by age and egg number</p>
-                        <div class="tool-meta">2,891 patients</div>
-                    </div>
-                </a>
-
-                <a href="endometriosis-landing.html" class="tool-card">
-                    <video class="tool-card-video" autoplay loop muted playsinline>
-                        <source src="Endometriosis.mp4" type="video/mp4">
-                    </video>
-                    <div class="tool-card-content">
-                        <span class="tool-badge">Interactive</span>
-                        <h3>Endometriosis & Fertility</h3>
-                        <p>How endometriosis affects reproduction</p>
-                        <div class="tool-meta">La Marca et al. 2025</div>
-                    </div>
-                </a>
-
-                <a href="fertility-assessment.html" class="tool-card">
-                    <video class="tool-card-video" autoplay loop muted playsinline>
-                        <source src="When_to_seek_help.mp4" type="video/mp4">
-                    </video>
-                    <div class="tool-card-content">
-                        <span class="tool-badge">Assessment</span>
-                        <h3>When to Seek Help</h3>
-                        <p>Timing for fertility evaluation</p>
-                        <div class="tool-meta">ASRM guidelines</div>
-                    </div>
-                </a>
-
-                <a href="fertool-cpd-learning-hub.html" class="tool-card">
-                    <video class="tool-card-video" autoplay loop muted playsinline>
-                        <source src="cpd-hero.mp4" type="video/mp4">
-                    </video>
-                    <div class="tool-card-content">
-                        <span class="tool-badge" style="background: linear-gradient(135deg, #4a6741, #6b8f5e);">CPD Education</span>
-                        <h3>CPD Learning Hub</h3>
-                        <p>Accredited fertility & pre-pregnancy modules for GPs</p>
-                        <div class="tool-meta">ASRM 2022 · RANZCOG 2024</div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-text">
-            <strong>Clinical Decision Support Tool</strong><br>
-            This platform provides evidence-based guidance derived from published fertility guidelines (ASRM, RANZCOG, ESHRE). All information requires independent verification and clinical judgment. This tool is not a substitute for specialist consultation or comprehensive patient assessment.
-            
-            <br><br>
-            
-            <strong>Medical Disclaimer</strong><br>
-            The content on this website is for informational and educational purposes only and does not constitute medical advice. Individual patient care decisions should be made in consultation with qualified healthcare professionals based on comprehensive clinical assessment. Guidelines are subject to updates and interpretation.
-            
-            <br><br>
-            
-            <strong>Copyright & Intellectual Property</strong><br>
-            © 2025 Fertool. All rights reserved. Content derived from publicly available medical guidelines and peer-reviewed literature. Original calculators, visualizations, and educational materials are proprietary. Unauthorized reproduction or commercial use is prohibited.
-            
-            <br><br>
-            
-            <strong>Data & Privacy</strong><br>
-            This tool does not collect, store, or transmit patient health information. Search queries are processed to provide guideline-based responses but are not linked to identifiable information. For questions regarding data handling, please contact <a href="/cdn-cgi/l/email-protection#177e797178577172656378787b3974787a397662" style="color: #4a6741; text-decoration: underline;"><span class="__cf_email__" data-cfemail="254c4b434a65434057514a4a490b464a480b4450">[email&#160;protected]</span></a>.
-            
-            <br><br>
-            
-            <strong>Professional Use Only</strong><br>
-            This resource is intended for use by qualified healthcare professionals. The information provided assumes appropriate medical training and clinical context.
-        </div>
-    </footer>
-
-    <!-- WhatsApp Floating Widget -->
-    <div class="whatsapp-widget" id="whatsappWidget">
-        <div class="whatsapp-tooltip">Chat with Yuval</div>
-        <a href="https://wa.me/61493835221?text=Hi%20Yuval%2C%20I'd%20like%20to%20discuss%20a%20fertility%20case..." 
-           target="_blank" 
-           class="whatsapp-button"
-           aria-label="Chat on WhatsApp">
-            <img src="yuval-photo.jpg" alt="Yuval">
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">
+            <span>fert</span>
+            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#2c2c2c"/>
+                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40"
+                      stroke="#2c2c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>le</span>
         </a>
+        <nav>
+            <a href="index.html">Search</a>
+            <a href="egg-freezing-calculator.html">Egg Freezing</a>
+            <a href="endometriosis-landing.html">Endometriosis</a>
+            <a href="fertility-assessment.html">Assessment</a>
+            <a href="amh-guide.html">AMH Guide</a>
+            <a href="fertool-cpd-learning-hub.html">CPD Hub</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Clinical Support for Fertility Care</h1>
+        <p>Evidence-based guidance</p>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        // ═══════════════════════════════════════════════
-        // YOUR CLOUD RUN BACKEND URL
-        // ═══════════════════════════════════════════════
-        const API_URL = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
+    <div class="search-card" id="search">
+        <span class="search-label">Guidelines</span>
+        <h2 class="search-title">How can I help?</h2>
 
-        function handleEnter(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput"
+                placeholder="Ask about AMH, referral criteria, initial investigations..."
+                onkeypress="handleEnter(event)">
+            <button class="search-button" onclick="performSearch()">Search</button>
+        </div>
+
+        <div class="quick-searches">
+            <span class="quick-search" onclick="quickSearch('AMH interpretation')">AMH interpretation</span>
+            <span class="quick-search" onclick="quickSearch('When to refer')">Referral criteria</span>
+            <span class="quick-search" onclick="quickSearch('Initial workup')">Initial workup</span>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-text">Searching guidelines...</div>
+            <div class="loading-steps" id="loadingSteps"></div>
+            <div class="loading-spinner"></div>
+        </div>
+
+        <div class="results-container" id="results">
+            <div class="result-label">Response</div>
+            <div id="resultContent"></div>
+            <div class="result-sources" id="resultSources"></div>
+        </div>
+    </div>
+
+    <div class="tools-section">
+        <div class="tools-label">Additional Tools</div>
+        <div class="tools-grid">
+
+            <a href="amh-guide.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline>
+                    <source src="AMH.mp4" type="video/mp4">
+                </video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Guide</span>
+                    <h3>Understanding AMH</h3>
+                    <p>Interactive guide to ovarian reserve testing</p>
+                    <div class="tool-meta">Age-specific normograms</div>
+                </div>
+            </a>
+
+            <a href="egg-freezing-calculator.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline>
+                    <source src="Egg_freezing_outcomes.mp4" type="video/mp4">
+                </video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Calculator</span>
+                    <h3>Egg Freezing Outcomes</h3>
+                    <p>Success rates by age and egg number</p>
+                    <div class="tool-meta">2,891 patients</div>
+                </div>
+            </a>
+
+            <a href="endometriosis-landing.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline>
+                    <source src="Endometriosis.mp4" type="video/mp4">
+                </video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Interactive</span>
+                    <h3>Endometriosis & Fertility</h3>
+                    <p>How endometriosis affects reproduction</p>
+                    <div class="tool-meta">La Marca et al. 2025</div>
+                </div>
+            </a>
+
+            <a href="fertility-assessment.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline>
+                    <source src="When_to_seek_help.mp4" type="video/mp4">
+                </video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Assessment</span>
+                    <h3>When to Seek Help</h3>
+                    <p>Timing for fertility evaluation</p>
+                    <div class="tool-meta">ASRM guidelines</div>
+                </div>
+            </a>
+
+            <a href="fertool-cpd-learning-hub.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline>
+                    <source src="cpd-hero.mp4" type="video/mp4">
+                </video>
+                <div class="tool-card-content">
+                    <span class="tool-badge" style="background:linear-gradient(135deg,#4a6741,#6b8f5e);">CPD Education</span>
+                    <h3>CPD Learning Hub</h3>
+                    <p>Accredited fertility & pre-pregnancy modules for GPs</p>
+                    <div class="tool-meta">ASRM 2022 · RANZCOG 2024</div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-text">
+        <strong>Clinical Decision Support Tool</strong>
+        This platform provides evidence-based guidance derived from published fertility guidelines (ASRM, RANZCOG, ESHRE). All information requires independent verification and clinical judgment. This tool is not a substitute for specialist consultation or comprehensive patient assessment.
+        <strong>Medical Disclaimer</strong>
+        The content on this website is for informational and educational purposes only and does not constitute medical advice. Individual patient care decisions should be made in consultation with qualified healthcare professionals based on comprehensive clinical assessment.
+        <strong>Copyright & Intellectual Property</strong>
+        &copy; 2025 Fertool. All rights reserved. Content derived from publicly available medical guidelines and peer-reviewed literature. Original calculators, visualizations, and educational materials are proprietary. Unauthorized reproduction or commercial use is prohibited.
+        <strong>Professional Use Only</strong>
+        This resource is intended for use by qualified healthcare professionals.
+    </div>
+</footer>
+
+<div class="whatsapp-widget" id="whatsappWidget">
+    <div class="whatsapp-tooltip">Chat with Yuval</div>
+    <a href="https://wa.me/61493835221?text=Hi%20Yuval%2C%20I'd%20like%20to%20discuss%20a%20fertility%20case..."
+       target="_blank" class="whatsapp-button" aria-label="Chat on WhatsApp">
+        <img src="yuval-photo.jpg" alt="Yuval">
+    </a>
+</div>
+
+<script>
+    // ═══════════════════════════════════════════════════════════════
+    // CONFIG
+    // ═══════════════════════════════════════════════════════════════
+    const API_URL = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
+    let _lastQueryId = null;
+
+    // ═══════════════════════════════════════════════════════════════
+    // INPUT HANDLERS
+    // ═══════════════════════════════════════════════════════════════
+    function handleEnter(e) { if (e.key === 'Enter') performSearch(); }
+    function quickSearch(q) { document.getElementById('searchInput').value = q; performSearch(); }
+
+    // ═══════════════════════════════════════════════════════════════
+    // UTILITIES
+    // ═══════════════════════════════════════════════════════════════
+    function esc(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // LAYER 1 — GUIDELINES
+    // Renders RAG-grounded guideline statements
+    // ═══════════════════════════════════════════════════════════════
+    function renderGuidelines(g) {
+        if (!g) return '';
+        let html = '<div class="response-section guideline">';
+        html += '<div class="section-header guideline"><span class="section-header-icon">📋</span> Guidelines</div>';
+
+        if (g.coverage === 'none' || !g.guideline_statements || g.guideline_statements.length === 0) {
+            html += '<p><em>No specific guideline retrieved for this query.</em></p>';
+        } else {
+            html += '<ul>';
+            g.guideline_statements.forEach(s => {
+                const tick = s.directly_answers_query ? '✓' : '~';
+                html += `<li>${tick} ${esc(s.statement)}`;
+                if (s.source) html += ` <span style="font-size:0.8em;color:#666;">(${esc(s.source)})</span>`;
+                html += '</li>';
+            });
+            html += '</ul>';
         }
 
-        function quickSearch(query) {
-            document.getElementById('searchInput').value = query;
-            performSearch();
+        if (g.gaps) {
+            html += `<p style="color:#888;font-size:0.88em;margin-top:0.4rem;">⚠ Gap: ${esc(g.gaps)}</p>`;
+        }
+        html += '</div>';
+        return html;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // LAYER 2 — SPECIALIST INSIGHT
+    // Renders LLM parametric knowledge (no RAG)
+    // ═══════════════════════════════════════════════════════════════
+    function renderSpecialist(s) {
+        if (!s) return '';
+        let html = '<div class="response-section specialist">';
+        html += '<div class="section-header specialist"><span class="section-header-icon">🔬</span> Specialist Insight</div>';
+
+        if (s.specialist_perspective) {
+            html += `<p>${esc(s.specialist_perspective)}</p>`;
+        }
+        if (s.common_pitfalls && s.common_pitfalls.length > 0) {
+            html += '<p><strong>Common pitfalls:</strong></p><ul>';
+            s.common_pitfalls.forEach(p => html += `<li>${esc(p)}</li>`);
+            html += '</ul>';
+        }
+        if (s.nuances && s.nuances.length > 0) {
+            html += '<p><strong>Nuances:</strong></p><ul>';
+            s.nuances.forEach(n => html += `<li>${esc(n)}</li>`);
+            html += '</ul>';
+        }
+        if (s.when_guidelines_fall_short) {
+            html += `<p><strong>When guidelines fall short:</strong> ${esc(s.when_guidelines_fall_short)}</p>`;
+        }
+        html += '</div>';
+        return html;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // LAYER 3 — CLINICAL PRACTICE
+    // Renders synthesis + calculators + referral + safety
+    // ═══════════════════════════════════════════════════════════════
+    function renderClinical(c, calcs) {
+        if (!c) return '';
+        let html = '<div class="response-section clinical">';
+        html += '<div class="section-header clinical"><span class="section-header-icon">⚕️</span> Clinical Practice</div>';
+
+        // Summary
+        if (c.summary) {
+            html += `<p><strong>${esc(c.summary)}</strong></p>`;
         }
 
-        function formatResponse(text) {
-            const sectionConfig = {
-                'GUIDELINE': { css: 'guideline', icon: '📋', label: 'Guidelines' },
-                'SPECIALIST': { css: 'specialist', icon: '🔬', label: 'Specialist Insight' },
-                'CLINICAL': { css: 'clinical', icon: '⚕️', label: 'Clinical Practice' }
-            };
+        // Key actions
+        if (c.key_actions && c.key_actions.length > 0) {
+            html += '<p><strong>Actions:</strong></p><ul>';
+            c.key_actions.forEach(a => {
+                const pIcon = {now:'🔴', soon:'🟡', routine:'🟢'}[a.priority] || '';
+                const bIcon = {guideline:'📋', specialist:'🔬', both:'⚡'}[a.basis] || '';
+                html += `<li>${pIcon} ${bIcon} ${esc(a.action)}</li>`;
+            });
+            html += '</ul>';
+        }
 
-            // Split by section headers like ### [GUIDELINE], ## [SPECIALIST], etc.
-            const sectionRegex = /#{1,3}\s*\[(\w+)\]\s*/g;
-            const parts = text.split(sectionRegex);
+        // Calculator results
+        if (calcs && Object.keys(calcs).length > 0) {
+            html += '<p><strong>Calculator results:</strong></p>';
+            Object.entries(calcs).forEach(([name, result]) => {
+                if (result.error) return;
+                const label = name.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+                html += `<div class="calc-card"><div class="calc-card-title">${esc(label)}</div>`;
+                Object.entries(result).forEach(([k, v]) => {
+                    if (k.startsWith('_')) return;
+                    const vStr = Array.isArray(v) ? v.join(', ') : String(v);
+                    html += `<div class="calc-row"><span class="calc-key">${esc(k.replace(/_/g,' '))}: </span><span class="calc-val">${esc(vStr)}</span></div>`;
+                });
+                html += '</div>';
+            });
+        }
 
-            // If no sections found, return as a single styled block
-            if (parts.length <= 1) {
-                return '<div class="response-section general">' + formatText(text) + '</div>';
-            }
+        // Referral recommendation
+        const ref = c.referral_recommendation || {};
+        if (ref.refer) {
+            const cls = ref.urgency === 'urgent' ? 'urgent' : ref.urgency === 'standard' ? 'standard' : 'not_needed';
+            const icon = {urgent:'🔴', standard:'🟡', not_needed:'🟢'}[ref.urgency] || '';
+            html += `<div class="referral-badge ${cls}">`;
+            html += `<strong>${icon} Refer [${esc((ref.urgency||'').toUpperCase())}]</strong>`;
+            if (ref.to) html += ` → ${esc(ref.to)}`;
+            if (ref.reason) html += `<br><span style="font-size:0.88em;">${esc(ref.reason)}</span>`;
+            html += '</div>';
+        }
 
+        // Safety flags
+        if (c.safety_flags && c.safety_flags.length > 0) {
+            html += '<div class="safety-box"><strong>⚠ Safety flags:</strong><ul>';
+            c.safety_flags.forEach(f => html += `<li>${esc(f)}</li>`);
+            html += '</ul></div>';
+        }
+
+        // Suggested workup
+        if (c.suggested_workup && c.suggested_workup.length > 0) {
+            html += '<p><strong>Suggested workup:</strong></p><ul>';
+            c.suggested_workup.forEach(w => html += `<li>→ ${esc(w)}</li>`);
+            html += '</ul>';
+        }
+
+        // GP script
+        if (c.gp_script) {
+            html += `<div class="gp-script"><strong>Patient script:</strong> "${esc(c.gp_script)}"</div>`;
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // FEEDBACK
+    // ═══════════════════════════════════════════════════════════════
+    async function submitFeedback(helpful) {
+        if (!_lastQueryId) return;
+        const upBtn   = document.getElementById('fbUp');
+        const downBtn = document.getElementById('fbDown');
+        if (upBtn)   upBtn.classList.toggle('active-up',   helpful);
+        if (downBtn) downBtn.classList.toggle('active-down', !helpful);
+        try {
+            await fetch(`${API_URL}/feedback`, {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({query_id: _lastQueryId, helpful, comment: ''})
+            });
+        } catch(e) { console.error('Feedback error:', e); }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // MAIN SEARCH
+    // ═══════════════════════════════════════════════════════════════
+    async function performSearch() {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) return;
+
+        // Show loading
+        document.getElementById('loading').classList.add('active');
+        document.getElementById('results').classList.remove('active');
+
+        // Animated loading steps
+        const steps = ['Retrieving guidelines...', 'Consulting specialist knowledge...', 'Synthesising clinical advice...'];
+        let stepIdx = 0;
+        const stepEl = document.getElementById('loadingSteps');
+        stepEl.textContent = steps[0];
+        const stepTimer = setInterval(() => {
+            stepIdx = (stepIdx + 1) % steps.length;
+            stepEl.textContent = steps[stepIdx];
+        }, 3000);
+
+        try {
+            const response = await fetch(`${API_URL}/query`, {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({question: query})
+            });
+
+            clearInterval(stepTimer);
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+
+            // Store for feedback
+            _lastQueryId = data.query_id;
+
+            // Build 3-layer HTML
             let html = '';
+            html += renderGuidelines(data.guidelines);
+            html += renderSpecialist(data.specialist_insight);
+            html += renderClinical(data.clinical_practice, data.calculator_results);
 
-            // parts[0] is text before first section (often a title line)
-            const preamble = parts[0].trim();
-            if (preamble) {
-                // Clean up any leading ## title
-                const cleanPreamble = preamble.replace(/^#{1,3}\s*(.+)/gm, '<h4>$1</h4>');
-                html += '<div style="margin-bottom: 1rem;">' + formatText(cleanPreamble) + '</div>';
+            // Feedback row
+            html += `<div class="feedback-row">
+                <span class="feedback-label">Was this helpful?</span>
+                <button class="feedback-btn" id="fbUp"   onclick="submitFeedback(true)">👍</button>
+                <button class="feedback-btn" id="fbDown" onclick="submitFeedback(false)">👎</button>
+            </div>`;
+
+            // Meta
+            if (data.latency_ms) {
+                html += `<div class="meta-row">${data.latency_ms}ms · Tier ${data.tier || '?'}</div>`;
             }
 
-            // Process section pairs: [sectionName, sectionContent, ...]
-            for (let i = 1; i < parts.length; i += 2) {
-                const sectionKey = parts[i].trim().toUpperCase();
-                const content = (parts[i + 1] || '').trim();
-                const config = sectionConfig[sectionKey] || { css: 'general', icon: '📄', label: sectionKey };
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('resultContent').innerHTML = html;
 
-                html += '<div class="response-section ' + config.css + '">';
-                html += '<div class="section-header ' + config.css + '">';
-                html += '<span class="section-header-icon">' + config.icon + '</span> ' + config.label;
-                html += '</div>';
-                html += formatText(content);
-                html += '</div>';
-            }
+            // Sources summary
+            const summary = data.retrieval_summary || {};
+            let srcHtml = '<div class="result-sources-label">Sources retrieved</div>';
+            Object.entries(summary).forEach(([layer, count]) => {
+                if (count > 0) srcHtml += `<div class="source">${count} ${layer} chunk${count>1?'s':''}</div>`;
+            });
+            document.getElementById('resultSources').innerHTML = srcHtml;
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({behavior:'smooth', block:'nearest'});
 
-            return html;
+        } catch (error) {
+            clearInterval(stepTimer);
+            console.error('Error:', error);
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('resultContent').innerHTML =
+                '<span style="color:#c0392b;">Unable to connect to the guidelines server. Please try again in 30 seconds.</span>';
+            document.getElementById('results').classList.add('active');
         }
+    }
 
-        function formatText(text) {
-            return text
-                // Remove leftover ### headings and style them
-                .replace(/^#{1,3}\s+(.+)$/gm, '<h4>$1</h4>')
-                // Bold
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                // Bullet lines to list items
-                .replace(/(?:^|\n)-\s+(.+)/g, function(match, item) {
-                    return '<li>' + item + '</li>';
-                })
-                // Wrap consecutive <li> in <ul>
-                .replace(/((?:<li>.*?<\/li>\s*)+)/g, '<ul>$1</ul>')
-                // Paragraphs
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/\n/g, '<br>')
-                // Wrap in paragraph
-                .replace(/^(?!<)/, '<p>')
-                .replace(/(?!>)$/, '</p>')
-                // Clean empty paragraphs
-                .replace(/<p>\s*<\/p>/g, '');
-        }
-
-        async function performSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
-
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('results').classList.remove('active');
-
-            try {
-                const response = await fetch(`${API_URL}/query`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question: query })
-                });
-
-                if (!response.ok) throw new Error('Network error');
-
-                const data = await response.json();
-                
-                // Display the answer with styled sections
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('resultContent').innerHTML = formatResponse(data.answer);
-                
-                // Display the sources (deduplicated)
-                let sourcesHtml = '<div class="result-sources-label">Sources</div>';
-                if (data.sources && data.sources.length > 0) {
-                    const seen = new Set();
-                    let count = 0;
-                    data.sources.forEach((source) => {
-                        const key = source.source;
-                        if (!seen.has(key) && count < 5) {
-                            seen.add(key);
-                            count++;
-                            const name = key.replace(/:/g, ' — ').replace(/\s+/g, ' ').trim();
-                            const shortName = name.length > 80 ? name.substring(0, 80) + '…' : name;
-                            sourcesHtml += '<div class="source">' + count + '. ' + shortName + '</div>';
-                        }
-                    });
-                }
-                document.getElementById('resultSources').innerHTML = sourcesHtml;
-                document.getElementById('results').classList.add('active');
-                
-                document.getElementById('results').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest' 
-                });
-                
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('resultContent').innerHTML = 
-                    '<span style="color: #c0392b;">Unable to connect to the guidelines server. The service may be starting up — please try again in 30 seconds.</span>';
-                document.getElementById('results').classList.add('active');
-            }
-        }
-
-
-        // WhatsApp Widget - Show after 3.5 s
-        
-        // WhatsApp Widget - Show after 3.5s
-        setTimeout(function() {
-            var w = document.getElementById('whatsappWidget');
-            if (w) w.classList.add('active');
-        }, 3500);
-
-    </script>
+    // WhatsApp widget delay
+    setTimeout(function() {
+        var w = document.getElementById('whatsappWidget');
+        if (w) w.classList.add('active');
+    }, 3500);
+</script>
 </body>
 </html>
