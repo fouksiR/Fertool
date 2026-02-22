@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Fertility Decision Support</title>
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
+        header { padding: 2rem 5%; background: rgba(248,247,245,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(44,44,44,0.1); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: #2c2c2c; display: flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo-icon { width: 16px; height: 24px; margin: 0 -2px; }
+        nav { display: flex; gap: 2rem; }
+        nav a { color: #4a6741; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: opacity 0.2s; }
+        nav a:hover { opacity: 0.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+        .hero { text-align: center; margin-bottom: 3rem; }
+        .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: #2c2c2c; margin-bottom: 1rem; }
+        .hero p { font-size: 1rem; color: #666; }
+        .search-card { background: #fff; border-radius: 16px; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 3rem; }
+        .search-label { display: inline-block; background: rgba(74,103,65,0.15); color: #4a6741; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; }
+        .search-title { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 400; color: #2c2c2c; margin-bottom: 1.5rem; }
+        .search-container { position: relative; margin-bottom: 1.5rem; }
+        .search-input { width: 100%; border: 2px solid #e8e8e8; border-radius: 12px; padding: 1rem 5rem 1rem 1.25rem; font-size: 1rem; font-family: inherit; transition: border-color 0.2s; background: #f8f7f5; }
+        .search-input:focus { outline: none; border-color: #4a6741; }
+        .search-input::placeholder { color: #999; }
+        .search-button { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #4a6741, #5a7d50); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .search-button:hover { opacity: 0.9; }
+        .quick-searches { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .quick-search { padding: 0.5rem 1rem; background: #f8f7f5; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 0.85rem; color: #666; cursor: pointer; transition: all 0.2s; }
+        .quick-search:hover { border-color: #4a6741; background: #f0f7ef; color: #2c2c2c; }
+        .results-container { display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e8e8e8; }
+        .results-container.active { display: block; }
+        .result-label { font-size: 0.75rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .response-section { border-radius: 12px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; position: relative; }
+        .response-section.guideline { background: #f0f7ef; border-left: 4px solid #4a6741; }
+        .response-section.specialist { background: #f3f0f8; border-left: 4px solid #6b5b95; }
+        .response-section.clinical { background: #fef9f0; border-left: 4px solid #c8a45e; }
+        .section-header { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; padding: 0.3rem 0.85rem; border-radius: 20px; margin-bottom: 0.35rem; color: #fff; }
+        .section-header.guideline { background: #4a6741; }
+        .section-header.specialist { background: #6b5b95; }
+        .section-header.clinical { background: #c8a45e; }
+        .evidence-note { font-size: 0.72rem; color: #999; letter-spacing: 0.3px; margin-bottom: 1rem; }
+        .response-section p, .response-section li { font-size: 0.95rem; line-height: 1.85; color: #333; margin-bottom: 0.5rem; }
+        .response-section ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+        .response-section li { margin-bottom: 0.35rem; }
+        .response-section strong { color: #1a1a1a; font-weight: 600; }
+        .calc-card { background: rgba(0,0,0,0.04); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.6rem; font-size: 0.9rem; }
+        .calc-card-title { font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #555; margin-bottom: 0.35rem; }
+        .calc-row { margin-bottom: 0.2rem; }
+        .calc-key { color: #777; }
+        .calc-val { font-weight: 600; color: #1a1a1a; }
+        .referral-badge { border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.75rem; font-size: 0.9rem; }
+        .referral-badge.urgent { background: rgba(220,53,69,0.1); border-left: 3px solid #dc3545; }
+        .referral-badge.standard { background: rgba(255,193,7,0.12); border-left: 3px solid #ffc107; }
+        .referral-badge.not_needed { background: rgba(74,103,65,0.1); border-left: 3px solid #4a6741; }
+        .safety-box { background: rgba(220,53,69,0.07); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.75rem; }
+        .gp-script { background: rgba(74,103,65,0.07); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.75rem; font-style: italic; font-size: 0.9rem; }
+        .feedback-row { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #eee; }
+        .feedback-label { font-size: 0.8rem; color: #999; }
+        .feedback-btn { background: #f0f0f0; border: none; border-radius: 8px; padding: 0.4rem 0.9rem; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+        .feedback-btn:hover { background: #e0e0e0; }
+        .feedback-btn.active-up { background: #d4edda; }
+        .feedback-btn.active-down { background: #f8d7da; }
+        .meta-row { text-align: right; font-size: 0.72rem; color: #bbb; margin-top: 0.5rem; }
+        .result-sources { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f5f5f5; }
+        .result-sources-label { font-size: 0.85rem; font-weight: 600; color: #666; margin-bottom: 0.75rem; }
+        .source { font-size: 0.85rem; color: #666; padding: 0.5rem 0; }
+        .loading { display: none; margin-top: 2rem; text-align: center; }
+        .loading.active { display: block; }
+        .loading-text { font-size: 0.9rem; color: #888; margin-bottom: 1rem; }
+        .loading-steps { font-size: 0.8rem; color: #bbb; margin-bottom: 1rem; min-height: 1.2rem; }
+        .loading-spinner { width: 40px; height: 40px; border: 3px solid #e8e8e8; border-top-color: #4a6741; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .tools-section { margin-top: 4rem; }
+        .tools-label { font-size: 0.75rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; text-align: center; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .tool-card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; min-height: 200px; }
+        .tool-card-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.45; }
+        .tool-card-content { position: relative; z-index: 1; background: rgba(255,255,255,0.82); padding: 1.25rem 1.5rem; border-radius: 12px; }
+        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+        .tool-card:hover .tool-card-video { opacity: 0.55; }
+        .tool-badge { display: inline-block; background: linear-gradient(135deg, #6b5b95, #8b7db5); color: #fff; padding: 0.3rem 0.75rem; border-radius: 16px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .tool-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.75rem; }
+        .tool-card p { font-size: 0.9rem; color: #444; margin-bottom: 1rem; }
+        .tool-meta { font-size: 0.8rem; color: #777; }
+        footer { background: rgba(248,247,245,0.95); border-top: 1px solid rgba(44,44,44,0.1); padding: 3rem 5%; margin-top: 4rem; }
+        .footer-text { font-size: 0.8rem; color: #666; line-height: 1.8; max-width: 900px; margin: 0 auto; }
+        .footer-text strong { color: #2c2c2c; font-weight: 600; display: block; margin-top: 0.5rem; }
+        .whatsapp-widget { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: none; align-items: center; gap: 12px; animation: fadeInUp 0.5s ease-out; }
+        .whatsapp-widget.active { display: flex; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .whatsapp-button { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s ease; text-decoration: none; position: relative; overflow: hidden; border: 3px solid #25D366; }
+        .whatsapp-button img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .whatsapp-button::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; background-color: #25D366; border-radius: 50%; border: 2px solid white; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z'/%3E%3C/svg%3E"); background-size: 12px 12px; background-position: center; background-repeat: no-repeat; }
+        .whatsapp-button:hover { transform: scale(1.1); }
+        .whatsapp-tooltip { background: #fff; padding: 12px 20px; border-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; color: #2c2c2c; white-space: nowrap; opacity: 0; transform: translateX(10px); transition: all 0.3s ease; pointer-events: none; }
+        .whatsapp-widget:hover .whatsapp-tooltip { opacity: 1; transform: translateX(0); }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .search-card { padding: 2rem 1.5rem; }
+            .search-button { position: static; transform: none; width: 100%; margin-top: 0.75rem; }
+            .tools-grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .whatsapp-widget { bottom: 20px; right: 20px; }
+            .whatsapp-button { width: 55px; height: 55px; border-width: 2px; }
+            .whatsapp-tooltip { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">
+            <span>fert</span>
+            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#2c2c2c"/>
+                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" stroke="#2c2c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>le</span>
+        </a>
+        <nav>
+            <a href="index.html">Search</a>
+            <a href="egg-freezing-calculator.html">Egg Freezing</a>
+            <a href="endometriosis-landing.html">Endometriosis</a>
+            <a href="fertility-assessment.html">Assessment</a>
+            <a href="amh-guide.html">AMH Guide</a>
+            <a href="fertool-cpd-learning-hub.html">CPD Hub</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Clinical Support for Fertility Care</h1>
+        <p>Evidence-based guidance</p>
+    </div>
+
+    <div class="search-card" id="search">
+        <span class="search-label">Guidelines</span>
+        <h2 class="search-title">How can I help?</h2>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput"
+                placeholder="Ask about AMH, referral criteria, initial investigations..."
+                onkeypress="handleEnter(event)">
+            <button class="search-button" onclick="performSearch()">Search</button>
+        </div>
+        <div class="quick-searches">
+            <span class="quick-search" onclick="quickSearch('AMH interpretation')">AMH interpretation</span>
+            <span class="quick-search" onclick="quickSearch('When to refer')">Referral criteria</span>
+            <span class="quick-search" onclick="quickSearch('Initial workup')">Initial workup</span>
+        </div>
+        <div class="loading" id="loading">
+            <div class="loading-text">Searching guidelines...</div>
+            <div class="loading-steps" id="loadingSteps"></div>
+            <div class="loading-spinner"></div>
+        </div>
+        <div class="results-container" id="results">
+            <div class="result-label">Response</div>
+            <div id="resultContent"></div>
+            <div class="result-sources" id="resultSources"></div>
+        </div>
+    </div>
+
+    <div class="tools-section">
+        <div class="tools-label">Additional Tools</div>
+        <div class="tools-grid">
+            <a href="amh-guide.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Guide</span>
+                    <h3>Understanding AMH</h3>
+                    <p>Interactive guide to ovarian reserve testing</p>
+                    <div class="tool-meta">Age-specific normograms</div>
+                </div>
+            </a>
+            <a href="egg-freezing-calculator.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Calculator</span>
+                    <h3>Egg Freezing Outcomes</h3>
+                    <p>Success rates by age and egg number</p>
+                    <div class="tool-meta">2,891 patients</div>
+                </div>
+            </a>
+            <a href="endometriosis-landing.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Interactive</span>
+                    <h3>Endometriosis & Fertility</h3>
+                    <p>How endometriosis affects reproduction</p>
+                    <div class="tool-meta">La Marca et al. 2025</div>
+                </div>
+            </a>
+            <a href="fertility-assessment.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
+                <div class="tool-card-content">
+                    <span class="tool-badge">Assessment</span>
+                    <h3>When to Seek Help</h3>
+                    <p>Timing for fertility evaluation</p>
+                    <div class="tool-meta">ASRM guidelines</div>
+                </div>
+            </a>
+            <a href="fertool-cpd-learning-hub.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="cpd-hero.mp4" type="video/mp4"></video>
+                <div class="tool-card-content">
+                    <span class="tool-badge" style="background:linear-gradient(135deg,#4a6741,#6b8f5e);">CPD Education</span>
+                    <h3>CPD Learning Hub</h3>
+                    <p>Accredited fertility & pre-pregnancy modules for GPs</p>
+                    <div class="tool-meta">ASRM 2022 · RANZCOG 2024</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-text">
+        <strong>Clinical Decision Support Tool</strong>
+        This platform provides evidence-based guidance derived from published fertility guidelines (ASRM, RANZCOG, ESHRE). All information requires independent verification and clinical judgment. This tool is not a substitute for specialist consultation or comprehensive patient assessment.
+        <strong>Medical Disclaimer</strong>
+        The content on this website is for informational and educational purposes only and does not constitute medical advice. Individual patient care decisions should be made in consultation with qualified healthcare professionals.
+        <strong>Copyright &amp; Intellectual Property</strong>
+        &copy; 2025 Fertool. All rights reserved. Unauthorized reproduction or commercial use is prohibited.
+        <strong>Professional Use Only</strong>
+        This resource is intended for use by qualified healthcare professionals.
+    </div>
+</footer>
+
+<div class="whatsapp-widget" id="whatsappWidget">
+    <div class="whatsapp-tooltip">Chat with Yuval</div>
+    <a href="https://wa.me/61493835221?text=Hi%20Yuval%2C%20I'd%20like%20to%20discuss%20a%20fertility%20case..."
+       target="_blank" class="whatsapp-button" aria-label="Chat on WhatsApp">
+        <img src="yuval-photo.jpg" alt="Yuval">
+    </a>
+</div>
+
+<script>
+const API_URL = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
+let _lastQueryId = null;
+let _lastQuery = '';
+
+function handleEnter(e) { if (e.key === 'Enter') performSearch(); }
+function quickSearch(q) { document.getElementById('searchInput').value = q; performSearch(); }
+
+function esc(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function cleanSourceName(raw) {
+    if (!raw) return '';
+    var clean = raw
+        .replace(/^\/content\/drive\/MyDrive\/GP_Outreach_Melbourne\/GP\/GPFST\/Guidlines folder Path\s*\//i, '')
+        .replace(/^\/content\/drive\/MyDrive\/GP_Outreach_Melbourne\/GP\/GPFST\//i, '')
+        .replace(/^.*[\/\\]/, '');
+    clean = clean.replace(/\.(txt|pdf)$/i, '');
+    return clean;
+}
+
+function isSperoff(name) {
+    return /speroff/i.test(name);
+}
+
+function isSpecialistNote(name) {
+    return /specialist_notes?/i.test(name) || /reproductive_physiology/i.test(name) || /clinical_endocrinology/i.test(name) || /infertility/i.test(name) || /special_topics/i.test(name);
+}
+
+function renderGuidelines(g) {
+    if (!g) return '';
+    var h = '<div class="response-section guideline">';
+    h += '<div class="section-header guideline">Guidelines</div>';
+    h += '<div class="evidence-note">Published clinical guidelines · ASRM, RANZCOG, ESHRE</div>';
+    if (!g.guideline_statements || g.guideline_statements.length === 0) {
+        h += '<p><em>No specific guideline retrieved for this query.</em></p>';
+    } else {
+        h += '<ul>';
+        g.guideline_statements.forEach(function(s) {
+            h += '<li>' + (s.directly_answers_query ? '✓' : '~') + ' ' + esc(s.statement);
+            if (s.source) h += ' <span style="font-size:0.8em;color:#666;">(' + esc(s.source) + ')</span>';
+            h += '</li>';
+        });
+        h += '</ul>';
+    }
+    if (g.gaps) h += '<p style="color:#888;font-size:0.88em;margin-top:0.4rem;">Gap: ' + esc(g.gaps) + '</p>';
+    return h + '</div>';
+}
+
+function renderSpecialist(s) {
+    if (!s) return '';
+    var h = '<div class="response-section specialist">';
+    h += '<div class="section-header specialist">Specialist Insight</div>';
+    h += '<div class="evidence-note">Expert perspective · clinical knowledge and practice experience</div>';
+    if (s.specialist_perspective) h += '<p>' + esc(s.specialist_perspective) + '</p>';
+    if (s.common_pitfalls && s.common_pitfalls.length > 0) {
+        h += '<p><strong>Common pitfalls:</strong></p><ul>';
+        s.common_pitfalls.forEach(function(p) { h += '<li>' + esc(p) + '</li>'; });
+        h += '</ul>';
+    }
+    if (s.nuances && s.nuances.length > 0) {
+        h += '<p><strong>Nuances:</strong></p><ul>';
+        s.nuances.forEach(function(n) { h += '<li>' + esc(n) + '</li>'; });
+        h += '</ul>';
+    }
+    if (s.when_guidelines_fall_short) h += '<p><strong>When guidelines fall short:</strong> ' + esc(s.when_guidelines_fall_short) + '</p>';
+    return h + '</div>';
+}
+
+function renderClinical(c, calcs) {
+    if (!c) return '';
+    var h = '<div class="response-section clinical">';
+    h += '<div class="section-header clinical">Clinical Practice</div>';
+    h += '<div class="evidence-note">Applied guidance · guidelines integrated with clinical context</div>';
+    if (c.summary) h += '<p><strong>' + esc(c.summary) + '</strong></p>';
+    if (c.key_actions && c.key_actions.length > 0) {
+        h += '<p><strong>Actions:</strong></p><ul>';
+        c.key_actions.forEach(function(a) {
+            h += '<li>' + esc(a.action) + '</li>';
+        });
+        h += '</ul>';
+    }
+    if (calcs && Object.keys(calcs).length > 0) {
+        h += '<p><strong>Calculator results:</strong></p>';
+        Object.entries(calcs).forEach(function(entry) {
+            var name = entry[0], result = entry[1];
+            if (result.error) return;
+            var label = name.replace(/_/g,' ').replace(/\b\w/g, function(c){return c.toUpperCase();});
+            h += '<div class="calc-card"><div class="calc-card-title">' + esc(label) + '</div>';
+            Object.entries(result).forEach(function(r) {
+                if (r[0].startsWith('_')) return;
+                var vStr = Array.isArray(r[1]) ? r[1].join(', ') : String(r[1]);
+                h += '<div class="calc-row"><span class="calc-key">' + esc(r[0].replace(/_/g,' ')) + ': </span><span class="calc-val">' + esc(vStr) + '</span></div>';
+            });
+            h += '</div>';
+        });
+    }
+    var ref = c.referral_recommendation || {};
+    if (ref.refer) {
+        var cls = ref.urgency === 'urgent' ? 'urgent' : ref.urgency === 'standard' ? 'standard' : 'not_needed';
+        h += '<div class="referral-badge ' + cls + '"><strong>Refer [' + esc((ref.urgency||'').toUpperCase()) + ']</strong>';
+        if (ref.to) h += ' → ' + esc(ref.to);
+        if (ref.reason) h += '<br><span style="font-size:0.88em;">' + esc(ref.reason) + '</span>';
+        h += '</div>';
+    }
+    if (c.safety_flags && c.safety_flags.length > 0) {
+        h += '<div class="safety-box"><strong>Safety flags:</strong><ul>';
+        c.safety_flags.forEach(function(f) { h += '<li>' + esc(f) + '</li>'; });
+        h += '</ul></div>';
+    }
+    if (c.suggested_workup && c.suggested_workup.length > 0) {
+        h += '<p><strong>Suggested workup:</strong></p><ul>';
+        c.suggested_workup.forEach(function(w) { h += '<li>→ ' + esc(w) + '</li>'; });
+        h += '</ul>';
+    }
+    if (c.gp_script) h += '<div class="gp-script"><strong>Patient script:</strong> "' + esc(c.gp_script) + '"</div>';
+    return h + '</div>';
+}
+
+function formatResponseV2(text) {
+    var cfg = {GUIDELINE:{css:'guideline',icon:'',label:'Guidelines'},SPECIALIST:{css:'specialist',icon:'',label:'Specialist Insight'},CLINICAL:{css:'clinical',icon:'',label:'Clinical Practice'}};
+    var parts = text.split(/#{1,3}\s*\[(\w+)\]\s*/g);
+    if (parts.length <= 1) return '<div class="response-section guideline">' + formatTextV2(text) + '</div>';
+    var h = '';
+    if (parts[0].trim()) h += '<div style="margin-bottom:1rem;">' + formatTextV2(parts[0].trim()) + '</div>';
+    for (var i = 1; i < parts.length; i += 2) {
+        var key = parts[i].trim().toUpperCase();
+        var content = (parts[i+1]||'').trim();
+        var c = cfg[key] || {css:'guideline',icon:'',label:key};
+        h += '<div class="response-section ' + c.css + '"><div class="section-header ' + c.css + '">' + c.label + '</div>' + formatTextV2(content) + '</div>';
+    }
+    return h;
+}
+
+function formatTextV2(text) {
+    return text.replace(/^#{1,3}\s+(.+)$/gm,'<h4>$1</h4>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/(?:^|\n)-\s+(.+)/g,'<li>$1</li>').replace(/((?:<li>.*?<\/li>\s*)+)/g,'<ul>$1</ul>').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^(?!<)/,'<p>').replace(/(?!>)$/,'</p>').replace(/<p>\s*<\/p>/g,'');
+}
+
+async function submitFeedback(helpful) {
+    /* Highlight the button immediately regardless of backend support */
+    document.getElementById('fbUp').classList.toggle('active-up', helpful);
+    document.getElementById('fbDown').classList.toggle('active-down', !helpful);
+
+    /* Try to POST feedback — works with v3 (/feedback endpoint), silently ignored on v2 */
+    try {
+        await fetch(API_URL + '/feedback', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                query_id: _lastQueryId || 'no-id',
+                query: _lastQuery,
+                helpful: helpful,
+                comment: '',
+                timestamp: new Date().toISOString()
+            })
+        });
+    } catch(e) { /* v2 has no /feedback — that's fine */ }
+}
+
+function renderSources(data) {
+    var srcHtml = '';
+    var summary = data.retrieval_summary || {};
+    var hasSummary = Object.keys(summary).length > 0;
+
+    /* --- Part 1: Show individual source references from data.sources --- */
+    if (data.sources && data.sources.length > 0) {
+        var validSources = [];
+        data.sources.forEach(function(s) {
+            var raw = s.source || s.name || '';
+            var clean = cleanSourceName(raw);
+            /* Skip Speroff / specialist-note sources — show only guideline references */
+            if (!isSperoff(raw) && !isSperoff(clean) && !isSpecialistNote(raw)) {
+                validSources.push({
+                    name: clean,
+                    page: s.page,
+                    relevance: s.relevance_score
+                });
+            }
+        });
+
+        if (validSources.length > 0) {
+            srcHtml += '<div class="result-sources-label">Sources</div>';
+            var seen = {};
+            validSources.forEach(function(src, i) {
+                var key = src.name + '|' + src.page;
+                if (seen[key]) return;
+                seen[key] = true;
+                var line = (i + 1) + '. ' + esc(src.name);
+                if (src.page) line += ' (p. ' + src.page + ')';
+                if (src.relevance) line += ' — Relevance: ' + Math.round(src.relevance * 100) + '%';
+                srcHtml += '<div class="source">' + line + '</div>';
+            });
+        }
+    }
+
+    /* --- Part 2: Show retrieval summary counts (v3) --- */
+    if (hasSummary) {
+        srcHtml += '<div class="result-sources-label" style="margin-top:0.75rem;font-size:0.78rem;color:#aaa;">Sources retrieved</div>';
+        Object.entries(summary).forEach(function(e) {
+            if (e[1] > 0) srcHtml += '<div class="source" style="color:#aaa;font-size:0.8rem;">' + e[1] + ' ' + e[0] + ' chunk' + (e[1] > 1 ? 's' : '') + '</div>';
+        });
+    }
+
+    return srcHtml;
+}
+
+async function performSearch() {
+    var query = document.getElementById('searchInput').value.trim();
+    if (!query) return;
+
+    _lastQuery = query;
+    document.getElementById('loading').classList.add('active');
+    document.getElementById('results').classList.remove('active');
+
+    var steps = ['Retrieving guidelines...', 'Consulting specialist knowledge...', 'Synthesising clinical advice...'];
+    var stepIdx = 0;
+    var stepEl = document.getElementById('loadingSteps');
+    stepEl.textContent = steps[0];
+    var stepTimer = setInterval(function() {
+        stepIdx = (stepIdx + 1) % steps.length;
+        stepEl.textContent = steps[stepIdx];
+    }, 3000);
+
+    try {
+        var response = await fetch(API_URL + '/query', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({question: query})
+        });
+
+        clearInterval(stepTimer);
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+
+        var data = await response.json();
+        console.log('API response:', data);
+
+        _lastQueryId = data.query_id || null;
+        var html = '';
+
+        if (data.guidelines || data.specialist_insight || data.clinical_practice) {
+            html += renderGuidelines(data.guidelines);
+            html += renderSpecialist(data.specialist_insight);
+            html += renderClinical(data.clinical_practice, data.calculator_results || {});
+        } else if (data.answer) {
+            html = formatResponseV2(data.answer);
+        } else {
+            html = '<p style="color:#c0392b;">Unexpected response. See console for details.</p>';
+            console.error('Unexpected response:', data);
+        }
+
+        html += '<div class="feedback-row"><span class="feedback-label">Was this helpful?</span><button class="feedback-btn" id="fbUp" onclick="submitFeedback(true)">👍</button><button class="feedback-btn" id="fbDown" onclick="submitFeedback(false)">👎</button></div>';
+        if (data.latency_ms) html += '<div class="meta-row">' + data.latency_ms + 'ms · Tier ' + (data.tier || '?') + '</div>';
+
+        document.getElementById('loading').classList.remove('active');
+        document.getElementById('resultContent').innerHTML = html;
+        document.getElementById('resultSources').innerHTML = renderSources(data);
+        document.getElementById('results').classList.add('active');
+        document.getElementById('results').scrollIntoView({behavior:'smooth', block:'nearest'});
+
+    } catch(error) {
+        clearInterval(stepTimer);
+        console.error('Search error:', error);
+        document.getElementById('loading').classList.remove('active');
+        document.getElementById('resultContent').innerHTML = '<span style="color:#c0392b;">Error: ' + esc(error.message) + '. The service may be starting up — please try again in 30 seconds.</span>';
+        document.getElementById('results').classList.add('active');
+    }
+}
+
+setTimeout(function() {
+    var w = document.getElementById('whatsappWidget');
+    if (w) w.classList.add('active');
+}, 3500);
+</script>
+</body>
+</html>
