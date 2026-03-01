@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endometriosis Evidence Panel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fafbfc;color:#1e293b}
+.ep{max-width:1080px;margin:0 auto;padding:24px 20px}
+@media(min-width:1200px){.ep{max-width:1140px}}
+
+/* Header */
+.hdr{text-align:center;margin-bottom:22px}
+.tag{display:inline-block;padding:3px 12px;border-radius:16px;background:#ede9fe;font-size:12px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.hdr h1{font-size:28px;font-weight:800;color:#0f172a;margin:4px 0 6px;letter-spacing:-.4px}
+.hdr p{font-size:14px;color:#64748b;max-width:640px;margin:0 auto;line-height:1.5}
+.srcs{display:flex;justify-content:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.sp{font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px}
+
+/* Key message */
+.kmsg{background:linear-gradient(135deg,#faf5ff,#eff6ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:14px 18px;margin-bottom:18px}
+.kmsg-t{font-size:15px;font-weight:800;color:#5b21b6;margin-bottom:6px}
+.kmsg-b{font-size:14px;color:#334155;line-height:1.55}
+.kmsg-b strong{color:#1e293b}
+.hl{background:#fef3c7;padding:1px 4px;border-radius:3px;font-weight:700}
+
+/* Risk factors */
+.rf{background:#fff;border-radius:12px;padding:16px 18px 14px;border:1px solid #e2e8f0;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.rf-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.rf-ti{font-size:16px;font-weight:700}
+.rf-ct{padding:2px 8px;border-radius:10px;font-size:13px;font-weight:700}
+.sels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.sl{font-size:14px;font-weight:600;margin-bottom:5px}
+.sbs{display:flex;gap:4px}
+.sb{flex:1;padding:6px 2px;border-radius:6px;border:1.5px solid #e2e8f0;background:#fff;color:#64748b;font-weight:600;font-size:14px;cursor:pointer;transition:all .15s;text-align:center}
+.sb.ap{border-color:#7c3aed;background:rgba(124,58,237,.07);color:#7c3aed}
+.sb.ac{border-color:#0891b2;background:rgba(8,145,178,.07);color:#0891b2}
+.tgs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.tg{display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:7px 10px;border-radius:7px;border:1.5px solid #e2e8f0;background:#fff;transition:all .15s}
+.tg.on{background:#f0fdf4;border-color:#86efac}
+.tg.ona{background:#fffbeb;border-color:#fcd34d}
+.tg input{margin-top:2px;accent-color:#16a34a;width:15px;height:15px;flex-shrink:0}
+.tl{font-size:14px;font-weight:600}
+.ts{font-size:12px;color:#64748b;margin-top:1px}
+
+/* Sections */
+.sec{margin-bottom:10px}
+.sec-r{display:flex;align-items:center;gap:7px}
+.sec-i{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-size:16px}
+.sec-t{font-size:19px;font-weight:800;letter-spacing:-.3px}
+.sec-s{font-size:13px;color:#94a3b8;margin-top:2px;margin-left:35px}
+
+/* Cards grid */
+.cds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.cds.c3{grid-template-columns:1fr 1fr 1fr}
+.cd{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.cd.fw{grid-column:1/-1}
+.cd-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;gap:6px}
+.cd-ti{font-size:15px;font-weight:700;line-height:1.3}
+.cd-ds{font-size:13px;color:#64748b;margin-bottom:10px;line-height:1.4}
+.cd-ab{font-size:13px;color:#475569;margin-top:8px;line-height:1.5}
+.cd-ab em{font-style:normal;font-weight:700;color:#1e293b}
+.cd-ci{margin-top:6px;display:flex;gap:3px;flex-wrap:wrap}
+.efi{margin-top:8px;padding:8px 10px;border-radius:7px;background:#fefce8;border:1px solid #fde047;font-size:13px;line-height:1.45;color:#713f12}
+.efi strong{color:#92400e}
+
+/* Evidence badges */
+.ev{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:10px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.ev .d{font-size:12px;letter-spacing:2px}
+.ev-s{background:#dcfce7;color:#16a34a}
+.ev-m{background:#fef3c7;color:#d97706}
+.ev-l{background:#fee2e2;color:#dc2626}
+
+/* Spectrum */
+.sw{position:relative;padding-top:22px;margin-bottom:2px}
+.sw-e{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.sw-t{position:relative;height:24px;border-radius:12px}
+.sw-bg{position:absolute;inset:0;border-radius:12px}
+.sw-t.benefit .sw-bg{background:linear-gradient(90deg,#e2e8f0 0%,#fcd34d 25%,#67e8f9 52%,#6ee7b7 78%,#22c55e 100%)}
+.sw-t.risk .sw-bg{background:linear-gradient(90deg,#86efac 0%,#fcd34d 30%,#fda4af 62%,#f87171 85%,#dc2626 100%)}
+.sw-t.suit .sw-bg{background:linear-gradient(90deg,#cbd5e1 0%,#93c5fd 28%,#67e8f9 52%,#5eead4 78%,#2dd4bf 100%)}
+.sw-dv{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.4);z-index:1}
+.sw-bd{position:absolute;top:2px;bottom:2px;border-radius:10px;background:rgba(255,255,255,.5);border-top:2px solid rgba(255,255,255,.85);border-bottom:2px solid rgba(255,255,255,.85);z-index:2;transition:left .6s cubic-bezier(.4,0,.2,1),width .6s cubic-bezier(.4,0,.2,1)}
+.sw-mk{position:absolute;top:50%;width:15px;height:15px;background:#1e293b;border:2.5px solid #fff;border-radius:3px;transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:4;transition:left .7s cubic-bezier(.4,0,.2,1)}
+.sw-zn{position:absolute;top:-20px;transform:translateX(-50%);font-size:12px;font-weight:800;letter-spacing:.3px;padding:2px 8px;border-radius:6px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.08);z-index:5;transition:left .7s cubic-bezier(.4,0,.2,1),background .3s,color .3s}
+
+/* Citation badges */
+.cb{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:4px;font-size:12px;font-weight:600;cursor:help;position:relative;transition:all .15s}
+.cb:hover{filter:brightness(.88)}
+.ctt{display:none;position:absolute;bottom:100%;left:0;margin-bottom:6px;z-index:9999;width:320px;padding:10px 12px;border-radius:8px;background:#1e293b;color:#f1f5f9;font-size:13px;line-height:1.5;box-shadow:0 8px 30px rgba(0,0,0,.3);pointer-events:none}
+.cb:hover .ctt{display:block}
+.ctt-t{font-weight:700;margin-bottom:3px;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:.8px}
+
+/* Verdict */
+.vd{padding:14px 18px;border-radius:12px;margin-top:16px}
+.vd-h{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.vd-i{font-size:22px}
+.vd-l{font-size:18px;font-weight:800}
+.vd-tx{font-size:15px;color:#1e293b;line-height:1.55;font-weight:600}
+
+/* Legend */
+.leg{margin-top:14px;padding:10px 14px;border-radius:8px;background:#f8fafc;border:1px solid #e2e8f0}
+.leg-t{font-size:13px;font-weight:700;color:#475569;margin-bottom:6px}
+.leg-g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.leg-i{font-size:12px;color:#64748b;display:flex;align-items:center;gap:5px}
+.leg-sw{display:inline-block;width:30px;height:10px;border-radius:5px;flex-shrink:0}
+
+/* References */
+.refs{margin-top:20px;padding:14px 18px;border-radius:10px;background:#fff;border:1px solid #e2e8f0}
+.refs-t{font-size:15px;font-weight:800;color:#0f172a;margin-bottom:8px}
+.ref{font-size:13px;color:#475569;line-height:1.5;padding:3px 0;border-bottom:1px solid #f1f5f9}
+.ref:last-child{border-bottom:none}
+.ref b{color:#7c3aed;margin-right:3px}
+
+/* Disclaimer */
+.disc{margin-top:14px;padding:12px 16px;border-radius:10px;background:#fef2f2;border:1.5px solid #fecaca}
+.disc-t{font-size:13px;font-weight:800;color:#dc2626;margin-bottom:4px}
+.disc-b{font-size:13px;color:#7f1d1d;line-height:1.5}
+
+/* Responsive */
+@media(max-width:768px){.ep{padding:14px 10px}.sels{grid-template-columns:1fr}.tgs{grid-template-columns:1fr 1fr}.cds,.cds.c3{grid-template-columns:1fr}.leg-g{grid-template-columns:1fr}.hdr h1{font-size:22px}}
+@media(max-width:480px){.tgs{grid-template-columns:1fr}.sbs{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="ep" id="root"></div>
+<script>
+(function(){
+
+var SRC = {
+  NICE:    {s:"NICE 2024",      f:"NICE Guideline NG73: Endometriosis \u2013 Diagnosis and Management. Updated November 2024.",                                                           c:"#1d4ed8", t:"Clinical Guideline", n:1},
+  ESHRE:   {s:"ESHRE 2022",     f:"Becker CM, Bokor A, Heikinheimo O, et al. ESHRE Guideline: Endometriosis. Hum Reprod Open 2022;2022(2):hoac009.",                                      c:"#059669", t:"Clinical Guideline", n:2},
+  AUS:     {s:"Australian CPG", f:"Australian Living Evidence Guideline: Endometriosis \u2013 Clinical Practice Guideline. 2024.",                                                         c:"#d97706", t:"Clinical Guideline", n:3},
+  LAMARCA: {s:"La Marca 2025",  f:"La Marca A, Mastellari E. Fertility preservation in women with endometriosis. Hum Reprod Open 2025;2025(2):hoaf012.",                                   c:"#7c3aed", t:"Systematic Review", n:4},
+  COBO20:  {s:"Cobo 2020",      f:"Cobo A, et al. Oocyte vitrification for fertility preservation in women with endometriosis. Fertil Steril 2020;113(4):836\u2013844.",                   c:"#0891b2", t:"Observational (n=1,044)", n:5},
+  COBO21:  {s:"Cobo 2021",      f:"Cobo A, et al. Cumulative live birth rate after fertility preservation in endometriosis. Reprod Biomed Online 2021;42(4):725\u2013732.",                c:"#0891b2", t:"Observational (n=485)", n:6},
+  DUFFY:   {s:"Duffy 2014",     f:"Duffy JMN, et al. Laparoscopic surgery for endometriosis. Cochrane Database Syst Rev 2014;(4):CD011031.",                                              c:"#dc2626", t:"Cochrane Review", n:7},
+  MARCOUX: {s:"Marcoux 1997",   f:"Marcoux S, et al. Laparoscopic surgery in infertile women with minimal/mild endometriosis. N Engl J Med 1997;337(4):217\u2013222.",                     c:"#dc2626", t:"RCT (n=341)", n:8},
+  ADAMSON: {s:"Adamson 1994",   f:"Adamson GD, Pasta DJ. Surgical treatment of endometriosis-associated infertility. Am J Obstet Gynecol 1994;171(6):1488\u20131504.",                     c:"#475569", t:"Meta-analysis", n:9},
+  BUSACCA: {s:"Busacca 2006",   f:"Busacca M, et al. Postsurgical ovarian failure after bilateral endometrioma excision. Am J Obstet Gynecol 2006;195(2):421\u2013425.",                   c:"#475569", t:"Observational", n:10},
+  RAFFI:   {s:"Raffi 2012",     f:"Raffi F, et al. Impact of excision of ovarian endometrioma on ovarian reserve: SR & meta-analysis. J Clin Endocrinol Metab 2012;97(9):3146\u20133154.", c:"#dc2626", t:"SR & Meta-analysis", n:11},
+  LIANG:   {s:"Liang 2024",     f:"Liang Y, et al. First-line surgery vs first-line ART for women with DIE: SR & meta-analysis. Front Endocrinol 2024;15:1352770.",                        c:"#475569", t:"SR & Meta-analysis", n:12},
+  HYDRO:   {s:"NICE Fertility", f:"NICE CG156: Fertility Problems \u2013 Assessment and Treatment. Salpingectomy for hydrosalpinx before IVF. Updated 2017.",                              c:"#1d4ed8", t:"Clinical Guideline", n:13}
+};
+
+var BZ=[{m:15,l:'Unlikely',c:'#64748b',b:'#f1f5f9'},{m:35,l:'Possible',c:'#b45309',b:'#fef3c7'},{m:55,l:'Moderately Likely',c:'#0e7490',b:'#e0f7fa'},{m:75,l:'Likely',c:'#059669',b:'#dcfce7'},{m:100,l:'Very Likely',c:'#15803d',b:'#bbf7d0'}];
+var RZ=[{m:20,l:'Low',c:'#16a34a',b:'#dcfce7'},{m:40,l:'Some Risk',c:'#b45309',b:'#fef3c7'},{m:60,l:'Moderate',c:'#ea580c',b:'#ffedd5'},{m:80,l:'High',c:'#dc2626',b:'#fee2e2'},{m:100,l:'Very High',c:'#991b1b',b:'#fecaca'}];
+var SZn=[{m:20,l:'Low Priority',c:'#64748b',b:'#f1f5f9'},{m:40,l:'Consider',c:'#0284c7',b:'#e0f2fe'},{m:60,l:'Recommended',c:'#0891b2',b:'#e0f7fa'},{m:80,l:'Strongly Rec.',c:'#0d9488',b:'#ccfbf1'},{m:100,l:'Strongly Rec.',c:'#059669',b:'#d1fae5'}];
+
+function gz(v,z){for(var i=0;i<z.length;i++)if(v<=z[i].m)return z[i];return z[z.length-1];}
+
+var S={age:'30-35',stage:'III-IV',bilateral:false,priorSx:false,lowAMH:false,recurrent:false,large:false,die:false,hydro:false};
+
+function citeH(id){
+  var s=SRC[id];if(!s)return '';
+  return '<span class="cb" style="background:'+s.c+'10;color:'+s.c+';border:1px solid '+s.c+'25">'+s.s+'<span class="ctt"><div class="ctt-t">'+s.t+'</div>'+s.f+'</span></span>';
+}
+function citesH(arr){return arr.map(citeH).join('');}
+
+function evH(lv){
+  var m={strong:{c:'ev-s',d:'\u25cf\u25cf\u25cf',l:'Strong'},moderate:{c:'ev-m',d:'\u25cf\u25cf\u25cb',l:'Moderate'},limited:{c:'ev-l',d:'\u25cf\u25cb\u25cb',l:'Limited'}};
+  var x=m[lv];return '<span class="ev '+x.c+'"><span class="d">'+x.d+'</span>'+x.l+'</span>';
+}
+
+function spH(val,lo,hi,type,zones,uid){
+  var endL={benefit:'Unlikely',risk:'Low',suit:'Low Priority'};
+  var endR={benefit:'Very Likely',risk:'Very High',suit:'Strongly Indicated'};
+  var z=gz(val,zones);
+  return '<div class="sw" data-v="'+val+'" data-lo="'+lo+'" data-hi="'+hi+'" id="'+uid+'">'+
+    '<div class="sw-e"><span>'+endL[type]+'</span><span>'+endR[type]+'</span></div>'+
+    '<div class="sw-t '+type+'"><div class="sw-bg"></div>'+
+    '<div class="sw-dv" style="left:25%"></div><div class="sw-dv" style="left:50%"></div><div class="sw-dv" style="left:75%"></div>'+
+    '<div class="sw-bd"></div><div class="sw-mk"></div>'+
+    '<div class="sw-zn" style="background:'+z.b+';color:'+z.c+'">'+z.l+'</div>'+
+    '</div></div>';
+}
+
+function cardH(o,uid){
+  return '<div class="cd'+(o.fw?' fw':'')+'">'+
+    '<div class="cd-hd"><div class="cd-ti">'+o.title+'</div>'+evH(o.ev)+'</div>'+
+    '<div class="cd-ds">'+o.desc+'</div>'+
+    spH(o.val,o.lo,o.hi,o.type,o.zones,uid)+
+    '<div class="cd-ab">'+o.abs+'</div>'+
+    (o.callout?'<div class="efi">'+o.callout+'</div>':'')+
+    '<div class="cd-ci">'+citesH(o.src)+'</div></div>';
+}
+
+function compute(){
+  var f=S;
+  var older=f.age==='over35',mid=f.age==='30-35',adv=f.stage==='III-IV';
+  var fpW=0;if(older)fpW+=2;else if(mid)fpW+=1;
+  if(f.bilateral)fpW+=2;if(f.priorSx)fpW+=2;if(f.lowAMH)fpW+=2;if(f.recurrent)fpW+=2;if(f.large)fpW+=1;if(adv)fpW+=1;if(f.die)fpW+=1;
+
+  var pain={val:f.die?72:adv?65:62,lo:f.die?50:adv?42:40,hi:f.die?88:adv?82:80,
+    ev:adv?'moderate':'strong',type:'benefit',zones:BZ,
+    abs:adv?'Most women with advanced disease report meaningful pain improvement after surgery, though the <em>range of outcomes is broad</em> and some experience partial or temporary relief.':'The majority with early-stage disease report pain improvement after excision/ablation. Supported by <em>RCT-level evidence</em>, though individual responses vary.',
+    src:['DUFFY','ESHRE','NICE','AUS']};
+
+  var pv=adv?(f.priorSx?28:45):55,plo=adv?(f.priorSx?15:28):38,phi=adv?(f.priorSx?48:60):72;
+  var pSrc=adv?['ADAMSON','LIANG','ESHRE']:['MARCOUX','DUFFY','NICE','ESHRE'];
+  var pAbs,pCall=null;
+  if(adv){
+    pAbs='For advanced disease, natural pregnancy rates after surgery are <em>uncertain</em>'+(f.priorSx?' and repeat surgery shows <em>diminishing benefit</em>':'')+'.';
+    pCall='<strong>\u26a0 Endometriosis Fertility Index (EFI):</strong> For advanced-stage disease, the EFI can help guide whether to try natural conception or proceed directly to IVF. Discuss with your fertility specialist \u2014 <strong>IVF may be equally or more effective than further surgery</strong>.';
+  }else{
+    pAbs='For early-stage disease, surgery to remove lesions and adhesions <em>improves natural pregnancy rates</em>. NICE recommends excision/ablation plus adhesiolysis when fertility is a priority.';
+  }
+  if(f.hydro){
+    pAbs+='<br><br><strong>\u26a0 Hydrosalpinx / tubal fluid:</strong> Fluid in the fallopian tube(s) is associated with <em>significantly reduced pregnancy rates</em>, including lower IVF success. NICE recommends considering salpingectomy (tube removal) before IVF.';
+    pSrc=pSrc.concat(['HYDRO']);
+    if(pv>20){pv=Math.round(pv*0.55);plo=Math.round(plo*0.5);phi=Math.round(phi*0.65);}
+  }
+  var preg={val:pv,lo:plo,hi:phi,ev:adv?'moderate':'strong',type:'benefit',zones:BZ,abs:pAbs,callout:pCall,src:pSrc,fw:true};
+
+  var dmg=22;if(f.bilateral)dmg+=22;if(f.priorSx)dmg+=18;if(f.lowAMH)dmg+=12;if(f.large)dmg+=6;dmg=Math.min(dmg,90);
+  var damage={val:dmg,lo:Math.max(dmg-18,5),hi:Math.min(dmg+15,95),ev:'strong',type:'risk',zones:RZ,
+    abs:'Ovarian cystectomy causes measurable AMH decline. NICE notes <em>ablation/drainage may preserve reserve better</em> than cystectomy. POF risk: 2\u201313% per procedure, higher with bilateral or repeat surgery.',
+    src:['BUSACCA','RAFFI','NICE','ESHRE','LAMARCA']};
+
+  var fpV=Math.min(Math.round((fpW/14)*100),95);fpV=Math.max(fpV,8);
+  var fp={val:fpV,lo:Math.max(fpV-14,4),hi:Math.min(fpV+14,98),
+    ev:fpW>=6?'strong':fpW>=3?'moderate':'limited',type:'suit',zones:SZn,
+    abs:fpW>=6?'Multiple high-risk indicators. <em>FP counselling strongly recommended</em> before surgery.':fpW>=3?'Some risk indicators. FP should be <em>discussed with a fertility specialist</em>.':'Lower-risk profile. Standard monitoring may suffice; counselling still recommended per ESHRE.',
+    src:['LAMARCA','COBO21','ESHRE']};
+
+  var oo=12;if(older)oo-=3;else if(mid)oo-=1;if(f.priorSx)oo-=3;if(f.bilateral)oo-=2;if(f.lowAMH)oo-=3;oo=Math.max(oo,3);
+  var ooP=Math.round((oo/20)*100);
+  var oocyte={val:ooP,lo:Math.round(Math.max((oo-3)/20,.05)*100),hi:Math.round(Math.min((oo+4)/20,1)*100),
+    ev:'moderate',type:'benefit',zones:BZ,
+    abs:oo<8?'Expected yield <em>below target</em> (10\u201320 MII oocytes/cycle). Multiple cycles likely needed.':'Reasonable yield. '+(older?'At >35, more oocytes needed for equivalent outcomes.':'At \u226435, ~20 vitrified oocytes = high cumulative live birth rate.'),
+    src:['COBO20','COBO21','LAMARCA']};
+
+  var lbr=older?48:70;if(f.priorSx)lbr-=8;if(f.lowAMH)lbr-=10;if(f.bilateral)lbr-=5;lbr=Math.max(lbr,18);
+  var lbrE={val:lbr,lo:Math.max(lbr-20,8),hi:Math.min(lbr+16,96),ev:'strong',type:'benefit',zones:BZ,
+    abs:'Depends on <em>age at freezing</em> and <em>number stored</em>. Disease stage does not significantly reduce outcomes when adequate oocytes retrieved.',
+    src:['COBO21','COBO20','LAMARCA']};
+
+  // Verdict
+  var fpH=fpV>=58,dmgH=dmg>=48;
+  var vCol,vBg,vIcon,vTx;
+  if(fpH&&dmgH){vCol='#dc2626';vBg='#fef2f2';vIcon='\u26a0';vTx='<strong>High surgical risk to ovarian reserve with strong fertility preservation indication.</strong> Consider FP before any surgical intervention. An IVF-first approach may be preferable per ESHRE and NICE guidance.';}
+  else if(fpH){vCol='#d97706';vBg='#fffbeb';vIcon='\u25c6';vTx='<strong>Fertility preservation is strongly indicated for this risk profile.</strong> Specialist counselling recommended. NICE advises referral to a specialist endometriosis centre for endometrioma or deep disease.';}
+  else if(dmgH){vCol='#d97706';vBg='#fffbeb';vIcon='\u25c6';vTx='<strong>Elevated risk of ovarian reserve damage from surgery.</strong> NICE notes ablation/drainage may preserve reserve better than cystectomy. Discuss surgical technique and consider FP counselling.';}
+  else{vCol='#16a34a';vBg='#f0fdf4';vIcon='\u25cf';vTx='<strong>Lower-risk profile.</strong> Standard management per NICE: initial pharmacological treatment alongside investigations and referral as needed. Consider periodic AMH monitoring.';}
+  if(f.hydro)vTx+=' <strong>Hydrosalpinx present \u2014 salpingectomy should be discussed before any IVF.</strong>';
+
+  return{pain:pain,preg:preg,damage:damage,fp:fp,oocyte:oocyte,lbr:lbrE,
+    vCol:vCol,vBg:vBg,vIcon:vIcon,vTx:vTx};
+}
+
+function render(){
+  var o=compute();
+  var rc=[S.age==='over35',S.bilateral,S.priorSx,S.lowAMH,S.recurrent,S.large,S.die,S.stage==='III-IV',S.hydro].filter(Boolean).length;
+  var rcBg=rc>=4?'#fee2e2':rc>=2?'#fef3c7':'#dcfce7';
+  var rcCol=rc>=4?'#dc2626':rc>=2?'#d97706':'#16a34a';
+
+  var ages=[{v:'under30',l:'< 30'},{v:'30-35',l:'30\u201335'},{v:'over35',l:'> 35'}];
+  var stages=[{v:'I-II',l:'I\u2013II'},{v:'III-IV',l:'III\u2013IV'},{v:'unknown',l:'Unknown'}];
+  var tgData=[
+    {k:'bilateral',l:'Bilateral endometriomas',s:'Both ovaries affected'},
+    {k:'priorSx',l:'Prior ovarian surgery',s:'Previous cystectomy/ablation'},
+    {k:'lowAMH',l:'Reduced ovarian reserve',s:'Low AMH or AFC for age'},
+    {k:'recurrent',l:'Recurrent endometrioma',s:'Post-surgical recurrence'},
+    {k:'large',l:'Endometrioma > 4 cm',s:'Large cyst on imaging'},
+    {k:'die',l:'Deep infiltrating (DIE)',s:'Bowel/bladder/ureter'},
+    {k:'hydro',l:'Hydrosalpinx / tubal fluid',s:'Fluid visible in fallopian tube(s)'}
+  ];
+
+  var srcPills=['NICE','ESHRE','AUS','LAMARCA'].map(function(id){var s=SRC[id];return '<span class="sp" style="background:'+s.c+'10;color:'+s.c+';border:1px solid '+s.c+'20">'+s.s+'</span>';}).join('');
+
+  var agesBtns=ages.map(function(a){return '<button class="sb'+(a.v===S.age?' ap':'')+'" data-age="'+a.v+'">'+a.l+'</button>';}).join('');
+  var stageBtns=stages.map(function(s){return '<button class="sb'+(s.v===S.stage?' ac':'')+'" data-stg="'+s.v+'">'+s.l+'</button>';}).join('');
+  var tgsH=tgData.map(function(t){
+    var on=S[t.k];var cls='tg'+(on?(t.k==='hydro'?' ona':' on'):'');
+    return '<label class="'+cls+'"><input type="checkbox" data-tk="'+t.k+'"'+(on?' checked':'')+'><div><div class="tl">'+t.l+'</div><div class="ts">'+t.s+'</div></div></label>';
+  }).join('');
+
+  var refsH=Object.keys(SRC).map(function(k){return SRC[k];}).sort(function(a,b){return a.n-b.n;}).map(function(s){return '<div class="ref"><b>'+s.n+'.</b> '+s.f+'</div>';}).join('');
+
+  var html=
+    // Header
+    '<div class="hdr"><div class="tag">Evidence-Based \u00b7 Interactive</div>'+
+    '<h1>When Does Surgery Help Most in Endometriosis?</h1>'+
+    '<p>This tool summarises international guideline evidence on <strong>surgical outcomes for pain and fertility</strong>. Select patient characteristics \u2014 the spectrums show direction and strength of expected benefit. Wider white bands = greater uncertainty. Hover <span style="padding:0 4px;border-radius:3px;background:#ede9fe;color:#7c3aed;font-weight:600;font-size:12px">citation badges</span> for full references.</p>'+
+    '<div class="srcs">'+srcPills+'</div></div>'+
+
+    // Key message
+    '<div class="kmsg"><div class="kmsg-t">\ud83d\udca1 When is surgery most likely to help?</div><div class="kmsg-b">'+
+    '<strong>For pain:</strong> Surgery is <span class="hl">most beneficial for stage I\u2013II disease</span> with clear peritoneal lesions (RCT evidence). For deep infiltrating disease, pain relief is common but outcomes are more variable.<br><br>'+
+    '<strong>For fertility:</strong> Surgery improves natural conception in <span class="hl">stage I\u2013II endometriosis</span> (strong RCT evidence). For advanced disease (III\u2013IV), benefit is less certain and <span class="hl">IVF may be equally or more effective</span>. Each repeat surgery further reduces ovarian reserve.<br><br>'+
+    '<strong>Key principle:</strong> The benefit of surgery declines with each additional procedure, while the risk to ovarian reserve accumulates. If fertility is a priority, the decision between surgery and assisted reproduction should be made carefully with a specialist.</div></div>'+
+
+    // Risk factors
+    '<div class="rf"><div class="rf-hd"><div class="rf-ti">Patient Risk Factors</div><div class="rf-ct" style="background:'+rcBg+';color:'+rcCol+'">'+rc+' active</div></div>'+
+    '<div class="sels"><div><div class="sl">Patient age</div><div class="sbs">'+agesBtns+'</div></div><div><div class="sl">ASRM stage</div><div class="sbs">'+stageBtns+'</div></div></div>'+
+    '<div class="tgs">'+tgsH+'</div></div>'+
+
+    // Surgical section
+    '<div class="sec"><div class="sec-r"><div class="sec-i" style="background:rgba(124,58,237,.08);color:#7c3aed">\u2695</div><div class="sec-t">Surgical Outcomes</div></div><div class="sec-s">Expected benefits and risks if surgery proceeds</div></div>'+
+    '<div class="cds">'+
+      cardH({title:'Pain Improvement After Surgery',desc:'Likelihood of meaningful pain reduction following excision or ablation',val:o.pain.val,lo:o.pain.lo,hi:o.pain.hi,ev:o.pain.ev,type:'benefit',zones:BZ,abs:o.pain.abs,src:o.pain.src},'sw-pain')+
+      cardH({title:'Natural Pregnancy Post-Surgery',desc:'Chance of spontaneous conception within 3 years',val:o.preg.val,lo:o.preg.lo,hi:o.preg.hi,ev:o.preg.ev,type:'benefit',zones:BZ,abs:o.preg.abs,callout:o.preg.callout,src:o.preg.src,fw:true},'sw-preg')+
+      cardH({title:'Ovarian Reserve Damage',desc:'Risk of significant AMH decline from ovarian surgery',val:o.damage.val,lo:o.damage.lo,hi:o.damage.hi,ev:o.damage.ev,type:'risk',zones:RZ,abs:o.damage.abs,src:o.damage.src},'sw-dmg')+
+    '</div>'+
+
+    // FP section
+    '<div class="sec"><div class="sec-r"><div class="sec-i" style="background:rgba(8,145,178,.08);color:#0891b2">\u2744</div><div class="sec-t">Fertility Preservation Suitability</div></div><div class="sec-s">Risk profile \u2014 La Marca 2025 Table 1 + guideline recommendations</div></div>'+
+    '<div class="cds c3">'+
+      cardH({title:'FP Indication',desc:'Recommendation strength for fertility preservation',val:o.fp.val,lo:o.fp.lo,hi:o.fp.hi,ev:o.fp.ev,type:'suit',zones:SZn,abs:o.fp.abs,src:o.fp.src},'sw-fp')+
+      cardH({title:'Oocyte Yield / Cycle',desc:'Relative to target of 10\u201320 mature oocytes',val:o.oocyte.val,lo:o.oocyte.lo,hi:o.oocyte.hi,ev:o.oocyte.ev,type:'benefit',zones:BZ,abs:o.oocyte.abs,src:o.oocyte.src},'sw-oo')+
+      cardH({title:'Cumulative Live Birth Rate',desc:'From vitrified oocytes',val:o.lbr.val,lo:o.lbr.lo,hi:o.lbr.hi,ev:o.lbr.ev,type:'benefit',zones:BZ,abs:o.lbr.abs,src:o.lbr.src},'sw-lbr')+
+    '</div>'+
+
+    // Verdict
+    '<div class="vd" style="background:'+o.vBg+';border:1.5px solid '+o.vCol+'25"><div class="vd-h"><span class="vd-i">'+o.vIcon+'</span><span class="vd-l" style="color:'+o.vCol+'">Clinical Summary</span></div><div class="vd-tx">'+o.vTx+'</div></div>'+
+
+    // Legend
+    '<div class="leg"><div class="leg-t">How to read the spectrums</div><div class="leg-g">'+
+    '<div class="leg-i"><span class="leg-sw" style="background:linear-gradient(90deg,#e2e8f0,#fcd34d,#6ee7b7,#22c55e)"></span>Benefit: unlikely \u2192 very likely</div>'+
+    '<div class="leg-i"><span class="leg-sw" style="background:linear-gradient(90deg,#86efac,#fcd34d,#fda4af,#dc2626)"></span>Risk: low \u2192 very high</div>'+
+    '<div class="leg-i"><span style="width:12px;height:12px;background:#1e293b;border:2px solid #fff;border-radius:2px;transform:rotate(45deg);display:inline-block;box-shadow:0 1px 3px rgba(0,0,0,.2);flex-shrink:0"></span> = best estimate &emsp;<span style="width:22px;height:8px;display:inline-block;border-radius:4px;background:rgba(255,255,255,.6);border:1.5px solid rgba(200,200,200,.7)"></span> = uncertainty</div>'+
+    '</div></div>'+
+
+    // References
+    '<div class="refs"><div class="refs-t">Full References</div>'+refsH+'</div>'+
+
+    // Disclaimer
+    '<div class="disc"><div class="disc-t">\u26a0 Important Disclaimer</div><div class="disc-b">This tool is for <strong>informational and educational purposes only</strong>. It is <strong>not a substitute for professional medical advice, diagnosis, or treatment</strong>. The estimates shown are derived from population-level research and may not apply to your individual situation. Always discuss your specific circumstances with your treating specialist. Endometriosis management should involve a multidisciplinary team approach.</div></div>';
+
+  document.getElementById('root').innerHTML=html;
+
+  // Animate spectrums
+  document.querySelectorAll('.sw').forEach(function(sw){
+    var v=parseInt(sw.getAttribute('data-v'));
+    var lo=parseInt(sw.getAttribute('data-lo'));
+    var hi=parseInt(sw.getAttribute('data-hi'));
+    var bd=sw.querySelector('.sw-bd');
+    var mk=sw.querySelector('.sw-mk');
+    var zn=sw.querySelector('.sw-zn');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      bd.style.left=lo+'%';bd.style.width=(hi-lo)+'%';
+      mk.style.left=Math.max(8,Math.min(92,v))+'%';
+      zn.style.left=Math.max(14,Math.min(86,v))+'%';
+    });});
+  });
+
+  // Bind events
+  document.querySelectorAll('[data-age]').forEach(function(b){
+    b.onclick=function(){S.age=b.getAttribute('data-age');render();};
+  });
+  document.querySelectorAll('[data-stg]').forEach(function(b){
+    b.onclick=function(){S.stage=b.getAttribute('data-stg');render();};
+  });
+  document.querySelectorAll('[data-tk]').forEach(function(cb){
+    cb.onchange=function(){S[cb.getAttribute('data-tk')]=cb.checked;render();};
+  });
+}
+
+render();
+})();
+</script>
+</body>
+</html>
