@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Fertility Decision Support</title>
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
+
+        /* ── HEADER ── */
+        header { padding: 1.5rem 5%; background: rgba(248,247,245,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(44,44,44,0.1); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: #2c2c2c; display: flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo-icon { width: 16px; height: 24px; margin: 0 -2px; }
+        nav { display: flex; gap: 2rem; }
+        nav a { color: #4a6741; text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: opacity 0.2s; }
+        nav a:hover { opacity: 0.7; }
+
+        /* ── LAYOUT ── */
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+        .hero { text-align: center; margin-bottom: 2.5rem; }
+        .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: #2c2c2c; margin-bottom: 0.5rem; }
+        .hero p { font-size: 0.95rem; color: #888; }
+
+        /* ── SEARCH CARD ── */
+        .search-card { background: #fff; border-radius: 16px; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 3rem; }
+        .search-label { display: inline-block; background: rgba(74,103,65,0.12); color: #4a6741; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem; }
+        .search-title { font-family: 'Cormorant Garamond', serif; font-size: 1.65rem; font-weight: 400; color: #2c2c2c; margin-bottom: 1.25rem; }
+        .search-container { position: relative; margin-bottom: 1.25rem; }
+        .search-input { width: 100%; border: 2px solid #e8e8e8; border-radius: 12px; padding: 1rem 6rem 1rem 1.25rem; font-size: 1rem; font-family: inherit; transition: border-color 0.2s; background: #f8f7f5; }
+        .search-input:focus { outline: none; border-color: #4a6741; }
+        .search-input::placeholder { color: #aaa; }
+        .search-button { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); padding: 0.7rem 1.4rem; background: linear-gradient(135deg, #4a6741, #5a7d50); color: #fff; border: none; border-radius: 8px; font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+        .search-button:hover { opacity: 0.88; }
+        .quick-searches { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .quick-search { padding: 0.45rem 0.9rem; background: #f8f7f5; border: 1.5px solid #e8e8e8; border-radius: 10px; font-size: 0.82rem; color: #666; cursor: pointer; transition: all 0.2s; }
+        .quick-search:hover { border-color: #4a6741; background: #f0f7ef; color: #2c2c2c; }
+
+        /* ── HEIDI-STYLE LOADING ── */
+        .loading { display: none; margin-top: 1.5rem; padding: 0.75rem 0; }
+        .loading.active { display: block; }
+        .loading-title { font-size: 0.8rem; color: #aaa; font-style: italic; margin-bottom: 0.5rem; }
+        .loading-steps-list { list-style: none; }
+        .loading-step { display: flex; align-items: center; gap: 0.55rem; padding: 0.3rem 0; font-size: 0.82rem; color: #ccc; opacity: 0; transform: translateY(3px); transition: opacity 0.3s, transform 0.3s, color 0.3s; }
+        .loading-step.vis { opacity: 1; transform: translateY(0); color: #555; }
+        .loading-step.done { opacity: 0.35; color: #bbb; }
+        .step-spin { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #ddd; border-top-color: #4a6741; animation: spin 0.75s linear infinite; flex-shrink: 0; }
+        .step-check { width: 12px; height: 12px; flex-shrink: 0; font-size: 11px; color: #4a6741; line-height: 1; }
+        .step-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #ddd; flex-shrink: 0; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── RESULTS ── */
+        .results-container { display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
+        .results-container.active { display: block; }
+        .result-label { font-size: 0.72rem; font-weight: 600; color: #bbb; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+
+        /* ── RESPONSE SECTIONS ── */
+        .response-section { border-radius: 12px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; }
+        .response-section.guideline { background: #f0f7ef; border-left: 4px solid #4a6741; }
+        .response-section.specialist { background: #f3f0f8; border-left: 4px solid #6b5b95; }
+        .response-section.clinical { background: #fef9f0; border-left: 4px solid #c8a45e; }
+        .section-header { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; padding: 0.28rem 0.8rem; border-radius: 20px; margin-bottom: 0.3rem; color: #fff; }
+        .section-header.guideline { background: #4a6741; }
+        .section-header.specialist { background: #6b5b95; }
+        .section-header.clinical { background: #c8a45e; }
+        .evidence-note { font-size: 0.7rem; color: #aaa; margin-bottom: 0.9rem; }
+        .response-section p, .response-section li { font-size: 0.93rem; line-height: 1.82; color: #333; margin-bottom: 0.45rem; }
+        .response-section ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+        .response-section strong { color: #1a1a1a; font-weight: 600; }
+        .calc-card { background: rgba(0,0,0,0.04); border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.5rem; font-size: 0.88rem; }
+        .calc-card-title { font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 0.3rem; }
+        .calc-row { margin-bottom: 0.15rem; }
+        .calc-key { color: #888; }
+        .calc-val { font-weight: 600; color: #1a1a1a; }
+        .referral-badge { border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; font-size: 0.88rem; }
+        .referral-badge.urgent { background: rgba(220,53,69,0.08); border-left: 3px solid #dc3545; }
+        .referral-badge.standard { background: rgba(255,193,7,0.1); border-left: 3px solid #ffc107; }
+        .referral-badge.not_needed { background: rgba(74,103,65,0.08); border-left: 3px solid #4a6741; }
+        .safety-box { background: rgba(220,53,69,0.06); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; }
+        .gp-script { background: rgba(74,103,65,0.07); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; font-style: italic; font-size: 0.88rem; }
+
+        /* ═══════════════════════════════════════════════════
+           L3 CLINICAL PRACTICE — PERMANENT GATE
+           No hover. No CSS tricks. Always visible.
+           The gate IS the section header. Content below is faded.
+        ═══════════════════════════════════════════════════ */
+
+        .l3-block {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            border: 2px solid rgba(200,164,94,0.4);
+            box-shadow: 0 4px 18px rgba(200,164,94,0.18);
+        }
+
+        .l3-gate-bar {
+            background: linear-gradient(135deg, #c8a45e 0%, #b8944e 100%);
+            padding: 1rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .l3-gate-circles {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .l3-gate-circle {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .l3-gate-circle:hover { transform: scale(1.1); box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+
+        .l3-gate-circle.photo {
+            border: 2.5px solid #fff;
+            overflow: visible;
+            background: #fff;
+        }
+        .l3-gate-circle.photo .circle-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+        .l3-gate-circle.photo::after {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 16px; height: 16px;
+            background: #25D366;
+            border-radius: 50%;
+            border: 2px solid #c8a45e;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z'/%3E%3C/svg%3E");
+            background-size: 9px; background-repeat: no-repeat; background-position: center;
+        }
+        .l3-photo-ring {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.6);
+            animation: l3Pulse 2.2s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes l3Pulse {
+            0%   { transform: scale(1);   opacity: 0.8; }
+            70%  { transform: scale(1.45); opacity: 0; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+
+        .l3-gate-circle.refer {
+            background: rgba(255,255,255,0.18);
+            border: 2px solid rgba(255,255,255,0.7);
+        }
+        .refer-icon-lrg { font-size: 1.2rem; line-height: 1; }
+        .refer-lbl { font-size: 0.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #fff; }
+
+        .l3-gate-text { flex: 1; min-width: 160px; }
+        .l3-gate-title {
+            font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.9px; color: #fff; margin-bottom: 0.2rem;
+        }
+        .l3-gate-msg { font-size: 0.82rem; color: rgba(255,255,255,0.88); line-height: 1.45; }
+
+        .l3-section-pill {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.2px;
+            padding: 0.2rem 0.7rem; border-radius: 20px;
+            white-space: nowrap; flex-shrink: 0;
+        }
+
+        .l3-faded-body {
+            background: #fef9f0;
+            padding: 1.25rem 1.75rem;
+            opacity: 0.55;
+            filter: blur(0.5px);
+            user-select: none;
+            pointer-events: none;
+        }
+        .l3-faded-body p, .l3-faded-body li { font-size: 0.93rem; line-height: 1.82; color: #333; margin-bottom: 0.4rem; }
+        .l3-faded-body ul { padding-left: 1.2rem; }
+
+        /* ── FEEDBACK ── */
+        .feedback-row { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #eee; }
+        .feedback-label { font-size: 0.78rem; color: #aaa; }
+        .feedback-btn { background: #f0f0f0; border: none; border-radius: 8px; padding: 0.4rem 0.9rem; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+        .feedback-btn:hover { background: #e0e0e0; }
+        .feedback-btn.active-up { background: #d4edda; }
+        .feedback-btn.active-down { background: #f8d7da; }
+        .meta-row { text-align: right; font-size: 0.7rem; color: #ccc; margin-top: 0.4rem; }
+
+        /* ── SOURCES ── */
+        .result-sources { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #f0f0f0; }
+        .sources-header { font-size: 0.68rem; font-weight: 700; color: #ccc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .source-item { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.3rem 0; border-bottom: 1px solid #f8f8f8; }
+        .source-item:last-child { border-bottom: none; }
+        .source-num { font-size: 0.7rem; color: #ccc; font-weight: 700; flex-shrink: 0; min-width: 1rem; }
+        .source-name { font-size: 0.82rem; color: #555; font-weight: 500; line-height: 1.4; }
+        .source-layer { font-size: 0.72rem; color: #bbb; flex-shrink: 0; margin-left: 0.25rem; }
+
+        /* ── SKELETON ── */
+        .section-skeleton { border-radius: 12px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; }
+        .section-skeleton.guideline { background: #f0f7ef; border-left: 4px solid #4a6741; }
+        .section-skeleton.specialist { background: #f3f0f8; border-left: 4px solid #6b5b95; }
+        .section-skeleton.clinical { background: #fef9f0; border-left: 4px solid #c8a45e; }
+        .skel-header { width: 110px; height: 20px; border-radius: 20px; margin-bottom: 0.75rem; }
+        .section-skeleton.guideline .skel-header { background: rgba(74,103,65,0.18); }
+        .section-skeleton.specialist .skel-header { background: rgba(107,91,149,0.18); }
+        .section-skeleton.clinical .skel-header { background: rgba(200,164,94,0.18); }
+        .skel-line { height: 9px; border-radius: 5px; margin-bottom: 9px; background: linear-gradient(90deg,rgba(0,0,0,0.04) 25%,rgba(0,0,0,0.08) 50%,rgba(0,0,0,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        .skel-line:nth-child(2){width:90%} .skel-line:nth-child(3){width:72%} .skel-line:nth-child(4){width:83%} .skel-line:nth-child(5){width:58%}
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        .section-slot { opacity: 0; transform: translateY(6px); transition: opacity 0.35s, transform 0.35s; }
+        .section-slot.revealed { opacity: 1; transform: translateY(0); }
+
+        /* ── TOOLS ── */
+        .tools-section { margin-top: 4rem; }
+        .tools-label { font-size: 0.72rem; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; text-align: center; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.5rem; }
+        .tool-card { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.07); text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; min-height: 190px; }
+        .tool-card-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.4; }
+        .tool-card-content { position: relative; z-index: 1; background: rgba(255,255,255,0.82); padding: 1.1rem 1.3rem; border-radius: 10px; }
+        .tool-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.11); }
+        .tool-badge { display: inline-block; background: linear-gradient(135deg, #6b5b95, #8b7db5); color: #fff; padding: 0.25rem 0.7rem; border-radius: 14px; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.85rem; }
+        .tool-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.6rem; }
+        .tool-card p { font-size: 0.88rem; color: #555; margin-bottom: 0.85rem; }
+        .tool-meta { font-size: 0.78rem; color: #888; }
+
+        /* Version badge */
+        .version-badge { position: fixed; bottom: 6px; right: 10px; font-size: 0.6rem; color: #bbb; z-index: 9999; letter-spacing: 0.3px; }
+
+        footer { background: rgba(248,247,245,0.97); border-top: 1px solid rgba(44,44,44,0.08); padding: 2.5rem 5%; margin-top: 4rem; }
+        .footer-text { font-size: 0.78rem; color: #777; line-height: 1.8; max-width: 900px; margin: 0 auto; }
+        .footer-text strong { color: #444; font-weight: 600; display: block; margin-top: 0.75rem; }
+
+        /* ═══════════════════════════════════════
+           WHATSAPP WIDGET — fixed bottom-left
+        ═══════════════════════════════════════ */
+        .wa-widget { position: fixed; bottom: 28px; left: 28px; z-index: 1000; display: flex; align-items: center; gap: 10px; animation: wafadeIn 0.6s ease-out; }
+        @keyframes wafadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+        .wa-btn {
+            width: 56px; height: 56px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+            cursor: pointer; text-decoration: none;
+            position: relative; overflow: hidden;
+            border: 3px solid #25D366; flex-shrink: 0;
+            transition: transform 0.25s;
+        }
+        .wa-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .wa-btn::after {
+            content: '';
+            position: absolute; bottom: -1px; right: -1px;
+            width: 18px; height: 18px;
+            background: #25D366; border-radius: 50%; border: 2px solid #fff;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z'/%3E%3C/svg%3E");
+            background-size: 10px; background-repeat: no-repeat; background-position: center;
+        }
+        .wa-btn:hover { transform: scale(1.1); }
+        .wa-ring { position: absolute; inset: -5px; border-radius: 50%; border: 2px solid rgba(37,211,102,0.45); animation: waPulse 2.5s ease-out infinite; pointer-events: none; }
+        @keyframes waPulse { 0%{transform:scale(1);opacity:.7} 70%{transform:scale(1.45);opacity:0} 100%{transform:scale(1.45);opacity:0} }
+
+        /* Attention burst when L3 renders */
+        .wa-btn.burst { animation: waBurst 0.7s ease-out; }
+        @keyframes waBurst {
+            0%  { transform: scale(1);    box-shadow: 0 0 0 0 rgba(200,164,94,0.8); }
+            40% { transform: scale(1.22); box-shadow: 0 0 0 18px rgba(200,164,94,0); }
+            100%{ transform: scale(1);    box-shadow: 0 4px 14px rgba(0,0,0,0.22); }
+        }
+        /* Tooltip */
+        .wa-tooltip {
+            background: #fff; padding: 8px 13px; border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 0.78rem; font-weight: 500; color: #2c2c2c;
+            white-space: nowrap; line-height: 1.4;
+            opacity: 0; transform: translateX(-6px);
+            transition: all 0.25s; pointer-events: none; order: 2;
+        }
+        .wa-tooltip span { font-size: 0.68rem; color: #999; display: block; }
+        .wa-widget:hover .wa-tooltip { opacity: 1; transform: translateX(0); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.9rem; }
+            .search-card { padding: 1.75rem 1.25rem; }
+            .search-button { position: static; transform: none; width: 100%; margin-top: 0.75rem; border-radius: 10px; }
+            nav { display: none; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .wa-widget { bottom: 18px; left: 18px; }
+            .wa-tooltip { display: none; }
+            .l3-gate-bar { flex-wrap: wrap; gap: 0.75rem; }
+            .l3-gate-circle { width: 46px; height: 46px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">
+            <span>fert</span>
+            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#2c2c2c"/>
+                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" stroke="#2c2c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>le</span>
+        </a>
+        <nav>
+            <a href="index.html">Search</a>
+            <a href="egg-freezing-calculator.html">Egg Freezing</a>
+            <a href="endometriosis-landing.html">Endometriosis</a>
+            <a href="fertility-assessment.html">Assessment</a>
+            <a href="amh-guide.html">AMH Guide</a>
+            <a href="fertool-cpd-learning-hub.html">CPD Hub</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Clinical Support for Fertility Care</h1>
+        <p>Evidence-based guidance for GPs</p>
+    </div>
+
+    <div class="search-card">
+        <span class="search-label">Guidelines</span>
+        <h2 class="search-title">How can I help?</h2>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput"
+                   placeholder="Ask about AMH, referral criteria, initial investigations…"
+                   onkeypress="if(event.key==='Enter') performSearch()">
+            <button class="search-button" onclick="performSearch()">Search</button>
+        </div>
+        <div class="quick-searches">
+            <span class="quick-search" onclick="qs('AMH interpretation')">AMH interpretation</span>
+            <span class="quick-search" onclick="qs('When to refer')">Referral criteria</span>
+            <span class="quick-search" onclick="qs('Initial workup')">Initial workup</span>
+            <span class="quick-search" onclick="qs('PCOS diagnosis')">PCOS diagnosis</span>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="loading-title">Searching guidelines…</div>
+            <ul class="loading-steps-list">
+                <li class="loading-step" id="ls0"><span class="step-dot" id="ls0i"></span><span id="ls0t">Reading fertility guidelines</span></li>
+                <li class="loading-step" id="ls1"><span class="step-dot" id="ls1i"></span><span id="ls1t">Retrieving specialist knowledge</span></li>
+                <li class="loading-step" id="ls2"><span class="step-dot" id="ls2i"></span><span id="ls2t">Synthesising clinical context</span></li>
+            </ul>
+        </div>
+
+        <!-- Results -->
+        <div class="results-container" id="results">
+            <div class="result-label">Response</div>
+            <div id="resultContent"></div>
+            <div class="result-sources" id="resultSources"></div>
+        </div>
+    </div>
+
+    <!-- Tools -->
+    <div class="tools-section">
+        <div class="tools-label">Additional Tools</div>
+        <div class="tools-grid">
+            <a href="amh-guide.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
+            </a>
+            <a href="egg-freezing-calculator.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
+            </a>
+            <a href="endometriosis-landing.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Endometriosis &amp; Fertility</h3><p>How endometriosis affects reproduction</p><div class="tool-meta">La Marca et al. 2025</div></div>
+            </a>
+            <a href="fertility-assessment.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
+            </a>
+            <a href="fertool-cpd-learning-hub.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="cpd-hero.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#4a6741,#6b8f5e);">CPD Education</span><h3>CPD Learning Hub</h3><p>Accredited fertility &amp; pre-pregnancy modules</p><div class="tool-meta">ASRM 2022 · RANZCOG 2024</div></div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-text">
+        <strong>Clinical Decision Support Tool</strong>
+        Evidence-based guidance from published fertility guidelines (ASRM, RANZCOG, ESHRE). All information requires independent verification and clinical judgment.
+        <strong>Medical Disclaimer</strong>
+        For informational and educational purposes only. Individual patient care decisions require consultation with qualified healthcare professionals.
+        <strong>Copyright</strong>
+        &copy; 2025 Fertool. All rights reserved. Professional use only.
+    </div>
+</footer>
+
+<div class="version-badge">v3.4 · 3-Layer RAG · 01-Mar-2026</div>
+
+<!-- Fixed WhatsApp — bottom LEFT -->
+<div class="wa-widget" id="waWidget">
+    <a href="https://wa.me/61493835221?text=Hi%20Yuval%2C%20I%27d%20like%20to%20discuss%20a%20fertility%20case..."
+       target="_blank" class="wa-btn" id="waBtn" aria-label="Chat with Dr Fouks">
+        <div class="wa-ring"></div>
+        <img src="yuval-photo.jpg" alt="Dr Fouks">
+    </a>
+    <div class="wa-tooltip">
+        Discuss with Dr Fouks
+        <span>Specialist consultation available</span>
+    </div>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────
+   CONFIG
+───────────────────────────────────────────── */
+var API  = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
+var WAURL= 'https://wa.me/61493835221?text=Hi%20Yuval%2C%20I%27d%20like%20to%20discuss%20a%20fertility%20case...';
+var _lastId='', _lastQ='', _timers=[];
+var STEPS_DEFAULT=['Reading fertility guidelines','Retrieving specialist knowledge','Synthesising clinical context'];
+
+/* ─────────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────────── */
+function qs(q){ document.getElementById('searchInput').value=q; performSearch(); }
+
+function esc(s){
+    if(s==null) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ─────────────────────────────────────────────
+   WHATSAPP BURST
+───────────────────────────────────────────── */
+function burstWA(){
+    var b=document.getElementById('waBtn'); if(!b) return;
+    b.classList.remove('burst'); void b.offsetWidth; b.classList.add('burst');
+    b.addEventListener('animationend',function(){ b.classList.remove('burst'); },{once:true});
+}
+
+/* ─────────────────────────────────────────────
+   LOADING STEPS
+───────────────────────────────────────────── */
+function startSteps(q){
+    _timers.forEach(clearTimeout); _timers=[];
+    var t=q.length>30?q.slice(0,30)+'…':q;
+    var labels=['Searching for "'+t+'"','Retrieving specialist knowledge','Synthesising clinical context'];
+    document.getElementById('loading').classList.add('active');
+    labels.forEach(function(lbl,i){
+        _timers.push(setTimeout(function(){
+            if(i>0){
+                var pe=document.getElementById('ls'+(i-1)), pi=document.getElementById('ls'+(i-1)+'i');
+                if(pe){pe.classList.remove('vis');pe.classList.add('done');}
+                if(pi) pi.outerHTML='<span class="step-check" id="ls'+(i-1)+'i">✓</span>';
+            }
+            var e=document.getElementById('ls'+i), ic=document.getElementById('ls'+i+'i'), tx=document.getElementById('ls'+i+'t');
+            if(e) e.classList.add('vis');
+            if(ic) ic.outerHTML='<span class="step-spin" id="ls'+i+'i"></span>';
+            if(tx) tx.textContent=lbl;
+        }, i*950));
+    });
+}
+function stopSteps(){
+    _timers.forEach(clearTimeout); _timers=[];
+    document.getElementById('loading').classList.remove('active');
+    [0,1,2].forEach(function(i){
+        var e=document.getElementById('ls'+i),ic=document.getElementById('ls'+i+'i'),tx=document.getElementById('ls'+i+'t');
+        if(e){e.classList.remove('vis','done');}
+        if(ic) ic.outerHTML='<span class="step-dot" id="ls'+i+'i"></span>';
+        if(tx) tx.textContent=STEPS_DEFAULT[i];
+    });
+}
+
+/* ─────────────────────────────────────────────
+   SKELETONS
+───────────────────────────────────────────── */
+function makeSkel(t){
+    return '<div class="section-skeleton '+t+'"><div class="skel-header"></div><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line"></div></div>';
+}
+function showSkel(){
+    document.getElementById('resultContent').innerHTML=
+        '<div id="sl-g" class="section-slot">'+makeSkel('guideline')+'</div>'+
+        '<div id="sl-s" class="section-slot">'+makeSkel('specialist')+'</div>'+
+        '<div id="sl-c" class="section-slot">'+makeSkel('clinical')+'</div>'+
+        '<div id="sl-f"></div>';
+    document.getElementById('resultSources').innerHTML='';
+    document.getElementById('results').classList.add('active');
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+    [['sl-g',50],['sl-s',200],['sl-c',350]].forEach(function(p){
+        setTimeout(function(){ var s=document.getElementById(p[0]); if(s) s.classList.add('revealed'); },p[1]);
+    });
+}
+function reveal(id,html){
+    var el=document.getElementById(id); if(!el) return;
+    el.classList.remove('revealed');
+    setTimeout(function(){ el.innerHTML=html; void el.offsetHeight; el.classList.add('revealed'); },80);
+}
+
+/* ─────────────────────────────────────────────
+   RENDERERS
+   v2 backend returns flat: { answer, sources[], retrieval_summary }
+   answer text contains ## [GUIDELINE] / ## [SPECIALIST] / ## [CLINICAL] headers
+   sources[].layer  = "guideline" | "specialist" | "clinical_rule"
+   sources[].title  = topic name
+   sources[].relevance_score = 0.0–1.0
+───────────────────────────────────────────── */
+
+function fmtFallback(text){
+    var cfg={GUIDELINE:{css:'guideline',label:'Guidelines'},SPECIALIST:{css:'specialist',label:'Specialist Insight'},CLINICAL:{css:'clinical',label:'Clinical Practice'}};
+    var parts=text.split(/#{1,3}\s*\[(\w+)\]\s*/g);
+    if(parts.length<=1) return '<div class="response-section guideline">'+fmtText(text)+'</div>';
+    var h=''; if(parts[0].trim()) h+='<div style="margin-bottom:1rem;">'+fmtText(parts[0].trim())+'</div>';
+    for(var i=1;i<parts.length;i+=2){
+        var k=parts[i].trim().toUpperCase();
+        var c=cfg[k]||{css:'guideline',label:k};
+        var body=fmtText((parts[i+1]||'').trim());
+
+        /* ── CLINICAL → wrap in L3 gate with legal disclaimer + WhatsApp/Refer ── */
+        if(k==='CLINICAL'){
+            setTimeout(burstWA, 400);
+            h+='<div class="l3-block">'
+              +'<div class="l3-gate-bar">'
+                +'<div class="l3-gate-circles">'
+                  +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
+                    +'<div class="l3-photo-ring"></div>'
+                    +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
+                  +'</a>'
+                  +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()">'
+                    +'<span class="refer-icon-lrg">📋</span>'
+                    +'<span class="refer-lbl">Refer</span>'
+                  +'</a>'
+                +'</div>'
+                +'<div class="l3-gate-text">'
+                  +'<div class="l3-gate-title">⚠ Clinical guidance — not a management tool</div>'
+                  +'<div class="l3-gate-msg">The suggestions below are for educational reference only. Clinical decisions require specialist input. Tap Dr Fouks or Refer to discuss this case.</div>'
+                +'</div>'
+                +'<span class="l3-section-pill">Clinical Practice</span>'
+              +'</div>'
+              +'<div class="l3-faded-body">'+body+'</div>'
+            +'</div>';
+        } else {
+            h+='<div class="response-section '+c.css+'"><div class="section-header '+c.css+'">'+c.label+'</div>'+body+'</div>';
+        }
+    }
+    return h;
+}
+function fmtText(t){ return t.replace(/^#{1,3}\s+(.+)$/gm,'<h4>$1</h4>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/(?:^|\n)-\s+(.+)/g,'<li>$1</li>').replace(/((?:<li>.*?<\/li>\s*)+)/g,'<ul>$1</ul>').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^(?!<)/,'<p>').replace(/(?!>)$/,'</p>').replace(/<p>\s*<\/p>/g,''); }
+
+function renderFooter(d){
+    var h='<div class="feedback-row"><span class="feedback-label">Was this helpful?</span><button class="feedback-btn" id="fbU" onclick="sendFb(true)">👍</button><button class="feedback-btn" id="fbD" onclick="sendFb(false)">👎</button></div>';
+    return h;
+}
+
+/* ── CHANGED: renderSources now uses layer / title / relevance_score ── */
+function renderSources(d){
+    if(!d.sources||!d.sources.length) return '';
+    var seen={}, list=[];
+    d.sources.forEach(function(s){
+        var layer = s.layer || 'unknown';
+        var title = s.title || s.source || 'Unknown';
+        var score = s.relevance_score || 0;
+        var key = layer + '|' + title;
+        if(seen[key]) return;
+        seen[key] = true;
+        list.push({ layer: layer, title: title, score: score });
+    });
+    if(!list.length) return '';
+    var h='<div class="sources-header">References</div>';
+    list.forEach(function(src, i){
+        var icon = src.layer === 'guideline' ? '\u{1F4D7}' : src.layer === 'specialist' ? '\u{1F4D8}' : '\u{1F4D9}';
+        var lbl  = src.layer === 'guideline' ? 'Guideline' : src.layer === 'specialist' ? 'Specialist' : 'Clinical Rule';
+        var name = src.title.replace(/_/g, ' ').replace(/\b\w/g, function(x){ return x.toUpperCase(); });
+        var pct  = Math.round(src.score * 100);
+        h += '<div class="source-item">'
+           + '<span class="source-num">' + (i+1) + '.</span>'
+           + '<span class="source-name">' + icon + ' ' + esc(lbl) + ': ' + esc(name) + '</span>'
+           + '<span class="source-layer">' + pct + '%</span>'
+           + '</div>';
+    });
+    return h;
+}
+
+/* ─────────────────────────────────────────────
+   FEEDBACK
+───────────────────────────────────────────── */
+async function sendFb(h){
+    var u=document.getElementById('fbU'),d=document.getElementById('fbD');
+    if(u) u.classList.toggle('active-up',h);
+    if(d) d.classList.toggle('active-down',!h);
+    try{ await fetch(API+'/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query_id:_lastId||'no-id',query:_lastQ,helpful:h,comment:'',timestamp:new Date().toISOString()})}); }catch(e){}
+}
+
+/* ─────────────────────────────────────────────
+   MAIN SEARCH — /query endpoint
+   v2 backend returns flat { answer, sources, retrieval_summary }
+───────────────────────────────────────────── */
+async function performSearch(){
+    var q=document.getElementById('searchInput').value.trim(); if(!q) return;
+    _lastQ=q; _lastId='';
+    startSteps(q);
+    showSkel();
+
+    var data={};
+    try{
+        var resp=await fetch(API+'/query',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({question:q})
+        });
+        if(!resp.ok) throw new Error('HTTP '+resp.status);
+        data=await resp.json();
+        _lastId=data.query_id||'';
+    } catch(err){
+        stopSteps();
+        reveal('sl-g','<p style="color:#c0392b;font-size:.9rem;">⚠ Could not reach the service ('+esc(err.message)+').<br>The backend may be starting — please wait 30 seconds and try again.</p>');
+        ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.remove();});
+        return;
+    }
+    stopSteps();
+
+    /* CHANGED: v2 backend returns flat { answer, sources } — parse [GUIDELINE]/[SPECIALIST]/[CLINICAL] from answer text */
+    if(data.answer){
+        reveal('sl-g', fmtFallback(data.answer));
+        ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.remove();});
+    } else {
+        reveal('sl-g','<p style="color:#c0392b;">Unexpected response format — please try again.</p>');
+    }
+
+    var f=document.getElementById('sl-f');
+    if(f) setTimeout(function(){
+        f.innerHTML=renderFooter(data);
+        document.getElementById('resultSources').innerHTML=renderSources(data);
+    }, 800);
+}
+</script>
+</body>
+</html>
