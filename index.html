@@ -849,13 +849,94 @@ function injectSafetyBanner(category){
 /* ─────────────────────────────────────────────
    MAIN SEARCH — /query endpoint
 ───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   STRUCTURED RENDERERS (v3.2 API)
+───────────────────────────────────────────── */
+
+function renderGuidelines(g){
+    if(!g) return '<p>No guideline data.</p>';
+    if(g._raw && g._parse_error) return '<p>'+esc(g._raw).slice(0,500)+'</p>';
+    var stmts = g.guideline_statements || [];
+    if(!stmts.length) return '<p style="color:#888;">No specific guidelines retrieved for this query.</p>';
+    var h = '';
+    stmts.forEach(function(s){
+        h += '<p><strong>' + esc(s.source||'') + ':</strong> ' + esc(s.statement||'') + '</p>';
+    });
+    if(g.gaps && g.gaps !== 'None' && g.coverage !== 'full'){
+        h += '<p style="color:#888;font-size:0.85rem;"><em>Gaps: '+esc(g.gaps)+'</em></p>';
+    }
+    return h;
+}
+
+function renderSpecialist(s){
+    if(!s) return '<p>No specialist data.</p>';
+    if(s._raw && s._parse_error) return '<p>'+esc(s._raw).slice(0,500)+'</p>';
+    var h = '';
+    if(s.specialist_perspective) h += '<p>'+esc(s.specialist_perspective)+'</p>';
+    if(s.common_pitfalls && s.common_pitfalls.length){
+        h += '<p><strong>Common pitfalls:</strong></p><ul>';
+        s.common_pitfalls.forEach(function(p){ h += '<li>'+esc(p)+'</li>'; });
+        h += '</ul>';
+    }
+    if(s.nuances && s.nuances.length){
+        h += '<p><strong>Nuances:</strong></p><ul>';
+        s.nuances.forEach(function(n){ h += '<li>'+esc(n)+'</li>'; });
+        h += '</ul>';
+    }
+    return h;
+}
+
+function renderClinical(c, calcResults){
+    if(!c) return '<p>No clinical data.</p>';
+    if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
+    var h = '';
+    if(c.summary) h += '<p>'+esc(c.summary)+'</p>';
+    if(c.key_actions && c.key_actions.length){
+        h += '<p><strong>Key actions:</strong></p><ul>';
+        c.key_actions.forEach(function(a){
+            var badge = a.priority === 'now' ? ' \uD83D\uDD34' : (a.priority === 'soon' ? ' \uD83D\uDFE1' : '');
+            h += '<li>'+esc(a.action)+badge+'</li>';
+        });
+        h += '</ul>';
+    }
+    if(c.referral_recommendation){
+        var r = c.referral_recommendation;
+        var cls = r.urgency === 'urgent' ? 'urgent' : (r.urgency === 'standard' ? 'standard' : 'not_needed');
+        h += '<div class="referral-badge '+cls+'"><strong>Referral: '+esc(r.urgency||'')+'</strong> \u2014 '+esc(r.reason||r.to||'')+'</div>';
+    }
+    if(c.safety_flags && c.safety_flags.length){
+        h += '<div class="safety-box"><strong>\u26A0 Safety flags:</strong><ul>';
+        c.safety_flags.forEach(function(f){ h += '<li>'+esc(f)+'</li>'; });
+        h += '</ul></div>';
+    }
+    if(c.suggested_workup && c.suggested_workup.length){
+        h += '<p><strong>Suggested workup:</strong></p><ul>';
+        c.suggested_workup.forEach(function(w){ h += '<li>'+esc(w)+'</li>'; });
+        h += '</ul>';
+    }
+    if(c.gp_script){
+        h += '<div class="gp-script"><strong>GP script:</strong> '+esc(c.gp_script)+'</div>';
+    }
+    if(calcResults && Object.keys(calcResults).length){
+        Object.keys(calcResults).forEach(function(name){
+            var res = calcResults[name];
+            h += '<div class="calc-card"><div class="calc-card-title">'+esc(name)+'</div>';
+            Object.keys(res).forEach(function(k){
+                h += '<div class="calc-row"><span class="calc-key">'+esc(k)+': </span><span class="calc-val">'+esc(String(res[k]))+'</span></div>';
+            });
+            h += '</div>';
+        });
+    }
+    return h;
+}
+
+/* ─────────────────────────────────────────────
+   MAIN SEARCH — /query endpoint (v3.2 structured)
+───────────────────────────────────────────── */
 async function performSearch(){
     var q=document.getElementById('searchInput').value.trim(); if(!q) return;
     _lastQ=q; _lastId='';
-
-    /* Reset any previous escalation */
     resetEscalation();
-
     startSteps(q);
     showSkel();
 
@@ -871,21 +952,64 @@ async function performSearch(){
         _lastId=data.query_id||'';
     } catch(err){
         stopSteps();
-        reveal('sl-g','<p style="color:#c0392b;font-size:.9rem;">⚠ Could not reach the service ('+esc(err.message)+').<br>The backend may be starting — please wait 30 seconds and try again.</p>');
+        reveal('sl-g','<p style="color:#c0392b;font-size:.9rem;">Could not reach the service ('+esc(err.message)+').<br>The backend may be starting \u2014 please wait 30 seconds and try again.</p>');
         ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.remove();});
         return;
     }
     stopSteps();
 
+    /* Old flat format (data.answer) — backward compat */
     if(data.answer){
         reveal('sl-g', fmtFallback(data.answer));
         ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.remove();});
-
-        /* ── Run safety escalation check ── */
         setTimeout(function(){ escalateIfNeeded(data.answer, q); }, 500);
 
+    /* New structured format (v3.2) */
+    } else if(data.guidelines || data.specialist_insight || data.clinical_practice){
+
+        var g = data.guidelines || {};
+        var gHtml = '<div class="response-section guideline">'
+                  + '<div class="section-header guideline">Guidelines</div>'
+                  + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
+                  + renderGuidelines(g) + '</div>';
+        reveal('sl-g', gHtml);
+
+        var s = data.specialist_insight || {};
+        var sHtml = '<div class="response-section specialist">'
+                  + '<div class="section-header specialist">Specialist Insight</div>'
+                  + '<div class="evidence-note">LLM parametric knowledge</div>'
+                  + renderSpecialist(s) + '</div>';
+        setTimeout(function(){ reveal('sl-s', sHtml); }, 200);
+
+        var c = data.clinical_practice || {};
+        var cBody = renderClinical(c, data.calculator_results);
+        var cHtml = '<div class="l3-block">'
+            +'<div class="l3-gate-bar">'
+              +'<div class="l3-gate-circles">'
+                +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
+                  +'<div class="l3-photo-ring"></div>'
+                  +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
+                +'</a>'
+                +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()">'
+                  +'<span class="refer-icon-lrg">\uD83D\uDCCB</span>'
+                  +'<span class="refer-lbl">Refer</span>'
+                +'</a>'
+              +'</div>'
+              +'<div class="l3-gate-text">'
+                +'<div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div>'
+                +'<div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div>'
+              +'</div>'
+              +'<span class="l3-section-pill">Clinical Practice</span>'
+            +'</div>'
+            +'<div class="l3-faded-body">'+cBody+'</div>'
+          +'</div>';
+        setTimeout(function(){ reveal('sl-c', cHtml); burstWA(); }, 400);
+
+        var fullText = JSON.stringify(data);
+        setTimeout(function(){ escalateIfNeeded(fullText, q); }, 600);
+
     } else {
-        reveal('sl-g','<p style="color:#c0392b;">Unexpected response format — please try again.</p>');
+        reveal('sl-g','<p style="color:#c0392b;">Unexpected response format \u2014 please try again.</p>');
     }
 
     var f=document.getElementById('sl-f');
@@ -894,6 +1018,7 @@ async function performSearch(){
         document.getElementById('resultSources').innerHTML=renderSources(data);
     }, 800);
 }
+
 </script>
 </body>
 </html>
