@@ -78,6 +78,13 @@
         .step-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #ddd; flex-shrink: 0; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* ── STREAM STATUS ── */
+        .stream-status { display: none; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem; border-radius: 10px; background: rgba(74,103,65,0.06); margin-bottom: 1rem; font-size: 0.82rem; color: #4a6741; }
+        .stream-status.active { display: flex; }
+        .stream-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #4a6741; animation: pulse-dot 1.2s ease-in-out infinite; }
+        @keyframes pulse-dot { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .stream-raw { font-family: 'Montserrat', sans-serif; font-size: 0.88rem; line-height: 1.7; color: #555; white-space: pre-wrap; word-break: break-word; min-height: 1.5em; }
+
         /* ── RESULTS ── */
         .results-container { display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
         .results-container.active { display: block; }
@@ -1206,95 +1213,249 @@ function renderClinical(c, calcResults){
 }
 
 /* ─────────────────────────────────────────────
-   MAIN SEARCH — /query endpoint (v3.2 structured)
+   MAIN SEARCH — SSE streaming (v3.3)
 ───────────────────────────────────────────── */
 async function performSearch(){
     var q=document.getElementById('searchInput').value.trim(); if(!q) return;
     _lastQ=q; _lastId='';
     resetEscalation();
     startSteps(q);
-    showSkel();
 
-    var data={};
+    /* Set up skeleton with streaming status indicator */
+    var rc = document.getElementById('resultContent');
+    rc.innerHTML =
+        '<div id="stream-status" class="stream-status"><span class="dot"></span><span id="stream-msg">Connecting...</span></div>' +
+        '<div id="sl-s" class="section-slot"></div>' +
+        '<div id="sl-g" class="section-slot"></div>' +
+        '<div id="sl-c" class="section-slot"></div>' +
+        '<div id="sl-f"></div>';
+    document.getElementById('resultSources').innerHTML='';
+    document.getElementById('results').classList.add('active');
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+
+    var payload = {question:q};
     var lensInstr = getActiveLensInstruction();
-    try{
-        var payload = {question:q};
-        if(lensInstr) payload.instruction = lensInstr;
-        var resp=await fetch(API+'/query',{
+    if(lensInstr) payload.instruction = lensInstr;
+
+    /* Accumulated data for final rendering */
+    var _l2Data=null, _l1Data=null, _l3Data=null, _calcData={}, _doneData=null;
+
+    try {
+        var resp = await fetch(API+'/query/stream', {
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify(payload)
         });
         if(!resp.ok) throw new Error('HTTP '+resp.status);
-        data=await resp.json();
-        _lastId=data.query_id||'';
+
+        var reader = resp.body.getReader();
+        var decoder = new TextDecoder();
+        var buffer = '';
+
+        /* Token accumulators for raw streaming text */
+        var specTokens = '';
+        var guideTokens = '';
+
+        /* Show streaming status */
+        var statusEl = document.getElementById('stream-status');
+        if(statusEl) statusEl.classList.add('active');
+
+        while(true){
+            var chunk = await reader.read();
+            if(chunk.done) break;
+            buffer += decoder.decode(chunk.value, {stream:true});
+
+            /* Parse SSE lines */
+            var lines = buffer.split('\n');
+            buffer = lines.pop(); /* keep incomplete line in buffer */
+
+            for(var li=0; li<lines.length; li++){
+                var line = lines[li];
+                if(!line.startsWith('data: ')) continue;
+                var evt;
+                try { evt = JSON.parse(line.substring(6)); } catch(e){ continue; }
+
+                /* ── tier event — immediate feedback ── */
+                if(evt.type==='tier'){
+                    var tierMsg = evt.tier===1 ? 'Answering factual query...'
+                                : evt.tier===3 ? 'Analysing clinical values...'
+                                : 'Analysing clinical query...';
+                    var msgEl = document.getElementById('stream-msg');
+                    if(msgEl) msgEl.textContent = tierMsg;
+                }
+
+                /* ── token event — append streaming text ── */
+                else if(evt.type==='token'){
+                    if(evt.layer==='specialist'){
+                        if(!specTokens){
+                            /* First specialist token — show container */
+                            var slS = document.getElementById('sl-s');
+                            if(slS){
+                                slS.innerHTML = '<div class="response-section specialist">'
+                                    + '<div class="section-header specialist">Specialist Insight</div>'
+                                    + '<div class="evidence-note">LLM parametric knowledge</div>'
+                                    + '<div id="spec-stream" class="stream-raw"></div></div>';
+                                slS.classList.add('revealed');
+                            }
+                        }
+                        specTokens += evt.delta;
+                        var specEl = document.getElementById('spec-stream');
+                        if(specEl) specEl.textContent = specTokens;
+                    }
+                    else if(evt.layer==='guidelines'){
+                        if(!guideTokens){
+                            var slG = document.getElementById('sl-g');
+                            if(slG){
+                                slG.innerHTML = '<div class="response-section guideline">'
+                                    + '<div class="section-header guideline">Guidelines</div>'
+                                    + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
+                                    + '<div id="guide-stream" class="stream-raw"></div></div>';
+                                slG.classList.add('revealed');
+                            }
+                        }
+                        guideTokens += evt.delta;
+                        var guideEl = document.getElementById('guide-stream');
+                        if(guideEl) guideEl.textContent = guideTokens;
+                    }
+                }
+
+                /* ── specialist complete — replace raw text with formatted ── */
+                else if(evt.type==='specialist'){
+                    _l2Data = evt.data || {};
+                    var sHtml = '<div class="response-section specialist">'
+                              + '<div class="section-header specialist">Specialist Insight</div>'
+                              + '<div class="evidence-note">LLM parametric knowledge</div>'
+                              + renderSpecialist(_l2Data) + '</div>';
+                    reveal('sl-s', sHtml);
+                    var msgEl2 = document.getElementById('stream-msg');
+                    if(msgEl2) msgEl2.textContent = 'Reviewing guidelines...';
+                }
+
+                /* ── guidelines complete ── */
+                else if(evt.type==='guidelines'){
+                    _l1Data = evt.data || {};
+                    var gHtml = '<div class="response-section guideline">'
+                              + '<div class="section-header guideline">Guidelines</div>'
+                              + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
+                              + renderGuidelines(_l1Data) + '</div>';
+                    reveal('sl-g', gHtml);
+                    var msgEl3 = document.getElementById('stream-msg');
+                    if(msgEl3) msgEl3.textContent = 'Synthesising clinical advice...';
+                }
+
+                /* ── clinical complete ── */
+                else if(evt.type==='clinical'){
+                    _l3Data = evt.data || {};
+                    _calcData = evt.calculator_results || {};
+                    var cBody = renderClinical(_l3Data, _calcData);
+                    var cHtml = '<div class="l3-block">'
+                        +'<div class="l3-gate-bar">'
+                          +'<div class="l3-gate-circles">'
+                            +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
+                              +'<div class="l3-photo-ring"></div>'
+                              +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
+                            +'</a>'
+                            +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()">'
+                              +'<span class="refer-icon-lrg">\uD83D\uDCCB</span>'
+                              +'<span class="refer-lbl">Refer</span>'
+                            +'</a>'
+                          +'</div>'
+                          +'<div class="l3-gate-text">'
+                            +'<div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div>'
+                            +'<div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div>'
+                          +'</div>'
+                          +'<span class="l3-section-pill">Clinical Practice</span>'
+                        +'</div>'
+                        +'<div class="l3-faded-body">'+cBody+'</div>'
+                      +'</div>';
+                    reveal('sl-c', cHtml);
+                    burstWA();
+                }
+
+                /* ── done — metadata, sources, footer ── */
+                else if(evt.type==='done'){
+                    _doneData = evt.data || {};
+                    _lastId = _doneData.query_id || '';
+
+                    /* Hide streaming status */
+                    if(statusEl) statusEl.classList.remove('active');
+                    stopSteps();
+
+                    /* Footer + sources */
+                    var fakeData = {
+                        sources: _doneData.sources,
+                        retrieval_summary: _doneData.retrieval_summary,
+                        latency_ms: _doneData.latency_ms,
+                        tier: _doneData.tier,
+                        query_id: _doneData.query_id
+                    };
+                    var f=document.getElementById('sl-f');
+                    if(f) f.innerHTML=renderFooter(fakeData);
+                    document.getElementById('resultSources').innerHTML=renderSources(fakeData);
+
+                    /* Escalation check */
+                    var fullText = JSON.stringify({guidelines:_l1Data, specialist_insight:_l2Data, clinical_practice:_l3Data});
+                    setTimeout(function(){ escalateIfNeeded(fullText, q); }, 300);
+                }
+            }
+        }
+
+        /* If we exited without a done event, clean up */
+        if(statusEl && statusEl.classList.contains('active')){
+            statusEl.classList.remove('active');
+            stopSteps();
+        }
+
     } catch(err){
         stopSteps();
-        reveal('sl-g','<p style="color:#c0392b;font-size:.9rem;">Could not reach the service ('+esc(err.message)+').<br>The backend may be starting \u2014 please wait 30 seconds and try again.</p>');
-        ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.remove();});
-        return;
-    }
-    stopSteps();
+        var statusEl4 = document.getElementById('stream-status');
+        if(statusEl4) statusEl4.classList.remove('active');
 
-    /* Old flat format (data.answer) — backward compat */
+        /* Fallback: try non-streaming endpoint */
+        try {
+            var resp2 = await fetch(API+'/query', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(payload)
+            });
+            if(!resp2.ok) throw new Error('HTTP '+resp2.status);
+            var data = await resp2.json();
+            _lastId = data.query_id||'';
+            _performSearchRenderBlocking(data, q);
+        } catch(err2){
+            reveal('sl-g','<p style="color:#c0392b;font-size:.9rem;">Could not reach the service ('+esc(err2.message)+').<br>The backend may be starting \u2014 please wait 30 seconds and try again.</p>');
+            ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
+        }
+    }
+}
+
+/* ─────────────────────────────────────────────
+   BLOCKING RENDER — fallback for non-streaming /query
+───────────────────────────────────────────── */
+function _performSearchRenderBlocking(data, q){
     if(data.answer){
         reveal('sl-g', fmtFallback(data.answer));
-        ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.remove();});
+        ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
         setTimeout(function(){ escalateIfNeeded(data.answer, q); }, 500);
-
-    /* New structured format (v3.2) */
     } else if(data.guidelines || data.specialist_insight || data.clinical_practice){
-
         var g = data.guidelines || {};
-        var gHtml = '<div class="response-section guideline">'
-                  + '<div class="section-header guideline">Guidelines</div>'
-                  + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
-                  + renderGuidelines(g) + '</div>';
-        reveal('sl-g', gHtml);
+        reveal('sl-g', '<div class="response-section guideline"><div class="section-header guideline">Guidelines</div><div class="evidence-note">RAG-retrieved from knowledge base</div>' + renderGuidelines(g) + '</div>');
 
         var s = data.specialist_insight || {};
-        var sHtml = '<div class="response-section specialist">'
-                  + '<div class="section-header specialist">Specialist Insight</div>'
-                  + '<div class="evidence-note">LLM parametric knowledge</div>'
-                  + renderSpecialist(s) + '</div>';
-        setTimeout(function(){ reveal('sl-s', sHtml); }, 200);
+        setTimeout(function(){ reveal('sl-s', '<div class="response-section specialist"><div class="section-header specialist">Specialist Insight</div><div class="evidence-note">LLM parametric knowledge</div>' + renderSpecialist(s) + '</div>'); }, 200);
 
         var c = data.clinical_practice || {};
         var cBody = renderClinical(c, data.calculator_results);
-        var cHtml = '<div class="l3-block">'
-            +'<div class="l3-gate-bar">'
-              +'<div class="l3-gate-circles">'
-                +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
-                  +'<div class="l3-photo-ring"></div>'
-                  +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
-                +'</a>'
-                +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()">'
-                  +'<span class="refer-icon-lrg">\uD83D\uDCCB</span>'
-                  +'<span class="refer-lbl">Refer</span>'
-                +'</a>'
-              +'</div>'
-              +'<div class="l3-gate-text">'
-                +'<div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div>'
-                +'<div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div>'
-              +'</div>'
-              +'<span class="l3-section-pill">Clinical Practice</span>'
-            +'</div>'
-            +'<div class="l3-faded-body">'+cBody+'</div>'
-          +'</div>';
+        var cHtml = '<div class="l3-block"><div class="l3-gate-bar"><div class="l3-gate-circles">'
+            +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()"><div class="l3-photo-ring"></div><img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks"></a>'
+            +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()"><span class="refer-icon-lrg">\uD83D\uDCCB</span><span class="refer-lbl">Refer</span></a>'
+            +'</div><div class="l3-gate-text"><div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div><div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div></div>'
+            +'<span class="l3-section-pill">Clinical Practice</span></div><div class="l3-faded-body">'+cBody+'</div></div>';
         setTimeout(function(){ reveal('sl-c', cHtml); burstWA(); }, 400);
-
-        var fullText = JSON.stringify(data);
-        setTimeout(function(){ escalateIfNeeded(fullText, q); }, 600);
-
-    } else {
-        reveal('sl-g','<p style="color:#c0392b;">Unexpected response format \u2014 please try again.</p>');
+        setTimeout(function(){ escalateIfNeeded(JSON.stringify(data), q); }, 600);
     }
-
     var f=document.getElementById('sl-f');
-    if(f) setTimeout(function(){
-        f.innerHTML=renderFooter(data);
-        document.getElementById('resultSources').innerHTML=renderSources(data);
-    }, 800);
+    if(f) setTimeout(function(){ f.innerHTML=renderFooter(data); document.getElementById('resultSources').innerHTML=renderSources(data); }, 800);
 }
 
 </script>
