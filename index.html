@@ -7,6 +7,7 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
@@ -84,6 +85,22 @@
         .stream-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #4a6741; animation: pulse-dot 1.2s ease-in-out infinite; }
         @keyframes pulse-dot { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
         .stream-raw { font-family: 'Montserrat', sans-serif; font-size: 0.88rem; line-height: 1.7; color: #555; white-space: pre-wrap; word-break: break-word; min-height: 1.5em; }
+
+        /* ── ANZARD CHARTS ── */
+        .anzard-charts-container { margin-bottom: 1.25rem; }
+        .anzard-chart-card { background: #fff; border-radius: 12px; border: 1px solid rgba(74,103,65,0.15); margin-bottom: 0.75rem; overflow: hidden; transition: all 0.3s ease; }
+        .anzard-chart-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.2rem; cursor: pointer; user-select: none; }
+        .anzard-chart-header:hover { background: rgba(74,103,65,0.04); }
+        .anzard-chart-title { font-size: 0.82rem; font-weight: 600; color: #2c2c2c; display: flex; align-items: center; gap: 0.5rem; }
+        .anzard-chart-title .chart-icon { font-size: 1rem; }
+        .anzard-chart-badge { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; background: #4a6741; color: #fff; padding: 0.18rem 0.5rem; border-radius: 10px; }
+        .anzard-chart-toggle { font-size: 0.9rem; color: #999; transition: transform 0.2s; }
+        .anzard-chart-card.expanded .anzard-chart-toggle { transform: rotate(180deg); }
+        .anzard-chart-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+        .anzard-chart-card.expanded .anzard-chart-body { max-height: 400px; }
+        .anzard-chart-canvas-wrap { padding: 0.5rem 1rem 0.3rem; }
+        .anzard-chart-canvas-wrap canvas { max-height: 280px; }
+        .anzard-chart-source { font-size: 0.65rem; color: #aaa; padding: 0 1rem 0.6rem; text-align: right; }
 
         /* ── RESULTS ── */
         .results-container { display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
@@ -917,6 +934,107 @@ function renderSources(d){
 }
 
 /* ─────────────────────────────────────────────
+   ANZARD CHARTS — Chart.js rendering
+───────────────────────────────────────────── */
+var _anzardChartInstances = [];
+
+function renderAnzardCharts(charts){
+    if(!charts || !charts.length) return;
+
+    /* Destroy previous chart instances */
+    _anzardChartInstances.forEach(function(c){ try{c.destroy();}catch(e){} });
+    _anzardChartInstances = [];
+
+    /* Insert chart container before specialist slot */
+    var slS = document.getElementById('sl-s');
+    if(!slS) return;
+    var container = document.createElement('div');
+    container.id = 'anzard-charts';
+    container.className = 'anzard-charts-container';
+    slS.parentNode.insertBefore(container, slS);
+
+    /* Fertool palette */
+    var palette = ['#4a6741','#6b5b95','#c8a45e','#d4735e','#5b8a72','#8b6e4e','#7a9e7e'];
+
+    charts.forEach(function(chart, idx){
+        var cardId = 'anz-card-'+idx;
+        var canvasId = 'anz-cv-'+idx;
+
+        var card = document.createElement('div');
+        card.className = 'anzard-chart-card' + (idx === 0 ? ' expanded' : '');
+        card.id = cardId;
+
+        var icon = chart.type === 'line' ? '\uD83D\uDCC8' : chart.type === 'doughnut' ? '\uD83E\uDE77' : '\uD83D\uDCCA';
+
+        card.innerHTML =
+            '<div class="anzard-chart-header" onclick="toggleAnzardChart(\''+cardId+'\')">'
+              +'<div class="anzard-chart-title"><span class="chart-icon">'+icon+'</span>'+esc(chart.title)+'</div>'
+              +'<div style="display:flex;align-items:center;gap:0.5rem;">'
+                +'<span class="anzard-chart-badge">ANZARD</span>'
+                +'<span class="anzard-chart-toggle">\u25BC</span>'
+              +'</div>'
+            +'</div>'
+            +'<div class="anzard-chart-body">'
+              +'<div class="anzard-chart-canvas-wrap"><canvas id="'+canvasId+'"></canvas></div>'
+              +'<div class="anzard-chart-source">Source: '+esc(chart.source||'ANZARD 2022')+'</div>'
+            +'</div>';
+        container.appendChild(card);
+
+        /* Build Chart.js config */
+        var datasets = (chart.datasets || []).map(function(ds, di){
+            var color = palette[di % palette.length];
+            var cfg = {label: ds.label, data: ds.data, borderWidth: 2};
+            if(chart.type === 'line'){
+                cfg.borderColor = color;
+                cfg.backgroundColor = color + '22';
+                cfg.tension = 0.3;
+                cfg.fill = true;
+                cfg.pointBackgroundColor = color;
+            } else if(chart.type === 'doughnut'){
+                cfg.backgroundColor = palette.slice(0, ds.data.length);
+                cfg.borderWidth = 0;
+            } else {
+                cfg.backgroundColor = color + 'cc';
+                cfg.borderColor = color;
+                cfg.borderRadius = 6;
+            }
+            return cfg;
+        });
+
+        var chartConfig = {
+            type: chart.type === 'doughnut' ? 'doughnut' : (chart.type || 'bar'),
+            data: { labels: chart.labels, datasets: datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: datasets.length > 1 || chart.type === 'doughnut', labels: { font: { family: 'Montserrat', size: 11 } } },
+                    tooltip: { titleFont: { family: 'Montserrat' }, bodyFont: { family: 'Montserrat' } }
+                },
+                scales: chart.type === 'doughnut' ? {} : {
+                    y: { beginAtZero: true, ticks: { font: { family: 'Montserrat', size: 11 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { ticks: { font: { family: 'Montserrat', size: 11 } }, grid: { display: false } }
+                }
+            }
+        };
+
+        /* Render after DOM insert */
+        setTimeout(function(){
+            var canvas = document.getElementById(canvasId);
+            if(canvas){
+                var inst = new Chart(canvas, chartConfig);
+                _anzardChartInstances.push(inst);
+            }
+        }, 50);
+    });
+}
+
+function toggleAnzardChart(cardId){
+    var card = document.getElementById(cardId);
+    if(card) card.classList.toggle('expanded');
+}
+
+/* ─────────────────────────────────────────────
    FEEDBACK
 ───────────────────────────────────────────── */
 async function sendFb(h){
@@ -1284,6 +1402,11 @@ async function performSearch(){
                     if(msgEl) msgEl.textContent = tierMsg;
                 }
 
+                /* ── ANZARD charts (instant, before LLM layers) ── */
+                else if(evt.type==='anzard_charts'){
+                    renderAnzardCharts(evt.charts);
+                }
+
                 /* ── token event — append streaming text ── */
                 else if(evt.type==='token'){
                     if(evt.layer==='specialist'){
@@ -1438,6 +1561,9 @@ function _performSearchRenderBlocking(data, q){
         ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
         setTimeout(function(){ escalateIfNeeded(data.answer, q); }, 500);
     } else if(data.guidelines || data.specialist_insight || data.clinical_practice){
+        /* ANZARD charts from non-streaming endpoint */
+        if(data.anzard_charts && data.anzard_charts.length) renderAnzardCharts(data.anzard_charts);
+
         var g = data.guidelines || {};
         reveal('sl-g', '<div class="response-section guideline"><div class="section-header guideline">Guidelines</div><div class="evidence-note">RAG-retrieved from knowledge base</div>' + renderGuidelines(g) + '</div>');
 
