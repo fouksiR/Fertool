@@ -539,9 +539,58 @@
             .l3-gate-bar { flex-wrap: wrap; gap: 0.75rem; }
             .l3-gate-circle { width: 46px; height: 46px; }
         }
+        /* ── ACCESS GATE ── */
+        .gate-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(248,247,245,0.97); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; }
+        .gate-overlay.hidden { display: none; }
+        .gate-card { background: #fff; border-radius: 20px; padding: 2.5rem 2.2rem; box-shadow: 0 8px 40px rgba(0,0,0,0.1); max-width: 400px; width: 90%; text-align: center; }
+        .gate-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: #2c2c2c; margin-bottom: 0.3rem; }
+        .gate-subtitle { font-size: 0.78rem; color: #999; margin-bottom: 1.8rem; letter-spacing: 0.5px; }
+        .gate-label { font-size: 0.72rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; text-align: left; }
+        .gate-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #ddd; border-radius: 10px; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; letter-spacing: 2px; text-align: center; outline: none; transition: border-color 0.2s; }
+        .gate-input:focus { border-color: #4a6741; }
+        .gate-input.shake { animation: gate-shake 0.4s ease; border-color: #dc3545; }
+        @keyframes gate-shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+        .gate-btn { width: 100%; margin-top: 1rem; padding: 0.7rem; background: #4a6741; color: #fff; border: none; border-radius: 10px; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .gate-btn:hover { background: #3d5636; }
+        .gate-note { font-size: 0.68rem; color: #bbb; margin-top: 1.2rem; line-height: 1.5; }
     </style>
 </head>
 <body>
+
+<!-- Access Gate -->
+<div class="gate-overlay" id="accessGate">
+    <div class="gate-card">
+        <div class="gate-logo">fertile</div>
+        <div class="gate-subtitle">GP Fertility Decision Support</div>
+        <div class="gate-label">Access Code</div>
+        <input type="text" class="gate-input" id="gateInput" placeholder="Enter code" autocomplete="off" spellcheck="false">
+        <button class="gate-btn" id="gateBtn" onclick="checkGateCode()">Enter</button>
+        <div class="gate-note">For authorised healthcare professionals only.<br>Contact Dr Fouks for access.</div>
+    </div>
+</div>
+<script>
+function checkGateCode(){
+    var input = document.getElementById('gateInput');
+    if(input.value.trim().toUpperCase() === 'FERTOOL2026'){
+        sessionStorage.setItem('fertool_access','1');
+        document.getElementById('accessGate').classList.add('hidden');
+    } else {
+        input.classList.add('shake');
+        setTimeout(function(){ input.classList.remove('shake'); }, 400);
+        input.value = '';
+        input.focus();
+    }
+}
+(function(){
+    if(sessionStorage.getItem('fertool_access') === '1'){
+        document.getElementById('accessGate').classList.add('hidden');
+    } else {
+        var inp = document.getElementById('gateInput');
+        inp.addEventListener('keydown', function(e){ if(e.key === 'Enter') checkGateCode(); });
+        setTimeout(function(){ inp.focus(); }, 100);
+    }
+})();
+</script>
 
 <header>
     <div class="header-content">
