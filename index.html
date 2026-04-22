@@ -119,6 +119,47 @@
         .viz-panel-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
         .viz-interactive-panel.expanded .viz-panel-body { max-height: 5000px; overflow-y: auto; }
 
+        /* ── WEEKLY DIGEST CARD ── */
+        .digest-card-wrap {
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 18px;
+            padding: 2.2rem 2.2rem 1.8rem;
+            box-shadow: 0 6px 28px rgba(74,103,65,0.08);
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+        .digest-badge { display: inline-block; background: rgba(107,91,149,0.12); color: #6b5b95; padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; font-weight: 600; }
+        .digest-title { font-family: 'Cormorant Garamond', serif; font-size: 1.65rem; font-weight: 400; color: #2c2c2c; margin-bottom: 0.4rem; }
+        .digest-subtitle { font-size: 0.85rem; color: #888; line-height: 1.55; margin-bottom: 1.5rem; }
+        .digest-list { display: flex; flex-direction: column; gap: 1rem; }
+        .digest-paper {
+            border: 1px solid rgba(74,103,65,0.12);
+            border-radius: 12px;
+            padding: 1.1rem 1.3rem;
+            background: rgba(255,255,255,0.6);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .digest-paper:hover { border-color: rgba(74,103,65,0.3); box-shadow: 0 2px 14px rgba(74,103,65,0.08); }
+        .digest-paper-meta { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: #a08858; margin-bottom: 0.4rem; }
+        .digest-paper-headline { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500; color: #2c2c2c; margin-bottom: 0.5rem; line-height: 1.35; }
+        .digest-paper-summary { font-size: 0.88rem; color: #333; line-height: 1.65; margin-bottom: 0.5rem; }
+        .digest-paper-caveat { font-size: 0.76rem; color: #999; font-style: italic; margin-bottom: 0.6rem; }
+        .digest-paper-link { font-size: 0.78rem; color: #4a6741; text-decoration: none; font-weight: 600; }
+        .digest-paper-link:hover { text-decoration: underline; }
+        .digest-footer { text-align: right; margin-top: 1.2rem; font-size: 0.82rem; }
+        .digest-footer a { color: #6b5b95; text-decoration: none; font-weight: 500; }
+        .digest-footer a:hover { text-decoration: underline; }
+        .digest-empty { color: #aaa; font-style: italic; font-size: 0.88rem; padding: 1rem 0; }
+        .digest-skel {
+            height: 90px; border-radius: 12px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.07) 37%, rgba(0,0,0,0.04) 63%);
+            background-size: 400% 100%; animation: digestSkel 1.4s ease infinite;
+        }
+        @keyframes digestSkel { 0%{background-position:100% 50%} 100%{background-position:0 50%} }
+
         /* ── RESULTS ── */
         .results-container { display: none; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
         .results-container.active { display: block; }
@@ -660,6 +701,24 @@ function checkGateCode(){
             <div class="result-sources" id="resultSources"></div>
         </div>
     </div>
+
+    <!-- Weekly reproductive-medicine literature digest -->
+    <section class="digest-card-wrap" id="weeklyDigest">
+        <span class="digest-badge">This Week</span>
+        <h2 class="digest-title">This Week in Reproductive Medicine</h2>
+        <p class="digest-subtitle">
+            Curated from Fertility &amp; Sterility, Human Reproduction, NEJM, Lancet,
+            BMJ, JAMA, AJOG and more. Updated weekly, reviewed by Dr Fouks.
+        </p>
+        <div class="digest-list" id="digestList">
+            <div class="digest-skel"></div>
+            <div class="digest-skel"></div>
+            <div class="digest-skel"></div>
+        </div>
+        <div class="digest-footer" id="digestFooter" style="display:none">
+            <a href="weekly-archive.html">See all weekly digests →</a>
+        </div>
+    </section>
 
     <!-- Tools -->
     <div class="tools-section">
@@ -1941,6 +2000,75 @@ function _performSearchRenderBlocking(data, q){
     var f=document.getElementById('sl-f');
     if(f) setTimeout(function(){ f.innerHTML=renderFooter(data); document.getElementById('resultSources').innerHTML=renderSources(data); }, 800);
 }
+
+/* ── Weekly literature digest loader ──────────────────────────── */
+(function () {
+    var MAX_SHOWN = 5;
+    var listEl = document.getElementById('digestList');
+    var footEl = document.getElementById('digestFooter');
+    if (!listEl) return;
+
+    function esc(s) {
+        return (s || '').toString()
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function renderEmpty() {
+        listEl.innerHTML = '<div class="digest-empty">'
+            + 'No approved digest yet. Check back Monday.'
+            + '</div>';
+    }
+
+    function renderError() {
+        listEl.innerHTML = '<div class="digest-empty">'
+            + 'Unable to load this week’s digest right now.'
+            + '</div>';
+    }
+
+    function renderPapers(papers) {
+        if (!papers || !papers.length) {
+            renderEmpty();
+            return;
+        }
+        var shown = papers.slice(0, MAX_SHOWN);
+        listEl.innerHTML = shown.map(function (p) {
+            var pat = p.patient || {};
+            var meta = [esc(p.journal), esc(p.pub_date)].filter(Boolean).join(' · ');
+            return ''
+              + '<article class="digest-paper">'
+              +   '<div class="digest-paper-meta">' + meta + '</div>'
+              +   '<h3 class="digest-paper-headline">' + esc(pat.headline || p.title) + '</h3>'
+              +   '<p class="digest-paper-summary">' + esc(pat.plain_summary || '') + '</p>'
+              +   (pat.what_it_means_for_you
+                    ? '<p class="digest-paper-summary"><em>What it may mean:</em> '
+                      + esc(pat.what_it_means_for_you) + '</p>'
+                    : '')
+              +   (pat.caveat
+                    ? '<p class="digest-paper-caveat">' + esc(pat.caveat) + '</p>'
+                    : '')
+              +   (p.url
+                    ? '<a class="digest-paper-link" href="' + esc(p.url)
+                      + '" target="_blank" rel="noopener">Read the paper ↗</a>'
+                    : '')
+              + '</article>';
+        }).join('');
+        if (footEl) footEl.style.display = 'block';
+    }
+
+    fetch(API + '/latest-digest', { cache: 'no-store' })
+      .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+      })
+      .then(function (d) {
+          renderPapers((d && d.papers) || []);
+      })
+      .catch(function (err) {
+          console.warn('[digest] fetch failed', err);
+          renderError();
+      });
+})();
 
 </script>
 </body>
