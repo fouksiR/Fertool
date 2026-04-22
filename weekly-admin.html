@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digest Admin · Fertool</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
+        header { padding: 1.5rem 5%; background: rgba(248,247,245,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(44,44,44,0.1); position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #2c2c2c; text-decoration: none; }
+        nav a { color: #4a6741; text-decoration: none; font-size: 0.88rem; font-weight: 500; }
+        nav a:hover { opacity: 0.7; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+        .hero { text-align: center; margin-bottom: 2rem; }
+        .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; margin-bottom: 0.3rem; }
+        .hero p { font-size: 0.9rem; color: #888; }
+
+        /* Banners */
+        .banner { padding: 1rem 1.4rem; border-radius: 10px; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .banner.success { background: #e6f2e1; border-left: 4px solid #4a6741; color: #2f4a28; }
+        .banner.error { background: #fbe9e7; border-left: 4px solid #c0392b; color: #7c1f14; }
+        .banner.info { background: #f3f0f8; border-left: 4px solid #6b5b95; color: #3d3458; }
+
+        /* Queue */
+        .queue { background: rgba(255,255,255,0.75); backdrop-filter: blur(14px); border-radius: 14px; padding: 1.4rem 1.6rem; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .queue h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 0.8rem; }
+        .queue-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .queue-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; border: 1px solid rgba(74,103,65,0.12); border-radius: 10px; background: #fff; }
+        .queue-row:hover { border-color: #4a6741; }
+        .queue-row a { color: #4a6741; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .queue-meta { font-size: 0.78rem; color: #888; }
+        .queue-empty { color: #aaa; font-style: italic; font-size: 0.88rem; padding: 0.8rem 0; }
+
+        /* Admin token prompt */
+        .token-prompt { background: rgba(255,255,255,0.75); backdrop-filter: blur(14px); padding: 2.5rem; border-radius: 16px; margin: 2rem 0; text-align: center; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 6px 28px rgba(74,103,65,0.08); }
+        .token-prompt h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; }
+        .token-prompt p { color: #888; font-size: 0.88rem; margin-bottom: 1.2rem; }
+        .token-prompt input { font-family: inherit; padding: 0.75rem 1rem; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 0.95rem; width: 280px; max-width: 100%; background: #f8f7f5; }
+        .token-prompt input:focus { outline: none; border-color: #4a6741; }
+        .token-prompt button { margin-left: 0.5rem; padding: 0.75rem 1.6rem; background: #4a6741; color: #fff; border: none; border-radius: 10px; font-family: inherit; font-weight: 500; cursor: pointer; font-size: 0.9rem; }
+        .token-prompt button:hover { opacity: 0.9; }
+
+        /* Week header */
+        .week-head { background: rgba(255,255,255,0.75); backdrop-filter: blur(14px); padding: 1.4rem 1.8rem; border-radius: 14px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .week-head .meta { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
+        .week-head .sub { font-size: 0.8rem; color: #888; margin-top: 0.2rem; }
+        .status-badge { padding: 0.3rem 0.85rem; border-radius: 16px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .status-badge.unapproved { background: rgba(200,164,94,0.15); color: #8a6f2e; }
+        .status-badge.approved { background: #e6f2e1; color: #3d6732; }
+
+        /* Paper cards */
+        .paper { background: rgba(255,255,255,0.85); border-radius: 14px; padding: 1.5rem 1.8rem; margin-bottom: 1.2rem; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 3px 14px rgba(0,0,0,0.04); }
+        .paper-meta { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: #a08858; margin-bottom: 0.4rem; }
+        .paper-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: #2c2c2c; margin-bottom: 0.3rem; line-height: 1.35; }
+        .paper-authors { font-size: 0.8rem; color: #888; margin-bottom: 1rem; }
+        .paper-authors a { color: #4a6741; font-weight: 500; }
+
+        .block-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 0.5rem; padding-top: 0.8rem; border-top: 1px dashed rgba(0,0,0,0.08); }
+        .block-label.clinician { color: #4a6741; }
+        .block-label.patient { color: #6b5b95; }
+        .block-label:first-of-type { border-top: none; padding-top: 0; }
+        .block-row { margin-bottom: 0.4rem; font-size: 0.88rem; line-height: 1.6; }
+        .block-row strong { color: #1a1a1a; font-weight: 600; display: inline-block; min-width: 120px; }
+        .patient-block { background: #f3f0f8; border-radius: 10px; padding: 0.9rem 1.1rem; margin-top: 0.6rem; }
+        .patient-block p { font-size: 0.88rem; line-height: 1.7; margin-bottom: 0.4rem; }
+        .patient-caveat { color: #888; font-style: italic; font-size: 0.8rem; }
+
+        /* Approve button */
+        .approve-bar { position: sticky; bottom: 1rem; text-align: center; margin-top: 2rem; z-index: 10; }
+        .approve-btn { background: linear-gradient(135deg, #4a6741, #5a7d50); color: #fff; border: none; border-radius: 14px; padding: 1.1rem 2.4rem; font-family: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 6px 22px rgba(74,103,65,0.35); transition: transform 0.2s, box-shadow 0.2s; }
+        .approve-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(74,103,65,0.45); }
+        .approve-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+        .skel { height: 110px; border-radius: 12px; background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.07) 37%, rgba(0,0,0,0.04) 63%); background-size: 400% 100%; animation: skel 1.4s ease infinite; margin-bottom: 1rem; }
+        @keyframes skel { 0%{background-position:100% 50%} 100%{background-position:0 50%} }
+
+        .empty { color: #aaa; font-style: italic; text-align: center; padding: 3rem 0; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">Fertool</a>
+        <nav><a href="index.html">← Back to clinical support</a></nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>Weekly Digest Admin</h1>
+        <p>Review clinician + patient blocks, then approve to publish.</p>
+    </div>
+
+    <div id="banners"></div>
+    <div id="content"></div>
+</div>
+
+<script>
+var API = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
+
+function esc(s) {
+    return (s || '').toString()
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function getParams() {
+    var p = {};
+    (location.search || '').replace(/^\?/, '').split('&').forEach(function (kv) {
+        if (!kv) return;
+        var i = kv.indexOf('=');
+        var k = i < 0 ? kv : kv.slice(0, i);
+        var v = i < 0 ? '' : decodeURIComponent(kv.slice(i + 1).replace(/\+/g, ' '));
+        p[k] = v;
+    });
+    return p;
+}
+
+function banner(kind, msg) {
+    var b = document.createElement('div');
+    b.className = 'banner ' + kind;
+    b.textContent = msg;
+    document.getElementById('banners').appendChild(b);
+}
+
+/* ── Mode A: admin_token → show queue ───────────────────────────── */
+function showQueue(adminToken) {
+    var root = document.getElementById('content');
+    root.innerHTML = '<div class="queue"><h2>Unapproved digests</h2>'
+      + '<div class="skel"></div><div class="skel"></div></div>';
+
+    fetch(API + '/digest-queue', {
+        headers: { 'X-Admin-Token': adminToken },
+        cache: 'no-store'
+    })
+      .then(function (r) {
+          if (r.status === 401) throw new Error('Invalid admin token');
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+      })
+      .then(function (d) {
+          var items = (d && d.items) || [];
+          var inner;
+          if (!items.length) {
+              inner = '<div class="queue-empty">No pending digests. Check back after the next Monday run.</div>';
+          } else {
+              inner = '<div class="queue-list">' + items.map(function (it) {
+                  var url = it.admin_url || '#';
+                  var date = it.generated_at ? new Date(it.generated_at).toLocaleString() : '';
+                  return ''
+                    + '<div class="queue-row">'
+                    +   '<div>'
+                    +     '<a href="' + esc(url) + '">Week ' + esc(it.week_id) + '</a>'
+                    +     '<div class="queue-meta">' + esc(date) + ' · ' + (it.paper_count || 0) + ' papers</div>'
+                    +   '</div>'
+                    +   '<a href="' + esc(url) + '">Review →</a>'
+                    + '</div>';
+              }).join('') + '</div>';
+          }
+          root.innerHTML = '<div class="queue"><h2>Unapproved digests</h2>' + inner + '</div>';
+      })
+      .catch(function (err) {
+          banner('error', err.message || 'Failed to load queue.');
+          root.innerHTML = '';
+          // Offer to re-enter the token
+          promptAdminToken();
+      });
+}
+
+function promptAdminToken() {
+    var root = document.getElementById('content');
+    root.innerHTML = ''
+      + '<div class="token-prompt">'
+      +   '<h2>Admin access</h2>'
+      +   '<p>Enter your admin token to see the approval queue,<br>or open this page with <code>?admin_token=…</code> in the URL.</p>'
+      +   '<input type="password" id="adminTokenInput" placeholder="Admin token" autofocus>'
+      +   '<button id="adminTokenGo" type="button">Continue</button>'
+      + '</div>';
+    var go = function () {
+        var v = document.getElementById('adminTokenInput').value.trim();
+        if (!v) return;
+        showQueue(v);
+    };
+    document.getElementById('adminTokenGo').addEventListener('click', go);
+    document.getElementById('adminTokenInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') go();
+    });
+}
+
+/* ── Mode B: week_id + token → show review ──────────────────────── */
+function showReview(weekId, token, approvedFlag) {
+    var root = document.getElementById('content');
+    root.innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+
+    fetch(API + '/digest/' + encodeURIComponent(weekId) + '?token=' + encodeURIComponent(token),
+          { cache: 'no-store' })
+      .then(function (r) {
+          if (r.status === 401 || r.status === 403) {
+              throw new Error('This approval link has expired or is invalid.');
+          }
+          if (r.status === 404) throw new Error('Digest ' + weekId + ' not found.');
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+      })
+      .then(function (d) { renderReview(d, token, approvedFlag); })
+      .catch(function (err) {
+          root.innerHTML = '';
+          banner('error', err.message || 'Failed to load digest.');
+      });
+}
+
+function renderReview(doc, token, approvedFlag) {
+    var root = document.getElementById('content');
+    var generated = doc.generated_at ? new Date(doc.generated_at).toLocaleString() : '';
+    var isApproved = !!doc.approved;
+    var badge = isApproved
+        ? '<span class="status-badge approved">Approved</span>'
+        : '<span class="status-badge unapproved">Awaiting approval</span>';
+
+    // Success banner from ?approved=1 or already-approved state
+    if (approvedFlag === '1') {
+        banner('success', 'Published ✓ — this digest is now live on the Fertool landing page.');
+    } else if (isApproved) {
+        banner('info', 'This week is already approved and live. You can still review the contents below.');
+    }
+
+    var headHTML = ''
+      + '<div class="week-head">'
+      +   '<div>'
+      +     '<div class="meta">Week ' + esc(doc.week_id) + '</div>'
+      +     '<div class="sub">' + esc(generated) + ' · ' + (doc.papers || []).length + ' papers</div>'
+      +   '</div>'
+      +   badge
+      + '</div>';
+
+    var papersHTML = (doc.papers || []).map(function (p, i) {
+        var clin = p.clinician || {};
+        var pat = p.patient || {};
+        var meta = [esc(p.journal), esc(p.pub_date), 'Relevance ' + (p.relevance_score || '?') + '/10']
+                   .filter(Boolean).join(' · ');
+        return ''
+          + '<article class="paper">'
+          +   '<div class="paper-meta">' + meta + '</div>'
+          +   '<h3 class="paper-title">' + esc(p.title) + '</h3>'
+          +   '<div class="paper-authors">' + esc(p.authors || '')
+          +     (p.url ? ' · <a href="' + esc(p.url) + '" target="_blank" rel="noopener">DOI ↗</a>' : '')
+          +   '</div>'
+
+          +   '<div class="block-label clinician">Clinician</div>'
+          +   '<div class="block-row"><strong>Bottom line:</strong> ' + esc(clin.bottom_line || '') + '</div>'
+          +   '<div class="block-row"><strong>Design:</strong> ' + esc(clin.design || '') + '</div>'
+          +   '<div class="block-row"><strong>Key numbers:</strong> ' + esc(clin.key_numbers || '') + '</div>'
+          +   '<div class="block-row"><strong>Limitations:</strong> ' + esc(clin.limitations || '') + '</div>'
+          +   '<div class="block-row"><strong>Practice impact:</strong> ' + esc(clin.practice_impact || '') + '</div>'
+
+          +   '<div class="block-label patient">Patient preview</div>'
+          +   '<div class="patient-block">'
+          +     '<p><strong>' + esc(pat.headline || '') + '</strong></p>'
+          +     '<p>' + esc(pat.plain_summary || '') + '</p>'
+          +     (pat.what_it_means_for_you
+                 ? '<p><em>What it may mean:</em> ' + esc(pat.what_it_means_for_you) + '</p>'
+                 : '')
+          +     (pat.caveat
+                 ? '<p class="patient-caveat">' + esc(pat.caveat) + '</p>'
+                 : '')
+          +   '</div>'
+          + '</article>';
+    }).join('');
+
+    if (!papersHTML) {
+        papersHTML = '<div class="empty">No papers in this digest.</div>';
+    }
+
+    var approveBar = '';
+    if (!isApproved && (doc.papers || []).length) {
+        var approveHref = API + '/approve/' + encodeURIComponent(doc.week_id)
+                          + '?token=' + encodeURIComponent(token) + '&redirect=1';
+        approveBar = ''
+          + '<div class="approve-bar">'
+          +   '<a href="' + esc(approveHref) + '" class="approve-btn" style="text-decoration:none;display:inline-block">'
+          +     'Approve & publish to site'
+          +   '</a>'
+          + '</div>';
+    }
+
+    root.innerHTML = headHTML + papersHTML + approveBar;
+}
+
+/* ── Router ─────────────────────────────────────────────────────── */
+(function () {
+    var p = getParams();
+    if (p.error) {
+        var map = {
+            invalid_token: 'Invalid or expired approval link.',
+            not_found:     'That digest could not be found.'
+        };
+        banner('error', map[p.error] || ('Error: ' + p.error));
+    }
+    if (p.week_id && p.token) {
+        showReview(p.week_id, p.token, p.approved);
+    } else if (p.admin_token) {
+        showQueue(p.admin_token);
+    } else {
+        promptAdminToken();
+    }
+})();
+</script>
+</body>
+</html>
