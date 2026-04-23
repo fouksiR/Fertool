@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Live birth rate by embryo transfer and RIF · Melbourne IVF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #efe8db;
+  --bg-alt: #f5f0e4;
+  --card: #ffffff;
+  --primary: #4a7040;
+  --primary-dark: #2f4a28;
+  --primary-soft: #e5ede0;
+  --accent: #7a9668;
+  --ink: #1a1a1a;
+  --ink-soft: #3a3a36;
+  --muted: #8a8a85;
+  --muted-soft: #b3b0a8;
+  --border: #e0dbd0;
+  --border-soft: #ebe6db;
+  --warning: #b8860b;
+  --danger: #a83e3e;
+  --danger-soft: #f5e8e8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  background: rgba(239, 232, 219, 0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+}
+.nav-sperm {
+  height: 1.05em;
+  width: auto;
+  color: var(--ink);
+  position: relative;
+  top: 0.15em;
+  margin: 0 1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--primary-dark); }
+.nav-links a.active { color: var(--primary-dark); font-weight: 600; }
+.nav-links a.external::after { content: ' ↗'; font-size: 0.85em; opacity: 0.7; }
+
+/* ---------- Hero ---------- */
+.hero {
+  text-align: center;
+  padding: 72px 24px 40px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 3.1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 16px;
+  letter-spacing: -0.015em;
+  line-height: 1.14;
+}
+
+.hero .subtitle {
+  color: var(--muted);
+  font-size: 1.02rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---------- Main card ---------- */
+.container {
+  max-width: 980px;
+  margin: 0 auto 56px;
+  padding: 0 20px;
+}
+
+.main-card {
+  background: var(--card);
+  border-radius: 28px;
+  padding: 44px 48px;
+  box-shadow: 0 4px 28px rgba(30, 30, 20, 0.04);
+  border: 1px solid var(--border-soft);
+  margin-bottom: 28px;
+}
+
+/* ---------- Category pill ---------- */
+.category-pill {
+  display: inline-block;
+  background: var(--primary-soft);
+  color: var(--primary);
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+/* ---------- Section titles inside card ---------- */
+.section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 32px 0 8px;
+  letter-spacing: -0.005em;
+}
+
+.section-desc {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 18px;
+  line-height: 1.55;
+}
+
+/* ---------- Data note ---------- */
+.data-note {
+  background: var(--bg-alt);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin: 0 0 32px;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  border: 1px solid var(--border-soft);
+}
+.data-note strong { color: var(--primary-dark); font-weight: 600; }
+
+/* ---------- Form elements ---------- */
+.field-group { margin-bottom: 28px; }
+
+.field-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.field-row.single { grid-template-columns: 1fr; }
+
+select, input[type="number"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: white;
+  color: var(--ink);
+  transition: all 0.2s;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%234a7040' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+input[type="number"] { background-image: none; padding-right: 14px; cursor: text; }
+
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(74, 112, 64, 0.1);
+}
+
+/* ---------- Transfer cards ---------- */
+.transfer-card {
+  background: var(--bg-alt);
+  padding: 18px 22px;
+  margin: 12px 0;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  transition: all 0.2s;
+}
+
+.transfer-card.invalid {
+  background: var(--danger-soft);
+  border-color: #e5c5c5;
+}
+
+.transfer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.transfer-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.transfer-rate {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.transfer-rate.insufficient {
+  color: var(--danger);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  font-style: italic;
+}
+
+.transfer-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.transfer-fields .mini-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.quality-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  grid-column: span 2;
+}
+.quality-pair.hidden { display: none; }
+
+/* ---------- Buttons ---------- */
+.button-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 36px 0 0;
+  align-items: center;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+
+button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(74, 112, 64, 0.25);
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+button.ghost:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  box-shadow: none;
+}
+
+/* ---------- Warning ---------- */
+.warning-box {
+  background: #fff8ea;
+  border: 1px solid #f0d999;
+  padding: 18px 22px;
+  border-radius: 14px;
+  margin: 20px 0 0;
+  font-size: 0.9rem;
+  color: #6b5410;
+  line-height: 1.6;
+}
+.warning-box strong { color: #3d3008; }
+
+/* ---------- Results ---------- */
+.result-hero {
+  text-align: center;
+  padding: 36px 20px 30px;
+  background: var(--bg-alt);
+  border-radius: 20px;
+  margin: 0 0 20px;
+  border: 1px solid var(--border-soft);
+}
+
+.result-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.result-main {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 4.2rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 4px 0 16px;
+}
+
+.result-status {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-met { background: var(--primary-soft); color: var(--primary-dark); border: 1px solid var(--accent); }
+.status-not-met { background: #fbeaea; color: #7a2b2b; border: 1px solid #e5b5b5; }
+.status-insufficient { background: #fff4d6; color: #6b4f0a; border: 1px solid #e8c880; }
+
+/* ---------- Detail grid ---------- */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 16px 0 24px;
+}
+
+.detail-card {
+  background: var(--bg-alt);
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+}
+
+.detail-label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.detail-value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1.55rem;
+  margin-top: 4px;
+  line-height: 1;
+}
+
+/* ---------- Bars ---------- */
+.bar-block {
+  background: var(--bg-alt);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin: 10px 0;
+  border: 1px solid var(--border-soft);
+}
+
+.bar-title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  margin-bottom: 10px;
+  color: var(--muted);
+  align-items: baseline;
+}
+
+.bar-value {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.bar {
+  height: 26px;
+  border-radius: 100px;
+  background: #e8e2d3;
+  overflow: hidden;
+}
+
+.bar-inner {
+  height: 100%;
+  border-radius: 100px;
+  background: var(--primary);
+  width: 0%;
+  transition: width 0.7s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ---------- Heatmap ---------- */
+.heatmap-row { margin: 7px 0; }
+
+.heat-cell {
+  border-radius: 12px;
+  padding: 12px 18px;
+  color: white;
+  font-size: 0.92rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.heat-label { font-weight: 500; letter-spacing: 0.01em; }
+
+.heat-rate {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+/* ---------- Icon array + trajectory ---------- */
+.plot-caption {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 16px;
+  line-height: 1.55;
+}
+
+.icon-array-wrap, .trajectory-wrap {
+  background: var(--bg-alt);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 26px;
+  margin: 10px 0 18px;
+}
+
+.icon-array-svg, .trajectory-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.icon-array-svg { max-height: 440px; }
+
+.icon-legend {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.icon-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+.swatch.green { background: var(--primary); border: 1px solid var(--primary-dark); }
+.swatch.grey  { background: #e8e2d3; border: 1px solid var(--muted-soft); }
+
+.legend-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1.3rem;
+  margin-right: 4px;
+}
+
+.trajectory-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-soft);
+  flex-wrap: wrap;
+}
+
+.trajectory-controls label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.trajectory-controls input[type="range"] {
+  flex: 1;
+  min-width: 180px;
+  max-width: 340px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.future-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: var(--primary);
+  min-width: 28px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.trajectory-note {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+  line-height: 1.6;
+}
+
+/* ---------- Summary ---------- */
+.summary-box {
+  background: var(--bg-alt);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-top: 10px;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  white-space: pre-wrap;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
+.copy-btn {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  padding: 10px 22px;
+  font-size: 0.85rem;
+  margin-top: 14px;
+}
+.copy-btn:hover {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 8px rgba(74, 112, 64, 0.2);
+}
+
+/* ---------- Reference collapsible ---------- */
+details {
+  margin: 24px 0 0;
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+details summary {
+  padding: 16px 22px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  color: var(--primary);
+  font-weight: 500;
+  user-select: none;
+  list-style: none;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::before {
+  content: '+ ';
+  font-weight: 600;
+  color: var(--primary);
+  margin-right: 4px;
+}
+details[open] summary::before { content: '− '; }
+details summary:hover { background: var(--bg-alt); }
+
+.ref-table-container {
+  padding: 8px 22px 22px;
+  overflow-x: auto;
+  border-top: 1px solid var(--border-soft);
+}
+
+.ref-table-container h4 {
+  margin: 22px 0 10px;
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.ref-table-container h4:first-child { margin-top: 10px; }
+
+.ref-table-container table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.84rem;
+  margin-bottom: 6px;
+}
+
+.ref-table-container th, .ref-table-container td {
+  text-align: center;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.ref-table-container th {
+  background: var(--bg-alt);
+  color: var(--primary-dark);
+  font-weight: 600;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ref-table-container td.na { color: var(--muted-soft); }
+
+/* ---------- Footer ---------- */
+footer {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding: 20px 24px 48px;
+  line-height: 1.65;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .nav { padding: 14px 18px; flex-direction: column; gap: 12px; }
+  .nav-links { gap: 16px; flex-wrap: wrap; justify-content: center; font-size: 0.88rem; }
+  .hero { padding: 44px 20px 28px; }
+  .hero h1 { font-size: 2.2rem; }
+  .main-card { padding: 28px 22px; border-radius: 22px; }
+  .field-row { grid-template-columns: 1fr; }
+  .result-main { font-size: 3rem; }
+  .section-title { font-size: 1.35rem; }
+}
+
+@media print {
+  body { background: white; }
+  .nav, .button-row, .copy-btn, details, .trajectory-controls { display: none; }
+  .main-card { box-shadow: none; border: none; padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">fert<svg class="nav-sperm" viewBox="0 0 18 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="9" cy="8" rx="5.5" ry="7" fill="currentColor"/><path d="M 9 15 C 14 20, 4 25, 9 30 C 14 35, 6 40, 9 44" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>le</a>
+  <ul class="nav-links">
+    <li><a href="#">Search</a></li>
+    <li><a href="#">Egg Freezing</a></li>
+    <li><a href="#">Fertility &amp; Endo</a></li>
+    <li><a href="#">Surgery in Endo</a></li>
+    <li><a href="#" class="active">Live birth &amp; RIF</a></li>
+    <li><a href="#">AMH Guide</a></li>
+    <li><a href="#" class="external">CPD Hub</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>Live birth rate by embryo transfer and RIF</h1>
+  <p class="subtitle">Melbourne IVF outcomes · January 2019 – June 2022 · Private patients, single embryo transfers</p>
+</section>
+
+<div class="container">
+
+  <div class="main-card">
+    <span class="category-pill">Clinical tool</span>
+
+    <div class="data-note">
+      <strong>Data source.</strong> Actual live-birth outcomes per single embryo transfer at Melbourne IVF, stratified by age at egg collection, Gardner grade, day of transfer, and cycle type (Fresh / FET / PGT). Imported and cryopreserved eggs excluded; FET cohort excludes embryos with warm survival &lt;75% or multiple cryopreservations. Grade pooling: <em>4/5AA</em> · <em>4/5AB/BA</em> · <em>4/5BB &amp; 3AA</em> · <em>3BA/AB/BB</em> · <em>Grade 1–2</em> · any <em>ICM or TE = C</em>.
+    </div>
+
+    <h2 class="section-title">Patient</h2>
+    <p class="section-desc">Age at the time of egg collection determines the reference cohort.</p>
+
+    <div class="field-row field-group">
+      <div>
+        <label class="field-label">Age at egg collection</label>
+        <select id="ageGroup">
+          <option value="≤34">≤ 34 years</option>
+          <option value="35-39" selected>35 – 39 years</option>
+          <option value="40-43">40 – 43 years</option>
+          <option value="≥44">≥ 44 years</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Number of transfers</label>
+        <select id="embryoCount"></select>
+      </div>
+    </div>
+
+    <h2 class="section-title">Transfer history</h2>
+    <p class="section-desc">Enter each embryo transfer in order. Rates update as you type; combinations not represented in the MIVF cohort are flagged as insufficient data.</p>
+
+    <div id="embryoInputs"></div>
+
+    <h2 class="section-title">RIF threshold</h2>
+    <p class="section-desc">The cumulative expected success rate above which RIF is considered. Standard 60% aligns with ESHRE framing.</p>
+
+    <div class="field-group">
+      <div class="field-row single">
+        <div>
+          <label class="field-label">Diagnostic threshold</label>
+          <select id="rifStandard">
+            <option value="60">Standard — ≥ 60% cumulative expected success</option>
+            <option value="70">Strict — ≥ 70%</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row single" id="customAlphaRow" style="display:none;margin-top:14px">
+        <div>
+          <label class="field-label">Custom threshold (%)</label>
+          <input id="customSucc" type="number" step="5" min="50" max="95" value="65">
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button id="calcBtn">Calculate RIF probability</button>
+      <button id="exampleBtn" class="ghost">Load example</button>
+      <button id="resetBtn" class="ghost">Reset</button>
+    </div>
+
+    <div id="warningBox"></div>
+  </div>
+
+  <div class="main-card" id="resultsSection" style="display:none">
+    <span class="category-pill">Results</span>
+
+    <div class="result-hero">
+      <div class="result-label">Cumulative expected success</div>
+      <div class="result-main" id="mainResult">—</div>
+      <div id="rifStatus" class="result-status"></div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card"><div class="detail-label">Transfers</div><div class="detail-value" id="detailTransfers">—</div></div>
+      <div class="detail-card"><div class="detail-label">Threshold</div><div class="detail-value" id="detailThreshold">—</div></div>
+      <div class="detail-card"><div class="detail-label">P(all failed)</div><div class="detail-value" id="detailFailed">—</div></div>
+      <div class="detail-card"><div class="detail-label">Age band</div><div class="detail-value" id="detailAge">—</div></div>
+    </div>
+
+    <h2 class="section-title">Per-transfer rates</h2>
+    <p class="section-desc">Position-adjusted live-birth rate for each transfer in sequence.</p>
+    <div id="heatmap"></div>
+
+    <div class="bar-block">
+      <div class="bar-title"><span>Cumulative success</span><span class="bar-value" id="succPercent">—</span></div>
+      <div class="bar"><div id="barSucc" class="bar-inner"></div></div>
+    </div>
+
+    <div class="bar-block">
+      <div class="bar-title"><span>Probability all transfers fail</span><span class="bar-value" id="failPercent">—</span></div>
+      <div class="bar"><div id="barFail" class="bar-inner"></div></div>
+    </div>
+
+    <h2 class="section-title">Imagine 100 women like you</h2>
+    <p class="plot-caption">Of 100 women in this age band at Melbourne IVF with the same transfer history, this is how outcomes would break down by the end of the sequence.</p>
+    <div class="icon-array-wrap">
+      <div id="iconArray"></div>
+      <div class="icon-legend">
+        <div class="icon-legend-item"><span class="swatch green"></span><span class="legend-count" id="iconCountPregnant">—</span>would achieve pregnancy</div>
+        <div class="icon-legend-item"><span class="swatch grey"></span><span class="legend-count" id="iconCountNot">—</span>would still not be pregnant</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Cumulative success across transfers</h2>
+    <p class="plot-caption">How cumulative probability builds across attempts. The curve flattens — each extra transfer adds progressively less. Move the slider to project additional transfers.</p>
+    <div class="trajectory-wrap">
+      <div id="trajectoryChart"></div>
+      <div class="trajectory-controls">
+        <label>Project additional</label>
+        <input type="range" min="0" max="5" value="0" id="futureTransfers">
+        <span class="future-value" id="futureValue">0</span>
+      </div>
+      <div class="trajectory-note">
+        Projected transfers (dashed line, grey markers) assume the average base rate of the existing transfers with further position decay applied. These are hypothetical — actual rates depend on the specific embryos available.
+      </div>
+    </div>
+
+    <h2 class="section-title">Clinical summary</h2>
+    <p class="section-desc">Copy and paste into a consult note or letter.</p>
+    <div class="summary-box" id="summaryBox"></div>
+    <button class="copy-btn" id="copyBtn">Copy summary to clipboard</button>
+  </div>
+
+  <details>
+    <summary>View MIVF reference data</summary>
+    <div class="ref-table-container" id="refTableContainer"></div>
+  </details>
+
+</div>
+
+<footer>
+  <em>For clinical use by Dr Yuval Fouks.</em> Frailty-adjusted joint-failure model (σ = 0.8 on logit scale, 5,000 Monte-Carlo samples) with position decay across successive transfers. Cells marked "—" have insufficient data in the MIVF source cohort and block calculation until resolved.
+</footer>
+
+<script>
+// ===============================================================
+// MIVF live-birth rates per SET, Jan 2019–Jun 2022, private.
+// ===============================================================
+const mivfRates = {
+  "≤34": {
+    "4/5AA":       { Fresh: {5: 0.566}, FET: {5: 0.512, 6: 0.306}, PGT: {5: 0.647, 6: 0.369} },
+    "4/5AB/BA":    { Fresh: {5: 0.463}, FET: {5: 0.402, 6: 0.192}, PGT: {5: 0.607, 6: 0.283} },
+    "4/5BB-3AA":   { Fresh: {5: 0.378}, FET: {5: 0.310, 6: 0.164}, PGT: {5: 0.632, 6: 0.299} },
+    "3BA/AB/BB":   { Fresh: {5: 0.374}, FET: {5: 0.286, 6: 0.125}, PGT: {} },
+    "Grade 1-2":   { Fresh: {5: 0.204}, FET: {}, PGT: {} },
+    "ICM/TE C":    { Fresh: {5: 0.000}, FET: {}, PGT: {} }
+  },
+  "35-39": {
+    "4/5AA":       { Fresh: {5: 0.475}, FET: {5: 0.426, 6: 0.293}, PGT: {5: 0.554, 6: 0.432} },
+    "4/5AB/BA":    { Fresh: {5: 0.393}, FET: {5: 0.286, 6: 0.152}, PGT: {5: 0.564, 6: 0.254} },
+    "4/5BB-3AA":   { Fresh: {5: 0.343}, FET: {5: 0.266, 6: 0.143}, PGT: {5: 0.522, 6: 0.196} },
+    "3BA/AB/BB":   { Fresh: {5: 0.243}, FET: {5: 0.213, 6: 0.065}, PGT: {} },
+    "Grade 1-2":   { Fresh: {5: 0.143}, FET: {}, PGT: {} },
+    "ICM/TE C":    { Fresh: {5: 0.060}, FET: {}, PGT: {} }
+  },
+  "40-43": {
+    "4/5AA":       { Fresh: {5: 0.252}, FET: {5: 0.176, 6: 0.185}, PGT: {5: 0.667, 6: 0.429} },
+    "4/5AB/BA":    { Fresh: {5: 0.192}, FET: {5: 0.109, 6: 0.179}, PGT: {5: 0.417, 6: 0.475} },
+    "4/5BB-3AA":   { Fresh: {5: 0.159}, FET: {5: 0.169, 6: 0.074}, PGT: {5: 0.167, 6: 0.111} },
+    "3BA/AB/BB":   { Fresh: {5: 0.135}, FET: {5: 0.130, 6: 0.000}, PGT: {} },
+    "Grade 1-2":   { Fresh: {5: 0.030}, FET: {}, PGT: {} },
+    "ICM/TE C":    { Fresh: {5: 0.034}, FET: {}, PGT: {} }
+  },
+  "≥44": {
+    "4/5AA":       { Fresh: {5: 0.227}, FET: {}, PGT: {} },
+    "4/5AB/BA":    { Fresh: {5: 0.000}, FET: {}, PGT: {} },
+    "4/5BB-3AA":   { Fresh: {5: 0.182}, FET: {}, PGT: {} },
+    "3BA/AB/BB":   { Fresh: {5: 0.130}, FET: {}, PGT: {} },
+    "Grade 1-2":   { Fresh: {5: 0.000}, FET: {}, PGT: {} },
+    "ICM/TE C":    { Fresh: {}, FET: {}, PGT: {} }
+  }
+};
+
+function positionModifier(i) {
+  const arr = [1.00, 0.93, 0.85, 0.78, 0.70, 0.65, 0.60, 0.55, 0.50, 0.50];
+  return arr[Math.min(i - 1, arr.length - 1)];
+}
+
+// ---------- Math ----------
+function invlogit(z) { return 1 / (1 + Math.exp(-z)); }
+function logit(p) { return Math.log(p / (1 - p)); }
+function clamp01(p) { return Math.max(1e-6, Math.min(1 - 1e-6, p)); }
+function randn() {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+function colorScale(p) {
+  // Warm clay → olive → forest (matches cream/green palette)
+  const x = Math.max(0, Math.min(1, p / 0.5));
+  let r, g, b;
+  if (x < 0.5) {
+    r = Math.floor(168 - 48 * (x / 0.5));
+    g = Math.floor(95 + 50 * (x / 0.5));
+    b = Math.floor(62 + 20 * (x / 0.5));
+  } else {
+    r = Math.floor(120 - 46 * ((x - 0.5) / 0.5));
+    g = Math.floor(145 - 33 * ((x - 0.5) / 0.5));
+    b = Math.floor(82 - 18 * ((x - 0.5) / 0.5));
+  }
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+// ---------- Grade mapping ----------
+function mapGrade(exp, icm, te) {
+  const e = parseInt(exp);
+  if (e <= 2) return "Grade 1-2";
+  if (icm === "C" || te === "C") return "ICM/TE C";
+  if (icm === "A" && te === "A") return e === 3 ? "4/5BB-3AA" : "4/5AA";
+  if ((icm === "A" && te === "B") || (icm === "B" && te === "A"))
+    return e === 3 ? "3BA/AB/BB" : "4/5AB/BA";
+  if (icm === "B" && te === "B")
+    return e === 3 ? "3BA/AB/BB" : "4/5BB-3AA";
+  return null;
+}
+
+function lookupRate(age, grade, cycle, day) {
+  const ageData = mivfRates[age]; if (!ageData) return null;
+  const gradeData = ageData[grade]; if (!gradeData) return null;
+  const cycleData = gradeData[cycle]; if (!cycleData) return null;
+  const rate = cycleData[day];
+  return (rate === undefined) ? null : rate;
+}
+
+// ---------- UI builders ----------
+const countSel = document.getElementById('embryoCount');
+for (let i = 1; i <= 10; i++) {
+  const o = document.createElement('option');
+  o.value = o.textContent = i;
+  countSel.appendChild(o);
+}
+countSel.value = "3";
+
+function buildRows() {
+  const container = document.getElementById('embryoInputs');
+  container.innerHTML = "";
+  const n = parseInt(countSel.value);
+
+  for (let i = 1; i <= n; i++) {
+    const card = document.createElement('div');
+    card.className = 'transfer-card';
+    card.id = 'transferCard' + i;
+
+    card.innerHTML = `
+      <div class="transfer-head">
+        <span class="transfer-label">Transfer ${i}</span>
+        <span class="transfer-rate" id="transferRate${i}">—</span>
+      </div>
+      <div class="transfer-fields">
+        <div>
+          <span class="mini-label">Cycle</span>
+          <select id="cycle${i}">
+            <option value="Fresh">Fresh</option>
+            <option value="FET" selected>FET</option>
+            <option value="PGT">PGT</option>
+          </select>
+        </div>
+        <div>
+          <span class="mini-label">Day</span>
+          <select id="day${i}">
+            <option value="5" selected>Day 5</option>
+            <option value="6">Day 6</option>
+          </select>
+        </div>
+        <div>
+          <span class="mini-label">Expansion</span>
+          <select id="expansion${i}">
+            <option value="1">1 — early</option>
+            <option value="2">2 — early</option>
+            <option value="3">3 — full</option>
+            <option value="4">4 — expanded</option>
+            <option value="5" selected>5 — hatching</option>
+          </select>
+        </div>
+        <div class="quality-pair" id="qualityGroup${i}">
+          <div>
+            <span class="mini-label">ICM</span>
+            <select id="icm${i}">
+              <option value="A" selected>A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+          </div>
+          <div>
+            <span class="mini-label">TE</span>
+            <select id="te${i}">
+              <option value="A" selected>A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  }
+
+  for (let i = 1; i <= n; i++) {
+    const cycleSel = document.getElementById('cycle' + i);
+    const expSel = document.getElementById('expansion' + i);
+    const icmSel = document.getElementById('icm' + i);
+    const teSel = document.getElementById('te' + i);
+    const daySel = document.getElementById('day' + i);
+
+    const refresh = () => updateTransferRow(i);
+    cycleSel.addEventListener('change', () => { updateDayOptions(i); refresh(); });
+    daySel.addEventListener('change', refresh);
+    expSel.addEventListener('change', () => { updateQualityVisibility(i); refresh(); });
+    icmSel.addEventListener('change', refresh);
+    teSel.addEventListener('change', refresh);
+
+    updateDayOptions(i);
+    updateQualityVisibility(i);
+    updateTransferRow(i);
+  }
+}
+
+function updateDayOptions(i) {
+  const cycle = document.getElementById('cycle' + i).value;
+  const daySel = document.getElementById('day' + i);
+  const currentDay = daySel.value;
+  daySel.innerHTML = '';
+  const days = (cycle === 'Fresh') ? [5] : [5, 6];
+  days.forEach(d => {
+    const o = document.createElement('option');
+    o.value = d; o.textContent = 'Day ' + d;
+    daySel.appendChild(o);
+  });
+  daySel.value = days.includes(parseInt(currentDay)) ? currentDay : days[0];
+}
+
+function updateQualityVisibility(i) {
+  const exp = parseInt(document.getElementById('expansion' + i).value);
+  const qg = document.getElementById('qualityGroup' + i);
+  if (exp <= 2) qg.classList.add('hidden');
+  else qg.classList.remove('hidden');
+}
+
+function updateTransferRow(i) {
+  const age = document.getElementById('ageGroup').value;
+  const cycle = document.getElementById('cycle' + i).value;
+  const day = parseInt(document.getElementById('day' + i).value);
+  const exp = document.getElementById('expansion' + i).value;
+  const icm = document.getElementById('icm' + i).value;
+  const te = document.getElementById('te' + i).value;
+
+  const grade = mapGrade(exp, icm, te);
+  const rate = grade ? lookupRate(age, grade, cycle, day) : null;
+  const card = document.getElementById('transferCard' + i);
+  const rateEl = document.getElementById('transferRate' + i);
+
+  if (rate === null || rate === undefined) {
+    card.classList.add('invalid');
+    rateEl.className = 'transfer-rate insufficient';
+    rateEl.textContent = 'insufficient data';
+  } else {
+    card.classList.remove('invalid');
+    rateEl.className = 'transfer-rate';
+    rateEl.textContent = (rate * 100).toFixed(1) + '%';
+  }
+}
+
+buildRows();
+countSel.addEventListener('change', buildRows);
+document.getElementById('ageGroup').addEventListener('change', () => {
+  const n = parseInt(countSel.value);
+  for (let i = 1; i <= n; i++) updateTransferRow(i);
+});
+
+const stdSel = document.getElementById('rifStandard');
+const customRow = document.getElementById('customAlphaRow');
+stdSel.addEventListener('change', () => {
+  customRow.style.display = (stdSel.value === 'custom') ? 'block' : 'none';
+});
+
+function selectedThreshold() {
+  if (stdSel.value === 'custom') return parseFloat(document.getElementById('customSucc').value || 65) / 100;
+  return parseFloat(stdSel.value) / 100;
+}
+
+// ---------- Collect transfers ----------
+function collectTransfers() {
+  const age = document.getElementById('ageGroup').value;
+  const n = parseInt(countSel.value);
+  const transfers = []; const invalid = [];
+
+  for (let i = 1; i <= n; i++) {
+    const cycle = document.getElementById('cycle' + i).value;
+    const day = parseInt(document.getElementById('day' + i).value);
+    const exp = document.getElementById('expansion' + i).value;
+    const icm = document.getElementById('icm' + i).value;
+    const te = document.getElementById('te' + i).value;
+
+    const grade = mapGrade(exp, icm, te);
+    const baseRate = grade ? lookupRate(age, grade, cycle, day) : null;
+
+    const displayGrade = (parseInt(exp) <= 2) ? ('Grade ' + exp) : (exp + icm + te);
+
+    if (baseRate === null || baseRate === undefined) {
+      invalid.push(`Transfer ${i}: ${cycle} Day ${day} ${displayGrade}`);
+      transfers.push({ index: i, baseRate: null, grade: displayGrade, cycle, day });
+    } else {
+      transfers.push({
+        index: i, baseRate,
+        adjustedRate: clamp01(baseRate * positionModifier(i)),
+        positionFactor: positionModifier(i),
+        grade: displayGrade, cycle, day, category: grade
+      });
+    }
+  }
+  return { transfers, invalid, age };
+}
+
+// ---------- Frailty model ----------
+function calculateCumulativeSuccess(transfers) {
+  const FRAILTY_SD = 0.8;
+  const N_SAMPLES = 5000;
+  const ps = transfers.map(t => t.adjustedRate);
+
+  if (ps.length === 1) return { success: ps[0], allFailed: 1 - ps[0] };
+
+  const mu = ps.map(p => logit(clamp01(p)));
+  let sumFailed = 0;
+  for (let s = 0; s < N_SAMPLES; s++) {
+    const u = randn() * FRAILTY_SD;
+    let prodFailed = 1;
+    for (let k = 0; k < mu.length; k++) {
+      prodFailed *= (1 - invlogit(mu[k] + u));
+      if (prodFailed === 0) break;
+    }
+    sumFailed += prodFailed;
+  }
+  const pfail = sumFailed / N_SAMPLES;
+  return { success: 1 - pfail, allFailed: pfail };
+}
+
+// ---------- Example ----------
+document.getElementById('exampleBtn').addEventListener('click', () => {
+  document.getElementById('ageGroup').value = '35-39';
+  countSel.value = '3';
+  buildRows();
+
+  const cfg = [
+    { i: 1, cycle: 'FET', day: '5', exp: '4', icm: 'A', te: 'A' },
+    { i: 2, cycle: 'FET', day: '5', exp: '5', icm: 'A', te: 'B' },
+    { i: 3, cycle: 'FET', day: '6', exp: '5', icm: 'A', te: 'A' }
+  ];
+  cfg.forEach(c => {
+    document.getElementById('cycle' + c.i).value = c.cycle;
+    updateDayOptions(c.i);
+    document.getElementById('day' + c.i).value = c.day;
+    document.getElementById('expansion' + c.i).value = c.exp;
+    document.getElementById('icm' + c.i).value = c.icm;
+    document.getElementById('te' + c.i).value = c.te;
+    updateQualityVisibility(c.i);
+    updateTransferRow(c.i);
+  });
+  setTimeout(() => document.getElementById('calcBtn').click(), 100);
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => location.reload());
+
+// ---------- Main calculate ----------
+document.getElementById('calcBtn').addEventListener('click', () => {
+  const { transfers, invalid, age } = collectTransfers();
+  const threshold = selectedThreshold();
+  const n = transfers.length;
+
+  const warnDiv = document.getElementById('warningBox');
+  if (invalid.length) {
+    warnDiv.innerHTML = `
+      <div class="warning-box">
+        <strong>Insufficient MIVF data for:</strong><br>
+        ${invalid.join('<br>')}<br><br>
+        These combinations do not appear in the MIVF source cohort with enough n to generate a rate. Cannot compute cumulative success until resolved — change cycle type, day, or grade.
+      </div>`;
+    document.getElementById('resultsSection').style.display = 'none';
+    return;
+  }
+  warnDiv.innerHTML = '';
+
+  const { success: psucc, allFailed: pfail } = calculateCumulativeSuccess(transfers);
+
+  document.getElementById('mainResult').textContent = (psucc * 100).toFixed(1) + '%';
+
+  const statusDiv = document.getElementById('rifStatus');
+  const meetsRIF = (psucc >= threshold && n >= 2);
+  if (meetsRIF) {
+    statusDiv.className = 'result-status status-met';
+    statusDiv.innerHTML = '✓ RIF criteria met — investigation indicated';
+  } else if (n < 2) {
+    statusDiv.className = 'result-status status-insufficient';
+    statusDiv.innerHTML = 'RIF requires ≥ 2 transfers';
+  } else {
+    statusDiv.className = 'result-status status-not-met';
+    statusDiv.innerHTML = `RIF criteria not met — ${(psucc*100).toFixed(1)}% vs ≥${(threshold*100).toFixed(0)}% threshold`;
+  }
+
+  document.getElementById('detailTransfers').textContent = n;
+  document.getElementById('detailThreshold').textContent = '≥ ' + (threshold*100).toFixed(0) + '%';
+  document.getElementById('detailFailed').textContent = (pfail*100).toFixed(1) + '%';
+  document.getElementById('detailAge').textContent = age;
+
+  const heat = document.getElementById('heatmap');
+  heat.innerHTML = '';
+  transfers.forEach(t => {
+    const row = document.createElement('div');
+    row.className = 'heatmap-row';
+    const cell = document.createElement('div');
+    cell.className = 'heat-cell';
+    cell.style.background = colorScale(t.adjustedRate);
+    cell.innerHTML = `
+      <span class="heat-label">Transfer ${t.index} · ${t.cycle} Day ${t.day} · ${t.grade}</span>
+      <span class="heat-rate">${(t.adjustedRate*100).toFixed(1)}%</span>
+    `;
+    row.appendChild(cell);
+    heat.appendChild(row);
+  });
+
+  const succBar = document.getElementById('barSucc');
+  succBar.style.width = (psucc*100).toFixed(1) + '%';
+  succBar.textContent = (psucc*100).toFixed(1) + '%';
+  document.getElementById('succPercent').textContent = (psucc*100).toFixed(1) + '%';
+
+  const failBar = document.getElementById('barFail');
+  failBar.style.width = (pfail*100).toFixed(1) + '%';
+  failBar.textContent = (pfail*100).toFixed(1) + '%';
+  document.getElementById('failPercent').textContent = (pfail*100).toFixed(1) + '%';
+
+  succBar.style.background = meetsRIF ? 'var(--primary)' : 'var(--danger)';
+  failBar.style.background = meetsRIF ? 'var(--primary)' : 'var(--danger)';
+
+  const date = new Date().toLocaleDateString('en-AU', { day: '2-digit', month: 'short', year: 'numeric' });
+  let summary = `RIF PROBABILITY ASSESSMENT — ${date}\n`;
+  summary += `Source: Melbourne IVF data (Jan 2019–Jun 2022, private, SET)\n`;
+  summary += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  summary += `Patient age band : ${age}\n`;
+  summary += `Total transfers  : ${n}\n\n`;
+  transfers.forEach(t => {
+    summary += `  ${t.index}. ${t.cycle.padEnd(5)} Day ${t.day} ${t.grade.padEnd(6)} → base ${(t.baseRate*100).toFixed(1).padStart(5)}%, position-adj ${(t.adjustedRate*100).toFixed(1)}%\n`;
+  });
+  summary += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  summary += `Cumulative expected success : ${(psucc*100).toFixed(1)}%\n`;
+  summary += `P(all transfers fail)       : ${(pfail*100).toFixed(1)}%\n`;
+  summary += `RIF threshold               : ≥${(threshold*100).toFixed(0)}%\n`;
+  summary += `STATUS: ${meetsRIF ? 'RIF CRITERIA MET — investigation indicated' : (n < 2 ? 'INSUFFICIENT TRANSFERS (need ≥2)' : 'RIF criteria not met')}\n`;
+  document.getElementById('summaryBox').textContent = summary;
+
+  renderIconArray(psucc);
+  const slider = document.getElementById('futureTransfers');
+  const futureVal = document.getElementById('futureValue');
+  slider.value = 0;
+  futureVal.textContent = '0';
+  renderTrajectory(transfers, 0, threshold);
+  slider.oninput = () => {
+    futureVal.textContent = slider.value;
+    renderTrajectory(transfers, parseInt(slider.value), threshold);
+  };
+
+  document.getElementById('resultsSection').style.display = 'block';
+  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const text = document.getElementById('summaryBox').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+});
+
+// ===============================================================
+// Icon array
+// ===============================================================
+function renderIconArray(psucc) {
+  const container = document.getElementById('iconArray');
+  const pregnant = Math.round(psucc * 100);
+  const notPregnant = 100 - pregnant;
+
+  const cols = 10, rows = 10;
+  const iconW = 30, iconH = 40, gap = 7;
+  const totalW = cols * iconW + (cols - 1) * gap;
+  const totalH = rows * iconH + (rows - 1) * gap;
+
+  let svg = `<svg viewBox="0 0 ${totalW} ${totalH}" xmlns="http://www.w3.org/2000/svg" class="icon-array-svg" preserveAspectRatio="xMidYMid meet">`;
+
+  for (let i = 0; i < 100; i++) {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = col * (iconW + gap);
+    const y = row * (iconH + gap);
+    const isPregnant = i < pregnant;
+    const fill = isPregnant ? '#4a7040' : '#e8e2d3';
+    const stroke = isPregnant ? '#2f4a28' : '#c5bda9';
+
+    svg += `<g transform="translate(${x},${y})">`;
+    svg += `<circle cx="${iconW/2}" cy="8" r="5" fill="${fill}" stroke="${stroke}" stroke-width="0.8"/>`;
+    svg += `<path d="M ${iconW/2 - 7} 16 L ${iconW/2 + 7} 16 L ${iconW/2 + 11} 37 L ${iconW/2 - 11} 37 Z" fill="${fill}" stroke="${stroke}" stroke-width="0.8" stroke-linejoin="round"/>`;
+    svg += `</g>`;
+  }
+  svg += '</svg>';
+  container.innerHTML = svg;
+
+  document.getElementById('iconCountPregnant').textContent = pregnant;
+  document.getElementById('iconCountNot').textContent = notPregnant;
+}
+
+// ===============================================================
+// Trajectory
+// ===============================================================
+function cumulativePrefix(rates, FRAILTY_SD = 0.8, N_SAMPLES = 3000) {
+  if (rates.length === 0) return [];
+  const mu = rates.map(p => logit(clamp01(p)));
+  const sumFailed = new Array(rates.length).fill(0);
+  for (let s = 0; s < N_SAMPLES; s++) {
+    const u = randn() * FRAILTY_SD;
+    let prodFailed = 1;
+    for (let k = 0; k < rates.length; k++) {
+      prodFailed *= (1 - invlogit(mu[k] + u));
+      sumFailed[k] += prodFailed;
+    }
+  }
+  return sumFailed.map(s => 1 - s / N_SAMPLES);
+}
+
+function renderTrajectory(transfers, futureCount, threshold) {
+  const container = document.getElementById('trajectoryChart');
+  const actualRates = transfers.map(t => t.adjustedRate);
+  const avgBase = transfers.reduce((s, t) => s + t.baseRate, 0) / transfers.length;
+  const projectedRates = [];
+  for (let k = 1; k <= futureCount; k++) {
+    projectedRates.push(clamp01(avgBase * positionModifier(transfers.length + k)));
+  }
+  const allRates = [...actualRates, ...projectedRates];
+  const cum = cumulativePrefix(allRates);
+
+  const curve = [{ x: 0, y: 0, type: 'start' }];
+  cum.forEach((y, i) => curve.push({
+    x: i + 1, y, type: i < transfers.length ? 'actual' : 'projected'
+  }));
+
+  const W = 820, H = 300;
+  const padL = 56, padR = 28, padT = 34, padB = 46;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const maxX = curve.length - 1;
+
+  const xScale = x => padL + (maxX === 0 ? 0 : (x / maxX) * plotW);
+  const yScale = y => padT + (1 - y) * plotH;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" class="trajectory-svg" preserveAspectRatio="xMidYMid meet">`;
+
+  [0, 0.25, 0.5, 0.75, 1.0].forEach(y => {
+    svg += `<line x1="${padL}" y1="${yScale(y)}" x2="${W - padR}" y2="${yScale(y)}" stroke="#ebe6db" stroke-width="1"/>`;
+    svg += `<text x="${padL - 10}" y="${yScale(y) + 4}" text-anchor="end" font-size="11" fill="#8a8a85" font-family="Inter">${(y * 100).toFixed(0)}%</text>`;
+  });
+
+  svg += `<line x1="${padL}" y1="${yScale(threshold)}" x2="${W - padR}" y2="${yScale(threshold)}" stroke="#a83e3e" stroke-width="1.5" stroke-dasharray="5,4"/>`;
+  svg += `<text x="${W - padR - 6}" y="${yScale(threshold) - 6}" text-anchor="end" font-size="10" fill="#a83e3e" font-weight="600" font-family="Inter">RIF threshold ${(threshold*100).toFixed(0)}%</text>`;
+
+  const actualCurve = curve.slice(0, transfers.length + 1);
+  const actualPath = actualCurve.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xScale(p.x)},${yScale(p.y)}`).join(' ');
+  const lastActual = actualCurve[actualCurve.length - 1];
+  const areaPath = actualPath + ` L ${xScale(lastActual.x)},${yScale(0)} L ${xScale(0)},${yScale(0)} Z`;
+  svg += `<path d="${areaPath}" fill="#4a7040" fill-opacity="0.12"/>`;
+  svg += `<path d="${actualPath}" fill="none" stroke="#4a7040" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  if (futureCount > 0) {
+    const projCurve = curve.slice(transfers.length);
+    const projPath = projCurve.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xScale(p.x)},${yScale(p.y)}`).join(' ');
+    svg += `<path d="${projPath}" fill="none" stroke="#b3b0a8" stroke-width="2" stroke-dasharray="5,4" stroke-linejoin="round"/>`;
+  }
+
+  curve.forEach((p, i) => {
+    const isProj = p.type === 'projected';
+    const color = isProj ? '#b3b0a8' : '#4a7040';
+    const isStart = i === 0;
+    svg += `<circle cx="${xScale(p.x)}" cy="${yScale(p.y)}" r="${isStart ? 3 : 5}" fill="white" stroke="${color}" stroke-width="2"/>`;
+    if (!isStart) {
+      svg += `<text x="${xScale(p.x)}" y="${yScale(p.y) - 14}" text-anchor="middle" font-size="12" fill="${color}" font-weight="600" font-family="Cormorant Garamond">${(p.y*100).toFixed(0)}%</text>`;
+    }
+  });
+
+  curve.forEach((p, i) => {
+    const isProj = p.type === 'projected';
+    const label = i === 0 ? 'Start' : `T${i}${isProj ? '*' : ''}`;
+    svg += `<text x="${xScale(p.x)}" y="${H - padB + 20}" text-anchor="middle" font-size="11" fill="${isProj ? '#b3b0a8' : '#1a1a1a'}" font-weight="${isProj ? '400' : '500'}" font-family="Inter">${label}</text>`;
+  });
+
+  svg += `<text x="${padL + plotW/2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="#8a8a85" font-style="italic" font-family="Inter">Transfer number${futureCount > 0 ? ' (* = projected)' : ''}</text>`;
+
+  svg += '</svg>';
+  container.innerHTML = svg;
+}
+
+// ===============================================================
+// Reference table
+// ===============================================================
+function buildReferenceTable() {
+  const container = document.getElementById('refTableContainer');
+  const grades = ["4/5AA", "4/5AB/BA", "4/5BB-3AA", "3BA/AB/BB", "Grade 1-2", "ICM/TE C"];
+  const ages = ["≤34", "35-39", "40-43", "≥44"];
+  const columns = [
+    { cycle: 'Fresh', day: 5, label: 'D5 Fresh' },
+    { cycle: 'FET',   day: 5, label: 'D5 FET' },
+    { cycle: 'FET',   day: 6, label: 'D6 FET' },
+    { cycle: 'PGT',   day: 5, label: 'D5 PGT' },
+    { cycle: 'PGT',   day: 6, label: 'D6 PGT' }
+  ];
+
+  let html = '';
+  ages.forEach(age => {
+    html += `<h4>Age ${age}</h4><table><thead><tr><th style="text-align:left">Grade pool</th>`;
+    columns.forEach(c => html += `<th>${c.label}</th>`);
+    html += '</tr></thead><tbody>';
+    grades.forEach(g => {
+      html += `<tr><td style="text-align:left;font-weight:500">${g}</td>`;
+      columns.forEach(c => {
+        const r = lookupRate(age, g, c.cycle, c.day);
+        if (r === null || r === undefined) html += '<td class="na">—</td>';
+        else html += `<td>${(r*100).toFixed(1)}%</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+  });
+  container.innerHTML = html;
+}
+buildReferenceTable();
+</script>
+</body>
+</html>
