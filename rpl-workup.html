@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recurrent Pregnancy Loss · Evidence-Based Workup</title>
+<meta name="description" content="GP-focused, evidence-stratified investigations for recurrent pregnancy loss. ESHRE 2022 + RANZCOG C-Gyn 38." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #FBF7EE;
+    --paper-2: #F4EEDF;
+    --ink: #1A2624;
+    --ink-2: #4E5C5A;
+    --rule: #E4DAC4;
+
+    --emerald: #0E6E58;
+    --emerald-tint: #D8EDE3;
+    --emerald-deep: #073D31;
+
+    --amber: #B0651A;
+    --amber-tint: #F8E3BE;
+    --amber-deep: #6B3A0C;
+
+    --rose: #A23A52;
+    --rose-tint: #F2D5DA;
+    --rose-deep: #5C1F2C;
+
+    --coral: #DC6B4D;
+
+    --shadow-sm: 0 1px 2px rgba(26,38,36,.04), 0 1px 3px rgba(26,38,36,.06);
+    --shadow-md: 0 4px 14px rgba(26,38,36,.06), 0 2px 6px rgba(26,38,36,.04);
+    --shadow-lg: 0 18px 40px rgba(26,38,36,.08), 0 6px 14px rgba(26,38,36,.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Montserrat', -apple-system, system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Subtle paper texture via layered gradients */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(220, 107, 77, 0.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 30%, rgba(14, 110, 88, 0.06), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  /* ------- HEADER ------- */
+  header.site {
+    padding: 30px 0 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .brand {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
+    flex-wrap: wrap;
+  }
+  .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 500; letter-spacing: 0.02em;
+  }
+  .wordmark em { font-style: italic; color: var(--coral); font-weight: 500; }
+  .crumbs {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  /* ------- HERO ------- */
+  .hero { padding: 56px 0 36px; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--coral); font-weight: 600;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--coral);
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(38px, 5.4vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    margin: 14px 0 18px;
+  }
+  h1 em { font-style: italic; color: var(--emerald); }
+  .lede {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 2.1vw, 24px);
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 720px;
+    font-weight: 400;
+  }
+
+  /* ------- DEFINITION STRIP ------- */
+  .definition {
+    margin: 36px 0 50px;
+    background: var(--emerald-deep);
+    color: var(--paper);
+    border-radius: 14px;
+    padding: 32px 34px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .definition::after {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(220,107,77,.25), transparent 70%);
+    border-radius: 50%;
+  }
+  .def-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500; font-style: italic;
+    font-size: 14px; letter-spacing: 0.08em;
+    color: var(--coral);
+    margin: 0 0 10px;
+    text-transform: uppercase;
+  }
+  .def-block p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; line-height: 1.45;
+    margin: 0;
+    color: var(--paper);
+  }
+  .def-block strong { color: #FFE7C6; font-weight: 500; }
+
+  /* ------- FILTER BAR ------- */
+  .filterbar {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin: 0 0 30px;
+    align-items: center;
+  }
+  .filterbar .label {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-2); margin-right: 6px;
+  }
+  .chip {
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    color: var(--ink-2);
+    transition: all 180ms ease;
+  }
+  .chip:hover { background: rgba(255,255,255,.5); color: var(--ink); }
+  .chip[aria-pressed="true"] {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
+  .chip .dot {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; margin-right: 8px; vertical-align: 1px;
+  }
+  .chip[data-tier="1"] .dot { background: var(--emerald); }
+  .chip[data-tier="2"] .dot { background: var(--amber); }
+  .chip[data-tier="3"] .dot { background: var(--rose); }
+
+  .toolbar-right { margin-left: auto; display: flex; gap: 10px; }
+  .btn-mini {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    padding: 8px 14px; border-radius: 999px;
+    font: 600 12px 'Montserrat', sans-serif; letter-spacing: 0.05em;
+    color: var(--ink); cursor: pointer;
+    transition: all 180ms ease;
+  }
+  .btn-mini:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* ------- TIER SECTIONS ------- */
+  .tier { margin-bottom: 56px; }
+  .tier-head {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .tier-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500; font-style: italic;
+    font-size: 38px;
+    line-height: 1;
+  }
+  .tier-1 .tier-num { color: var(--emerald); }
+  .tier-2 .tier-num { color: var(--amber); }
+  .tier-3 .tier-num { color: var(--rose); }
+  .tier-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.1;
+    margin: 0;
+  }
+  .tier-blurb {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    margin-left: auto;
+    max-width: 360px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ------- TEST CARD GRID ------- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 22px 22px 18px;
+    cursor: pointer;
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .card.expanded { box-shadow: var(--shadow-lg); }
+  .card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .tier-1 .card::before { background: var(--emerald); }
+  .tier-2 .card::before { background: var(--amber); }
+  .tier-3 .card::before { background: var(--rose); opacity: 0.7; }
+
+  .card-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 14px;
+  }
+  .test-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .test-sub {
+    font-size: 11.5px;
+    color: var(--ink-2);
+    margin-top: 4px;
+    letter-spacing: 0.01em;
+  }
+
+  .grade {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .grade-strong { background: var(--emerald-tint); color: var(--emerald-deep); }
+  .grade-mod { background: #FFF4E0; color: #7A4A14; }
+  .grade-cond { background: var(--amber-tint); color: var(--amber-deep); }
+  .grade-low { background: #ECEAE2; color: #5A5240; }
+  .grade-against { background: var(--rose-tint); color: var(--rose-deep); }
+
+  .card-summary {
+    margin-top: 14px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  /* Expanded detail */
+  .detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 350ms ease;
+  }
+  .card.expanded .detail {
+    max-height: 1200px;
+  }
+  .detail-inner {
+    margin-top: 18px;
+    padding-top: 16px;
+    padding-bottom: 18px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .detail-inner dl {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 8px 14px;
+    margin: 0;
+  }
+  .detail-inner dt {
+    font-weight: 600;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-2);
+    padding-top: 2px;
+  }
+  .detail-inner dd {
+    margin: 0;
+    color: var(--ink);
+  }
+  .detail-inner dd em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--emerald-deep);
+    font-size: 14.5px;
+  }
+
+  .card .toggle {
+    position: absolute;
+    bottom: 14px;
+    right: 16px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--paper-2);
+    color: var(--ink-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: transform 280ms ease, background 200ms ease;
+    pointer-events: none;
+  }
+  .card.expanded .toggle {
+    transform: rotate(45deg);
+    background: var(--ink); color: var(--paper);
+  }
+
+  /* ------- ORDER SET STRIP ------- */
+  .orderset {
+    margin: 0 0 50px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--emerald);
+    border-radius: 10px;
+    padding: 22px 26px;
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    box-shadow: var(--shadow-sm);
+  }
+  .orderset-text { flex: 1; min-width: 280px; }
+  .orderset h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .orderset p { margin: 0; color: var(--ink-2); font-size: 13px; }
+  .btn-copy {
+    background: var(--emerald);
+    color: var(--paper);
+    border: none;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font: 600 12px 'Montserrat', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 200ms ease;
+  }
+  .btn-copy:hover { background: var(--emerald-deep); transform: translateY(-1px); }
+  .btn-copy.copied { background: var(--coral); }
+
+  /* ------- FOOTER ------- */
+  footer {
+    margin-top: 30px;
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-2);
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+  footer h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  footer .cols {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 32px;
+  }
+  footer a { color: var(--emerald); text-decoration: none; border-bottom: 1px solid transparent; }
+  footer a:hover { border-bottom-color: var(--emerald); }
+  .disclaimer {
+    margin-top: 24px; padding-top: 18px;
+    border-top: 1px dashed var(--rule);
+    font-size: 11px; letter-spacing: 0.02em;
+    color: var(--ink-2);
+  }
+
+  /* ------- Hidden state for filtering ------- */
+  .tier.hidden { display: none; }
+
+  /* ------- Responsive ------- */
+  @media (max-width: 720px) {
+    .definition { grid-template-columns: 1fr; gap: 18px; padding: 24px 22px; }
+    .container { padding: 0 20px; }
+    .tier-head { flex-wrap: wrap; }
+    .tier-blurb { margin-left: 0; margin-top: 8px; max-width: 100%; }
+    footer .cols { grid-template-columns: 1fr; }
+    .detail-inner dl { grid-template-columns: 1fr; gap: 4px; }
+    .detail-inner dt { margin-top: 8px; }
+  }
+
+  /* Page-load reveal */
+  .reveal { opacity: 0; transform: translateY(8px); animation: reveal 700ms ease forwards; }
+  .reveal-1 { animation-delay: 80ms; }
+  .reveal-2 { animation-delay: 180ms; }
+  .reveal-3 { animation-delay: 280ms; }
+  .reveal-4 { animation-delay: 380ms; }
+  @keyframes reveal { to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="container brand">
+    <div class="wordmark">fert<em>i</em>le</div>
+    <div class="crumbs">GP Decision Support · Women's Health</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero reveal reveal-1">
+    <div class="eyebrow">Recurrent Pregnancy Loss</div>
+    <h1>The workup, <em>by what the evidence says</em>.</h1>
+    <p class="lede">
+      A test-by-test guide for primary care. Three tiers — do these,
+      consider these, skip these — drawn from ESHRE 2022 and RANZCOG C-Gyn 38.
+    </p>
+  </section>
+
+  <section class="definition reveal reveal-2">
+    <div class="def-block">
+      <h3>Definition</h3>
+      <p>
+        Two or more pregnancy losses before 24 weeks (ESHRE 2022).
+        Losses need not be <strong>consecutive</strong>.
+        A biochemical pregnancy (β-hCG-confirmed) counts.
+      </p>
+    </div>
+    <div class="def-block">
+      <h3>When to investigate</h3>
+      <p>
+        After <strong>two losses</strong> — the threshold for offering
+        antiphospholipid screening, the one most consistently actionable result.
+        Female age and complete pregnancy history are the strongest prognostic inputs.
+      </p>
+    </div>
+  </section>
+
+  <section class="filterbar reveal reveal-3">
+    <span class="label">Show</span>
+    <button class="chip" data-filter="all" aria-pressed="true">All tests</button>
+    <button class="chip" data-filter="1" data-tier="1"><span class="dot"></span>Do</button>
+    <button class="chip" data-filter="2" data-tier="2"><span class="dot"></span>Consider</button>
+    <button class="chip" data-filter="3" data-tier="3"><span class="dot"></span>Don't</button>
+    <div class="toolbar-right">
+      <button class="btn-mini" id="expandAll">Expand all</button>
+      <button class="btn-mini" id="collapseAll">Collapse</button>
+    </div>
+  </section>
+
+  <!-- ORDER SET -->
+  <div class="orderset reveal reveal-4">
+    <div class="orderset-text">
+      <h4>The minimum evidence-based panel</h4>
+      <p>Four tests cover the routine workup. Everything else is tailored to history.</p>
+    </div>
+    <button class="btn-copy" id="copyOrderSet">Copy pathology request</button>
+  </div>
+
+  <!-- ================== TIER 1 ================== -->
+  <section class="tier tier-1" data-tier="1">
+    <div class="tier-head">
+      <div class="tier-num">01</div>
+      <h2 class="tier-title">Routinely recommended</h2>
+      <p class="tier-blurb">Offer to every woman with two or more losses. Each result is actionable.</p>
+    </div>
+
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Lupus anticoagulant</h3>
+            <div class="test-sub">Antiphospholipid screen · part 1</div>
+          </div>
+          <span class="grade grade-strong">Strong</span>
+        </div>
+        <p class="card-summary">First-line APS test. Treatable cause of recurrent loss with the largest live-birth gain when positive.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Yield</dt><dd>APS in ~10–15% of RPL — the single most actionable finding.</dd>
+            <dt>When</dt><dd>After two losses. <strong>Repeat positive ≥12 weeks later</strong> to confirm.</dd>
+            <dt>Treats</dt><dd>If confirmed APS + ≥3 losses → low-dose aspirin + prophylactic LMWH from positive βhCG.</dd>
+            <dt>Note</dt><dd>Not for women on warfarin or DOACs — false positives. Withhold heparin 12 h before sample.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 15 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Anticardiolipin antibodies</h3>
+            <div class="test-sub">IgG + IgM · part 2 of APS panel</div>
+          </div>
+          <span class="grade grade-strong">Strong</span>
+        </div>
+        <p class="card-summary">Pairs with lupus anticoagulant. Together they identify APS — the only treatable serological cause.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Cut-off</dt><dd>Medium/high titre (&gt;40 GPL or MPL units, or &gt;99th centile) is clinically meaningful.</dd>
+            <dt>When</dt><dd>After two losses. <strong>Confirm ≥12 weeks apart</strong> per Sydney criteria.</dd>
+            <dt>Pearl</dt><dd>Order LA + aCL together — one swing covers ~95% of APS detectable in primary care.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 15 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">TSH + TPO antibodies</h3>
+            <div class="test-sub">Thyroid function + autoimmunity</div>
+          </div>
+          <span class="grade grade-strong">Strong</span>
+        </div>
+        <p class="card-summary">Subclinical hypothyroidism and TPO positivity are over-represented in RPL. Overt hypothyroidism is treatable.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Yield</dt><dd>Abnormal TSH or TPO+ in ~15–25% of RPL.</dd>
+            <dt>Action</dt><dd>If TSH abnormal → add free T4. Treat overt hypothyroidism. Euthyroid TPO+ does <em>not</em> benefit from levothyroxine (ESHRE 2022 update).</dd>
+            <dt>Caveat</dt><dd>In a future pregnancy with TPO+ or prior SCH, check TSH at 7–9 weeks gestation.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 24, 47, 51 · RANZCOG R15-16</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">3D transvaginal ultrasound</h3>
+            <div class="test-sub">Uterine cavity + adenomyosis</div>
+          </div>
+          <span class="grade grade-cond">Conditional</span>
+        </div>
+        <p class="card-summary">Recommended for all. Distinguishes septate from bicorporeal uterus; 2D US screens for adenomyosis.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Yield</dt><dd>Uterine anomaly in ~10–25% of RPL; adenomyosis newly added in ESHRE 2022.</dd>
+            <dt>Order</dt><dd>Request "TVS with 3D reconstruction" — not all clinics offer; sonohysterography (SHG) is acceptable alternative.</dd>
+            <dt>Note</dt><dd>MRI only if 3D US unavailable. HSG is inferior to SHG for cavity assessment.</dd>
+            <dt>Action</dt><dd>If Müllerian anomaly found → assess renal tract. Septum resection no longer routinely recommended after Rikken RCT 2021.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 33–38 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================== TIER 2 ================== -->
+  <section class="tier tier-2" data-tier="2">
+    <div class="tier-head">
+      <div class="tier-num">02</div>
+      <h2 class="tier-title">Consider case-by-case</h2>
+      <p class="tier-blurb">Tailor to family history, age, prior workup or partner factors. Don't reflex-order.</p>
+    </div>
+
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Anti-β2 glycoprotein I</h3>
+            <div class="test-sub">aβ2GPI · APS extended panel</div>
+          </div>
+          <span class="grade grade-low">Very low</span>
+        </div>
+        <p class="card-summary">Optional add-on to the APS workup. One trial suggests treatment may improve live birth when isolated aβ2GPI+ is present.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>When</dt><dd>Reasonable to bundle with LA + aCL on the same form. Isolated positivity rare.</dd>
+            <dt>Status</dt><dd>ESHRE GPP only; RANZCOG "consider case-by-case".</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 16</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Parental karyotype</h3>
+            <div class="test-sub">Peripheral blood, both partners</div>
+          </div>
+          <span class="grade grade-cond">Conditional</span>
+        </div>
+        <p class="card-summary">Balanced translocation carrier rate ~2–4% in RPL. Yield drops sharply with maternal age &gt;39 and &lt;3 losses.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Yield</dt><dd>&lt;2.2% if female age &gt;39, &lt;3 losses, negative family history (Franssen 2005). Higher in younger couples and where there is a family history of pregnancy loss or aneuploidy.</dd>
+            <dt>When</dt><dd>If POC testing not available, abnormal POC result, family history of recurrent loss, or consanguinity.</dd>
+            <dt>Action</dt><dd>Refer for genetic counselling if abnormal. Live birth rates remain good — IVF/PGT-SR is one option, not the default.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 13 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">POC chromosome microarray</h3>
+            <div class="test-sub">Array-CGH on miscarriage tissue</div>
+          </div>
+          <span class="grade grade-cond">Conditional</span>
+        </div>
+        <p class="card-summary">Explanatory, not predictive. ~55–64% of POC samples show chromosomal anomaly — slightly lower in RPL than sporadic loss.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Yield</dt><dd>Aneuploidy in ~55% of POC in RPL vs ~64% in single losses (Lei 2022).</dd>
+            <dt>Why array</dt><dd>Array-CGH preferred over conventional karyotype: fewer failed cultures, less maternal contamination.</dd>
+            <dt>Caveat</dt><dd>Result rarely changes management. Counsel pre-test about emotional impact and limitations.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 11–12 · RANZCOG R9</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Sperm DNA fragmentation</h3>
+            <div class="test-sub">Male factor · diagnostic only</div>
+          </div>
+          <span class="grade grade-low">Low</span>
+        </div>
+        <p class="card-summary">Growing evidence of association with RPL. Most relevant in men with smoking, alcohol, obesity, or older paternal age.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>When</dt><dd>Unexplained RPL after standard workup. Particularly informative for unhealthy paternal lifestyle.</dd>
+            <dt>Action</dt><dd>Drives lifestyle counselling. No specific reproductive treatment supported by RCT data — PICSI does not have evidence in RPL.</dd>
+            <dt>Cost</dt><dd>Private only in Australia; expect ~$200–$300.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 39–40 (updated 2022) · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Antinuclear antibodies (ANA)</h3>
+            <div class="test-sub">Diagnostic / prognostic only</div>
+          </div>
+          <span class="grade grade-low">Low</span>
+        </div>
+        <p class="card-summary">Modest association with RPL in meta-analysis; ANA+ may worsen prognosis but does not direct treatment.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Use</dt><dd>Consider for explanatory purposes only. Not actionable as a single test.</dd>
+            <dt>If positive</dt><dd>Trigger broader connective-tissue review only if clinical features present.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 21 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Prolactin</h3>
+            <div class="test-sub">Only with symptoms</div>
+          </div>
+          <span class="grade grade-cond">Conditional</span>
+        </div>
+        <p class="card-summary">Only if oligomenorrhoea, amenorrhoea or galactorrhoea. No routine role.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Order</dt><dd>Only when clinical symptoms of hyperprolactinaemia.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 27 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================== TIER 3 ================== -->
+  <section class="tier tier-3" data-tier="3">
+    <div class="tier-head">
+      <div class="tier-num">03</div>
+      <h2 class="tier-title">Don't routinely order</h2>
+      <p class="tier-blurb">Common requests with low yield, no actionable result, or evidence against. Useful for pushback.</p>
+    </div>
+
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Inherited thrombophilia panel</h3>
+            <div class="test-sub">FVL, prothrombin G20210A, protein S</div>
+          </div>
+          <span class="grade grade-against">Don't · Mod</span>
+        </div>
+        <p class="card-summary">No evidence anticoagulation improves live birth in inherited thrombophilia with RPL.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Exception</dt><dd>Order only when personal/family VTE history independently indicates testing. Treat for VTE prevention, not for RPL.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 14, 44 · RANZCOG R8</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Protein C / antithrombin / MTHFR</h3>
+            <div class="test-sub">Extended thrombophilia</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">MTHFR is not a thrombophilic mutation in the clinically relevant sense. Strong evidence against routine testing.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Pearl</dt><dd>MTHFR polymorphisms are common, do not predict pregnancy loss, and do not require treatment beyond standard folate.</dd>
+            <dt>Source</dt><dd><em>RANZCOG R8 (Strong against)</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">HLA / NK cell / cytokine testing</h3>
+            <div class="test-sub">Immunological</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">Marketed by some private clinics. No therapeutic implication and significant technical challenges.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Caveat</dt><dd>HLA-DRB1*15:01 / DRB1*07 / DQB1*05 can be considered in Scandinavian women with secondary RPL after the birth of a boy — niche.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 17–23</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Ovarian reserve (AMH / AFC)</h3>
+            <div class="test-sub">For RPL purpose</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">No association between low ovarian reserve and RPL risk. Different clinical question.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>When AMH is reasonable</dt><dd>For fertility timeline counselling — but that's a separate conversation from miscarriage risk.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 28</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Fasting insulin / glucose</h3>
+            <div class="test-sub">For RPL purpose</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">No prognostic value for RPL. Order independently if PCOS or diabetes is clinically suspected.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Note</dt><dd>BMI optimisation and lifestyle remain core advice regardless. Metformin has not been shown to reduce loss in RPL with glucose defects.</dd>
+            <dt>Source</dt><dd><em>ESHRE Rec 26, 54</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Androgens / LH</h3>
+            <div class="test-sub">Endocrine extras</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">No consistent association with RPL. No prognostic or therapeutic implication.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Source</dt><dd><em>ESHRE Rec 30–31</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Homocysteine</h3>
+            <div class="test-sub">Metabolic marker</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">Inconsistent evidence of association. Routine high-dose folate not recommended without hyperhomocysteinaemia.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Source</dt><dd><em>ESHRE Rec 32, 72</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Vitamin D (as a test)</h3>
+            <div class="test-sub">For RPL purpose</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">RANZCOG strong against routine testing. Empirical supplementation 1000–2000 IU daily is reasonable and safe.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Approach</dt><dd>Skip the bloods, give the supplement. ESHRE notes high prevalence of deficiency and suggests prophylactic vitamin D may be considered.</dd>
+            <dt>Source</dt><dd><em>RANZCOG R8 · ESHRE Rec 55</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3 class="test-name">Luteal phase insufficiency</h3>
+            <div class="test-sub">Endometrial dating / mid-luteal progesterone</div>
+          </div>
+          <span class="grade grade-against">Don't · Strong</span>
+        </div>
+        <p class="card-summary">Outdated concept in this context. No reliable test, no treatment shown to help RPL.</p>
+        <div class="detail"><div class="detail-inner">
+          <dl>
+            <dt>Source</dt><dd><em>ESHRE Rec 29</em></dd>
+          </dl>
+        </div></div>
+        <span class="toggle">+</span>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="cols">
+      <div>
+        <h5>What this is</h5>
+        Evidence-stratified RPL workup for GPs and women's-health consultations.
+        Three tiers, two source documents, one page.
+        Not a substitute for individualised review by a reproductive medicine specialist.
+      </div>
+      <div>
+        <h5>Primary sources</h5>
+        ESHRE Guideline · <em>Recurrent Pregnancy Loss</em> · update 2022 (final Jan 2023)<br/>
+        RANZCOG · <em>Miscarriage, Recurrent Miscarriage &amp; Ectopic Pregnancy</em> · C-Gyn 38
+      </div>
+      <div>
+        <h5>Refer</h5>
+        Two pregnancy losses with positive APS screen, uterine anomaly,
+        or any abnormal POC/parental karyotype warrants specialist referral.<br/>
+        <a href="https://virtushealth.tfaforms.net/246" target="_blank" rel="noopener">Virtus Health referral form ↗</a>
+      </div>
+    </div>
+    <div class="disclaimer">
+      Educational use for qualified healthcare professionals. Always exercise independent clinical
+      judgement and refer to current Australian guidelines and Medicare item descriptors before ordering.
+      © Fertool · v1 · Mar 2026
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // -------- Expand / collapse cards --------
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('expanded');
+    });
+  });
+
+  // -------- Filter --------
+  const chips = document.querySelectorAll('.chip');
+  const tiers = document.querySelectorAll('.tier');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      const f = chip.dataset.filter;
+      tiers.forEach(t => {
+        if (f === 'all' || t.dataset.tier === f) {
+          t.classList.remove('hidden');
+        } else {
+          t.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // -------- Expand / collapse all --------
+  document.getElementById('expandAll').addEventListener('click', () => {
+    document.querySelectorAll('.tier:not(.hidden) .card').forEach(c => c.classList.add('expanded'));
+  });
+  document.getElementById('collapseAll').addEventListener('click', () => {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+  });
+
+  // -------- Copy order set --------
+  const orderText = `Recurrent pregnancy loss — pathology request
+
+Patient: [name] · DOB: [   ] · Two or more pregnancy losses
+
+Please perform the following tests:
+1. Lupus anticoagulant
+2. Anticardiolipin antibodies (IgG and IgM)
+3. Anti-β2 glycoprotein I antibodies (optional add-on)
+4. TSH and thyroid peroxidase (TPO) antibodies — add free T4 if TSH abnormal
+
+Imaging (separate request):
+5. Transvaginal pelvic ultrasound with 3D reconstruction
+   — assess uterine morphology and adenomyosis
+
+Reference: ESHRE 2022 / RANZCOG C-Gyn 38
+Note: confirm positive APS antibodies on a repeat sample ≥12 weeks later.`;
+
+  const copyBtn = document.getElementById('copyOrderSet');
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(orderText);
+      copyBtn.textContent = '✓ Copied to clipboard';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy pathology request';
+        copyBtn.classList.remove('copied');
+      }, 2200);
+    } catch (e) {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = orderText;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      copyBtn.textContent = '✓ Copied';
+      setTimeout(() => copyBtn.textContent = 'Copy pathology request', 2200);
+    }
+  });
+</script>
+
+</body>
+</html>
