@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GP Fertility Decision Support</title>
+<link rel="canonical" href="https://fertool.drfouks.com/">
+<meta name="description" content="Fertool: evidence-based fertility decision support for Australian GPs - AMH, referral criteria, egg-freezing and RPL tools, plus weekly women's-health journal updates.">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fertool.drfouks.com/">
+<meta property="og:title" content="Fertool - Clinical Support for Fertility Care">
+<meta property="og:description" content="Evidence-based fertility guidance for GPs: AMH, referral criteria, calculators and weekly journal updates.">
+<meta property="og:image" content="https://fertool.drfouks.com/icon-512.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -2269,6 +2277,271 @@ function _performSearchRenderBlocking(data, q){
       });
 })();
 
+</script>
+<style>
+  .egg-helper{
+    --forest:#4a6741; --forest-2:#5a7d50; --ink:#2c2c2c; --muted:#9a9a90;
+    position:fixed; right:26px; bottom:26px; z-index:1000;
+    width:132px; height:132px;
+    font-family:'Montserrat',sans-serif;
+  }
+  .egg-helper *{box-sizing:border-box}
+
+  /* the tappable mascot */
+  .eh-mascot{position:absolute; inset:0; cursor:pointer; -webkit-tap-highlight-color:transparent}
+  .eh-stage{position:absolute; inset:0; animation:ehBob 5.2s ease-in-out infinite}
+  @keyframes ehBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  .eh-egg{position:absolute; left:50%; top:50%; width:78px; height:78px; transform:translate(-50%,-50%);
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .eh-mascot:hover .eh-egg{transform:translate(-50%,-50%) scale(1.06)}
+  .eh-egg .breathe{transform-box:fill-box; transform-origin:center; animation:ehBreathe 4.6s ease-in-out infinite}
+  @keyframes ehBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+  .eh-eyes{transform-box:fill-box; transform-origin:center; animation:ehBlink 5.4s infinite}
+  @keyframes ehBlink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  .eh-spark{transform-box:fill-box; transform-origin:center; animation:ehTwinkle 2.6s ease-in-out infinite}
+  .eh-spark.s2{animation-delay:.7s}.eh-spark.s3{animation-delay:1.4s}.eh-spark.s4{animation-delay:2s}
+  @keyframes ehTwinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+
+  .eh-sperm{position:absolute; left:0; top:0; width:40px; height:26px; will-change:transform; z-index:2}
+
+  /* a soft attention pulse ring (subtle) */
+  .eh-ring{position:absolute; left:50%; top:50%; width:86px; height:86px; transform:translate(-50%,-50%);
+    border-radius:50%; border:2px solid rgba(74,103,65,.28); opacity:0; pointer-events:none}
+  .egg-helper.nudge .eh-ring{animation:ehPing 1.8s ease-out 2}
+  @keyframes ehPing{0%{opacity:.5;transform:translate(-50%,-50%) scale(.9)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}
+
+  /* the tour bubble */
+  .eh-bubble{position:absolute; right:8px; bottom:118px; width:264px; max-width:78vw;
+    background:#fff; border:1px solid rgba(74,103,65,.14); border-radius:18px;
+    box-shadow:0 18px 44px -20px rgba(43,51,64,.5);
+    padding:1rem 1rem .75rem; transform-origin:bottom right;
+    opacity:0; transform:translateY(10px) scale(.92); pointer-events:none;
+    transition:opacity .28s ease, transform .28s cubic-bezier(.34,1.56,.64,1)}
+  .egg-helper.open .eh-bubble{opacity:1; transform:translateY(0) scale(1); pointer-events:auto}
+  .eh-bubble::after{content:""; position:absolute; right:34px; bottom:-8px; width:16px; height:16px;
+    background:#fff; border-right:1px solid rgba(74,103,65,.14); border-bottom:1px solid rgba(74,103,65,.14);
+    transform:rotate(45deg); border-bottom-right-radius:3px}
+  .eh-close{position:absolute; top:8px; right:10px; border:none; background:none; font-size:1.1rem; line-height:1;
+    color:#bbb; cursor:pointer}
+  .eh-close:hover{color:var(--ink)}
+  .eh-eyebrow{font-size:.6rem; letter-spacing:1.4px; text-transform:uppercase; color:var(--forest); font-weight:600}
+  .eh-head{font-family:'Cormorant Garamond',serif; font-size:1.22rem; color:var(--ink); line-height:1.25; margin:.1rem 0 .7rem}
+  .eh-opt{display:flex; align-items:center; gap:.65rem; width:100%; text-align:left; border:none; background:none;
+    font-family:inherit; cursor:pointer; padding:.5rem .55rem; border-radius:11px; transition:background .18s}
+  .eh-opt:hover{background:#f2f6f0}
+  .eh-opt .ic{flex:0 0 30px; height:30px; border-radius:9px; display:grid; place-items:center;
+    background:rgba(74,103,65,.1); color:var(--forest)}
+  .eh-opt .ic svg{width:16px; height:16px}
+  .eh-opt .tl{font-size:.8rem; font-weight:600; color:var(--ink)}
+  .eh-opt .ds{font-size:.68rem; color:var(--muted); margin-top:1px}
+  .eh-opt .ar{margin-left:auto; color:var(--forest); opacity:0; transition:opacity .18s, transform .18s; transform:translateX(-3px)}
+  .eh-opt:hover .ar{opacity:1; transform:translateX(0)}
+
+  @media (max-width:768px){
+    .egg-helper{right:14px; bottom:14px; width:108px; height:108px}
+    .eh-egg{width:64px;height:64px}
+    .eh-bubble{bottom:98px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .eh-stage,.eh-egg .breathe,.eh-eyes,.eh-spark{animation:none}
+  }
+</style>
+
+<div class="egg-helper" id="eggHelper">
+  <div class="eh-ring"></div>
+
+  <div class="eh-mascot" id="ehMascot" role="button" tabindex="0" aria-label="Quick tour of Fertool">
+    <div class="eh-stage">
+
+      <!-- ✦ the egg ✦ -->
+      <svg class="eh-egg" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <radialGradient id="ehBody" cx="36%" cy="31%" r="72%">
+            <stop offset="0%"  stop-color="#ffffff"/>
+            <stop offset="17%" stop-color="#fff0f5"/>
+            <stop offset="45%" stop-color="#fbccdd"/>
+            <stop offset="73%" stop-color="#f2a8c2"/>
+            <stop offset="90%" stop-color="#e890b1"/>
+            <stop offset="100%" stop-color="#d97ba3"/>
+          </radialGradient>
+          <radialGradient id="ehBloom" cx="50%" cy="48%" r="50%">
+            <stop offset="0%"  stop-color="#ffd6e6" stop-opacity=".6"/>
+            <stop offset="55%" stop-color="#ffd0e2" stop-opacity=".2"/>
+            <stop offset="100%" stop-color="#ffd0e2" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="ehSoft" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="1.6"/>
+          </filter>
+          <filter id="ehGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3"/>
+          </filter>
+        </defs>
+
+        <!-- contact shadow -->
+        <ellipse cx="50" cy="93" rx="24" ry="5" fill="#7a5b66" opacity=".16" filter="url(#ehSoft)"/>
+        <!-- outer bloom -->
+        <circle cx="50" cy="48" r="46" fill="url(#ehBloom)" filter="url(#ehGlow)"/>
+
+        <!-- sparkles -->
+        <g fill="#ffffff">
+          <path class="eh-spark s1" d="M50 4 l1.4 4 4 1.4 -4 1.4 -1.4 4 -1.4 -4 -4 -1.4 4 -1.4z"/>
+          <path class="eh-spark s2" d="M86 26 l1 3 3 1 -3 1 -1 3 -1 -3 -3 -1 3 -1z"/>
+          <path class="eh-spark s3" d="M14 30 l.9 2.6 2.6 .9 -2.6 .9 -.9 2.6 -.9 -2.6 -2.6 -.9 2.6 -.9z"/>
+          <path class="eh-spark s4" d="M88 64 l.8 2.4 2.4 .8 -2.4 .8 -.8 2.4 -.8 -2.4 -2.4 -.8 2.4 -.8z"/>
+        </g>
+
+        <g class="breathe">
+          <!-- body -->
+          <circle cx="50" cy="48" r="33" fill="url(#ehBody)"/>
+          <!-- rim shade bottom-right for roundness -->
+          <path d="M77 56 A33 33 0 0 1 33 79" fill="none" stroke="#cf6f98" stroke-width="4" opacity=".18" filter="url(#ehSoft)"/>
+          <!-- specular highlight -->
+          <ellipse cx="38" cy="33" rx="11" ry="8" fill="#ffffff" opacity=".55" filter="url(#ehSoft)"/>
+          <circle cx="33" cy="28" r="2.6" fill="#ffffff" opacity=".9"/>
+          <!-- cheeks -->
+          <ellipse cx="34" cy="56" rx="6" ry="4.2" fill="#f59ab7" opacity=".5" filter="url(#ehSoft)"/>
+          <ellipse cx="66" cy="56" rx="6" ry="4.2" fill="#f59ab7" opacity=".5" filter="url(#ehSoft)"/>
+          <!-- face -->
+          <g class="eh-eyes" fill="#5b4a52">
+            <ellipse cx="42" cy="48" rx="2.7" ry="3.4"/>
+            <ellipse cx="58" cy="48" rx="2.7" ry="3.4"/>
+            <circle cx="43" cy="46.6" r=".9" fill="#fff"/>
+            <circle cx="59" cy="46.6" r=".9" fill="#fff"/>
+          </g>
+          <path d="M44 57 q6 5.5 12 0" fill="none" stroke="#5b4a52" stroke-width="2.4" stroke-linecap="round"/>
+        </g>
+      </svg>
+
+      <!-- ✦ the sperm ✦ -->
+      <svg class="eh-sperm" id="ehSperm" viewBox="0 0 48 32" aria-hidden="true">
+        <defs>
+          <radialGradient id="ehHead" cx="40%" cy="36%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#dff6f6"/>
+            <stop offset="100%" stop-color="#8fd2d4"/>
+          </radialGradient>
+          <filter id="ehSpermGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.1"/>
+          </filter>
+        </defs>
+        <!-- soft glow under tail -->
+        <path id="ehTailGlow" d="" fill="none" stroke="#7fd0d3" stroke-width="4" stroke-linecap="round" opacity=".35" filter="url(#ehSpermGlow)"/>
+        <!-- tail -->
+        <path id="ehTail" d="" fill="none" stroke="#5fb8bd" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- midpiece + head -->
+        <ellipse cx="40" cy="16" rx="7.5" ry="6" fill="url(#ehHead)" stroke="#7fc6c9" stroke-width="1.2"/>
+        <circle cx="42.4" cy="13.4" r="1.7" fill="#ffffff"/>
+      </svg>
+
+    </div>
+  </div>
+
+  <!-- tour bubble -->
+  <div class="eh-bubble" id="ehBubble" role="dialog" aria-label="Fertool tour">
+    <button class="eh-close" id="ehClose" aria-label="Close">×</button>
+    <div class="eh-eyebrow">New here?</div>
+    <div class="eh-head">Here’s what I can do — tap one.</div>
+
+    <button class="eh-opt" data-scroll=".search-card">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+      <span><span class="tl">Ask anything</span><span class="ds">Guidelines → specialist insight → plan</span></span>
+      <span class="ar">→</span>
+    </button>
+
+    <button class="eh-opt" data-scroll="#weeklyDigest">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h11a3 3 0 0 1 3 3v11"/><path d="M4 5v12a2 2 0 0 0 2 2h12"/><line x1="7" y1="9" x2="14" y2="9"/><line x1="7" y1="13" x2="12" y2="13"/></svg></span>
+      <span><span class="tl">This week’s evidence</span><span class="ds">Top women’s-health journals, weekly</span></span>
+      <span class="ar">→</span>
+    </button>
+
+    <button class="eh-opt" data-scroll=".tools-section">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z"/></svg></span>
+      <span><span class="tl">Clinical tools</span><span class="ds">AMH, egg-freezing, RPL & referral</span></span>
+      <span class="ar">→</span>
+    </button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var wrap   = document.getElementById('eggHelper');
+  var mascot = document.getElementById('ehMascot');
+  var bubble = document.getElementById('ehBubble');
+  var closeB = document.getElementById('ehClose');
+  var sperm  = document.getElementById('ehSperm');
+  var tail   = document.getElementById('ehTail');
+  var glow   = document.getElementById('ehTailGlow');
+
+  /* ---- bubble open/close ---- */
+  function open(){ wrap.classList.add('open'); wrap.classList.remove('nudge'); }
+  function close(){ wrap.classList.remove('open'); }
+  function toggle(){ wrap.classList.contains('open') ? close() : open(); }
+
+  mascot.addEventListener('click', toggle);
+  mascot.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+  closeB.addEventListener('click', function(e){ e.stopPropagation(); close(); });
+  document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) close(); });
+
+  wrap.querySelectorAll('.eh-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = document.querySelector(btn.getAttribute('data-scroll'));
+      if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+      close();
+    });
+  });
+
+  /* gentle one-time nudge, then auto-open the tour briefly */
+  setTimeout(function(){ wrap.classList.add('nudge'); }, 900);
+  setTimeout(open, 1600);
+  setTimeout(function(){ if(wrap.classList.contains('open')) close(); }, 9000);
+
+  /* ---- orbiting + swimming sperm ---- */
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var W = wrap.clientWidth, H = wrap.clientHeight;
+  var cx = W/2, cy = H/2, rx = W*0.42, ry = H*0.38;
+  var SCALE = 40/48;                 // CSS width / viewBox width
+  var headPxX = 40*SCALE, headPxY = 16*SCALE;
+
+  function buildTail(phase){
+    // local sperm coords (viewBox 48x32); head ~x40, tail runs left to x2
+    var pts = [], N = 16;
+    for(var i=0;i<=N;i++){
+      var t = i/N;
+      var x = 33 - t*31;
+      var amp = 1.2 + t*4.6;                    // waves grow toward the tip
+      var y = 16 + Math.sin(t*6.0 + phase) * amp;
+      pts.push((i?'L':'M') + x.toFixed(1) + ',' + y.toFixed(1));
+    }
+    var d = pts.join(' ');
+    tail.setAttribute('d', d);
+    glow.setAttribute('d', d);
+  }
+
+  function placeSperm(theta, phase){
+    var x = cx + rx*Math.cos(theta);
+    var y = cy + ry*Math.sin(theta);
+    var vx = -rx*Math.sin(theta), vy = ry*Math.cos(theta);   // tangent (CCW)
+    var ang = Math.atan2(vy, vx) * 180/Math.PI;
+    sperm.style.transformOrigin = headPxX+'px '+headPxY+'px';
+    sperm.style.left = (x - headPxX) + 'px';
+    sperm.style.top  = (y - headPxY) + 'px';
+    sperm.style.transform = 'rotate(' + ang + 'deg)';
+    buildTail(phase);
+  }
+
+  if(reduce){
+    placeSperm(-Math.PI/2, 0);
+  }else{
+    var theta = -Math.PI/2, last = performance.now();
+    (function loop(now){
+      var dt = (now-last)/1000; last = now;
+      theta = (theta + dt*0.7) % (Math.PI*2);    // ~9s per lap
+      placeSperm(theta, now/130);                // tail swim speed
+      requestAnimationFrame(loop);
+    })(performance.now());
+  }
+})();
 </script>
 </body>
 </html>
