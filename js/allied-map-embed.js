@@ -157,7 +157,13 @@
         return '<option value="' + esc(code) + '">' + esc(PROFESSIONS[code].label) + '</option>';
       }).join('');
     }
-    function open() { if (back) back.classList.add('open'); }
+    function showNote(msg) {
+      var n = document.getElementById('amxNote');
+      if (!n) return;
+      n.textContent = msg || '';
+      n.style.display = msg ? 'block' : 'none';
+    }
+    function open() { showNote(''); if (back) back.classList.add('open'); }
     function close() { if (back) back.classList.remove('open'); }
     if (openBtn) openBtn.addEventListener('click', open);
     if (closeBtn) closeBtn.addEventListener('click', close);
@@ -166,12 +172,13 @@
     if (form) form.addEventListener('submit', function (e) {
       e.preventDefault();
       var fd = new FormData(form);
+      var suburb = (fd.get('suburb') || '').trim();
       // Shaped to match a providers-array entry so a future endpoint can append it
-      // directly (services/languages as arrays; lat/lng geocoded server-side).
+      // directly (services/languages as arrays; lat/lng geocoded below from suburb).
       var payload = {
         name: (fd.get('name') || '').trim(),
         profession: fd.get('profession') || '',
-        suburb: (fd.get('suburb') || '').trim(),
+        suburb: suburb,
         clinic: (fd.get('name') || '').trim(),
         services: splitList(fd.get('services')),
         languages: splitList(fd.get('languages')),
@@ -179,11 +186,36 @@
         lat: null,
         lng: null
       };
-      console.log('[Confluence] add-practice submission:', payload);
-      // TODO: wire to backend store — POST `payload` to append it to the providers array.
-      close();
-      form.reset();
-      alert('Thanks! Your practice has been submitted for review.');
+      showNote('');
+      if (!suburb) { showNote('Please enter a suburb so we can place you on the map.'); return; }
+
+      // Geocode the suburb (free Nominatim, no API key) so the new entry is pinnable.
+      var submitBtn = form.querySelector('.amx-submit');
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Looking up suburb…'; }
+      var url = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=au&q=' +
+        encodeURIComponent(suburb + ' Victoria');
+      fetch(url, { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (results) {
+          if (!results || !results.length) {
+            showNote('Couldn’t find “' + suburb + '” — check the spelling or try a nearby suburb.');
+            return;  // keep the modal open
+          }
+          payload.lat = parseFloat(results[0].lat);
+          payload.lng = parseFloat(results[0].lon);
+          console.log('[Confluence] add-practice submission:', payload);
+          // TODO: wire to backend store — POST `payload` to append it to the providers array.
+          close();
+          form.reset();
+          showNote('');
+          alert('Thanks! Your practice has been submitted for review.');
+        })
+        .catch(function () {
+          showNote('Couldn’t look up that suburb right now — please try again.');
+        })
+        .finally(function () {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit listing'; }
+        });
     });
   }
   function init() {

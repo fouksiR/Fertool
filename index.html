@@ -70,6 +70,7 @@
       .amx-modal .amx-submit{width:100%;margin-top:1.2rem;padding:0.7rem;background:#6b5b95;color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer}
       .amx-modal .amx-submit:hover{background:#5a4c80}
       .amx-modal-close{position:absolute;top:0.7rem;right:1rem;background:none;border:none;font-size:1.5rem;color:#bbb;cursor:pointer;line-height:1}
+      .amx-modal .amx-note{margin-top:0.7rem;font-size:0.78rem;color:#9a3b3b;background:#f7e9e9;border:1px solid #ecd2d2;border-radius:8px;padding:0.5rem 0.7rem}
     </style>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1073,6 +1074,7 @@ function checkGateCode(){
                 <input type="text" id="amxF-langs" name="languages" placeholder="e.g. English, Mandarin">
                 <label class="amx-check"><input type="checkbox" id="amxF-tele" name="telehealth"> Telehealth available</label>
                 <button type="submit" class="amx-submit">Submit listing</button>
+                <div class="amx-note" id="amxNote" style="display:none"></div>
             </form>
         </div>
     </div>
