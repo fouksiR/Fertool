@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--
+  ───────────────────────────────────────────────────────────────────────────
+  Women's Allied Health Network — PERSONAL practitioner map (Fertool).
+  Allied/wellness practitioners only, across all professions. Personal map of
+  the builder's network, NOT a clinical directory: no AHPRA gate, no
+  verification, no ratings. Reads the static data/allied_points.json.
+  Behind the existing Fertool access gate (passcode -> sessionStorage), same as
+  index.html — soft client-side gate; the JSON is on the same origin.
+  ───────────────────────────────────────────────────────────────────────────
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Women's Allied Health Network — map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <style>
+    *{margin:0;box-sizing:border-box}
+    body{font-family:'Montserrat',sans-serif;background:#faf7f2;color:#2c2c2c}
+    header{padding:1rem 5%;background:rgba(248,247,245,0.97);border-bottom:1px solid rgba(44,44,44,0.1);display:flex;justify-content:space-between;align-items:center}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#2c2c2c;text-decoration:none}
+    header a.back{color:#4a6741;text-decoration:none;font-size:0.85rem;font-weight:500}
+    h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;margin:1.1rem 5% 0.1rem}
+    .sub{margin:0 5% 0.9rem;color:#888;font-size:0.88rem}
+    .layout{display:flex;gap:1rem;padding:0 5% 2rem;align-items:flex-start}
+    .sidebar{flex:0 0 280px;max-width:280px}
+    .mapwrap{flex:1;min-width:0}
+    #map{height:660px;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+    .panel{background:#fff;border-radius:12px;padding:0.9rem 1rem;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:1rem}
+    .panel h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.05rem;margin-bottom:0.5rem}
+    .count{font-size:0.82rem;color:#666;margin-bottom:0.6rem}
+    .leg{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;margin:0.28rem 0;color:#444;cursor:pointer;user-select:none}
+    .leg input{accent-color:#4a6741}
+    .dot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,0.15);flex:0 0 auto}
+    .leg .n{margin-left:auto;color:#999;font-size:0.72rem}
+    .btns{display:flex;gap:0.4rem;margin-top:0.6rem}
+    .btns button{flex:1;font-family:inherit;font-size:0.74rem;padding:0.4rem;border:1.5px solid #cdd6c8;border-radius:7px;background:#fff;color:#4a6741;cursor:pointer}
+    .leaflet-popup-content{font-family:'Montserrat',sans-serif;font-size:0.83rem}
+    .pin{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4)}
+    @media(max-width:820px){.layout{flex-direction:column}.sidebar{flex:1 1 auto;max-width:100%}#map{height:440px}}
+    /* Access gate — identical mechanism to index.html (passcode -> sessionStorage) */
+    .gate-overlay{position:fixed;inset:0;z-index:9999;background:rgba(248,247,245,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center}
+    .gate-overlay.hidden{display:none}
+    .gate-card{background:#fff;border-radius:20px;padding:2.5rem 2.2rem;box-shadow:0 8px 40px rgba(0,0,0,0.1);max-width:400px;width:90%;text-align:center}
+    .gate-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:#2c2c2c;margin-bottom:0.3rem}
+    .gate-subtitle{font-size:0.78rem;color:#999;margin-bottom:1.8rem;letter-spacing:0.5px}
+    .gate-label{font-size:0.72rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;text-align:left}
+    .gate-input{width:100%;padding:0.75rem 1rem;border:1.5px solid #ddd;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.95rem;letter-spacing:2px;text-align:center;outline:none;transition:border-color 0.2s}
+    .gate-input:focus{border-color:#4a6741}
+    .gate-input.shake{animation:gate-shake 0.4s ease;border-color:#dc3545}
+    @keyframes gate-shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+    .gate-btn{width:100%;margin-top:1rem;padding:0.7rem;background:#4a6741;color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:background 0.2s}
+    .gate-btn:hover{background:#3d5636}
+    .gate-note{font-size:0.68rem;color:#bbb;margin-top:1.2rem;line-height:1.5}
+  </style>
+</head>
+<body>
+
+<!-- Access Gate (same passcode + sessionStorage key as index.html) -->
+<div class="gate-overlay" id="accessGate">
+  <div class="gate-card">
+    <div class="gate-logo">fertile</div>
+    <div class="gate-subtitle">Women's Allied Health Network</div>
+    <div class="gate-label">Access Code</div>
+    <input type="text" class="gate-input" id="gateInput" placeholder="Enter code" autocomplete="off" spellcheck="false">
+    <button class="gate-btn" id="gateBtn" onclick="checkGateCode()">Enter</button>
+    <div class="gate-note">For authorised healthcare professionals only.<br>Contact Dr Fouks for access.</div>
+  </div>
+</div>
+<script>
+function checkGateCode(){
+  var input = document.getElementById('gateInput');
+  if(input.value.trim().toUpperCase() === 'FERTOOL2026'){
+    sessionStorage.setItem('fertool_access','1');
+    document.getElementById('accessGate').classList.add('hidden');
+  } else {
+    input.classList.add('shake');
+    setTimeout(function(){ input.classList.remove('shake'); }, 400);
+    input.value = ''; input.focus();
+  }
+}
+(function(){
+  if(sessionStorage.getItem('fertool_access') === '1'){
+    document.getElementById('accessGate').classList.add('hidden');
+  } else {
+    var inp = document.getElementById('gateInput');
+    inp.addEventListener('keydown', function(e){ if(e.key === 'Enter') checkGateCode(); });
+    setTimeout(function(){ inp.focus(); }, 100);
+  }
+})();
+</script>
+
+<header>
+  <a class="logo" href="index.html">fertile</a>
+  <a class="back" href="index.html">← Back to tools</a>
+</header>
+
+<h1>Women's Allied Health Network</h1>
+<p class="sub">Allied &amp; wellness practitioners across Melbourne — pelvic-health physio, psychology, Chinese medicine, dietitians, naturopaths, doulas and more. Personal network map.</p>
+<div class="layout">
+  <div class="sidebar">
+    <div class="panel">
+      <h2>Professions</h2>
+      <div class="count" id="count">loading…</div>
+      <div id="legend"></div>
+      <div class="btns"><button id="all">All</button><button id="none">None</button></div>
+    </div>
+  </div>
+  <div class="mapwrap"><div id="map"></div>
+    <div id="note" style="margin-top:0.5rem;font-size:0.78rem;color:#888"></div>
+  </div>
+</div>
+<script>
+var PROFESSIONS = {
+  'pelvic-physio':{label:'Pelvic-health physiotherapist',color:'#dd7a2a'},
+  'womens-health-physio':{label:"Women's health physiotherapist",color:'#e0a93b'},
+  'psychologist':{label:'Psychologist',color:'#c2548a'},
+  'chinese-med':{label:'Chinese medicine / acupuncture',color:'#8a6d3b'},
+  'dietitian':{label:'Dietitian (APD)',color:'#5c8a4e'},
+  'exercise-physiologist':{label:'Exercise physiologist',color:'#2e8b8b'},
+  'lactation-consultant':{label:'Lactation consultant',color:'#d4546b'},
+  'continence-nurse':{label:'Continence nurse',color:'#6b8e9e'},
+  'ot':{label:'Occupational therapist',color:'#7c3aed'},
+  'social-worker':{label:'Social worker',color:'#2b6cb0'},
+  'genetic-counsellor':{label:'Genetic counsellor',color:'#0a8f5c'},
+  'diabetes-educator':{label:'Diabetes educator',color:'#c0392b'},
+  'naturopath':{label:'Naturopath',color:'#6a8d2f'},
+  'doula':{label:'Doula / birth educator',color:'#b5651d'},
+  'yoga-pilates':{label:'Yoga / Pilates',color:'#9a6dd7'},
+  'sexual-health-counsellor':{label:'Sexual health counsellor',color:'#b04a8a'},
+  'other-allied':{label:'Other allied',color:'#9aa0a6'}
+};
+function profMeta(code){ return PROFESSIONS[code] || {label:code||'Other',color:'#9aa0a6'}; }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+var map, cluster, POINTS=[], shown={};
+function pinIcon(color){
+  return L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'"></div>',
+    iconSize:[14,14],iconAnchor:[7,7],popupAnchor:[0,-8]});
+}
+function popup(p){
+  var m=profMeta(p.profession);
+  return '<strong>'+esc(p.name)+'</strong>'+
+    '<br><span style="color:'+m.color+';font-weight:500;">'+esc(m.label)+'</span>'+
+    (p.clinic?'<br><span style="color:#666;">'+esc(p.clinic)+'</span>':'')+
+    (p.suburb?'<br><span style="color:#888;font-size:0.78rem;">'+esc(p.suburb)+'</span>':'');
+}
+function render(){
+  cluster.clearLayers(); var n=0;
+  POINTS.forEach(function(p){
+    if(!shown[p.profession]) return;
+    cluster.addLayer(L.marker([p.lat,p.lng],{icon:pinIcon(profMeta(p.profession).color)}).bindPopup(popup(p))); n++;
+  });
+  document.getElementById('count').textContent=n+' of '+POINTS.length+' practitioners shown';
+}
+function buildLegend(){
+  var counts={}; POINTS.forEach(function(p){counts[p.profession]=(counts[p.profession]||0)+1;});
+  var order=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a];});
+  document.getElementById('legend').innerHTML=order.map(function(code){
+    var m=profMeta(code);
+    return '<label class="leg"><input type="checkbox" data-p="'+code+'" checked>'+
+      '<span class="dot" style="background:'+m.color+'"></span>'+esc(m.label)+
+      '<span class="n">'+counts[code]+'</span></label>';
+  }).join('');
+  order.forEach(function(c){shown[c]=true;});
+  Array.prototype.forEach.call(document.querySelectorAll('#legend input'),function(cb){
+    cb.addEventListener('change',function(){shown[cb.getAttribute('data-p')]=cb.checked;render();});
+  });
+}
+function setAll(v){
+  Array.prototype.forEach.call(document.querySelectorAll('#legend input'),function(cb){cb.checked=v;shown[cb.getAttribute('data-p')]=v;});
+  render();
+}
+function init(){
+  map=L.map('map').setView([-37.8136,144.9631],11);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    {attribution:'© OpenStreetMap, © CARTO',maxZoom:19}).addTo(map);
+  cluster=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:38}); cluster.addTo(map);
+  buildLegend(); render();
+  document.getElementById('all').addEventListener('click',function(){setAll(true);});
+  document.getElementById('none').addEventListener('click',function(){setAll(false);});
+}
+document.addEventListener('DOMContentLoaded',function(){
+  fetch('data/allied_points.json').then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(function(d){ POINTS=d.points||[]; if(d.professions){for(var k in d.professions){PROFESSIONS[k]=d.professions[k];}} init(); })
+    .catch(function(e){ document.getElementById('map').innerHTML='<p style="padding:1.5rem;color:#a13b3b;">Could not load points: '+e.message+'</p>'; });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+{
+ "points": [
+  {
+   "name": "Melanie McGrice",
+   "profession": "dietitian",
+   "suburb": "Melbourne",
+   "clinic": "Melanie McGrice",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Annie Barry",
+   "profession": "dietitian",
+   "suburb": "Brunswick East",
+   "clinic": "Annie Barry Dietitian",
+   "lat": -37.7688802,
+   "lng": 144.9776825
+  },
+  {
+   "name": "Melissa (Mel) Layton",
+   "profession": "pelvic-physio",
+   "suburb": "",
+   "clinic": "Pelvic Fit Melbourne",
+   "lat": -37.812498,
+   "lng": 144.9858851
+  },
+  {
+   "name": "Amy Steventon",
+   "profession": "pelvic-physio",
+   "suburb": "",
+   "clinic": "Jean Hailes Clinic",
+   "lat": -37.8096501,
+   "lng": 144.9852705
+  },
+  {
+   "name": "Dr Clare Faux (TCM)",
+   "profession": "chinese-med",
+   "suburb": "Melbourne",
+   "clinic": "The Acupuncture Pregnancy Clinic",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Health 4 Women",
+   "profession": "pelvic-physio",
+   "suburb": "North Melbourne",
+   "clinic": "Health 4 Women",
+   "lat": -37.8076092,
+   "lng": 144.9423514
+  },
+  {
+   "name": "Pelvic Fit Melbourne - East Melbourne",
+   "profession": "pelvic-physio",
+   "suburb": "East Melbourne",
+   "clinic": "Pelvic Fit Melbourne - East Melbourne",
+   "lat": -37.812498,
+   "lng": 144.9858851
+  },
+  {
+   "name": "Pelvic Fit Melbourne - North Melbourne",
+   "profession": "pelvic-physio",
+   "suburb": "North Melbourne",
+   "clinic": "Pelvic Fit Melbourne - North Melbourne",
+   "lat": -37.8076092,
+   "lng": 144.9423514
+  },
+  {
+   "name": "Pelvic Health Melbourne",
+   "profession": "pelvic-physio",
+   "suburb": "Altona North",
+   "clinic": "Pelvic Health Melbourne",
+   "lat": -37.8378229,
+   "lng": 144.8342853
+  },
+  {
+   "name": "Pelvic Wellness Physiotherapy",
+   "profession": "pelvic-physio",
+   "suburb": "Bentleigh",
+   "clinic": "Pelvic Wellness Physiotherapy",
+   "lat": -37.9175354,
+   "lng": 145.0369346
+  },
+  {
+   "name": "Preston Pelvic Health",
+   "profession": "pelvic-physio",
+   "suburb": "Preston",
+   "clinic": "Preston Pelvic Health",
+   "lat": -37.7418658,
+   "lng": 145.0078205
+  },
+  {
+   "name": "Advance Pelvic Health",
+   "profession": "pelvic-physio",
+   "suburb": "Templestowe Lower",
+   "clinic": "Advance Pelvic Health",
+   "lat": -37.7638749,
+   "lng": 145.1122762
+  },
+  {
+   "name": "Melbourne Pregnancy & Pelvic Floor Physiotherapy",
+   "profession": "pelvic-physio",
+   "suburb": "Essendon North",
+   "clinic": "Melbourne Pregnancy & Pelvic Floor Physiotherapy",
+   "lat": -37.7384762,
+   "lng": 144.9012027
+  },
+  {
+   "name": "Melbourne Pregnancy & Pelvic Floor Physiotherapy - Pascoe Vale",
+   "profession": "pelvic-physio",
+   "suburb": "Pascoe Vale",
+   "clinic": "Melbourne Pregnancy & Pelvic Floor Physiotherapy - Pascoe Vale",
+   "lat": -37.7308567,
+   "lng": 144.928195
+  },
+  {
+   "name": "Active Pelvic Health",
+   "profession": "pelvic-physio",
+   "suburb": "Spotswood",
+   "clinic": "Active Pelvic Health",
+   "lat": -37.8307331,
+   "lng": 144.8858865
+  },
+  {
+   "name": "The Mama Physio",
+   "profession": "pelvic-physio",
+   "suburb": "East Melbourne",
+   "clinic": "The Mama Physio",
+   "lat": -37.812498,
+   "lng": 144.9858851
+  },
+  {
+   "name": "Hatched House",
+   "profession": "pelvic-physio",
+   "suburb": "Hawthorn",
+   "clinic": "Hatched House",
+   "lat": -37.8244246,
+   "lng": 145.0317207
+  },
+  {
+   "name": "Centre for Perinatal Psychology",
+   "profession": "psychologist",
+   "suburb": "Fairfield",
+   "clinic": "Centre for Perinatal Psychology",
+   "lat": -37.7791763,
+   "lng": 145.0169241
+  },
+  {
+   "name": "Melbourne Centre for Women's Mental Health",
+   "profession": "psychologist",
+   "suburb": "Melbourne",
+   "clinic": "Melbourne Centre for Women's Mental Health",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Inner Melbourne Clinical Psychology",
+   "profession": "psychologist",
+   "suburb": "Melbourne",
+   "clinic": "Inner Melbourne Clinical Psychology",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Cova Psychology",
+   "profession": "psychologist",
+   "suburb": "Melbourne",
+   "clinic": "Cova Psychology",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Centre for Clinical Psychology",
+   "profession": "psychologist",
+   "suburb": "Carlton",
+   "clinic": "Centre for Clinical Psychology",
+   "lat": -37.8004228,
+   "lng": 144.9684343
+  },
+  {
+   "name": "East Melbourne Acupuncture",
+   "profession": "chinese-med",
+   "suburb": "East Melbourne",
+   "clinic": "East Melbourne Acupuncture",
+   "lat": -37.812498,
+   "lng": 144.9858851
+  },
+  {
+   "name": "Dr Christine Cui - Natural Fertility Clinic",
+   "profession": "chinese-med",
+   "suburb": "Melbourne",
+   "clinic": "Dr Christine Cui - Natural Fertility Clinic",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "The Fertility Pod",
+   "profession": "chinese-med",
+   "suburb": "Carlton",
+   "clinic": "The Fertility Pod",
+   "lat": -37.8004228,
+   "lng": 144.9684343
+  },
+  {
+   "name": "Reverence Story - Amy O'Brien",
+   "profession": "chinese-med",
+   "suburb": "Richmond",
+   "clinic": "Reverence Story - Amy O'Brien",
+   "lat": -37.80745,
+   "lng": 144.9907213
+  },
+  {
+   "name": "PCOS Dietitian Vivienne (Vivienne Wang)",
+   "profession": "dietitian",
+   "suburb": "Carnegie",
+   "clinic": "PCOS Dietitian Vivienne (Vivienne Wang)",
+   "lat": -37.8862294,
+   "lng": 145.0585695
+  },
+  {
+   "name": "Fertility Theory (Celeste)",
+   "profession": "dietitian",
+   "suburb": "Templestowe Lower",
+   "clinic": "Fertility Theory (Celeste)",
+   "lat": -37.7638749,
+   "lng": 145.1122762
+  },
+  {
+   "name": "Womankind Physiotherapy",
+   "profession": "womens-health-physio",
+   "suburb": "Eltham",
+   "clinic": "Womankind Physiotherapy",
+   "lat": -37.7137359,
+   "lng": 145.147673
+  },
+  {
+   "name": "Women's & Men's Health Physiotherapy",
+   "profession": "womens-health-physio",
+   "suburb": "Camberwell",
+   "clinic": "Women's & Men's Health Physiotherapy",
+   "lat": -37.8384623,
+   "lng": 145.0740767
+  },
+  {
+   "name": "Kokoro Wellbeing Perinatal Mental Health",
+   "profession": "psychologist",
+   "suburb": "Brunswick East",
+   "clinic": "Kokoro Wellbeing Perinatal Mental Health",
+   "lat": -37.7688802,
+   "lng": 144.9776825
+  },
+  {
+   "name": "WeCare Continence Support",
+   "profession": "continence-nurse",
+   "suburb": "Malvern",
+   "clinic": "WeCare Continence Support",
+   "lat": -37.8576088,
+   "lng": 145.0350666
+  },
+  {
+   "name": "RMHP Continence Service",
+   "profession": "continence-nurse",
+   "suburb": "Parkville",
+   "clinic": "RMHP Continence Service",
+   "lat": -37.7871148,
+   "lng": 144.9515533
+  },
+  {
+   "name": "Continence Health Australia",
+   "profession": "continence-nurse",
+   "suburb": "Surrey Hills",
+   "clinic": "Continence Health Australia",
+   "lat": -37.8271881,
+   "lng": 145.0978326
+  },
+  {
+   "name": "Number 1 Women's Health",
+   "profession": "chinese-med",
+   "suburb": "East Melbourne",
+   "clinic": "Number 1 Women's Health",
+   "lat": -37.812498,
+   "lng": 144.9858851
+  },
+  {
+   "name": "Optimal Health Exercise Physiology",
+   "profession": "exercise-physiologist",
+   "suburb": "Melbourne",
+   "clinic": "Optimal Health Exercise Physiology",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Melbourne Yoga and Pilates",
+   "profession": "exercise-physiologist",
+   "suburb": "Melbourne",
+   "clinic": "Melbourne Yoga and Pilates",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Joelleen IBCLC",
+   "profession": "lactation-consultant",
+   "suburb": "Moonee Ponds",
+   "clinic": "Joelleen IBCLC",
+   "lat": -37.765935,
+   "lng": 144.9192614
+  },
+  {
+   "name": "Caroline Maher - Lactation Consultant",
+   "profession": "lactation-consultant",
+   "suburb": "Abbotsford",
+   "clinic": "Caroline Maher - Lactation Consultant",
+   "lat": -37.8045508,
+   "lng": 144.9988542
+  },
+  {
+   "name": "mumsmilk",
+   "profession": "lactation-consultant",
+   "suburb": "St Kilda East",
+   "clinic": "mumsmilk",
+   "lat": -37.8668218,
+   "lng": 145.0021657
+  },
+  {
+   "name": "Bayside Baby Life",
+   "profession": "lactation-consultant",
+   "suburb": "Hampton",
+   "clinic": "Bayside Baby Life",
+   "lat": -37.9381127,
+   "lng": 145.0014764
+  },
+  {
+   "name": "Chantelle Otten Sex Therapy",
+   "profession": "sexual-health-counsellor",
+   "suburb": "East Melbourne",
+   "clinic": "Chantelle Otten Sex Therapy",
+   "lat": -37.812498,
+   "lng": 144.9858851
+  },
+  {
+   "name": "Sex-EQ - Zoe Hancock",
+   "profession": "sexual-health-counsellor",
+   "suburb": "Yarraville",
+   "clinic": "Sex-EQ - Zoe Hancock",
+   "lat": -37.8157385,
+   "lng": 144.8899709
+  },
+  {
+   "name": "Integrated Sex + Relationship Therapy",
+   "profession": "sexual-health-counsellor",
+   "suburb": "Essendon",
+   "clinic": "Integrated Sex + Relationship Therapy",
+   "lat": -37.7498293,
+   "lng": 144.9109062
+  },
+  {
+   "name": "Miano Clinical Sexology",
+   "profession": "sexual-health-counsellor",
+   "suburb": "Prahran",
+   "clinic": "Miano Clinical Sexology",
+   "lat": -37.849953,
+   "lng": 144.9898165
+  },
+  {
+   "name": "CUCUMBER Relationships & Sex Therapy",
+   "profession": "sexual-health-counsellor",
+   "suburb": "Port Melbourne",
+   "clinic": "CUCUMBER Relationships & Sex Therapy",
+   "lat": -37.8333613,
+   "lng": 144.9219203
+  },
+  {
+   "name": "Lynda Carlyle Sex Therapist",
+   "profession": "sexual-health-counsellor",
+   "suburb": "Collingwood",
+   "clinic": "Lynda Carlyle Sex Therapist",
+   "lat": -37.802104,
+   "lng": 144.9881387
+  },
+  {
+   "name": "Victorian Clinical Genetics Services",
+   "profession": "genetic-counsellor",
+   "suburb": "Parkville",
+   "clinic": "Victorian Clinical Genetics Services",
+   "lat": -37.7936604,
+   "lng": 144.9496822
+  },
+  {
+   "name": "Bloom Diabetes",
+   "profession": "diabetes-educator",
+   "suburb": "Caulfield North",
+   "clinic": "Bloom Diabetes",
+   "lat": -37.870828,
+   "lng": 145.0218005
+  },
+  {
+   "name": "Sam Diabetes Educator",
+   "profession": "diabetes-educator",
+   "suburb": "Parkville",
+   "clinic": "Sam Diabetes Educator",
+   "lat": -37.7871148,
+   "lng": 144.9515533
+  },
+  {
+   "name": "Albert Yeap Diabetes Educator",
+   "profession": "diabetes-educator",
+   "suburb": "Richmond",
+   "clinic": "Albert Yeap Diabetes Educator",
+   "lat": -37.80745,
+   "lng": 144.9907213
+  },
+  {
+   "name": "Nicole Bradley Credentialled Diabetes Educator",
+   "profession": "diabetes-educator",
+   "suburb": "Taylors Lakes",
+   "clinic": "Nicole Bradley Credentialled Diabetes Educator",
+   "lat": -37.698633,
+   "lng": 144.7863077
+  },
+  {
+   "name": "Wellixa - Women's Health Naturopath",
+   "profession": "naturopath",
+   "suburb": "Hawthorn East",
+   "clinic": "Wellixa - Women's Health Naturopath",
+   "lat": -37.8313785,
+   "lng": 145.0499797
+  },
+  {
+   "name": "Melbourne Naturopathy",
+   "profession": "naturopath",
+   "suburb": "Thornbury",
+   "clinic": "Melbourne Naturopathy",
+   "lat": -37.7549944,
+   "lng": 144.9985944
+  },
+  {
+   "name": "The Naturopathic Co.",
+   "profession": "naturopath",
+   "suburb": "South Yarra",
+   "clinic": "The Naturopathic Co.",
+   "lat": -37.8377695,
+   "lng": 144.9918537
+  },
+  {
+   "name": "Melbourne Functional Medicine",
+   "profession": "naturopath",
+   "suburb": "South Melbourne",
+   "clinic": "Melbourne Functional Medicine",
+   "lat": -37.83344,
+   "lng": 144.9570533
+  },
+  {
+   "name": "Flow Naturopathy (Aimee)",
+   "profession": "naturopath",
+   "suburb": "Caulfield",
+   "clinic": "Flow Naturopathy (Aimee)",
+   "lat": -37.8773433,
+   "lng": 145.0422715
+  },
+  {
+   "name": "Inner Reward Naturopath",
+   "profession": "naturopath",
+   "suburb": "Hoppers Crossing",
+   "clinic": "Inner Reward Naturopath",
+   "lat": -37.8832314,
+   "lng": 144.7010882
+  },
+  {
+   "name": "Harmony Pilates Studio",
+   "profession": "yoga-pilates",
+   "suburb": "Albert Park",
+   "clinic": "Harmony Pilates Studio",
+   "lat": -37.8452062,
+   "lng": 144.957105
+  },
+  {
+   "name": "Gather Women Space",
+   "profession": "yoga-pilates",
+   "suburb": "Seddon",
+   "clinic": "Gather Women Space",
+   "lat": -37.8090118,
+   "lng": 144.8956264
+  },
+  {
+   "name": "Illoura Birth",
+   "profession": "doula",
+   "suburb": "Flemington",
+   "clinic": "Illoura Birth",
+   "lat": -37.7867587,
+   "lng": 144.9193668
+  },
+  {
+   "name": "A Special Delivery",
+   "profession": "doula",
+   "suburb": "Brunswick East",
+   "clinic": "A Special Delivery",
+   "lat": -37.7688802,
+   "lng": 144.9776825
+  },
+  {
+   "name": "MAMA Midwifery Practice",
+   "profession": "doula",
+   "suburb": "Kensington",
+   "clinic": "MAMA Midwifery Practice",
+   "lat": -37.7939378,
+   "lng": 144.9305645
+  },
+  {
+   "name": "Blueberry Childbirth Education & Hypnobirthing",
+   "profession": "doula",
+   "suburb": "Southbank",
+   "clinic": "Blueberry Childbirth Education & Hypnobirthing",
+   "lat": -37.8253618,
+   "lng": 144.9640203
+  },
+  {
+   "name": "PowerBirth Melbourne",
+   "profession": "doula",
+   "suburb": "Carlton",
+   "clinic": "PowerBirth Melbourne",
+   "lat": -37.8004228,
+   "lng": 144.9684343
+  },
+  {
+   "name": "Love & Lullabies",
+   "profession": "doula",
+   "suburb": "Ascot Vale",
+   "clinic": "Love & Lullabies",
+   "lat": -37.7753252,
+   "lng": 144.921825
+  },
+  {
+   "name": "Open Circle Wellbeing",
+   "profession": "doula",
+   "suburb": "Parkville",
+   "clinic": "Open Circle Wellbeing",
+   "lat": -37.7871148,
+   "lng": 144.9515533
+  }
+ ],
+ "count": 67,
+ "professions": {
+  "pelvic-physio": {
+   "label": "Pelvic-health physiotherapist",
+   "color": "#dd7a2a"
+  },
+  "womens-health-physio": {
+   "label": "Women's health physiotherapist",
+   "color": "#e0a93b"
+  },
+  "psychologist": {
+   "label": "Psychologist",
+   "color": "#c2548a"
+  },
+  "chinese-med": {
+   "label": "Chinese medicine / acupuncture",
+   "color": "#8a6d3b"
+  },
+  "dietitian": {
+   "label": "Dietitian (APD)",
+   "color": "#5c8a4e"
+  },
+  "exercise-physiologist": {
+   "label": "Exercise physiologist",
+   "color": "#2e8b8b"
+  },
+  "lactation-consultant": {
+   "label": "Lactation consultant",
+   "color": "#d4546b"
+  },
+  "continence-nurse": {
+   "label": "Continence nurse",
+   "color": "#6b8e9e"
+  },
+  "ot": {
+   "label": "Occupational therapist",
+   "color": "#7c3aed"
+  },
+  "social-worker": {
+   "label": "Social worker",
+   "color": "#2b6cb0"
+  },
+  "genetic-counsellor": {
+   "label": "Genetic counsellor",
+   "color": "#0a8f5c"
+  },
+  "diabetes-educator": {
+   "label": "Diabetes educator",
+   "color": "#c0392b"
+  },
+  "naturopath": {
+   "label": "Naturopath",
+   "color": "#6a8d2f"
+  },
+  "doula": {
+   "label": "Doula / birth educator",
+   "color": "#b5651d"
+  },
+  "yoga-pilates": {
+   "label": "Yoga / Pilates",
+   "color": "#9a6dd7"
+  },
+  "sexual-health-counsellor": {
+   "label": "Sexual health counsellor",
+   "color": "#b04a8a"
+  },
+  "other-allied": {
+   "label": "Other allied",
+   "color": "#9aa0a6"
+  }
+ }
+}
