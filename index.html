@@ -55,6 +55,9 @@
       #alliedMapSection .amx-card-meta{display:flex;align-items:center;gap:0.35rem;font-size:0.74rem;color:#777;margin-top:2px}
       #alliedMapSection .amx-card-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
       #alliedMapSection .amx-card-lang{font-size:0.72rem;color:#999;margin-top:1px}
+      #alliedMapSection .amx-card-scope{font-size:0.7rem;color:#6b5b95;font-style:italic;margin-top:2px}
+      #alliedMapSection .amx-card-kws{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+      #alliedMapSection .amx-kw{font-size:0.66rem;color:#5a4c80;background:#efeaf3;border:1px solid #e0d8ea;border-radius:8px;padding:1px 7px}
       #alliedMapSection .amx-tele{display:inline-block;margin-top:4px;font-size:0.66rem;font-weight:600;color:#6b5b95;background:#efeaf3;border-radius:10px;padding:1px 7px}
       #alliedMapSection .amx-list-empty{font-size:0.78rem;color:#999;padding:0.5rem 0}
       .amx-modal-back{position:fixed;inset:0;z-index:10000;background:rgba(44,40,50,0.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center}
@@ -982,18 +985,19 @@ function checkGateCode(){
          FERTOOL2026 access gate, so it is NOT public (same protection as the site). -->
     <section class="digest-section" id="alliedMapSection">
         <div class="digest-section-head">
-            <h2 class="digest-section-title">Confluence</h2>
+            <h2 class="digest-section-title">Confluence Ecosystem</h2>
             <p class="amx-subtitle">Melbourne's women's health &amp; allied network — where care converges.</p>
             <p class="digest-section-sub">
-                Allied &amp; wellness practitioners across Melbourne — pelvic-health physiotherapy,
-                psychology, Chinese medicine, dietitians, naturopaths, doulas and more.
-                Compiled from public sources; toggle a profession to filter.
+                Pelvic-health physiotherapy, psychology, Chinese medicine, dietetics, naturopathy,
+                pelvic-pain medicine, yoga &amp; Pilates, doulas and more — every practitioner working
+                in or around women's health. Compiled from public sources; toggle a profession to filter,
+                or add your own listing.
             </p>
             <button type="button" class="amx-add" id="amxAddBtn">Add your practice — free</button>
         </div>
         <div class="amx-wrap">
             <aside class="amx-side">
-                <input type="text" class="amx-search" id="amxSearch" placeholder="Search services, suburb, language…" autocomplete="off" aria-label="Search practitioners">
+                <input type="text" class="amx-search" id="amxSearch" placeholder="Search a name, suburb, or need (e.g. prolapse, anxiety)…" autocomplete="off" aria-label="Search practitioners">
                 <div class="amx-count" id="amxCount">loading…</div>
                 <div id="amxLegend"></div>
                 <div class="amx-btns"><button type="button" id="amxAll">All</button><button type="button" id="amxNone">None</button></div>
@@ -1097,16 +1101,20 @@ function checkGateCode(){
         <div class="amx-modal">
             <button type="button" class="amx-modal-close" id="amxModalClose" aria-label="Close">×</button>
             <h3 id="amxModalTitle">Add your practice</h3>
-            <div class="amx-modal-sub">Free listing on Confluence — reviewed before it appears.</div>
+            <div class="amx-modal-sub">Free listing on the Confluence Ecosystem — open to any practitioner working in or around women's health. Reviewed before it appears.</div>
             <form id="amxForm">
                 <label for="amxF-name">Name</label>
                 <input type="text" id="amxF-name" name="name" required>
+                <label for="amxF-clinic">Clinic / practice <span style="font-weight:400;text-transform:none;color:#aaa">(optional)</span></label>
+                <input type="text" id="amxF-clinic" name="clinic" placeholder="e.g. Pelvic Fit Melbourne">
                 <label for="amxF-prof">Profession</label>
                 <select id="amxF-prof" name="profession"></select>
                 <label for="amxF-suburb">Suburb</label>
                 <input type="text" id="amxF-suburb" name="suburb">
                 <label for="amxF-services">Services <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
                 <input type="text" id="amxF-services" name="services" placeholder="e.g. pelvic floor, prenatal, incontinence">
+                <label for="amxF-keywords">Keywords <span style="font-weight:400;text-transform:none;color:#aaa">— what makes you findable (comma-separated)</span></label>
+                <input type="text" id="amxF-keywords" name="keywords" placeholder="e.g. vaginismus, trauma-informed, LGBTQ+ friendly, home visits, vulvodynia">
                 <label for="amxF-langs">Languages <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
                 <input type="text" id="amxF-langs" name="languages" placeholder="e.g. English, Mandarin">
                 <label class="amx-check"><input type="checkbox" id="amxF-tele" name="telehealth"> Telehealth available</label>

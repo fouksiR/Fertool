@@ -28,6 +28,7 @@
     'doula': { label: 'Doula / birth educator', color: '#b5651d' },
     'yoga-pilates': { label: 'Yoga / Pilates', color: '#9a6dd7' },
     'sexual-health-counsellor': { label: 'Sexual health counsellor', color: '#b04a8a' },
+    'pain-specialist': { label: 'Pain medicine / pelvic pain', color: '#c0567a' },
     'other-allied': { label: 'Other allied', color: '#9aa0a6' }
   };
   function profMeta(code) { return PROFESSIONS[code] || { label: code || 'Other', color: '#9aa0a6' }; }
@@ -36,6 +37,31 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
     });
   }
+
+  // Profession-level clinical scope — the conditions/needs a given *profession*
+  // typically addresses. These are facts about the profession (like its label or
+  // colour), NOT claims that any individual listed treats them. Used only to let
+  // a clinical-term search ("prolapse", "anxiety") surface the right professions
+  // while the per-practitioner services/languages fields are still empty. Override
+  // or extend per profession via the JSON `scope` block (same pattern as labels).
+  var SCOPE = {
+    'pelvic-physio': ['pelvic floor', 'prolapse', 'incontinence', 'pelvic pain', 'bladder', 'continence', 'postnatal', 'prenatal', 'perineal', 'dyspareunia', 'pessary', 'endometriosis', 'endo', 'pregnancy'],
+    'womens-health-physio': ['pelvic floor', 'pregnancy', 'postnatal', 'prenatal', 'mastitis', 'diastasis', 'abdominal separation', 'continence', 'pelvic pain'],
+    'psychologist': ['anxiety', 'depression', 'perinatal mental health', 'grief', 'loss', 'miscarriage', 'trauma', 'counselling', 'postnatal depression', 'fertility', 'ivf', 'birth trauma', 'menopause'],
+    'chinese-med': ['acupuncture', 'fertility', 'ivf', 'menstrual', 'period', 'period pain', 'endometriosis', 'endo', 'herbal', 'menopause'],
+    'dietitian': ['nutrition', 'pcos', 'gestational diabetes', 'weight', 'preconception', 'fertility', 'endometriosis', 'menopause'],
+    'exercise-physiologist': ['exercise', 'rehabilitation', 'pcos', 'pregnancy', 'strength', 'menopause', 'bone health'],
+    'lactation-consultant': ['breastfeeding', 'lactation', 'latch', 'supply', 'mastitis', 'tongue tie', 'feeding'],
+    'continence-nurse': ['continence', 'incontinence', 'bladder', 'bowel', 'pelvic floor'],
+    'genetic-counsellor': ['genetic', 'carrier screening', 'hereditary', 'prenatal screening', 'familial'],
+    'diabetes-educator': ['diabetes', 'gestational diabetes', 'insulin', 'blood glucose', 'gdm'],
+    'naturopath': ['naturopathy', 'herbal', 'preconception', 'hormonal', 'fertility', 'pcos', 'endometriosis', 'menopause', 'period'],
+    'doula': ['doula', 'birth support', 'birth education', 'postpartum', 'antenatal', 'labour support', 'pregnancy'],
+    'yoga-pilates': ['yoga', 'pilates', 'prenatal', 'pregnancy', 'core', 'relaxation'],
+    'sexual-health-counsellor': ['sexual health', 'intimacy', 'libido', 'dyspareunia', 'psychosexual', 'painful sex'],
+    'pain-specialist': ['pelvic pain', 'chronic pain', 'persistent pain', 'endometriosis', 'vulvodynia', 'bladder pain', 'painful sex', 'nerve pain']
+  };
+  function profScope(code) { return SCOPE[code] || []; }
 
   var map, cluster, POINTS = [], shown = {}, searchQuery = '', currentMarkers = {};
 
@@ -65,14 +91,33 @@
     if (!p.__key) p.__key = p.name + '|' + p.lat + '|' + p.lng;
     return p.__key;
   }
-  // Free-text filter: every token must appear in services + suburb + languages
-  // (+ name + clinic, so it's useful on the current data). Case-insensitive AND.
+  // Free-text filter: every token must appear in the row's own text
+  // (services + suburb + languages + name + clinic) OR in the typical clinical
+  // scope of that practitioner's *profession*. Case-insensitive AND across tokens.
+  // The scope arm is what makes "prolapse" / "anxiety" return results while the
+  // per-practitioner service fields are still empty.
+  function rowHaystack(p) {
+    return (field(p, 'services') + ' ' + field(p, 'keywords') + ' ' + field(p, 'suburb') +
+            ' ' + field(p, 'languages') + ' ' + field(p, 'name') + ' ' + field(p, 'clinic')).toLowerCase();
+  }
   function matchesSearch(p) {
     if (!searchQuery) return true;
-    var hay = (field(p, 'services') + ' ' + field(p, 'suburb') + ' ' + field(p, 'languages') +
-               ' ' + field(p, 'name') + ' ' + field(p, 'clinic')).toLowerCase();
+    var hay = rowHaystack(p);
+    var scopeHay = profScope(p.profession).join(' ').toLowerCase();
     return searchQuery.toLowerCase().split(/\s+/).filter(Boolean).every(function (t) {
-      return hay.indexOf(t) !== -1;
+      return hay.indexOf(t) !== -1 || scopeHay.indexOf(t) !== -1;
+    });
+  }
+  // Which profession-scope terms the current query matched *and the row's own
+  // text did not* — so the card can honestly say "matched on profession scope,
+  // not a claim about this person". Empty when the match was on the row's data.
+  function scopeHits(p) {
+    if (!searchQuery) return [];
+    var hay = rowHaystack(p);
+    var tokens = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+    return profScope(p.profession).filter(function (term) {
+      var lt = term.toLowerCase();
+      return tokens.some(function (t) { return lt.indexOf(t) !== -1 && hay.indexOf(t) === -1; });
     });
   }
   // Single source of truth: profession checkboxes AND the search box.
@@ -95,12 +140,18 @@
   function buildCard(p) {
     var m = profMeta(p.profession);
     var svc = field(p, 'services'), langs = field(p, 'languages');
+    var sh = scopeHits(p);
+    var kws = Array.isArray(p.keywords) ? p.keywords : splitList(field(p, 'keywords'));
     return '<div class="amx-card" data-key="' + esc(providerKey(p)) + '">' +
       '<div class="amx-card-name">' + esc(p.name) + '</div>' +
       (svc ? '<div class="amx-card-svc">' + esc(svc) + '</div>' : '') +
       '<div class="amx-card-meta"><span class="amx-card-dot" style="background:' + m.color + '"></span>' +
         esc(m.label) + (p.suburb ? ' · ' + esc(p.suburb) : '') + '</div>' +
       (langs ? '<div class="amx-card-lang">' + esc(langs) + '</div>' : '') +
+      (kws.length ? '<div class="amx-card-kws">' + kws.slice(0, 6).map(function (k) {
+        return '<span class="amx-kw">' + esc(k) + '</span>';
+      }).join('') + '</div>' : '') +
+      (sh.length ? '<div class="amx-card-scope">' + esc(sh.slice(0, 3).join(' · ')) + ' — typical focus for this profession</div>' : '') +
       (p.telehealth === true ? '<span class="amx-tele">Telehealth</span>' : '') +
       '</div>';
   }
@@ -109,7 +160,8 @@
     if (!box) return;
     box.innerHTML = vis.length
       ? vis.map(buildCard).join('')
-      : '<div class="amx-list-empty">No practitioners match.</div>';
+      : '<div class="amx-list-empty">No practitioners match' + (searchQuery ? ' “' + esc(searchQuery) + '”' : '') +
+        '.<br>Try a suburb, a name, or a need — e.g. “prolapse”, “anxiety”, “breastfeeding”, “acupuncture”.</div>';
     Array.prototype.forEach.call(box.querySelectorAll('.amx-card'), function (card) {
       card.addEventListener('click', function () { flyToProvider(card.getAttribute('data-key')); });
     });
@@ -179,8 +231,9 @@
         name: (fd.get('name') || '').trim(),
         profession: fd.get('profession') || '',
         suburb: suburb,
-        clinic: (fd.get('name') || '').trim(),
+        clinic: (fd.get('clinic') || fd.get('name') || '').trim(),
         services: splitList(fd.get('services')),
+        keywords: splitList(fd.get('keywords')),
         languages: splitList(fd.get('languages')),
         telehealth: fd.get('telehealth') === 'on',
         lat: null,
@@ -250,6 +303,7 @@
       .then(function (d) {
         POINTS = d.points || [];
         if (d.professions) { for (var k in d.professions) { PROFESSIONS[k] = d.professions[k]; } }
+        if (d.scope) { for (var sk in d.scope) { SCOPE[sk] = d.scope[sk]; } }
         init();
       })
       .catch(function (e) {
