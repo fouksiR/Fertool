@@ -306,6 +306,29 @@
         .wh-foot a:hover { text-decoration: underline; }
         @media (max-width: 720px) { .wh-card, .wh-skel { flex: 0 0 76%; } }
 
+        /* topic filter pills */
+        .wh-filters { display:flex; flex-wrap:wrap; justify-content:center; gap:0.4rem; margin-bottom:1.25rem; }
+        .wh-pill {
+            font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.2px;
+            color:#6a6a6a; background:#fff; border:1px solid rgba(0,0,0,0.12);
+            border-radius:20px; padding:0.34rem 0.9rem; cursor:pointer; transition:color .18s, background .18s, border-color .18s;
+        }
+        .wh-pill:hover { border-color:rgba(0,0,0,0.3); color:#2c2c2c; }
+        .wh-pill.active { color:#fff; background:var(--wh-pill,#6b5b95); border-color:var(--wh-pill,#6b5b95); }
+        /* study-type chip + freshness + trending flame */
+        .wh-card-tags { display:flex; align-items:center; gap:0.4rem; margin-bottom:0.55rem; flex-wrap:wrap; }
+        .wh-type {
+            font-size:0.58rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px;
+            color:var(--wh-accent,#6b5b95); background:#fff;
+            border:1px solid var(--wh-line,rgba(107,91,149,0.22)); border-radius:6px; padding:0.16rem 0.5rem;
+        }
+        .wh-flame {
+            font-size:0.58rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px;
+            color:#b9560f; background:#fdeede; border:1px solid #f3c98a; border-radius:6px; padding:0.16rem 0.5rem;
+        }
+        .wh-fresh { font-size:0.64rem; color:#9a9a9a; margin-left:auto; white-space:nowrap; }
+        .wh-card.is-hidden { display:none; }
+
         /* Modal */
         .dmodal-back {
             position: fixed; inset: 0; background: rgba(30,25,20,0.55);
@@ -934,10 +957,11 @@ function checkGateCode(){
         <div class="wh-section-head">
             <h2 class="wh-section-title">This Week in Women's Health</h2>
             <p class="wh-section-sub">
-                The papers getting talked about \u2014 top-journal women's-health research from the
-                last two months, ranked by real-world attention (news &amp; policy pickup via Altmetric).
+                New evidence for women's-health GPs, by topic &mdash; contraception, natural
+                conception, menopause, STI &amp; sexual health, and gynaecology. Refreshed weekly.
             </p>
         </div>
+        <div class="wh-filters" id="whFilters" role="tablist" aria-label="Filter women's-health papers by topic"></div>
         <div class="wh-row-wrap">
             <div class="wh-row" id="whRow" tabindex="0" aria-label="This week in women's health, horizontally scrollable. Use arrow keys to navigate.">
                 <div class="wh-skel"></div>
@@ -947,7 +971,7 @@ function checkGateCode(){
             </div>
         </div>
         <div class="wh-foot" id="whFoot" style="display:none">
-            <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Browse more on PubMed →</a>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Browse more on PubMed &rarr;</a>
         </div>
     </section>
 
@@ -1019,7 +1043,7 @@ function checkGateCode(){
     </div>
 </footer>
 
-<div class="version-badge">v3.9 · WH Altmetric · PMOS rename · CPD soon · 31-May-2026</div>
+<div class="version-badge">v4.0 · WH by-topic · STI+conception buckets · 24-Jun-2026</div>
 
 <!-- Fixed WhatsApp — bottom LEFT -->
 <div class="wa-widget" id="waWidget">
@@ -2420,67 +2444,108 @@ function _performSearchRenderBlocking(data, q){
 })();
 
 /* ── Women's-health weekly capsules — PubMed (NCBI E-utilities), client-side ─── */
+/* Bucketed for women's-health GPs: the strongest recent paper per clinical area. */
+/* Ranked by study type + recency (NOT Altmetric). Altmetric is fetched after the */
+/* cards paint and only shown as an optional "Trending" flag, so nothing waits on  */
+/* it. Edit BUCKETS, PUBMED_QUERY and the weights below to tune.                   */
 (function () {
     var rowEl  = document.getElementById('whRow');
     var footEl = document.getElementById('whFoot');
+    var filtEl = document.getElementById('whFilters');
     var modal  = document.getElementById('dmodalBack');
     if (!rowEl || !modal) return;
 
-    /* ---- Tunable: edit the journal allow-list / window / weighting here ----- */
-    /* Over-fetch a candidate pool from a tier-1/2 + women's-health journal set, */
-    /* last ~60 days, then rank by Altmetric attention (news/policy weighted).   */
+    /* ---- GP topic buckets — order matters (first match wins) ---------------- */
+    var BUCKETS = [
+        { id:'contraception', label:'Contraception',
+          kw:/contracept|intrauterine device|\biud\b|levonorgestrel|etonogestrel|family planning|emergency contracep/i,
+          c:'#2f8f83', bg:'#e7f4f1' },
+        { id:'sti', label:'STI & sexual health',
+          kw:/sexually transmitted|chlamydia|gonorrh|trichomonas|pelvic inflammatory|syphilis|genital herpes|\bsti\b|doxy-?pep|sexual health/i,
+          c:'#6b5b95', bg:'#f1eefb' },
+        { id:'menopause', label:'Menopause & HRT',
+          kw:/menopaus|climacteric|hormone replacement|hormone therapy|\bhrt\b|\bmht\b|hot flush|vasomotor|perimenopaus/i,
+          c:'#c2566b', bg:'#fdeef0' },
+        { id:'conception', label:'Natural conception',
+          kw:/preconception|pre-conception|periconception|natural conception|fecundability|trying to conceive|infertilit|subfertil|fertilit|ovulation|ovarian reserve|time to pregnancy|folate|folic acid/i,
+          c:'#3f72b0', bg:'#eaf2fb' },
+        { id:'gynae', label:'Gynaecology',
+          kw:/polycystic|\bpcos\b|endometrios|adenomyos|abnormal uterine bleeding|menorrhagia|heavy menstrual|fibroid|leiomyoma|pelvic floor|prolapse|incontinen|cervical screening|cervical cancer|\bhpv\b|premenstrual|osteoporos/i,
+          c:'#4a6741', bg:'#eef4ec' }
+    ];
+    var FALLBACK = { id:'gynae', label:'Women\u2019s Health', c:'#6b5b95', bg:'#f1eefb' };
+
+    /* ---- Journal allow-list + topic gate (tune here) ----------------------- */
+    /* Specialty journals: on-topic by definition, included directly.          */
+    /* Broad journals (NEJM/Lancet/JAMA/BMJ): included only when MeSH/topic-    */
+    /* matched, so we get the headline women's-health paper without the noise.  */
     var PUBMED_QUERY =
         '(' +
-          '"Obstet Gynecol"[ta] OR "Am J Obstet Gynecol"[ta] OR "BJOG"[ta] OR "Menopause"[ta] ' +
-          'OR "Contraception"[ta] OR "Hum Reprod"[ta] OR "Fertil Steril"[ta] ' +
-          'OR ((' +
+          '(' +
+            '"Obstet Gynecol"[ta] OR "Am J Obstet Gynecol"[ta] OR "BJOG"[ta] ' +
+            'OR "Menopause"[ta] OR "Climacteric"[ta] OR "Contraception"[ta] ' +
+            'OR "BMJ Sex Reprod Health"[ta] OR "Hum Reprod"[ta] OR "Hum Reprod Update"[ta] ' +
+            'OR "Hum Reprod Open"[ta] OR "Fertil Steril"[ta] OR "Reprod Biomed Online"[ta] ' +
+            'OR "BMC Womens Health"[ta] OR "Int J Womens Health"[ta]' +
+          ')' +
+          ' OR ((' +
             '"N Engl J Med"[ta] OR "Lancet"[ta] OR "JAMA"[ta] OR "BMJ"[ta] ' +
-            'OR "Ann Intern Med"[ta] OR "JAMA Intern Med"[ta]' +
+            'OR "JAMA Netw Open"[ta] OR "Ann Intern Med"[ta]' +
           ') AND (' +
-            '"women\'s health"[MeSH Terms] OR menopause OR contraception OR "cervical screening" ' +
-            'OR "polycystic ovary syndrome" OR "abnormal uterine bleeding" OR "pelvic floor" OR osteoporosis' +
+            'contracept* OR "family planning"[MeSH Terms] OR menopaus* OR "hormone replacement"[tiab] ' +
+            'OR "sexually transmitted diseases"[MeSH Terms] OR chlamydia OR gonorrh* ' +
+            'OR "pelvic inflammatory disease" OR preconception OR infertilit* ' +
+            'OR "polycystic ovary syndrome" OR "uterine hemorrhage"[MeSH Terms] OR endometriosis ' +
+            'OR "cervical screening" OR "uterine cervical neoplasms"[MeSH Terms]' +
           '))' +
-        ') AND ("last 60 days"[PDat]) AND English[lang] AND hasabstract';
-    var CANDIDATE_POOL = 24;   // how many recent papers to score with Altmetric
-    var SHOW_COUNT     = 8;    // how many top-resonance cards to display
+        ') AND ("last 90 days"[PDat]) AND English[lang] AND hasabstract ' +
+        'NOT (editorial[pt] OR comment[pt] OR "case reports"[pt] OR letter[pt] OR news[pt] OR "published erratum"[pt])';
+
+    var CANDIDATE_POOL = 60;   // recent papers to fetch + bucket
+    var PER_BUCKET     = 2;    // strongest papers kept per topic
+    var MAX_CARDS      = 12;   // hard cap across all buckets
     var EUTILS = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
     var TOOL   = 'tool=fertool&email=hello@drfouks.com';
 
-    /* Altmetric public "details page" API — attention, not citations.           */
-    /* Resonance = base score, but news (msm) and policy pickup boosted, since   */
-    /* those are what actually reaches WH GPs and patients.                      */
     var ALTMETRIC = 'https://api.altmetric.com/v1/pmid/';
-    var ALT_THROTTLE_MS = 180;  // stay under the 1 req/sec unauthenticated limit
-    function resonanceOf(alt) {
+    var ALT_THROTTLE_MS = 200;   // stay under the unauthenticated ~1 req/sec limit
+    function resonance(alt) {
         if (!alt) return 0;
-        return (alt.score || 0)
-             + 6 * (alt.cited_by_msm_count    || 0)   // mainstream news
-             + 8 * (alt.cited_by_policies_count || 0)  // policy / guideline docs
-             + 2 * (alt.cited_by_wikipedia_count || 0);
+        return (alt.score || 0) + 6 * (alt.cited_by_msm_count || 0) + 8 * (alt.cited_by_policies_count || 0);
     }
-    /* ------------------------------------------------------------------------- */
+    function isTrending(alt) {
+        if (!alt) return false;
+        return (alt.score || 0) >= 8 || (alt.cited_by_msm_count || 0) >= 2 || (alt.cited_by_policies_count || 0) >= 1;
+    }
 
-    /* topic → {label, accent, bg, line, glow}; keyword-matched against title+abstract */
-    var TOPICS = [
-        { kw:/menopaus|hormone therapy|hrt|hot flush|vasomotor/i, label:'Menopause',     c:'#c2566b', bg:'#fdeef0' },
-        { kw:/contracept|iud|intrauterine|implant|pill/i,         label:'Contraception',  c:'#3f72b0', bg:'#eaf2fb' },
-        { kw:/cervical|hpv|smear|pap|screening/i,                 label:'Screening',      c:'#2f8f83', bg:'#e7f4f1' },
-        { kw:/polycystic|pcos|pmos|polyendocrine metabolic/i,     label:'PMOS',           c:'#c8932e', bg:'#fdf4e3' },
-        { kw:/bleed|menorrhagia|fibroid|endometr/i,               label:'Bleeding & AUB', c:'#a0567e', bg:'#f8eef4' },
-        { kw:/pelvic|prolapse|incontinen|urinary/i,               label:'Pelvic Health',  c:'#4a6741', bg:'#eef4ec' },
-        { kw:/osteoporos|bone|fracture/i,                         label:'Bone Health',    c:'#7a6a3a', bg:'#f5f1e6' },
-        { kw:/breast/i,                                           label:'Breast Health',  c:'#b15b8f', bg:'#fbeef5' },
-        { kw:/pregnan|perinatal|postpartum|gestational/i,         label:'Perinatal',      c:'#6b5b95', bg:'#f1eefb' }
-    ];
-    var FALLBACK = { label:'Women\'s Health', c:'#6b5b95', bg:'#f1eefb' };
+    /* study type → {label, weight}; parsed from the PubMed PublicationType list */
+    function studyType(pts) {
+        var s = (pts || []).join('|').toLowerCase();
+        if (/practice guideline|guideline/.test(s))            return { label:'Guideline', w:5 };
+        if (/meta-analysis/.test(s))                           return { label:'Meta-analysis', w:4 };
+        if (/systematic review/.test(s))                       return { label:'Systematic review', w:4 };
+        if (/randomized controlled trial/.test(s))             return { label:'RCT', w:4 };
+        if (/clinical trial/.test(s))                          return { label:'Trial', w:3 };
+        if (/\breview\b/.test(s))                              return { label:'Review', w:3 };
+        if (/observational|cohort|comparative study/.test(s))  return { label:'Cohort', w:2 };
+        return { label:'Study', w:1 };
+    }
 
-    function pickTopic(text) {
-        for (var i = 0; i < TOPICS.length; i++) { if (TOPICS[i].kw.test(text)) return TOPICS[i]; }
+    var MONTHS = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+    function freshLabel(days, fallback) {
+        if (days == null) return fallback || '';
+        if (days <= 0)  return 'today';
+        if (days === 1) return '1 day ago';
+        if (days < 14)  return days + ' days ago';
+        if (days < 56)  return Math.round(days / 7) + ' weeks ago';
+        return fallback || (Math.round(days / 30) + ' months ago');
+    }
+
+    function pickBucket(text) {
+        for (var i = 0; i < BUCKETS.length; i++) { if (BUCKETS[i].kw.test(text)) return BUCKETS[i]; }
         return FALLBACK;
     }
-    function tint(c, hexBg) {
-        return { accent:c, bg:hexBg, line:c + '33', glow:c + '2e' };
-    }
+    function tint(b) { return { id:b.id, label:b.label, accent:b.c, bg:b.bg, line:b.c + '33', glow:b.c + '2e' }; }
     function esc(s) {
         return (s || '').toString()
             .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -2492,26 +2557,84 @@ function _performSearchRenderBlocking(data, q){
 
     var ITEMS = [];
 
+    /* ---- XML parsing -------------------------------------------------------- */
+    function textOf(node, sel) { var n = node.querySelector(sel); return n ? n.textContent.trim() : ''; }
+
+    function parseArticle(art) {
+        var pmid = textOf(art, 'MedlineCitation > PMID') || textOf(art, 'PMID');
+        var title = textOf(art, 'ArticleTitle').replace(/\.$/, '');
+        var journal = textOf(art, 'Journal > ISOAbbreviation') || textOf(art, 'Journal > Title') || 'PubMed';
+
+        var absParts = [];
+        Array.prototype.forEach.call(art.querySelectorAll('Abstract > AbstractText'), function (a) {
+            var label = a.getAttribute('Label'); var txt = (a.textContent || '').trim();
+            if (txt) absParts.push(label ? (label + ': ' + txt) : txt);
+        });
+        var abstract = absParts.join('\n\n');
+
+        /* publication types + MeSH descriptors (used for study type + bucketing) */
+        var pts = [];
+        Array.prototype.forEach.call(art.querySelectorAll('PublicationTypeList > PublicationType'), function (p) { pts.push(p.textContent.trim()); });
+        var mesh = [];
+        Array.prototype.forEach.call(art.querySelectorAll('MeshHeadingList > MeshHeading > DescriptorName'), function (m) { mesh.push(m.textContent.trim()); });
+
+        /* best available date: electronic ArticleDate → PubDate */
+        var date = null, pub_date = '';
+        var ad = art.querySelector('Article > ArticleDate');
+        if (ad) {
+            var ay = +textOf(ad,'Year'), am = +textOf(ad,'Month'), adn = +textOf(ad,'Day');
+            if (ay) { date = new Date(ay, (am||1)-1, adn||1); }
+        }
+        var pd = art.querySelector('JournalIssue > PubDate');
+        if (pd) {
+            var y = textOf(pd,'Year'), m = textOf(pd,'Month'), md = textOf(pd,'MedlineDate');
+            pub_date = md || (y ? (m ? (y + ' ' + m) : y) : '');
+            if (!date && y) {
+                var mi = m ? (MONTHS[m.slice(0,3).toLowerCase()] != null ? MONTHS[m.slice(0,3).toLowerCase()] : (+m ? +m-1 : 0)) : 0;
+                date = new Date(+y, mi, 1);
+            }
+        }
+        var days = date ? Math.floor((Date.now() - date.getTime()) / 86400000) : null;
+
+        var auth = [];
+        Array.prototype.forEach.call(art.querySelectorAll('AuthorList > Author'), function (a) {
+            var ln = textOf(a,'LastName'), ini = textOf(a,'Initials'); if (ln) auth.push(ln + (ini ? ' ' + ini : ''));
+        });
+        var authors = auth.slice(0,3).join(', ') + (auth.length > 3 ? ', et al.' : '');
+
+        var plain = absParts.map(function (s) { return s.replace(/^[^:]{0,30}:\s*/, ''); }).join(' ');
+        var capsule = plain.length > 200 ? plain.slice(0,200).replace(/\s+\S*$/, '') + '\u2026' : plain;
+
+        var bucket = pickBucket(title + ' ' + plain + ' ' + mesh.join(' '));
+        var st = studyType(pts);
+        var recency = days != null ? Math.max(0, 1 - days / 90) : 0.3;
+        var score = st.w * 2 + recency;   // study type dominates, recency breaks ties
+
+        return {
+            pmid:pmid, title:title || '(untitled)', journal:journal, pub_date:pub_date,
+            authors:authors, abstract:abstract, capsule:capsule, days:days,
+            type:st.label, score:score, topic:tint(bucket), alt:null
+        };
+    }
+
+    /* ---- render ------------------------------------------------------------- */
     function renderRow(items) {
         if (!items || !items.length) { renderEmpty(); return; }
         ITEMS = items;
         rowEl.innerHTML = items.map(function (p, i) {
             var t = p.topic;
             var style = '--wh-accent:' + t.accent + ';--wh-bg:' + t.bg + ';--wh-line:' + t.line + ';--wh-glow:' + t.glow + ';';
-            var buzz = '';
-            if (p.alt && (p.alt.score || 0) >= 1) {
-                var bits = ['Altmetric ' + Math.round(p.alt.score)];
-                if (p.alt.cited_by_msm_count)      bits.push(p.alt.cited_by_msm_count + ' news');
-                if (p.alt.cited_by_policies_count) bits.push(p.alt.cited_by_policies_count + ' policy');
-                buzz = '<div class="wh-card-buzz">\ud83d\udcc8 ' + esc(bits.join(' \u00b7 ')) + '</div>';
-            }
             return ''
-              + '<article class="wh-card" data-idx="' + i + '" tabindex="0" role="button" aria-label="Open paper details" style="' + style + '">'
+              + '<article class="wh-card" data-idx="' + i + '" data-bucket="' + t.id + '" tabindex="0" role="button" aria-label="Open paper details" style="' + style + '">'
               +   '<span class="wh-chip">' + esc(t.label) + '</span>'
+              +   '<div class="wh-card-tags">'
+              +     '<span class="wh-type">' + esc(p.type) + '</span>'
+              +     '<span class="wh-flame" data-flame="' + i + '" hidden>\u25B2 Trending</span>'
+              +     '<span class="wh-fresh">' + esc(freshLabel(p.days, p.pub_date)) + '</span>'
+              +   '</div>'
               +   '<div class="wh-card-title">' + esc(p.title) + '</div>'
               +   '<div class="wh-card-capsule">' + esc(p.capsule) + '</div>'
-              +   buzz
-              +   '<div class="wh-card-meta">' + esc(p.journal) + (p.pub_date ? ' \u00b7 ' + esc(p.pub_date) : '') + '</div>'
+              +   '<div class="wh-card-meta">' + esc(p.journal) + '</div>'
               +   '<span class="wh-card-readmore">Read more \u2192</span>'
               + '</article>';
         }).join('');
@@ -2524,30 +2647,52 @@ function _performSearchRenderBlocking(data, q){
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
             });
         });
+        buildFilters(items);
     }
 
-    /* Reuse the shared digest modal (#dmodal*). Close handlers are already wired. */
+    /* ---- topic filter pills (pure client-side, no refetch) ------------------ */
+    function buildFilters(items) {
+        if (!filtEl) return;
+        var present = {};
+        items.forEach(function (p) { present[p.topic.id] = (present[p.topic.id] || 0) + 1; });
+        var pills = [{ id:'all', label:'All', c:'#6b5b95' }];
+        BUCKETS.forEach(function (b) { if (present[b.id]) pills.push({ id:b.id, label:b.label, c:b.c }); });
+
+        filtEl.innerHTML = pills.map(function (p, i) {
+            return '<button class="wh-pill' + (i === 0 ? ' active' : '') + '" data-filter="' + p.id
+                 + '" style="--wh-pill:' + p.c + '" role="tab" aria-selected="' + (i === 0) + '">'
+                 + esc(p.label) + '</button>';
+        }).join('');
+
+        Array.prototype.forEach.call(filtEl.querySelectorAll('.wh-pill'), function (pill) {
+            pill.addEventListener('click', function () {
+                var f = pill.getAttribute('data-filter');
+                Array.prototype.forEach.call(filtEl.querySelectorAll('.wh-pill'), function (x) {
+                    var on = x === pill; x.classList.toggle('active', on); x.setAttribute('aria-selected', on);
+                });
+                Array.prototype.forEach.call(rowEl.querySelectorAll('.wh-card'), function (card) {
+                    var show = (f === 'all') || (card.getAttribute('data-bucket') === f);
+                    card.classList.toggle('is-hidden', !show);
+                });
+                rowEl.scrollTo({ left: 0, behavior: 'smooth' });
+            });
+        });
+    }
+
+    /* reuse the shared digest modal (#dmodal*) — close handlers already wired */
     function openModal(idx) {
         var p = ITEMS[idx]; if (!p) return;
         document.getElementById('dmodalJournal').textContent = 'Abstract \u2014 from ' + (p.journal || 'PubMed');
         document.getElementById('dmodalTitle').textContent   = p.title || '';
-        document.getElementById('dmodalAuthors').textContent =
-            (p.authors || '') + (p.pub_date ? ' \u00b7 ' + p.pub_date : '');
+        document.getElementById('dmodalAuthors').textContent = (p.authors || '') + (p.pub_date ? ' \u00b7 ' + p.pub_date : '');
         document.getElementById('dmodalBody').innerHTML =
-            '<div class="dmodal-section"><h4>Abstract</h4>'
-          + '<div class="dmodal-abstract">' + esc(p.abstract || 'No abstract available from PubMed.') + '</div></div>';
+            '<div class="dmodal-section"><h4>Abstract</h4><div class="dmodal-abstract">'
+          + esc(p.abstract || 'No abstract available from PubMed.') + '</div></div>';
         var links = '';
-        if (p.pmid) {
-            links += '<a class="dmodal-link" href="https://pubmed.ncbi.nlm.nih.gov/'
-                   + encodeURIComponent(p.pmid) + '/" target="_blank" rel="noopener">Open on PubMed \u2197</a>';
-        }
-        if (p.alt && p.alt.details_url) {
-            links += '<a class="dmodal-link secondary" href="' + esc(p.alt.details_url)
-                   + '" target="_blank" rel="noopener">See the attention \u2197</a>';
-        }
+        if (p.pmid) links += '<a class="dmodal-link" href="https://pubmed.ncbi.nlm.nih.gov/' + encodeURIComponent(p.pmid) + '/" target="_blank" rel="noopener">Open on PubMed \u2197</a>';
+        if (p.alt && p.alt.details_url) links += '<a class="dmodal-link secondary" href="' + esc(p.alt.details_url) + '" target="_blank" rel="noopener">See the attention \u2197</a>';
         document.getElementById('dmodalLinks').innerHTML = links;
-        modal.classList.add('open');
-        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         var c = document.getElementById('dmodalClose'); if (c) c.focus();
     }
@@ -2558,115 +2703,69 @@ function _performSearchRenderBlocking(data, q){
         e.preventDefault();
     });
 
-    /* ---- XML parsing helpers ------------------------------------------------ */
-    function textOf(node, sel) { var n = node.querySelector(sel); return n ? n.textContent.trim() : ''; }
-
-    function parseArticle(art) {
-        var pmid = textOf(art, 'MedlineCitation > PMID') || textOf(art, 'PMID');
-        var title = textOf(art, 'ArticleTitle').replace(/\.$/, '');
-        var journal = textOf(art, 'Journal > ISOAbbreviation') || textOf(art, 'Journal > Title') || 'PubMed';
-
-        /* abstract — may be several labelled sections */
-        var absParts = [];
-        Array.prototype.forEach.call(art.querySelectorAll('Abstract > AbstractText'), function (a) {
-            var label = a.getAttribute('Label');
-            var txt = (a.textContent || '').trim();
-            if (txt) absParts.push(label ? (label + ': ' + txt) : txt);
-        });
-        var abstract = absParts.join('\n\n');
-
-        /* date */
-        var pd = art.querySelector('JournalIssue > PubDate');
-        var pub_date = '';
-        if (pd) {
-            var y = textOf(pd, 'Year'), m = textOf(pd, 'Month'), md = textOf(pd, 'MedlineDate');
-            pub_date = md || (y ? (m ? (y + ' ' + m) : y) : '');
-        }
-
-        /* authors → "Smith J, Lee A, et al." */
-        var auth = [];
-        Array.prototype.forEach.call(art.querySelectorAll('AuthorList > Author'), function (a) {
-            var ln = textOf(a, 'LastName'), ini = textOf(a, 'Initials');
-            if (ln) auth.push(ln + (ini ? ' ' + ini : ''));
-        });
-        var authors = auth.slice(0, 3).join(', ') + (auth.length > 3 ? ', et al.' : '');
-
-        /* capsule — first ~210 chars of the (de-labelled) abstract */
-        var plain = absParts.map(function (s) { return s.replace(/^[^:]{0,30}:\s*/, ''); }).join(' ');
-        var capsule = plain.length > 210 ? plain.slice(0, 210).replace(/\s+\S*$/, '') + '\u2026' : plain;
-
-        var topicSrc = title + ' ' + plain;
-        var tp = pickTopic(topicSrc);
-
-        return {
-            pmid: pmid, title: title || '(untitled)', journal: journal,
-            pub_date: pub_date, authors: authors, abstract: abstract, capsule: capsule,
-            topic: Object.assign({ label: tp.label }, tint(tp.c, tp.bg))
-        };
-    }
-
-    /* ---- Altmetric scoring (throttled, fault-tolerant) ---------------------- */
+    /* ---- Altmetric: fetched AFTER paint, decorates trending cards only ------- */
     function sleep(ms) { return new Promise(function (res) { setTimeout(res, ms); }); }
-
-    function fetchAltmetric(pmid) {
-        // 404 = no attention tracked → treat as zero, never throw upward.
-        return fetch(ALTMETRIC + encodeURIComponent(pmid), { cache: 'no-store' })
-            .then(function (r) { return r.ok ? r.json() : null; })
-            .catch(function () { return null; });
-    }
-
-    function scoreAll(items) {
-        // sequential + small delay to respect the unauthenticated rate limit
+    function decorateTrending(items) {
         var i = 0;
         function next() {
-            if (i >= items.length) return Promise.resolve(items);
-            var p = items[i++];
-            return fetchAltmetric(p.pmid).then(function (alt) {
-                p.alt = alt;
-                p.resonance = resonanceOf(alt);
-                return sleep(ALT_THROTTLE_MS).then(next);
-            });
+            if (i >= items.length) return;
+            var idx = i, p = items[i++];
+            return fetch(ALTMETRIC + encodeURIComponent(p.pmid), { cache:'no-store' })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .catch(function () { return null; })
+                .then(function (alt) {
+                    p.alt = alt;
+                    if (isTrending(alt)) {
+                        var flame = rowEl.querySelector('.wh-flame[data-flame="' + idx + '"]');
+                        if (flame) {
+                            flame.hidden = false;
+                            var bits = ['Trending'];
+                            if (alt.cited_by_msm_count)      bits = ['\u25B2 ' + alt.cited_by_msm_count + ' news'];
+                            if (alt.cited_by_policies_count) bits = ['\u25B2 ' + alt.cited_by_policies_count + ' policy'];
+                            flame.textContent = bits[0];
+                        }
+                    }
+                    return sleep(ALT_THROTTLE_MS).then(next);
+                });
         }
         return next();
     }
 
-    /* ---- pipeline: esearch (pool) → efetch → Altmetric → rank → top N -------- */
+    /* ---- pipeline: esearch → efetch → bucket → rank → best per bucket -------- */
     var esearchURL = EUTILS + '/esearch.fcgi?db=pubmed&retmode=json&sort=date&retmax='
                    + CANDIDATE_POOL + '&' + TOOL + '&term=' + encodeURIComponent(PUBMED_QUERY);
 
-    fetch(esearchURL, { cache: 'no-store' })
+    fetch(esearchURL, { cache:'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('esearch HTTP ' + r.status); return r.json(); })
       .then(function (d) {
           var ids = (d && d.esearchresult && d.esearchresult.idlist) || [];
           if (!ids.length) { renderEmpty(); return null; }
-          var efetchURL = EUTILS + '/efetch.fcgi?db=pubmed&retmode=xml&' + TOOL + '&id=' + ids.join(',');
-          return fetch(efetchURL, { cache: 'no-store' });
+          return fetch(EUTILS + '/efetch.fcgi?db=pubmed&retmode=xml&' + TOOL + '&id=' + ids.join(','));
       })
-      .then(function (r) {
-          if (!r) return null;
-          if (!r.ok) throw new Error('efetch HTTP ' + r.status);
-          return r.text();
-      })
+      .then(function (r) { if (!r) return null; if (!r.ok) throw new Error('efetch HTTP ' + r.status); return r.text(); })
       .then(function (xml) {
-          if (!xml) return null;
+          if (!xml) return;
           var doc = new DOMParser().parseFromString(xml, 'text/xml');
-          var items = [];
+          var all = [];
           Array.prototype.forEach.call(doc.querySelectorAll('PubmedArticle'), function (art) {
               var item = parseArticle(art);
-              if (item.title && item.capsule && item.pmid) items.push(item);
+              if (item.title && item.capsule && item.pmid) all.push(item);
           });
-          if (!items.length) { renderEmpty(); return null; }
-          return scoreAll(items);
-      })
-      .then(function (items) {
-          if (!items) return;
-          // Rank by Altmetric resonance; recency (PubMed sort=date order) breaks ties.
-          items.forEach(function (p, idx) { p._order = idx; });
-          items.sort(function (a, b) {
-              if (b.resonance !== a.resonance) return b.resonance - a.resonance;
-              return a._order - b._order;
+          if (!all.length) { renderEmpty(); return; }
+
+          /* group → sort each bucket by score → keep best PER_BUCKET → flatten */
+          var groups = {};
+          all.forEach(function (p) { (groups[p.topic.id] = groups[p.topic.id] || []).push(p); });
+          var chosen = [];
+          BUCKETS.forEach(function (b) {
+              var g = (groups[b.id] || []).sort(function (a, b2) { return b2.score - a.score; });
+              chosen = chosen.concat(g.slice(0, PER_BUCKET));
           });
-          renderRow(items.slice(0, SHOW_COUNT));
+          chosen = chosen.slice(0, MAX_CARDS);
+          if (!chosen.length) { renderEmpty(); return; }
+
+          renderRow(chosen);          // paint immediately — no Altmetric wait
+          decorateTrending(chosen);   // then light up trending cards in the background
       })
       .catch(function (err) {
           console.warn('[womens-health] feed failed', err);
