@@ -845,6 +845,31 @@
         .gate-btn:hover { background: #3d5636; }
         .gate-note { font-size: 0.68rem; color: #bbb; margin-top: 1.2rem; line-height: 1.5; }
     </style>
+    <style>
+    /* ── Confluence layout: single-link nav + two-column weekly/tools cluster ── */
+    /* <1024px: .cluster is a normal block — weekly content first, the Additional
+       Tools rail stacks BELOW it (DOM order); tools keep their default grid. */
+    .cluster-main > :first-child { margin-top: 2.5rem; }
+
+    /* ≥1024px: two columns — weekly content left, Additional Tools rail right. */
+    @media (min-width: 1024px) {
+        .cluster { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 2.25rem; align-items: start; margin-top: 3.5rem; }
+        .cluster-main > :first-child { margin-top: 0; }
+        .cluster-rail .tools-section { margin-top: 0; }
+        .cluster-rail .tools-label { text-align: left; margin-bottom: 1rem; }
+        .cluster-rail .tools-grid { flex-direction: column; flex-wrap: nowrap; gap: 1rem; justify-content: flex-start; }
+        .cluster-rail .tool-card { flex: 1 1 auto; max-width: 100%; min-width: 0; min-height: 0; padding: 0; }
+        .cluster-rail .tool-card-content { padding: 0.85rem 1rem; }
+        .cluster-rail .tool-card h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+        .cluster-rail .tool-card p { font-size: 0.8rem; margin-bottom: 0.4rem; }
+        .cluster-rail .tool-card .tool-meta { font-size: 0.72rem; }
+    }
+
+    /* Keep the single CPD Hub nav link visible on mobile (overrides head nav{display:none}). */
+    @media (max-width: 768px) {
+        nav { display: flex !important; justify-content: flex-end; }
+    }
+    </style>
 </head>
 <body>
 
@@ -885,22 +910,8 @@ function checkGateCode(){
 
 <header>
     <div class="header-content">
-        <a href="index.html" class="logo">
-            <span>fert</span>
-            <svg class="logo-icon" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="8" cy="8" rx="5" ry="7" fill="#2c2c2c"/>
-                <path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" stroke="#2c2c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            </svg>
-            <span>le</span>
-        </a>
+        <a href="index.html" class="logo">Confluence</a>
         <nav>
-            <a href="index.html">Search</a>
-            <a href="egg-freezing-calculator.html">Egg Freezing</a>
-            <a href="endometriosis-landing.html">Fertility &amp; Endo</a>
-            <a href="endo-evidence-panel.html">Surgery in Endo</a>
-            <a href="fertility-assessment.html">Assessment</a>
-            <a href="amh-guide.html">AMH Guide</a>
-            <a href="rpl-workup.html">RPL Workup</a>
             <a href="fertool-cpd-learning-hub.html">CPD Hub <span style="display:inline-block;font-size:0.58rem;font-weight:700;color:#fff;background:#c8a45e;border-radius:10px;padding:0.08rem 0.42rem;margin-left:0.25rem;letter-spacing:0.5px;text-transform:uppercase;vertical-align:middle;">soon!</span></a>
         </nav>
     </div>
@@ -909,7 +920,7 @@ function checkGateCode(){
 <div class="container">
     <div class="hero">
         <h1>Clinical Support for Fertility Care</h1>
-        <p>Evidence-based guidance for GPs</p>
+        <p>Evidence-based guidance for women's health care providers</p>
     </div>
 
     <div class="search-card">
@@ -953,37 +964,34 @@ function checkGateCode(){
         </div>
     </div>
 
-    <!-- Tools -->
-    <div class="tools-section">
-        <div class="tools-label">Additional Tools</div>
-        <div class="tools-grid">
-            <a href="amh-guide.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
-            </a>
-            <a href="egg-freezing-calculator.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
-            </a>
-            <a href="endometriosis-landing.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Fertility Preservation in Endometriosis</h3><p>How endometriosis affects reproduction &amp; when to act</p><div class="tool-meta">La Marca et al. 2025</div></div>
-            </a>
-            <a href="fertility-assessment.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
-            </a>
-            <a href="endo-evidence-panel.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endo_surgery.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">Evidence Panel</span><h3>Surgery in Endometriosis</h3><p>Is surgery necessary? Evidence-based decision support</p><div class="tool-meta">Cochrane · ESHRE 2024</div></div>
-            </a>
-            <a href="rpl-workup.html" class="tool-card">
-                <img class="tool-card-video" src="rpl-hero.jpg" alt="" loading="lazy">
-                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#0E6E58,#2E9D80);">Evidence Panel</span><h3>Recurrent Pregnancy Loss</h3><p>Evidence-stratified workup matrix — do, consider, don't</p><div class="tool-meta">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
-            </a>
+    <!-- Confluence (formerly "Women's Allied Health Network") — embedded map. The
+         embed adds no gate of its own; it sits behind the homepage's existing
+         FERTOOL2026 access gate, so it is NOT public (same protection as the site). -->
+    <section class="digest-section" id="alliedMapSection">
+        <div class="digest-section-head">
+            <h2 class="digest-section-title">Confluence</h2>
+            <p class="amx-subtitle">Melbourne's women's health &amp; allied network — where care converges.</p>
+            <p class="digest-section-sub">
+                Allied &amp; wellness practitioners across Melbourne — pelvic-health physiotherapy,
+                psychology, Chinese medicine, dietitians, naturopaths, doulas and more.
+                Compiled from public sources; toggle a profession to filter.
+            </p>
+            <button type="button" class="amx-add" id="amxAddBtn">Add your practice — free</button>
         </div>
-    </div>
+        <div class="amx-wrap">
+            <aside class="amx-side">
+                <input type="text" class="amx-search" id="amxSearch" placeholder="Search services, suburb, language…" autocomplete="off" aria-label="Search practitioners">
+                <div class="amx-count" id="amxCount">loading…</div>
+                <div id="amxLegend"></div>
+                <div class="amx-btns"><button type="button" id="amxAll">All</button><button type="button" id="amxNone">None</button></div>
+                <div class="amx-list" id="amxList"></div>
+            </aside>
+            <div class="amx-mapwrap"><div id="amxMap"></div></div>
+        </div>
+    </section>
 
+    <div class="cluster">
+    <div class="cluster-main">
     <!-- Insight of the Week — live /capsule, SEED fallback (js/insight-of-the-week.js) -->
     <section class="digest-section" id="insightOfWeekSection">
         <div id="insightOfWeek"></div>
@@ -1035,31 +1043,41 @@ function checkGateCode(){
         </div>
     </section>
 
-    <!-- Confluence (formerly "Women's Allied Health Network") — embedded map. The
-         embed adds no gate of its own; it sits behind the homepage's existing
-         FERTOOL2026 access gate, so it is NOT public (same protection as the site). -->
-    <section class="digest-section" id="alliedMapSection">
-        <div class="digest-section-head">
-            <h2 class="digest-section-title">Confluence</h2>
-            <p class="amx-subtitle">Melbourne's women's health &amp; allied network — where care converges.</p>
-            <p class="digest-section-sub">
-                Allied &amp; wellness practitioners across Melbourne — pelvic-health physiotherapy,
-                psychology, Chinese medicine, dietitians, naturopaths, doulas and more.
-                Compiled from public sources; toggle a profession to filter.
-            </p>
-            <button type="button" class="amx-add" id="amxAddBtn">Add your practice — free</button>
+    </div><!-- /cluster-main -->
+    <aside class="cluster-rail">
+    <!-- Tools -->
+    <div class="tools-section">
+        <div class="tools-label">Additional Tools</div>
+        <div class="tools-grid">
+            <a href="amh-guide.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
+            </a>
+            <a href="egg-freezing-calculator.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
+            </a>
+            <a href="endometriosis-landing.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Fertility Preservation in Endometriosis</h3><p>How endometriosis affects reproduction &amp; when to act</p><div class="tool-meta">La Marca et al. 2025</div></div>
+            </a>
+            <a href="fertility-assessment.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
+            </a>
+            <a href="endo-evidence-panel.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endo_surgery.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">Evidence Panel</span><h3>Surgery in Endometriosis</h3><p>Is surgery necessary? Evidence-based decision support</p><div class="tool-meta">Cochrane · ESHRE 2024</div></div>
+            </a>
+            <a href="rpl-workup.html" class="tool-card">
+                <img class="tool-card-video" src="rpl-hero.jpg" alt="" loading="lazy">
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#0E6E58,#2E9D80);">Evidence Panel</span><h3>Recurrent Pregnancy Loss</h3><p>Evidence-stratified workup matrix — do, consider, don't</p><div class="tool-meta">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
+            </a>
         </div>
-        <div class="amx-wrap">
-            <aside class="amx-side">
-                <input type="text" class="amx-search" id="amxSearch" placeholder="Search services, suburb, language…" autocomplete="off" aria-label="Search practitioners">
-                <div class="amx-count" id="amxCount">loading…</div>
-                <div id="amxLegend"></div>
-                <div class="amx-btns"><button type="button" id="amxAll">All</button><button type="button" id="amxNone">None</button></div>
-                <div class="amx-list" id="amxList"></div>
-            </aside>
-            <div class="amx-mapwrap"><div id="amxMap"></div></div>
-        </div>
-    </section>
+    </div>
+
+    </aside><!-- /cluster-rail -->
+    </div><!-- /cluster -->
 
     <!-- Confluence — "Add your practice" modal -->
     <div class="amx-modal-back" id="amxModalBack" role="dialog" aria-modal="true" aria-labelledby="amxModalTitle">
