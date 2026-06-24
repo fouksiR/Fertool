@@ -16,6 +16,30 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet (for the embedded Women's Allied Health Network map) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <style>
+      /* Embedded allied-map styles — scoped under #alliedMapSection so they can't
+         touch the rest of the homepage. */
+      #alliedMapSection .amx-wrap{display:flex;gap:1rem;align-items:flex-start;margin-top:1rem}
+      #alliedMapSection .amx-side{flex:0 0 250px;max-width:250px}
+      #alliedMapSection .amx-mapwrap{flex:1;min-width:0}
+      #alliedMapSection #amxMap{height:600px;width:100%;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+      #alliedMapSection .amx-count{font-size:0.82rem;color:#666;margin-bottom:0.6rem}
+      #alliedMapSection .amx-leg{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;margin:0.28rem 0;color:#444;cursor:pointer;user-select:none}
+      #alliedMapSection .amx-leg input{accent-color:#4a6741}
+      #alliedMapSection .amx-dot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,0.15);flex:0 0 auto}
+      #alliedMapSection .amx-leg .amx-n{margin-left:auto;color:#999;font-size:0.72rem}
+      #alliedMapSection .amx-btns{display:flex;gap:0.4rem;margin-top:0.6rem}
+      #alliedMapSection .amx-btns button{flex:1;font-family:inherit;font-size:0.74rem;padding:0.4rem;border:1.5px solid #cdd6c8;border-radius:7px;background:#fff;color:#4a6741;cursor:pointer}
+      #alliedMapSection .amx-pin{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4)}
+      #alliedMapSection .leaflet-popup-content{font-family:'Montserrat',sans-serif;font-size:0.83rem}
+      @media(max-width:820px){#alliedMapSection .amx-wrap{flex-direction:column;align-items:stretch}#alliedMapSection .amx-side{flex:1 1 auto;max-width:100%}#alliedMapSection #amxMap{height:440px}}
+    </style>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
@@ -946,6 +970,28 @@ function checkGateCode(){
         </div>
         <div class="digest-foot" id="digestFoot" style="display:none">
             <a href="weekly-archive.html">See all weekly digests →</a>
+        </div>
+    </section>
+
+    <!-- Women's Allied Health Network — embedded map. The embed adds no gate of
+         its own; it sits behind the homepage's existing FERTOOL2026 access gate,
+         so it is NOT public (same protection as the rest of the site). -->
+    <section class="digest-section" id="alliedMapSection">
+        <div class="digest-section-head">
+            <h2 class="digest-section-title">Women's Allied Health Network</h2>
+            <p class="digest-section-sub">
+                Allied &amp; wellness practitioners across Melbourne — pelvic-health physiotherapy,
+                psychology, Chinese medicine, dietitians, naturopaths, doulas and more.
+                Compiled from public sources; toggle a profession to filter.
+            </p>
+        </div>
+        <div class="amx-wrap">
+            <aside class="amx-side">
+                <div class="amx-count" id="amxCount">loading…</div>
+                <div id="amxLegend"></div>
+                <div class="amx-btns"><button type="button" id="amxAll">All</button><button type="button" id="amxNone">None</button></div>
+            </aside>
+            <div class="amx-mapwrap"><div id="amxMap"></div></div>
         </div>
     </section>
 
@@ -2906,5 +2952,6 @@ function _performSearchRenderBlocking(data, q){
     (function loop(now){ var dt=(now-last)/1000; last=now; theta=(theta+dt*0.7)%(Math.PI*2); frame(theta, now/130); requestAnimationFrame(loop); })(performance.now()); }
 })();
 </script>
+<script src="js/allied-map-embed.js"></script>
 </body>
 </html>
