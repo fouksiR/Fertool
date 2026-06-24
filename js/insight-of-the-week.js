@@ -44,30 +44,48 @@
   // then re-allow ONLY <b>/</b> (no other HTML can slip through).
   function rich(s) { return esc(s).replace(/&lt;b&gt;/g, "<b>").replace(/&lt;\/b&gt;/g, "</b>"); }
 
+  // Decorative cellular/Voronoi watermark (blastocyst/follicle motif). Purely
+  // visual — masked to the top-right corner so it never sits behind body text.
+  var MOTIF =
+    '<svg class="iow-motif" viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="120" cy="120" r="106" stroke-width="1.4"/>' +
+      '<path d="M120 78 L150 92 L148 124 L118 134 L92 116 L98 86 Z" stroke-width="1"/>' +
+      '<path d="M120 78 L98 86 L80 62 L106 46 L132 52 Z" stroke-width="1"/>' +
+      '<path d="M120 78 L132 52 L162 58 L168 90 L150 92 Z" stroke-width="1"/>' +
+      '<path d="M150 92 L168 90 L190 112 L176 140 L148 124 Z" stroke-width="1"/>' +
+      '<path d="M148 124 L176 140 L166 172 L134 168 L118 134 Z" stroke-width="1"/>' +
+      '<path d="M118 134 L134 168 L106 186 L84 160 L92 116 Z" stroke-width="1"/>' +
+      '<path d="M92 116 L84 160 L56 146 L60 108 L80 62 L98 86 Z" stroke-width="1"/>' +
+      '<circle cx="120" cy="120" r="9" stroke-width="1"/>' +
+    '</svg>';
+
   function injectCSS() {
     if (document.getElementById("iow-style")) return;
     var s = document.createElement("style");
     s.id = "iow-style";
     s.textContent =
       "#insightOfWeek{max-width:760px;margin:0 auto}" +
-      "#insightOfWeek .iow-card{background:#fff;border:1px solid #ece7f0;border-radius:16px;padding:1.6rem 1.8rem;box-shadow:0 6px 24px rgba(60,50,70,0.07);font-family:'Montserrat',sans-serif}" +
-      "#insightOfWeek .iow-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.9rem}" +
-      "#insightOfWeek .iow-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#6b5b95}" +
-      "#insightOfWeek .iow-week{font-size:0.72rem;color:#aaa}" +
-      "#insightOfWeek .iow-hero{display:block;text-decoration:none;color:inherit;border-bottom:1px solid #f0ecf3;padding-bottom:1.1rem;margin-bottom:1rem}" +
-      "#insightOfWeek .iow-chip{display:inline-block;font-size:0.66rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border-radius:11px;padding:2px 10px}" +
-      "#insightOfWeek .iow-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem;line-height:1.2;color:#2c2c2c;margin:0.55rem 0 0.5rem}" +
+      "#insightOfWeek .iow-card{position:relative;overflow:hidden;background:#fff;border-radius:20px;padding:2rem 2.1rem 1.7rem;box-shadow:0 16px 46px rgba(90,60,80,0.13);font-family:'Montserrat',sans-serif}" +
+      "#insightOfWeek .iow-motif{position:absolute;top:-36px;right:-36px;width:250px;height:250px;color:#6b5b95;opacity:0.09;z-index:0;pointer-events:none;-webkit-mask-image:radial-gradient(125% 125% at 100% 0%,#000 28%,transparent 70%);mask-image:radial-gradient(125% 125% at 100% 0%,#000 28%,transparent 70%)}" +
+      "#insightOfWeek .iow-head,#insightOfWeek .iow-hero,#insightOfWeek .iow-more{position:relative;z-index:1}" +
+      "#insightOfWeek .iow-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.15rem}" +
+      "#insightOfWeek .iow-eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6b5b95}" +
+      "#insightOfWeek .iow-week{font-size:0.7rem;color:#b3a8bd;letter-spacing:0.4px}" +
+      "#insightOfWeek .iow-hero{display:block;text-decoration:none;color:inherit;border-bottom:1px solid #f0ecf3;padding-bottom:1.25rem;margin-bottom:1.15rem}" +
+      "#insightOfWeek .iow-accent{display:block;width:34px;height:2px;background:#6b5b95;border-radius:2px;margin:0 0 0.95rem;opacity:0.85}" +
+      "#insightOfWeek .iow-chip{display:inline-block;font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;border-radius:11px;padding:3px 11px}" +
+      "#insightOfWeek .iow-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:2.15rem;line-height:1.15;letter-spacing:0.2px;color:#241f2b;margin:0.75rem 0 0.55rem}" +
       "#insightOfWeek .iow-hero:hover .iow-title{color:#6b5b95}" +
-      "#insightOfWeek .iow-why{font-size:0.9rem;line-height:1.6;color:#555;margin:0.3rem 0 0.6rem}" +
+      "#insightOfWeek .iow-why{font-size:0.92rem;line-height:1.68;color:#54505c;margin:0.45rem 0 0.8rem}" +
       "#insightOfWeek .iow-why b{color:#2c2c2c;font-weight:600}" +
-      "#insightOfWeek .iow-src{font-size:0.74rem;color:#999}" +
-      "#insightOfWeek .iow-more{display:flex;flex-direction:column;gap:0.7rem}" +
-      "#insightOfWeek .iow-item{display:flex;align-items:flex-start;gap:0.6rem;text-decoration:none;color:inherit}" +
+      "#insightOfWeek .iow-src{font-size:0.69rem;color:#a99fb3;letter-spacing:0.6px;text-transform:uppercase}" +
+      "#insightOfWeek .iow-more{display:flex;flex-direction:column;gap:0.9rem}" +
+      "#insightOfWeek .iow-item{display:flex;align-items:flex-start;gap:0.65rem;text-decoration:none;color:inherit}" +
       "#insightOfWeek .iow-item:hover .iow-item-title{color:#6b5b95}" +
-      "#insightOfWeek .iow-item-body{display:flex;flex-direction:column;gap:1px}" +
-      "#insightOfWeek .iow-item-title{font-size:0.86rem;font-weight:500;color:#2c2c2c;line-height:1.3}" +
-      "#insightOfWeek .iow-item-src{font-size:0.72rem;color:#aaa}" +
-      "@media(max-width:640px){#insightOfWeek .iow-card{padding:1.2rem 1.2rem}#insightOfWeek .iow-title{font-size:1.3rem}}";
+      "#insightOfWeek .iow-item-body{display:flex;flex-direction:column;gap:2px}" +
+      "#insightOfWeek .iow-item-title{font-size:0.87rem;font-weight:500;color:#2c2c2c;line-height:1.35}" +
+      "#insightOfWeek .iow-item-src{font-size:0.69rem;color:#aaa;letter-spacing:0.4px;text-transform:uppercase}" +
+      "@media(max-width:640px){#insightOfWeek .iow-card{padding:1.5rem 1.35rem;border-radius:16px}#insightOfWeek .iow-title{font-size:1.62rem}#insightOfWeek .iow-motif{width:200px;height:200px;top:-28px;right:-28px;opacity:0.06}}";
     document.head.appendChild(s);
   }
 
@@ -85,10 +103,11 @@
     var more = (d.more || []).map(itemHTML).join("");
     el.setAttribute("data-src", src);
     el.innerHTML =
-      '<div class="iow-card">' +
+      '<div class="iow-card">' + MOTIF +
         '<div class="iow-head"><span class="iow-eyebrow">Insight of the Week</span>' +
           (d.week_of ? '<span class="iow-week">week of ' + esc(d.week_of) + '</span>' : '') + '</div>' +
         '<a class="iow-hero" href="' + esc(h.url) + '" target="_blank" rel="noopener">' +
+          '<span class="iow-accent"></span>' +
           '<span class="iow-chip" style="' + chipCSS(h.kicker) + '">' + esc(h.kicker) + '</span>' +
           '<h3 class="iow-title">' + esc(h.title) + '</h3>' +
           (h.why_it_matters ? '<p class="iow-why">' + rich(h.why_it_matters) + '</p>' : '') +
