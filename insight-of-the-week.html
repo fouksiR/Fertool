@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!-- Insight of the Week — standalone view of the card. Renders the live /capsule
+     (CAPSULE_ENDPOINT in js/insight-of-the-week.js) with the baked SEED as the
+     catch-fallback. The same script is what gets dropped into index.html. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insight of the Week — Confluence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #faf7f2; padding: 3rem 1rem; font-family: 'Montserrat', sans-serif; }
+    .iow-page-head { text-align: center; margin-bottom: 1.6rem; }
+    .iow-page-head h1 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.8rem; color: #2c2c2c; margin: 0; }
+    .iow-page-head p { font-size: 0.86rem; color: #888; margin: 0.3rem 0 0; }
+  </style>
+</head>
+<body>
+  <div class="iow-page-head">
+    <h1>Insight of the Week</h1>
+    <p>The single highest-impact item for primary-care women's health this week.</p>
+  </div>
+  <div id="insightOfWeek"></div>
+  <script src="js/insight-of-the-week.js"></script>
+</body>
+</html>
