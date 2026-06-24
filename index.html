@@ -854,9 +854,15 @@
     /* Fix 1 — give the rail tool cards a defined, opaque surface so they read at
        rest against the warm bg (cause: #fff card washed out by the 0.4 video
        overlay + faint 0.07 shadow → near-zero contrast). Drop the muddy video. */
-    .cluster-rail .tool-card { background: #fffdfb; border: 1px solid #ece3dc; box-shadow: 0 4px 16px rgba(90,60,50,0.10); }
-    .cluster-rail .tool-card-video { display: none; }
-    .cluster-rail .tool-card-content { background: transparent; }
+    /* Tool-rail cards: keep the background video playing, lay a dark aubergine scrim
+       over it so the card reads as a defined object with legible light text on top. */
+    .cluster-rail .tool-card { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 178px; padding: 0; background: #2a1830; border: none; border-radius: 18px; box-shadow: 0 12px 34px rgba(90,60,80,0.16); }
+    .cluster-rail .tool-card-video { display: block; opacity: 1; }
+    .cluster-rail .tool-card::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-color: rgba(45,22,42,0.3); background-image: linear-gradient(to top, rgba(60,30,55,0.8) 0%, rgba(60,30,55,0.45) 100%); }
+    .cluster-rail .tool-card-content { position: relative; z-index: 2; background: transparent; }
+    .cluster-rail .tool-card h3 { color: #fff; text-shadow: 0 1px 3px rgba(20,8,20,0.45); }
+    .cluster-rail .tool-card p { color: rgba(255,255,255,0.9); }
+    .cluster-rail .tool-card .tool-meta { color: rgba(255,255,255,0.74); }
 
     /* ≥1024px: two columns — weekly content left, Additional Tools rail right. */
     @media (min-width: 1024px) {
@@ -865,7 +871,7 @@
         .cluster-rail .tools-section { margin-top: 0; }
         .cluster-rail .tools-label { text-align: left; margin-bottom: 1rem; }
         .cluster-rail .tools-grid { flex-direction: column; flex-wrap: nowrap; gap: 1rem; justify-content: flex-start; }
-        .cluster-rail .tool-card { flex: 1 1 auto; max-width: 100%; min-width: 0; min-height: 0; padding: 0; }
+        .cluster-rail .tool-card { flex: 1 1 auto; max-width: 100%; min-width: 0; padding: 0; }
         .cluster-rail .tool-card-content { padding: 0.85rem 1rem; }
         .cluster-rail .tool-card h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
         .cluster-rail .tool-card p { font-size: 0.8rem; margin-bottom: 0.4rem; }
