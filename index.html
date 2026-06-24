@@ -74,7 +74,7 @@
     </style>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #f8f7f5 0%, #e8dfd0 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
+        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #FCF2EF 0%, #F6DFD9 100%); color: #2c2c2c; line-height: 1.6; min-height: 100vh; }
 
         /* ── HEADER ── */
         header { padding: 1.5rem 5%; background: rgba(248,247,245,0.97); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(44,44,44,0.1); position: sticky; top: 0; z-index: 100; }
@@ -850,6 +850,13 @@
     /* <1024px: .cluster is a normal block — weekly content first, the Additional
        Tools rail stacks BELOW it (DOM order); tools keep their default grid. */
     .cluster-main > :first-child { margin-top: 2.5rem; }
+
+    /* Fix 1 — give the rail tool cards a defined, opaque surface so they read at
+       rest against the warm bg (cause: #fff card washed out by the 0.4 video
+       overlay + faint 0.07 shadow → near-zero contrast). Drop the muddy video. */
+    .cluster-rail .tool-card { background: #fffdfb; border: 1px solid #ece3dc; box-shadow: 0 4px 16px rgba(90,60,50,0.10); }
+    .cluster-rail .tool-card-video { display: none; }
+    .cluster-rail .tool-card-content { background: transparent; }
 
     /* ≥1024px: two columns — weekly content left, Additional Tools rail right. */
     @media (min-width: 1024px) {

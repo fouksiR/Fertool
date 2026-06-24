@@ -228,7 +228,20 @@
     var a = document.getElementById('amxAll'), nn = document.getElementById('amxNone');
     if (a) a.addEventListener('click', function () { setAll(true); });
     if (nn) nn.addEventListener('click', function () { setAll(false); });
-    setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 200);
+    // Fix 2 — the section now lives in a flex column; Leaflet can cache a stale
+    // container width if init runs before the layout settles, and there was no
+    // resize handler at all. Recompute now, next frame, after late reflows
+    // (fonts/below-fold), after load (whether or not it already fired), and on
+    // resize — so the map always fits its column and never bleeds past the edge.
+    function fitMap() { try { map.invalidateSize(); } catch (e) {} }
+    fitMap();
+    requestAnimationFrame(fitMap);
+    setTimeout(fitMap, 200);
+    setTimeout(fitMap, 600);
+    if (document.readyState === 'complete') { setTimeout(fitMap, 0); }
+    else { window.addEventListener('load', fitMap); }
+    var _rt;
+    window.addEventListener('resize', function () { clearTimeout(_rt); _rt = setTimeout(fitMap, 150); });
   }
   document.addEventListener('DOMContentLoaded', function () {
     if (typeof L === 'undefined' || !document.getElementById('amxMap')) return;  // Leaflet/section absent — no-op
