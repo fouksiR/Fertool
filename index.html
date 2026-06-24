@@ -39,6 +39,37 @@
       #alliedMapSection .amx-pin{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4)}
       #alliedMapSection .leaflet-popup-content{font-family:'Montserrat',sans-serif;font-size:0.83rem}
       @media(max-width:820px){#alliedMapSection .amx-wrap{flex-direction:column;align-items:stretch}#alliedMapSection .amx-side{flex:1 1 auto;max-width:100%}#alliedMapSection #amxMap{height:440px}}
+      /* Confluence additions — search, result list, add-practice, modal. Scoped +
+         mauve (#6b5b95) accent from the existing palette; does not alter the map,
+         clustering, profession filters, or All/None styling above. */
+      #alliedMapSection .amx-subtitle{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:#6b5b95;margin:0.15rem 0 0.4rem}
+      #alliedMapSection .amx-add{display:inline-block;margin-top:0.5rem;padding:0.5rem 0.95rem;background:#6b5b95;color:#fff;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer}
+      #alliedMapSection .amx-add:hover{background:#5a4c80}
+      #alliedMapSection .amx-search{width:100%;padding:0.5rem 0.7rem;border:1.5px solid #d8d2da;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.84rem;margin-bottom:0.7rem;outline:none}
+      #alliedMapSection .amx-search:focus{border-color:#6b5b95}
+      #alliedMapSection .amx-list{margin-top:0.8rem;max-height:430px;overflow-y:auto;display:flex;flex-direction:column;gap:0.5rem}
+      #alliedMapSection .amx-card{border:1px solid #e7e1ea;border-left:3px solid #6b5b95;border-radius:8px;padding:0.5rem 0.6rem;cursor:pointer;transition:background 0.15s}
+      #alliedMapSection .amx-card:hover{background:#f6f3f8}
+      #alliedMapSection .amx-card-name{font-weight:600;font-size:0.86rem;color:#2c2c2c}
+      #alliedMapSection .amx-card-svc{font-size:0.74rem;color:#555;margin-top:1px}
+      #alliedMapSection .amx-card-meta{display:flex;align-items:center;gap:0.35rem;font-size:0.74rem;color:#777;margin-top:2px}
+      #alliedMapSection .amx-card-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+      #alliedMapSection .amx-card-lang{font-size:0.72rem;color:#999;margin-top:1px}
+      #alliedMapSection .amx-tele{display:inline-block;margin-top:4px;font-size:0.66rem;font-weight:600;color:#6b5b95;background:#efeaf3;border-radius:10px;padding:1px 7px}
+      #alliedMapSection .amx-list-empty{font-size:0.78rem;color:#999;padding:0.5rem 0}
+      .amx-modal-back{position:fixed;inset:0;z-index:10000;background:rgba(44,40,50,0.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center}
+      .amx-modal-back.open{display:flex}
+      .amx-modal{background:#fff;border-radius:16px;padding:1.6rem 1.6rem 1.4rem;max-width:420px;width:92%;box-shadow:0 12px 50px rgba(0,0,0,0.25);position:relative;max-height:90vh;overflow-y:auto;font-family:'Montserrat',sans-serif}
+      .amx-modal h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem;color:#6b5b95;margin-bottom:0.15rem}
+      .amx-modal .amx-modal-sub{font-size:0.78rem;color:#999;margin-bottom:0.8rem}
+      .amx-modal label{display:block;font-size:0.72rem;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:0.4px;margin:0.7rem 0 0.25rem}
+      .amx-modal input[type=text],.amx-modal select{width:100%;padding:0.55rem 0.7rem;border:1.5px solid #d8d2da;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.85rem;outline:none}
+      .amx-modal input[type=text]:focus,.amx-modal select:focus{border-color:#6b5b95}
+      .amx-modal .amx-check{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:#444;text-transform:none;font-weight:400;letter-spacing:0;margin-top:0.8rem}
+      .amx-modal .amx-check input{accent-color:#6b5b95}
+      .amx-modal .amx-submit{width:100%;margin-top:1.2rem;padding:0.7rem;background:#6b5b95;color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer}
+      .amx-modal .amx-submit:hover{background:#5a4c80}
+      .amx-modal-close{position:absolute;top:0.7rem;right:1rem;background:none;border:none;font-size:1.5rem;color:#bbb;cursor:pointer;line-height:1}
     </style>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -997,27 +1028,54 @@ function checkGateCode(){
         </div>
     </section>
 
-    <!-- Women's Allied Health Network — embedded map. The embed adds no gate of
-         its own; it sits behind the homepage's existing FERTOOL2026 access gate,
-         so it is NOT public (same protection as the rest of the site). -->
+    <!-- Confluence (formerly "Women's Allied Health Network") — embedded map. The
+         embed adds no gate of its own; it sits behind the homepage's existing
+         FERTOOL2026 access gate, so it is NOT public (same protection as the site). -->
     <section class="digest-section" id="alliedMapSection">
         <div class="digest-section-head">
-            <h2 class="digest-section-title">Women's Allied Health Network</h2>
+            <h2 class="digest-section-title">Confluence</h2>
+            <p class="amx-subtitle">Melbourne's women's health &amp; allied network — where care converges.</p>
             <p class="digest-section-sub">
                 Allied &amp; wellness practitioners across Melbourne — pelvic-health physiotherapy,
                 psychology, Chinese medicine, dietitians, naturopaths, doulas and more.
                 Compiled from public sources; toggle a profession to filter.
             </p>
+            <button type="button" class="amx-add" id="amxAddBtn">Add your practice — free</button>
         </div>
         <div class="amx-wrap">
             <aside class="amx-side">
+                <input type="text" class="amx-search" id="amxSearch" placeholder="Search services, suburb, language…" autocomplete="off" aria-label="Search practitioners">
                 <div class="amx-count" id="amxCount">loading…</div>
                 <div id="amxLegend"></div>
                 <div class="amx-btns"><button type="button" id="amxAll">All</button><button type="button" id="amxNone">None</button></div>
+                <div class="amx-list" id="amxList"></div>
             </aside>
             <div class="amx-mapwrap"><div id="amxMap"></div></div>
         </div>
     </section>
+
+    <!-- Confluence — "Add your practice" modal -->
+    <div class="amx-modal-back" id="amxModalBack" role="dialog" aria-modal="true" aria-labelledby="amxModalTitle">
+        <div class="amx-modal">
+            <button type="button" class="amx-modal-close" id="amxModalClose" aria-label="Close">×</button>
+            <h3 id="amxModalTitle">Add your practice</h3>
+            <div class="amx-modal-sub">Free listing on Confluence — reviewed before it appears.</div>
+            <form id="amxForm">
+                <label for="amxF-name">Name</label>
+                <input type="text" id="amxF-name" name="name" required>
+                <label for="amxF-prof">Profession</label>
+                <select id="amxF-prof" name="profession"></select>
+                <label for="amxF-suburb">Suburb</label>
+                <input type="text" id="amxF-suburb" name="suburb">
+                <label for="amxF-services">Services <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
+                <input type="text" id="amxF-services" name="services" placeholder="e.g. pelvic floor, prenatal, incontinence">
+                <label for="amxF-langs">Languages <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
+                <input type="text" id="amxF-langs" name="languages" placeholder="e.g. English, Mandarin">
+                <label class="amx-check"><input type="checkbox" id="amxF-tele" name="telehealth"> Telehealth available</label>
+                <button type="submit" class="amx-submit">Submit listing</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Digest modal -->
     <div class="dmodal-back" id="dmodalBack" role="dialog" aria-modal="true" aria-labelledby="dmodalTitle" aria-hidden="true">

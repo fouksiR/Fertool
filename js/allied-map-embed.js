@@ -1,8 +1,9 @@
 /* ───────────────────────────────────────────────────────────────────────────
- * Women's Allied Health Network — embedded homepage map.
+ * Confluence (formerly "Women's Allied Health Network") — embedded homepage map.
  * The embed adds no gate of its own; it sits behind the homepage's existing
  * FERTOOL2026 access gate, so it is NOT public (same protection as the site).
- * Renders the Leaflet allied map into #amxMap from data/allied_points.json.
+ * Renders the Leaflet allied map into #amxMap from data/allied_points.json, plus
+ * a free-text search, a clickable result list, and an "Add your practice" modal.
  * Fully namespaced (IIFE + amx- ids/classes) so it can't collide with the rest
  * of index.html. Popups: name · profession · clinic · suburb. No ratings, no
  * verification — public professional listings only.
@@ -36,7 +37,7 @@
     });
   }
 
-  var map, cluster, POINTS = [], shown = {};
+  var map, cluster, POINTS = [], shown = {}, searchQuery = '', currentMarkers = {};
 
   function pinIcon(color) {
     return L.divIcon({
@@ -51,16 +52,73 @@
       (p.clinic ? '<br><span style="color:#666;">' + esc(p.clinic) + '</span>' : '') +
       (p.suburb ? '<br><span style="color:#888;font-size:0.78rem;">' + esc(p.suburb) + '</span>' : '');
   }
+  // Normalise a (possibly array / missing) field to a searchable/displayable string.
+  function field(p, k) {
+    var v = p[k];
+    if (v == null) return '';
+    return Array.isArray(v) ? v.join(', ') : String(v);
+  }
+  function splitList(s) {
+    return (s || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+  function providerKey(p) {
+    if (!p.__key) p.__key = p.name + '|' + p.lat + '|' + p.lng;
+    return p.__key;
+  }
+  // Free-text filter: every token must appear in services + suburb + languages
+  // (+ name + clinic, so it's useful on the current data). Case-insensitive AND.
+  function matchesSearch(p) {
+    if (!searchQuery) return true;
+    var hay = (field(p, 'services') + ' ' + field(p, 'suburb') + ' ' + field(p, 'languages') +
+               ' ' + field(p, 'name') + ' ' + field(p, 'clinic')).toLowerCase();
+    return searchQuery.toLowerCase().split(/\s+/).filter(Boolean).every(function (t) {
+      return hay.indexOf(t) !== -1;
+    });
+  }
+  // Single source of truth: profession checkboxes AND the search box.
+  function visibleProviders() {
+    return POINTS.filter(function (p) { return shown[p.profession] && matchesSearch(p); });
+  }
   function render() {
     cluster.clearLayers();
-    var n = 0;
-    POINTS.forEach(function (p) {
-      if (!shown[p.profession]) return;
-      cluster.addLayer(L.marker([p.lat, p.lng], { icon: pinIcon(profMeta(p.profession).color) }).bindPopup(popup(p)));
-      n++;
+    currentMarkers = {};
+    var vis = visibleProviders();
+    vis.forEach(function (p) {
+      var marker = L.marker([p.lat, p.lng], { icon: pinIcon(profMeta(p.profession).color) }).bindPopup(popup(p));
+      currentMarkers[providerKey(p)] = marker;
+      cluster.addLayer(marker);
     });
     var c = document.getElementById('amxCount');
-    if (c) c.textContent = n + ' of ' + POINTS.length + ' practitioners shown';
+    if (c) c.textContent = vis.length + ' of ' + POINTS.length + ' practitioners shown';
+    renderList(vis);
+  }
+  function buildCard(p) {
+    var m = profMeta(p.profession);
+    var svc = field(p, 'services'), langs = field(p, 'languages');
+    return '<div class="amx-card" data-key="' + esc(providerKey(p)) + '">' +
+      '<div class="amx-card-name">' + esc(p.name) + '</div>' +
+      (svc ? '<div class="amx-card-svc">' + esc(svc) + '</div>' : '') +
+      '<div class="amx-card-meta"><span class="amx-card-dot" style="background:' + m.color + '"></span>' +
+        esc(m.label) + (p.suburb ? ' · ' + esc(p.suburb) : '') + '</div>' +
+      (langs ? '<div class="amx-card-lang">' + esc(langs) + '</div>' : '') +
+      (p.telehealth === true ? '<span class="amx-tele">Telehealth</span>' : '') +
+      '</div>';
+  }
+  function renderList(vis) {
+    var box = document.getElementById('amxList');
+    if (!box) return;
+    box.innerHTML = vis.length
+      ? vis.map(buildCard).join('')
+      : '<div class="amx-list-empty">No practitioners match.</div>';
+    Array.prototype.forEach.call(box.querySelectorAll('.amx-card'), function (card) {
+      card.addEventListener('click', function () { flyToProvider(card.getAttribute('data-key')); });
+    });
+  }
+  // Card click → fly the map to the pin and open its popup (de-clustering as needed).
+  function flyToProvider(key) {
+    var marker = currentMarkers[key];
+    if (!marker) return;
+    cluster.zoomToShowLayer(marker, function () { marker.openPopup(); });
   }
   function buildLegend() {
     var counts = {};
@@ -83,13 +141,58 @@
     });
     render();
   }
+  // Search box + "Add your practice" modal. Additive — does not alter the
+  // checkbox/All-None handlers; the search simply calls the same render() path.
+  function wireExtras() {
+    var s = document.getElementById('amxSearch');
+    if (s) s.addEventListener('input', function () { searchQuery = s.value || ''; render(); });
+
+    var back = document.getElementById('amxModalBack');
+    var openBtn = document.getElementById('amxAddBtn');
+    var closeBtn = document.getElementById('amxModalClose');
+    var form = document.getElementById('amxForm');
+    var profSel = document.getElementById('amxF-prof');
+    if (profSel) {
+      profSel.innerHTML = Object.keys(PROFESSIONS).map(function (code) {
+        return '<option value="' + esc(code) + '">' + esc(PROFESSIONS[code].label) + '</option>';
+      }).join('');
+    }
+    function open() { if (back) back.classList.add('open'); }
+    function close() { if (back) back.classList.remove('open'); }
+    if (openBtn) openBtn.addEventListener('click', open);
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (back) back.addEventListener('click', function (e) { if (e.target === back) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    if (form) form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var fd = new FormData(form);
+      // Shaped to match a providers-array entry so a future endpoint can append it
+      // directly (services/languages as arrays; lat/lng geocoded server-side).
+      var payload = {
+        name: (fd.get('name') || '').trim(),
+        profession: fd.get('profession') || '',
+        suburb: (fd.get('suburb') || '').trim(),
+        clinic: (fd.get('name') || '').trim(),
+        services: splitList(fd.get('services')),
+        languages: splitList(fd.get('languages')),
+        telehealth: fd.get('telehealth') === 'on',
+        lat: null,
+        lng: null
+      };
+      console.log('[Confluence] add-practice submission:', payload);
+      // TODO: wire to backend store — POST `payload` to append it to the providers array.
+      close();
+      form.reset();
+      alert('Thanks! Your practice has been submitted for review.');
+    });
+  }
   function init() {
     map = L.map('amxMap').setView([-37.8136, 144.9631], 11);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
       { attribution: '© OpenStreetMap, © CARTO', maxZoom: 19 }).addTo(map);
     cluster = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 38 });
     cluster.addTo(map);
-    buildLegend(); render();
+    buildLegend(); render(); wireExtras();
     var a = document.getElementById('amxAll'), nn = document.getElementById('amxNone');
     if (a) a.addEventListener('click', function () { setAll(true); });
     if (nn) nn.addEventListener('click', function () { setAll(false); });
