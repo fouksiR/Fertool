@@ -43,7 +43,7 @@
          mauve (#6b5b95) accent from the existing palette; does not alter the map,
          clustering, profession filters, or All/None styling above. */
       #alliedMapSection .amx-subtitle{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:#6b5b95;margin:0.15rem 0 0.4rem}
-      #alliedMapSection .amx-add{display:inline-block;margin-top:0.5rem;padding:0.5rem 0.95rem;background:#6b5b95;color:#fff;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer}
+      #alliedMapSection .amx-add{display:inline-block;margin-top:0.5rem;padding:0.5rem 0.95rem;background:#6b5b95;color:#fff;border:none;border-radius:9px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer}
       #alliedMapSection .amx-add:hover{background:#5a4c80}
       #alliedMapSection .amx-search{width:100%;padding:0.5rem 0.7rem;border:1.5px solid #d8d2da;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.84rem;margin-bottom:0.7rem;outline:none}
       #alliedMapSection .amx-search:focus{border-color:#6b5b95}
@@ -993,7 +993,7 @@ function checkGateCode(){
                 in or around women's health. Compiled from public sources; toggle a profession to filter,
                 or add your own listing.
             </p>
-            <button type="button" class="amx-add" id="amxAddBtn">Add your practice — free</button>
+            <a href="mailto:yuval.fouks@mivf.com.au?subject=Add%20my%20practice%20to%20Confluence&amp;body=Name%3A%0AProfession%3A%0AClinic%3A%0ASuburb%3A%0AKeywords%3A%0ALanguages%3A%0ATelehealth%20(y%2Fn)%3A" class="amx-add" id="amxAddBtn">Add your practice — free</a>
         </div>
         <div class="amx-wrap">
             <aside class="amx-side">
@@ -1095,34 +1095,6 @@ function checkGateCode(){
 
     </aside><!-- /cluster-rail -->
     </div><!-- /cluster -->
-
-    <!-- Confluence — "Add your practice" modal -->
-    <div class="amx-modal-back" id="amxModalBack" role="dialog" aria-modal="true" aria-labelledby="amxModalTitle">
-        <div class="amx-modal">
-            <button type="button" class="amx-modal-close" id="amxModalClose" aria-label="Close">×</button>
-            <h3 id="amxModalTitle">Add your practice</h3>
-            <div class="amx-modal-sub">Free listing on the Confluence Ecosystem — open to any practitioner working in or around women's health. Reviewed before it appears.</div>
-            <form id="amxForm">
-                <label for="amxF-name">Name</label>
-                <input type="text" id="amxF-name" name="name" required>
-                <label for="amxF-clinic">Clinic / practice <span style="font-weight:400;text-transform:none;color:#aaa">(optional)</span></label>
-                <input type="text" id="amxF-clinic" name="clinic" placeholder="e.g. Pelvic Fit Melbourne">
-                <label for="amxF-prof">Profession</label>
-                <select id="amxF-prof" name="profession"></select>
-                <label for="amxF-suburb">Suburb</label>
-                <input type="text" id="amxF-suburb" name="suburb">
-                <label for="amxF-services">Services <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
-                <input type="text" id="amxF-services" name="services" placeholder="e.g. pelvic floor, prenatal, incontinence">
-                <label for="amxF-keywords">Keywords <span style="font-weight:400;text-transform:none;color:#aaa">— what makes you findable (comma-separated)</span></label>
-                <input type="text" id="amxF-keywords" name="keywords" placeholder="e.g. vaginismus, trauma-informed, LGBTQ+ friendly, home visits, vulvodynia">
-                <label for="amxF-langs">Languages <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
-                <input type="text" id="amxF-langs" name="languages" placeholder="e.g. English, Mandarin">
-                <label class="amx-check"><input type="checkbox" id="amxF-tele" name="telehealth"> Telehealth available</label>
-                <button type="submit" class="amx-submit">Submit listing</button>
-                <div class="amx-note" id="amxNote" style="display:none"></div>
-            </form>
-        </div>
-    </div>
 
     <!-- Digest modal -->
     <div class="dmodal-back" id="dmodalBack" role="dialog" aria-modal="true" aria-labelledby="dmodalTitle" aria-hidden="true">
