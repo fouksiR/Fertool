@@ -880,9 +880,24 @@
     .cluster-rail .tool-card p { color: rgba(255,255,255,0.9); }
     .cluster-rail .tool-card .tool-meta { color: rgba(255,255,255,0.74); }
 
+    /* Phase 3 — Additional Tools as a right-side drawer (mirrors the Lenses drawer). */
+    #toolsPanel{position:fixed;top:0;right:-360px;width:360px;height:100%;z-index:1000;overflow-y:auto;
+      background:#fbf5f2;box-shadow:-8px 0 30px rgba(0,0,0,0.12);padding:1.4rem 1.2rem 2rem;
+      transition:right .35s ease;}
+    body.tools-open #toolsPanel{right:0;}
+    #toolsPanel .tools-grid{flex-direction:column;flex-wrap:nowrap;gap:1rem;}
+    #toolsPanel .tools-section{margin-top:0.5rem;}
+    #toolsPanel .tools-label{text-align:left;}
+    .tools-close{position:absolute;top:0.7rem;right:1rem;background:none;border:none;font-size:1.6rem;
+      line-height:1;color:#9a8f95;cursor:pointer;}
+    .tools-nav-btn{font-family:inherit;font-size:0.9rem;color:#4a6741;background:none;border:none;
+      cursor:pointer;margin-left:1.25rem;padding:0;}
+    .tools-nav-btn:hover{text-decoration:underline;}
+    @media(max-width:480px){#toolsPanel{width:88%;right:-92%;}}
+
     /* ≥1024px: two columns — weekly content left, Additional Tools rail right. */
     @media (min-width: 1024px) {
-        .cluster { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 2.25rem; align-items: start; margin-top: 3.5rem; }
+        .cluster { display: grid; grid-template-columns: minmax(0,1fr); gap: 2.25rem; align-items: start; margin-top: 3.5rem; }
         .cluster-main > :first-child { margin-top: 0; }
         .cluster-rail .tools-section { margin-top: 0; }
         .cluster-rail .tools-label { text-align: left; margin-bottom: 1rem; }
@@ -942,6 +957,7 @@ function checkGateCode(){
         <a href="index.html" class="logo">Confluence</a>
         <nav>
             <a href="fertool-cpd-learning-hub.html">CPD Hub <span style="display:inline-block;font-size:0.58rem;font-weight:700;color:#fff;background:#c8a45e;border-radius:10px;padding:0.08rem 0.42rem;margin-left:0.25rem;letter-spacing:0.5px;text-transform:uppercase;vertical-align:middle;">soon!</span></a>
+            <button type="button" class="tools-nav-btn" onclick="toggleToolsPanel()">Tools</button>
         </nav>
     </div>
 </header>
@@ -1074,39 +1090,6 @@ function checkGateCode(){
     </section>
 
     </div><!-- /cluster-main -->
-    <aside class="cluster-rail">
-    <!-- Tools -->
-    <div class="tools-section">
-        <div class="tools-label">Additional Tools</div>
-        <div class="tools-grid">
-            <a href="amh-guide.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
-            </a>
-            <a href="egg-freezing-calculator.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
-            </a>
-            <a href="endometriosis-landing.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Fertility Preservation in Endometriosis</h3><p>How endometriosis affects reproduction &amp; when to act</p><div class="tool-meta">La Marca et al. 2025</div></div>
-            </a>
-            <a href="fertility-assessment.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
-            </a>
-            <a href="endo-evidence-panel.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endo_surgery.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">Evidence Panel</span><h3>Surgery in Endometriosis</h3><p>Is surgery necessary? Evidence-based decision support</p><div class="tool-meta">Cochrane · ESHRE 2024</div></div>
-            </a>
-            <a href="rpl-workup.html" class="tool-card">
-                <img class="tool-card-video" src="rpl-hero.jpg" alt="" loading="lazy">
-                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#0E6E58,#2E9D80);">Evidence Panel</span><h3>Recurrent Pregnancy Loss</h3><p>Evidence-stratified workup matrix — do, consider, don't</p><div class="tool-meta">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
-            </a>
-        </div>
-    </div>
-
-    </aside><!-- /cluster-rail -->
     </div><!-- /cluster -->
 
     <!-- Digest modal -->
@@ -1203,6 +1186,41 @@ function checkGateCode(){
     </div>
 </div>
 
+    <aside class="cluster-rail" id="toolsPanel">
+    <button type="button" class="tools-close" onclick="toggleToolsPanel()" aria-label="Close">×</button>
+    <!-- Tools -->
+    <div class="tools-section">
+        <div class="tools-label">Additional Tools</div>
+        <div class="tools-grid">
+            <a href="amh-guide.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
+            </a>
+            <a href="egg-freezing-calculator.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
+            </a>
+            <a href="endometriosis-landing.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Fertility Preservation in Endometriosis</h3><p>How endometriosis affects reproduction &amp; when to act</p><div class="tool-meta">La Marca et al. 2025</div></div>
+            </a>
+            <a href="fertility-assessment.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
+            </a>
+            <a href="endo-evidence-panel.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endo_surgery.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">Evidence Panel</span><h3>Surgery in Endometriosis</h3><p>Is surgery necessary? Evidence-based decision support</p><div class="tool-meta">Cochrane · ESHRE 2024</div></div>
+            </a>
+            <a href="rpl-workup.html" class="tool-card">
+                <img class="tool-card-video" src="rpl-hero.jpg" alt="" loading="lazy">
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#0E6E58,#2E9D80);">Evidence Panel</span><h3>Recurrent Pregnancy Loss</h3><p>Evidence-stratified workup matrix — do, consider, don't</p><div class="tool-meta">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
+            </a>
+        </div>
+    </div>
+
+    </aside><!-- /cluster-rail -->
+
 <script>
 /* ─────────────────────────────────────────────
    LENSES — frontend-only instruction presets
@@ -1219,8 +1237,16 @@ var LENS_INSTRUCTIONS = {
 };
 
 function toggleLensPanel(){
+    document.body.classList.remove('tools-open');
     document.body.classList.toggle('lens-open');
 }
+function toggleToolsPanel(){
+    document.body.classList.remove('lens-open');
+    document.body.classList.toggle('tools-open');
+}
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ document.body.classList.remove('tools-open','lens-open'); }
+});
 
 function selectLens(el){
     var lens = el.getAttribute('data-lens');
