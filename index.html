@@ -28,7 +28,7 @@
       #alliedMapSection .amx-wrap{display:flex;gap:1rem;align-items:flex-start;margin-top:1rem}
       #alliedMapSection .amx-side{flex:0 0 320px;max-width:320px}
       #alliedMapSection .amx-mapwrap{flex:1;min-width:0}
-      #alliedMapSection #amxMap{height:600px;width:100%;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+      #alliedMapSection #amxMap{height:480px;width:100%;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
       #alliedMapSection .amx-count{font-size:0.82rem;color:#666;margin-bottom:0.6rem}
       #alliedMapSection .amx-leg{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;margin:0.28rem 0;color:#444;cursor:pointer;user-select:none}
       #alliedMapSection .amx-leg input{accent-color:#4a6741}
@@ -194,13 +194,15 @@
         .digest-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.85rem; font-weight: 400; color: #2c2c2c; margin-bottom: 0.35rem; }
         .digest-section-sub { font-size: 0.88rem; color: #888; max-width: 620px; margin: 0 auto; line-height: 1.55; }
 
-        /* Phase 1 — gallery + map bands break out of the 900px reading column */
-        #weeklyDigest,
-        #womensHealth,
-        #alliedMapSection {
-            width: min(1240px, calc(100vw - 4rem));
-            margin-left: 50%;
-            transform: translateX(-50%);
+        /* Phase 1b — widen the weekly cluster + the map as whole units (desktop only) so the
+           two-column Additional Tools rail stays beside the carousels instead of being overrun. */
+        @media (min-width: 1024px) {
+            .cluster,
+            #alliedMapSection {
+                width: min(1280px, calc(100vw - 4rem));
+                margin-left: 50%;
+                transform: translateX(-50%);
+            }
         }
 
         .digest-row-wrap { position: relative; }
