@@ -26,7 +26,7 @@
       /* Embedded allied-map styles — scoped under #alliedMapSection so they can't
          touch the rest of the homepage. */
       #alliedMapSection .amx-wrap{display:flex;gap:1rem;align-items:flex-start;margin-top:1rem}
-      #alliedMapSection .amx-side{flex:0 0 250px;max-width:250px}
+      #alliedMapSection .amx-side{flex:0 0 320px;max-width:320px}
       #alliedMapSection .amx-mapwrap{flex:1;min-width:0}
       #alliedMapSection #amxMap{height:600px;width:100%;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
       #alliedMapSection .amx-count{font-size:0.82rem;color:#666;margin-bottom:0.6rem}
@@ -191,6 +191,15 @@
         .digest-section-head { text-align: center; margin-bottom: 1.5rem; }
         .digest-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.85rem; font-weight: 400; color: #2c2c2c; margin-bottom: 0.35rem; }
         .digest-section-sub { font-size: 0.88rem; color: #888; max-width: 620px; margin: 0 auto; line-height: 1.55; }
+
+        /* Phase 1 — gallery + map bands break out of the 900px reading column */
+        #weeklyDigest,
+        #womensHealth,
+        #alliedMapSection {
+            width: min(1240px, calc(100vw - 4rem));
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
 
         .digest-row-wrap { position: relative; }
         .digest-row {
