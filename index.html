@@ -1356,7 +1356,7 @@ function fmtFallback(text){
         var body=fmtText((parts[i+1]||'').trim());
 
         if(k==='CLINICAL'){
-            setTimeout(burstWA, 400);
+            if(_isFertility) setTimeout(burstWA, 400);
             var gateCircles = _isFertility
                 ? '<div class="l3-gate-circles">'
                   +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
@@ -1948,15 +1948,15 @@ function escalateIfNeeded(answerText, queryText){
     var ring = document.querySelector('.wa-ring');
     var tip = document.getElementById('waTooltip');
 
-    /* Tier 1: faster pulse + updated tooltip */
-    if(result.tier >= 1){
+    /* Tier 1: faster pulse + updated tooltip (referral nudge — fertility only) */
+    if(_isFertility && result.tier >= 1){
         if(ring) ring.style.animationDuration = '1.2s';
         var msg = (ESC_MESSAGES[result.category]||ESC_MESSAGES.clinical)[result.tier] || '';
         if(tip) tip.innerHTML = msg + '<span>Tap to discuss with Dr Fouks</span>';
     }
 
-    /* Tier 2: grow widget + show tooltip for 6s */
-    if(result.tier >= 2){
+    /* Tier 2: grow widget + show tooltip for 6s (referral nudge — fertility only) */
+    if(_isFertility && result.tier >= 2){
         if(w) w.classList.add('escalated-t2');
         burstWA();
         if(tip){
@@ -1968,8 +1968,8 @@ function escalateIfNeeded(answerText, queryText){
 
     /* Tier 3: strong escalation + inject safety banner above response */
     if(result.tier >= 3){
-        if(w){ w.classList.remove('escalated-t2'); w.classList.add('escalated-t3'); }
-        injectSafetyBanner(result.category);
+        if(_isFertility && w){ w.classList.remove('escalated-t2'); w.classList.add('escalated-t3'); }
+        injectSafetyBanner(result.category);  // banner still shows (text only when !_isFertility)
     }
 }
 
@@ -2013,15 +2013,19 @@ function injectSafetyBanner(category){
 
     var banner = document.createElement('div');
     banner.id = 'safety-banner';
+    // Referral buttons only on fertility queries; non-fertility shows safety text + official links only.
+    var referBtns = _isFertility
+        ? '<div style="margin-top:0.7rem;display:flex;gap:0.6rem;align-items:center;">'
+          +'<a href="'+WAURL+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#25D366;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">💬 Discuss with Dr Fouks</a>'
+          +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#6b5b95;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">📋 Refer Patient</a>'
+        +'</div>'
+        : '';
     banner.innerHTML =
         '<div style="background:linear-gradient(135deg,#fff3cd 0%,#ffeeba 100%);border:2px solid #f0c36d;border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.25rem;box-shadow:0 4px 14px rgba(200,164,94,0.25);">'
         +'<div style="font-size:0.82rem;font-weight:700;color:#856404;margin-bottom:0.5rem;">'+cfg.title+'</div>'
         +'<div style="font-size:0.88rem;color:#856404;line-height:1.6;">'+cfg.body+'</div>'
         + linksHtml
-        +'<div style="margin-top:0.7rem;display:flex;gap:0.6rem;align-items:center;">'
-          +'<a href="'+WAURL+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#25D366;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">💬 Discuss with Dr Fouks</a>'
-          +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#6b5b95;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">📋 Refer Patient</a>'
-        +'</div>'
+        + referBtns
         +'</div>';
 
     var rc = document.getElementById('resultContent');
@@ -2278,7 +2282,7 @@ async function performSearch(){
                         +'<div class="l3-faded-body">'+cBody+'</div>'
                       +'</div>';
                     reveal('sl-c', cHtml);
-                    burstWA();
+                    if(_isFertility) burstWA();
                 }
 
                 /* ── done — metadata, sources, footer ── */
@@ -2369,7 +2373,7 @@ function _performSearchRenderBlocking(data, q){
             + bCircles
             +'<div class="l3-gate-text"><div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div><div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div></div>'
             +'<span class="l3-section-pill">Clinical Practice</span></div><div class="l3-faded-body">'+cBody+'</div></div>';
-        setTimeout(function(){ reveal('sl-c', cHtml); burstWA(); }, 400);
+        setTimeout(function(){ reveal('sl-c', cHtml); if(_isFertility) burstWA(); }, 400);
         setTimeout(function(){ escalateIfNeeded(JSON.stringify(data), q); }, 600);
     }
     var f=document.getElementById('sl-f');
