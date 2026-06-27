@@ -1261,6 +1261,7 @@ function getActiveLensInstruction(){
 var API  = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
 var WAURL= 'https://wa.me/61493835221?text=Hi%20Yuval%2C%20I%27d%20like%20to%20discuss%20a%20fertility%20case...';
 var _lastId='', _lastQ='', _timers=[];
+var _isFertility = true;  // gates per-response referral CTA; set from tier event (SSE) or response data (blocking). Default true = behave as today.
 var STEPS_DEFAULT=['Reading fertility guidelines','Retrieving specialist knowledge','Synthesising clinical context'];
 
 /* ─────────────────────────────────────────────
@@ -1356,9 +1357,8 @@ function fmtFallback(text){
 
         if(k==='CLINICAL'){
             setTimeout(burstWA, 400);
-            h+='<div class="l3-block">'
-              +'<div class="l3-gate-bar">'
-                +'<div class="l3-gate-circles">'
+            var gateCircles = _isFertility
+                ? '<div class="l3-gate-circles">'
                   +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
                     +'<div class="l3-photo-ring"></div>'
                     +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
@@ -1368,6 +1368,10 @@ function fmtFallback(text){
                     +'<span class="refer-lbl">Refer</span>'
                   +'</a>'
                 +'</div>'
+                : '';
+            h+='<div class="l3-block">'
+              +'<div class="l3-gate-bar">'
+                + gateCircles
                 +'<div class="l3-gate-text">'
                   +'<div class="l3-gate-title">⚠ Clinical guidance — not a management tool</div>'
                   +'<div class="l3-gate-msg">The suggestions below are for educational reference only. Clinical decisions require specialist input. Tap Dr Fouks or Refer to discuss this case.</div>'
@@ -2173,6 +2177,7 @@ async function performSearch(){
 
                 /* ── tier event — immediate feedback ── */
                 if(evt.type==='tier'){
+                    _isFertility = (evt.is_fertility !== false);  // default true when flag absent
                     var tierMsg = evt.tier===1 ? 'Answering factual query...'
                                 : evt.tier===3 ? 'Analysing clinical values...'
                                 : 'Analysing clinical query...';
@@ -2249,9 +2254,8 @@ async function performSearch(){
                     _l3Data = evt.data || {};
                     _calcData = evt.calculator_results || {};
                     var cBody = renderClinical(_l3Data, _calcData);
-                    var cHtml = '<div class="l3-block">'
-                        +'<div class="l3-gate-bar">'
-                          +'<div class="l3-gate-circles">'
+                    var cCircles = _isFertility
+                        ? '<div class="l3-gate-circles">'
                             +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
                               +'<div class="l3-photo-ring"></div>'
                               +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
@@ -2261,6 +2265,10 @@ async function performSearch(){
                               +'<span class="refer-lbl">Refer</span>'
                             +'</a>'
                           +'</div>'
+                        : '';
+                    var cHtml = '<div class="l3-block">'
+                        +'<div class="l3-gate-bar">'
+                          + cCircles
                           +'<div class="l3-gate-text">'
                             +'<div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div>'
                             +'<div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div>'
@@ -2334,6 +2342,7 @@ async function performSearch(){
    BLOCKING RENDER — fallback for non-streaming /query
 ───────────────────────────────────────────── */
 function _performSearchRenderBlocking(data, q){
+    _isFertility = (data.is_fertility !== false);  // non-streaming path: flag comes from /query JSON
     if(data.answer){
         reveal('sl-g', fmtFallback(data.answer));
         ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
@@ -2350,10 +2359,15 @@ function _performSearchRenderBlocking(data, q){
 
         var c = data.clinical_practice || {};
         var cBody = renderClinical(c, data.calculator_results);
-        var cHtml = '<div class="l3-block"><div class="l3-gate-bar"><div class="l3-gate-circles">'
-            +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()"><div class="l3-photo-ring"></div><img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks"></a>'
-            +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()"><span class="refer-icon-lrg">\uD83D\uDCCB</span><span class="refer-lbl">Refer</span></a>'
-            +'</div><div class="l3-gate-text"><div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div><div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div></div>'
+        var bCircles = _isFertility
+            ? '<div class="l3-gate-circles">'
+              +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()"><div class="l3-photo-ring"></div><img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks"></a>'
+              +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()"><span class="refer-icon-lrg">\uD83D\uDCCB</span><span class="refer-lbl">Refer</span></a>'
+              +'</div>'
+            : '';
+        var cHtml = '<div class="l3-block"><div class="l3-gate-bar">'
+            + bCircles
+            +'<div class="l3-gate-text"><div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div><div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div></div>'
             +'<span class="l3-section-pill">Clinical Practice</span></div><div class="l3-faded-body">'+cBody+'</div></div>';
         setTimeout(function(){ reveal('sl-c', cHtml); burstWA(); }, 400);
         setTimeout(function(){ escalateIfNeeded(JSON.stringify(data), q); }, 600);
