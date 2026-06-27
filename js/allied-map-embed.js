@@ -137,12 +137,22 @@
     if (c) c.textContent = vis.length + ' of ' + POINTS.length + ' practitioners shown';
     renderList(vis);
   }
+  function initials(name) {
+    var parts = String(name || '').replace(/\([^)]*\)/g, ' ')
+      .replace(/\b(dr|prof|mr|mrs|ms|miss|a\/prof)\.?\b/gi, ' ')
+      .trim().split(/\s+/).filter(function (w) { return /[a-z]/i.test(w); });
+    var a = (parts[0] || '').charAt(0);
+    var b = (parts.length > 1 ? parts[parts.length - 1] : '').charAt(0);
+    return ((a + b).toUpperCase()) || '•';
+  }
   function buildCard(p) {
     var m = profMeta(p.profession);
     var svc = field(p, 'services'), langs = field(p, 'languages');
     var sh = scopeHits(p);
     var kws = Array.isArray(p.keywords) ? p.keywords : splitList(field(p, 'keywords'));
     return '<div class="amx-card" data-key="' + esc(providerKey(p)) + '">' +
+      '<div class="amx-card-av" style="background:' + m.color + '">' + esc(initials(p.name)) + '</div>' +
+      '<div class="amx-card-body">' +
       '<div class="amx-card-name">' + esc(p.name) + '</div>' +
       (svc ? '<div class="amx-card-svc">' + esc(svc) + '</div>' : '') +
       '<div class="amx-card-meta"><span class="amx-card-dot" style="background:' + m.color + '"></span>' +
@@ -153,7 +163,7 @@
       }).join('') + '</div>' : '') +
       (sh.length ? '<div class="amx-card-scope">' + esc(sh.slice(0, 3).join(' · ')) + ' — typical focus for this profession</div>' : '') +
       (p.telehealth === true ? '<span class="amx-tele">Telehealth</span>' : '') +
-      '</div>';
+      '</div></div>';
   }
   function renderList(vis) {
     var box = document.getElementById('amxList');
