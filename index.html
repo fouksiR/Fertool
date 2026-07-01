@@ -444,6 +444,11 @@
         .response-section p, .response-section li { font-size: 0.93rem; line-height: 1.82; color: #333; margin-bottom: 0.45rem; }
         .response-section ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
         .response-section strong { color: #1a1a1a; font-weight: 600; }
+        .guideline-source { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: #4a6741; margin: 0.9rem 0 0.35rem; }
+        .guideline-source:first-child { margin-top: 0; }
+        .guideline-stmt { font-size: 0.93rem; line-height: 1.82; color: #333; margin: 0 0 0.4rem 0.9rem; padding-left: 0.7rem; border-left: 2px solid #e8e8e8; }
+        .coverage-note { font-size: 0.82rem; color: #888; margin-top: 0.9rem; padding-top: 0.6rem; border-top: 1px solid #e8e8e8; }
+        .coverage-note-label { font-weight: 600; color: #4a6741; }
         .calc-card { background: rgba(0,0,0,0.04); border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.5rem; font-size: 0.88rem; }
         .calc-card-title { font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 0.3rem; }
         .calc-row { margin-bottom: 0.15rem; }
@@ -1443,19 +1448,49 @@ function renderFooter(d){
     return h;
 }
 
+// Shared source-name cleaner. Kills "Prefix: Title" echoes, prettifies filename
+// slugs (upper-casing short tokens: ivf->IVF, who->WHO), and leaves already-cased
+// citations (NICE-NG257-2026, ESHRE-COS-2025) untouched.
+function cleanName(raw){
+    raw = (raw || '').trim();
+    if(!raw) return '';
+    // Drop a leading "PREFIX: REST" when PREFIX (case-insensitive) is a prefix or
+    // substring of REST — e.g. "Role: Role Of...", "Optimizing: Optimizing...", "X: X".
+    var m = raw.match(/^([^:]{1,40}):\s*(.+)$/);
+    if(m){
+        var pre = m[1].trim(), rest = m[2].trim();
+        var pl = pre.toLowerCase(), rl = rest.toLowerCase();
+        if(pl && (rl === pl || rl.indexOf(pl) !== -1)){ raw = rest; }
+    }
+    // Entirely lower-case => filename slug: spaces for _/-, Title-Case words.
+    // Short tokens (<=3 letters) are treated as acronyms (ivf->IVF, who->WHO,
+    // cdc->CDC) EXCEPT small connector words, which stay Title-Cased (of->Of, in->In).
+    if(raw === raw.toLowerCase()){
+        var SMALL_WORDS = {of:1,in:1,on:1,at:1,to:1,as:1,by:1,or:1,and:1,the:1,for:1,a:1,an:1,vs:1,per:1};
+        raw = raw.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+        raw = raw.split(' ').map(function(w){
+            if(!w) return w;
+            var lw = w.toLowerCase();
+            if(lw.length <= 3 && !SMALL_WORDS[lw]) return lw.toUpperCase();
+            return lw.charAt(0).toUpperCase() + lw.slice(1);
+        }).join(' ');
+    }
+    // Already contains upper-case (acronym citations): return unchanged.
+    return raw;
+}
+
 function renderSources(d){
     if(!d.sources||!d.sources.length) return '';
     var seen={}, list=[];
     d.sources.forEach(function(s){
         var layer = s.layer || '';
         var raw   = s.title || s.source || s.name || '';
-        var name  = raw
-            .replace(/\bCh\d+\s+S\d+\s*/gi, '')
-            .replace(/\bCh\d+\s*/gi, '')
-            .replace(/\bS\d{2}\b\s*/gi, '')
-            .replace(/_/g, ' ')
-            .replace(/\b\w/g, function(x){ return x.toUpperCase(); })
-            .trim();
+        var name  = cleanName(
+            raw.replace(/\bCh\d+\s+S\d+\s*/gi, '')
+               .replace(/\bCh\d+\s*/gi, '')
+               .replace(/\bS\d{2}\b\s*/gi, '')
+               .trim()
+        );
         if(!name) return;
         if(seen[name]) return;
         seen[name] = true;
@@ -2094,12 +2129,40 @@ function renderGuidelines(g){
     if(g._raw && g._parse_error) return '<p>'+esc(g._raw).slice(0,500)+'</p>';
     var stmts = g.guideline_statements || [];
     if(!stmts.length) return '<p style="color:#888;">No specific guidelines retrieved for this query.</p>';
-    var h = '';
+
+    // Direction A: group statements under one cleaned source heading, in first-
+    // appearance order, suppressing degenerate "source == statement" echoes.
+    var order = [], groups = {};
     stmts.forEach(function(s){
-        h += '<p><strong>' + esc(s.source||'') + ':</strong> ' + esc(s.statement||'') + '</p>';
+        var srcName = cleanName(s.source || '');
+        var stmt    = (s.statement || '').trim();
+        if(!stmt) return;
+        // Suppress the source when empty, or when the statement starts with /
+        // equals the source (kills the remaining "source == statement" echoes).
+        var sl = stmt.toLowerCase(), nl = srcName.toLowerCase();
+        var key = (!srcName || (nl && (sl === nl || sl.indexOf(nl) === 0))) ? '' : srcName;
+        if(!(key in groups)){ groups[key] = []; order.push(key); }
+        groups[key].push(stmt);
     });
+
+    var h = '';
+    order.forEach(function(key){
+        // Collapse EXACT-duplicate statements within the group (trim + lower-case).
+        var seen = {}, lines = [];
+        groups[key].forEach(function(stmt){
+            var k = stmt.toLowerCase();
+            if(seen[k]) return;
+            seen[k] = true;
+            lines.push(stmt);
+        });
+        if(key){ h += '<div class="guideline-source">' + esc(key) + '</div>'; }
+        lines.forEach(function(stmt){
+            h += '<div class="guideline-stmt">' + esc(stmt) + '</div>';
+        });
+    });
+
     if(g.gaps && g.gaps !== 'None' && g.coverage !== 'full'){
-        h += '<p style="color:#888;font-size:0.85rem;"><em>Gaps: '+esc(g.gaps)+'</em></p>';
+        h += '<div class="coverage-note"><span class="coverage-note-label">Coverage note:</span> '+esc(g.gaps)+'</div>';
     }
     return h;
 }
@@ -2268,7 +2331,7 @@ async function performSearch(){
                             if(slG){
                                 slG.innerHTML = '<div class="response-section guideline">'
                                     + '<div class="section-header guideline">Guidelines</div>'
-                                    + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
+                                    + '<div class="evidence-note">From published guidelines</div>'
                                     + '<div id="guide-stream" class="stream-raw"></div></div>';
                                 slG.classList.add('revealed');
                             }
@@ -2296,7 +2359,7 @@ async function performSearch(){
                     _l1Data = evt.data || {};
                     var gHtml = '<div class="response-section guideline">'
                               + '<div class="section-header guideline">Guidelines</div>'
-                              + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
+                              + '<div class="evidence-note">From published guidelines</div>'
                               + renderGuidelines(_l1Data) + '</div>';
                     reveal('sl-g', gHtml);
                     var msgEl3 = document.getElementById('stream-msg');
@@ -2406,7 +2469,7 @@ function _performSearchRenderBlocking(data, q){
         if(data.visualizations && data.visualizations.length) renderVisualizations(data.visualizations);
 
         var g = data.guidelines || {};
-        reveal('sl-g', '<div class="response-section guideline"><div class="section-header guideline">Guidelines</div><div class="evidence-note">RAG-retrieved from knowledge base</div>' + renderGuidelines(g) + '</div>');
+        reveal('sl-g', '<div class="response-section guideline"><div class="section-header guideline">Guidelines</div><div class="evidence-note">From published guidelines</div>' + renderGuidelines(g) + '</div>');
 
         var s = data.specialist_insight || {};
         setTimeout(function(){ reveal('sl-s', '<div class="response-section specialist"><div class="section-header specialist">Specialist Insight</div><div class="evidence-note">LLM parametric knowledge</div>' + renderSpecialist(s) + '</div>'); }, 200);
