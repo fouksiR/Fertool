@@ -9,7 +9,7 @@
 (function () {
   'use strict';
 
-  var CAPSULE_ENDPOINT = "https://fertility-gp-backend-532857641879.australia-southeast2.run.app/capsule";
+  var CAPSULE_ENDPOINT = "https://fertility-gp-backend-h6yihe4bmq-ts.a.run.app/capsule";
 
   // Last-known-good /capsule snapshot — the catch fallback (point-in-time).
   var SEED = {
