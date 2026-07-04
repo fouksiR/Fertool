@@ -23,6 +23,14 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <style>
+      .traj-steps { margin-top: 0.5rem; }
+      .traj-step { border-left: 3px solid #cdd6c8; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem; background: rgba(74,103,65,0.03); border-radius: 0 8px 8px 0; }
+      .traj-step-head { font-size: 0.92rem; }
+      .traj-step-detail { font-size: 0.85rem; color: #555; margin-top: 0.25rem; }
+      .traj-step-cats { font-size: 0.75rem; color: #6b5b95; margin-top: 0.35rem; font-weight: 600; }
+      .traj-clickable { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+      .traj-clickable:hover { background: rgba(107,91,149,0.07); border-left-color: #6b5b95; }
+
       /* Embedded allied-map styles — scoped under #alliedMapSection so they can't
          touch the rest of the homepage. */
       #alliedMapSection .amx-wrap{display:flex;gap:1rem;align-items:flex-start;margin-top:1rem}
@@ -575,6 +583,9 @@
         }
         .l3-faded-body p, .l3-faded-body li { font-size: 0.93rem; line-height: 1.82; color: #333; margin-bottom: 0.4rem; }
         .l3-faded-body ul { padding-left: 1.2rem; }
+        .l3-faded-body .traj-steps { pointer-events: auto; user-select: text; opacity: 1; filter: none; }
+        .l3-faded-body .traj-step-cats { color: #6b5b95; }
+        .l3-faded-body.l3-trajectory-body { opacity: 1; filter: none; user-select: text; pointer-events: auto; }
 
         /* ── FEEDBACK ── */
         .feedback-row { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #eee; }
@@ -935,7 +946,7 @@
 <!-- Access Gate -->
 <div class="gate-overlay" id="accessGate">
     <div class="gate-card">
-        <div class="gate-logo">fertile</div>
+        <div class="gate-logo">Confluence</div>
         <div class="gate-subtitle">GP Fertility Decision Support</div>
         <div class="gate-label">Access Code</div>
         <input type="text" class="gate-input" id="gateInput" placeholder="Enter code" autocomplete="off" spellcheck="false">
@@ -1127,7 +1138,7 @@ function checkGateCode(){
         <strong>Medical Disclaimer</strong>
         For informational and educational purposes only. Individual patient care decisions require consultation with qualified healthcare professionals.
         <strong>Copyright</strong>
-        &copy; 2025 Fertool. All rights reserved. Professional use only.
+        &copy; 2025 Confluence. All rights reserved. Professional use only.
     </div>
 </footer>
 
@@ -2213,7 +2224,7 @@ function renderTrajectory(c){
                 ? '<span class="ev ev-s"><span class="d">●●●</span>Grounded</span>'
                 : '<span class="ev ev-l"><span class="d">○○○</span>Confirm</span>';
             h += '<div class="traj-step'+clickable+'" data-cats="'+esc(cats)+'">'
-               +'<div class="traj-step-head"><strong>'+(idx+1)+'. '+esc(s.step||'')+'</strong> '+gb+'</div>';
+               +'<div class="traj-step-head"><strong>'+esc(s.step||'')+'</strong> '+gb+'</div>';
             if(s.detail) h += '<div class="traj-step-detail">'+esc(s.detail)+'</div>';
             if(cats) h += '<div class="traj-step-cats">Tap to show on map: '+esc(cats)+'</div>';
             h += '</div>';
@@ -2241,6 +2252,14 @@ function renderTrajectory(c){
     }
     return h;
 }
+document.addEventListener('click', function (e) {
+    var step = e.target.closest ? e.target.closest('.traj-step.traj-clickable') : null;
+    if (!step) return;
+    var cats = (step.getAttribute('data-cats') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (cats.length && window.AlliedMap && window.AlliedMap.showOnly) {
+        window.AlliedMap.showOnly(cats);
+    }
+});
 function renderClinical(c, calcResults){
     if(!c) return '<p>No clinical data.</p>';
     if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
@@ -2450,7 +2469,7 @@ async function performSearch(){
                           +'</div>'
                           +'<span class="l3-section-pill">Clinical Practice</span>'
                         +'</div>'
-                        +'<div class="l3-faded-body">'+cBody+'</div>'
+                        +'<div class="l3-faded-body'+(evt.mode==='trajectory'?' l3-trajectory-body':'')+'">'+cBody+'</div>'
                       +'</div>';
                     reveal('sl-c', cHtml);
                     if(_isFertility) burstWA();

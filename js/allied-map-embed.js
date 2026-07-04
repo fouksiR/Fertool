@@ -249,4 +249,19 @@
         if (el) el.innerHTML = '<p style="padding:1.5rem;color:#a13b3b;">Could not load map data: ' + e.message + '</p>';
       });
   });
+
+  window.AlliedMap = {
+    showOnly: function (cats) {
+      if (!cats || !cats.length) return;
+      for (var k in shown) { if (Object.prototype.hasOwnProperty.call(shown, k)) shown[k] = false; }
+      cats.forEach(function (c) { shown[c] = true; });
+      var boxes = document.querySelectorAll('#alliedMapSection input[data-p]');
+      for (var i = 0; i < boxes.length; i++) {
+        boxes[i].checked = !!shown[boxes[i].getAttribute('data-p')];
+      }
+      render();
+      var sec = document.getElementById('alliedMapSection');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 })();
