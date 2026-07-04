@@ -2185,6 +2185,62 @@ function renderSpecialist(s){
     return h;
 }
 
+function renderTrajectory(c){
+    if(!c) return '<p>No trajectory data.</p>';
+    if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
+    var h = '';
+    if(c.identified_pathway) h += '<p><strong>Pathway:</strong> '+esc(c.identified_pathway)+'</p>';
+    if(c.urgency){
+        var ucls = c.urgency==='urgent' ? 'urgent' : (c.urgency==='soon' ? 'standard' : 'not_needed');
+        h += '<div class="referral-badge '+ucls+'"><strong>Urgency: '+esc(c.urgency)+'</strong></div>';
+    }
+    if(c.gp_actions && c.gp_actions.length){
+        h += '<p><strong>GP actions:</strong></p><ul>';
+        c.gp_actions.forEach(function(a){ h += '<li>'+esc(a)+'</li>'; });
+        h += '</ul>';
+    }
+    if(c.investigations && c.investigations.length){
+        h += '<p><strong>Investigations:</strong></p><ul>';
+        c.investigations.forEach(function(i){ h += '<li>'+esc(i)+'</li>'; });
+        h += '</ul>';
+    }
+    if(c.trajectory_steps && c.trajectory_steps.length){
+        h += '<p><strong>Care trajectory:</strong></p><div class="traj-steps">';
+        c.trajectory_steps.forEach(function(s, idx){
+            var cats = (s.map_categories && s.map_categories.length) ? s.map_categories.join(',') : '';
+            var clickable = cats ? ' traj-clickable' : '';
+            var gb = s.guideline_grounded
+                ? '<span class="ev ev-s"><span class="d">●●●</span>Grounded</span>'
+                : '<span class="ev ev-l"><span class="d">○○○</span>Confirm</span>';
+            h += '<div class="traj-step'+clickable+'" data-cats="'+esc(cats)+'">'
+               +'<div class="traj-step-head"><strong>'+(idx+1)+'. '+esc(s.step||'')+'</strong> '+gb+'</div>';
+            if(s.detail) h += '<div class="traj-step-detail">'+esc(s.detail)+'</div>';
+            if(cats) h += '<div class="traj-step-cats">Tap to show on map: '+esc(cats)+'</div>';
+            h += '</div>';
+        });
+        h += '</div>';
+    }
+    if(c.referral_triggers && c.referral_triggers.length){
+        h += '<p><strong>Referral triggers:</strong></p><ul>';
+        c.referral_triggers.forEach(function(t){ h += '<li>'+esc(t)+'</li>'; });
+        h += '</ul>';
+    }
+    if(c.referral_text){
+        h += '<div class="gp-script"><strong>Referral text:</strong> '+esc(c.referral_text)+'</div>';
+    }
+    if(c.patient_explanation){
+        h += '<div class="gp-script"><strong>For the patient:</strong> '+esc(c.patient_explanation)+'</div>';
+    }
+    if(c.guideline_basis && c.guideline_basis.length){
+        h += '<p style="font-size:.82rem;color:#666;"><strong>Guideline basis:</strong> '+c.guideline_basis.map(esc).join('; ')+'</p>';
+    }
+    if(c.safety_flags && c.safety_flags.length){
+        h += '<div class="safety-box"><strong>⚠ Safety flags:</strong><ul>';
+        c.safety_flags.forEach(function(f){ h += '<li>'+esc(f)+'</li>'; });
+        h += '</ul></div>';
+    }
+    return h;
+}
 function renderClinical(c, calcResults){
     if(!c) return '<p>No clinical data.</p>';
     if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
@@ -2370,7 +2426,9 @@ async function performSearch(){
                 else if(evt.type==='clinical'){
                     _l3Data = evt.data || {};
                     _calcData = evt.calculator_results || {};
-                    var cBody = renderClinical(_l3Data, _calcData);
+                    var cBody = (evt.mode === 'trajectory')
+                        ? renderTrajectory(_l3Data)
+                        : renderClinical(_l3Data, _calcData);
                     var cCircles = _isFertility
                         ? '<div class="l3-gate-circles">'
                             +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
