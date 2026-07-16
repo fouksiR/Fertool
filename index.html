@@ -470,6 +470,84 @@
         .gp-script { background: rgba(74,103,65,0.07); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; font-style: italic; font-size: 0.88rem; }
 
         /* ═══════════════════════════════════════════════════
+           NEXT STEPS — GP action panel (fertility trajectory)
+           Action-first: red flags dominate, then today's actions,
+           referral guidance, checklist. Confluence gold/green palette.
+        ═══════════════════════════════════════════════════ */
+        .next-steps { margin-bottom: 0.5rem; }
+        .ns-summary { font-size: 0.98rem; line-height: 1.6; color: #2a2a2a; font-weight: 600;
+            padding: 0 0 0.9rem; border-bottom: 1px solid #efe7d4; margin-bottom: 1rem; }
+        .ns-block { margin-bottom: 1.1rem; }
+        .ns-h { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            color: #b8944e; margin-bottom: 0.5rem; }
+
+        /* Red flags — visually dominant, above everything else */
+        .ns-redflags { background: rgba(220,53,69,0.09); border: 1px solid rgba(220,53,69,0.35);
+            border-left: 5px solid #dc3545; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.15rem; }
+        .ns-rf-head { font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px;
+            color: #b02a37; margin-bottom: 0.5rem; }
+        .ns-rf-item { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.35rem 0;
+            border-top: 1px solid rgba(220,53,69,0.18); }
+        .ns-rf-item:first-of-type { border-top: none; }
+        .ns-rf-issue { font-weight: 700; color: #7a1c25; font-size: 0.9rem; }
+        .ns-rf-action { color: #333; font-size: 0.85rem; }
+
+        /* Actions today — checklist with status icons */
+        .ns-actions { list-style: none; padding: 0; margin: 0; }
+        .ns-action { display: flex; align-items: flex-start; gap: 0.55rem; padding: 0.4rem 0;
+            border-bottom: 1px solid #f4efe3; font-size: 0.9rem; line-height: 1.5; }
+        .ns-action:last-child { border-bottom: none; }
+        .ns-ai { flex-shrink: 0; width: 1.25rem; text-align: center; font-weight: 700; margin-top: 0.05rem; }
+        .ns-action.todo .ns-ai { color: #c8a45e; }
+        .ns-action.done .ns-ai { color: #4a6741; }
+        .ns-action.missing .ns-ai { color: #b8944e; }
+        .ns-action.done .ns-atext { color: #4a6741; }
+        .ns-missing-tag { color: #b8944e; font-style: normal; font-weight: 600; font-size: 0.78rem; }
+        .ns-arat { color: #777; }
+
+        /* Referral guidance */
+        .ns-referral .ns-ref-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+        .ns-ref-ind { font-weight: 700; font-size: 0.92rem; color: #2a2a2a; }
+        .ns-referral .referral-badge { margin-top: 0; padding: 0.25rem 0.7rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .ns-ref-rat { font-size: 0.86rem; color: #555; margin-top: 0.4rem; line-height: 1.5; }
+        .ns-ref-providers { font-size: 0.82rem; color: #666; margin-top: 0.55rem; }
+        .ns-provider-chip { display: inline-block; background: rgba(107,91,149,0.1); color: #5a4b82;
+            border: 1px solid rgba(107,91,149,0.25); border-radius: 14px; padding: 0.12rem 0.6rem;
+            margin: 0.15rem 0.2rem 0.15rem 0; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+        .ns-provider-chip:hover { background: rgba(107,91,149,0.2); }
+
+        /* Referral checklist — completed / missing, NO percentage */
+        .ns-checklist { display: flex; flex-direction: column; gap: 0.15rem; }
+        .ns-cl-item { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.86rem;
+            line-height: 1.45; padding: 0.18rem 0; }
+        .ns-cl-icon { flex-shrink: 0; font-weight: 800; width: 1rem; }
+        .ns-cl-item.done { color: #3f5a37; }
+        .ns-cl-item.done .ns-cl-icon { color: #4a6741; }
+        .ns-cl-item.missing { color: #333; }
+        .ns-cl-item.missing .ns-cl-icon { color: #dc3545; }
+
+        /* Generate referral button */
+        .ns-actions-bar { margin: 1.15rem 0 0.4rem; }
+        .ns-gen-btn { background: linear-gradient(135deg, #c8a45e 0%, #b8944e 100%); color: #fff;
+            border: none; border-radius: 10px; padding: 0.7rem 1.3rem; font-size: 0.92rem; font-weight: 700;
+            cursor: pointer; box-shadow: 0 2px 8px rgba(184,148,78,0.35); transition: transform 0.15s, box-shadow 0.15s; }
+        .ns-gen-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184,148,78,0.45); }
+        .referral-draft-slot:not(:empty) { margin-top: 0.9rem; }
+        .referral-draft-text { width: 100%; box-sizing: border-box; font-family: 'Montserrat', system-ui, sans-serif;
+            font-size: 0.85rem; line-height: 1.55; color: #2a2a2a; background: #fffdf8;
+            border: 1px solid #e2d6b8; border-radius: 10px; padding: 0.85rem 1rem; resize: vertical; }
+        .ns-secondary { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed #e6dcc4; }
+        .ns-secondary-h { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            color: #a99; color: #b0a48a; margin-bottom: 0.6rem; }
+
+        @media (max-width: 600px) {
+            .ns-summary { font-size: 0.94rem; }
+            .ns-gen-btn { width: 100%; }
+            .ns-action, .ns-cl-item { font-size: 0.88rem; }
+        }
+
+        /* ═══════════════════════════════════════════════════
            L3 CLINICAL PRACTICE — PERMANENT GATE
            No hover. No CSS tricks. Always visible.
            The gate IS the section header. Content below is faded.
@@ -2194,66 +2272,140 @@ function renderSpecialist(s){
     return h;
 }
 
+/* Latest trajectory clinical_practice block — stashed so the Generate-referral
+   button can build the draft from the same data the panel rendered. */
+var _trajData = null;
+
 function renderTrajectory(c){
     if(!c) return '<p>No trajectory data.</p>';
     if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
-    var h = '';
-    if(c.identified_pathway) h += '<p><strong>Pathway:</strong> '+esc(c.identified_pathway)+'</p>';
-    if(c.urgency){
-        var ucls = c.urgency==='urgent' ? 'urgent' : (c.urgency==='soon' ? 'standard' : 'not_needed');
-        h += '<div class="referral-badge '+ucls+'"><strong>Urgency: '+esc(c.urgency)+'</strong></div>';
+    _trajData = c;
+    var h = '<div class="next-steps">';
+
+    /* 1. Clinical summary (<=2 sentences) */
+    var summary = c.clinical_summary || c.identified_pathway || '';
+    if(summary) h += '<div class="ns-summary">'+esc(summary)+'</div>';
+
+    /* 2. Red flags — visually dominant, above everything else, only if present */
+    var rf = (c.red_flags || []).filter(function(r){ return r && r.issue; });
+    if(rf.length){
+        h += '<div class="ns-redflags"><div class="ns-rf-head">⚠ Red flags — act now</div>';
+        rf.forEach(function(r){
+            h += '<div class="ns-rf-item"><span class="ns-rf-issue">'+esc(r.issue)+'</span>'
+               + (r.action ? '<span class="ns-rf-action">'+esc(r.action)+'</span>' : '')+'</div>';
+        });
+        h += '</div>';
     }
-    if(c.gp_actions && c.gp_actions.length){
-        h += '<p><strong>GP actions:</strong></p><ul>';
-        c.gp_actions.forEach(function(a){ h += '<li>'+esc(a)+'</li>'; });
-        h += '</ul>';
+
+    /* 3. Actions today — checklist with status icons */
+    var acts = (c.actions_today || []).filter(function(a){ return a && a.action; });
+    if(acts.length){
+        h += '<div class="ns-block"><div class="ns-h">Actions today</div><ul class="ns-actions">';
+        acts.forEach(function(a){
+            var st = a.status || 'recommended';
+            var icon = st==='completed' ? '✓' : (st==='missing_information' ? '○' : '○');
+            var cls  = st==='completed' ? 'done' : (st==='missing_information' ? 'missing' : 'todo');
+            h += '<li class="ns-action '+cls+'"><span class="ns-ai">'+icon+'</span>'
+               + '<span class="ns-atext">'+esc(a.action)
+               + (st==='missing_information' ? ' <em class="ns-missing-tag">(missing info)</em>' : '')
+               + (a.rationale ? '<span class="ns-arat"> — '+esc(a.rationale)+'</span>' : '')
+               + '</span></li>';
+        });
+        h += '</ul></div>';
     }
-    if(c.investigations && c.investigations.length){
-        h += '<p><strong>Investigations:</strong></p><ul>';
-        c.investigations.forEach(function(i){ h += '<li>'+esc(i)+'</li>'; });
-        h += '</ul>';
+
+    /* 4. Referral guidance — indicated + urgency badge + provider types */
+    var ref = c.referral || {};
+    var pts = (ref.provider_types || []).filter(Boolean);
+    if(ref.indicated !== undefined || ref.urgency || ref.rationale || pts.length){
+        var ind = ref.indicated===true ? 'Referral indicated'
+                : ref.indicated===false ? 'Referral not indicated yet'
+                : 'Referral — use clinical judgement';
+        var ubadge = {emergency:'urgent', urgent:'urgent', soon:'standard', routine:'not_needed', uncertain:'not_needed'};
+        h += '<div class="ns-block ns-referral"><div class="ns-h">Referral guidance</div>';
+        h += '<div class="ns-ref-row"><span class="ns-ref-ind">'+esc(ind)+'</span>';
+        if(ref.urgency) h += '<span class="referral-badge '+(ubadge[ref.urgency]||'not_needed')+'">'+esc(ref.urgency)+'</span>';
+        h += '</div>';
+        if(ref.rationale) h += '<div class="ns-ref-rat">'+esc(ref.rationale)+'</div>';
+        if(pts.length){
+            h += '<div class="ns-ref-providers">Allied providers: '
+               + pts.map(function(p){ return '<span class="ns-provider-chip" data-cats="'+esc(p)+'">'+esc(p)+'</span>'; }).join(' ')
+               + '</div>';
+        }
+        h += '</div>';
     }
+
+    /* 5. Referral checklist — completed ✓ / missing ✗, NO percentage */
+    var cl = c.referral_checklist || {};
+    var comp = (cl.completed || []).filter(Boolean), miss = (cl.missing || []).filter(Boolean);
+    if(comp.length || miss.length){
+        h += '<div class="ns-block"><div class="ns-h">Referral checklist</div><div class="ns-checklist">';
+        comp.forEach(function(i){ h += '<div class="ns-cl-item done"><span class="ns-cl-icon">✓</span>'+esc(i)+'</div>'; });
+        miss.forEach(function(i){ h += '<div class="ns-cl-item missing"><span class="ns-cl-icon">✗</span>'+esc(i)+'</div>'; });
+        h += '</div></div>';
+    }
+
+    /* 6. Generate referral button */
+    h += '<div class="ns-actions-bar"><button type="button" class="ns-gen-btn" onclick="openReferralDraft(this)">📋 Generate referral draft</button></div>';
+    h += '<div class="referral-draft-slot"></div>';
+    h += '</div>'; /* .next-steps */
+
+    /* ── Secondary: care-pathway steps (map routing) + patient explanation ── */
+    var sec = '';
     if(c.trajectory_steps && c.trajectory_steps.length){
-        h += '<p><strong>Care trajectory:</strong></p><div class="traj-steps">';
-        c.trajectory_steps.forEach(function(s, idx){
+        sec += '<p style="font-size:.82rem;color:#8a7d5f;margin:0 0 .4rem;">Tap a step to show matching local providers on the map.</p><div class="traj-steps">';
+        c.trajectory_steps.forEach(function(s){
             var cats = (s.map_categories && s.map_categories.length) ? s.map_categories.join(',') : '';
             var clickable = cats ? ' traj-clickable' : '';
             var gb = s.guideline_grounded
                 ? '<span class="ev ev-s"><span class="d">●●●</span>Grounded</span>'
                 : '<span class="ev ev-l"><span class="d">○○○</span>Confirm</span>';
-            h += '<div class="traj-step'+clickable+'" data-cats="'+esc(cats)+'">'
+            sec += '<div class="traj-step'+clickable+'" data-cats="'+esc(cats)+'">'
                +'<div class="traj-step-head"><strong>'+esc(s.step||'')+'</strong> '+gb+'</div>';
-            if(s.detail) h += '<div class="traj-step-detail">'+esc(s.detail)+'</div>';
-            if(cats) h += '<div class="traj-step-cats">Tap to show on map: '+esc(cats)+'</div>';
-            h += '</div>';
+            if(s.detail) sec += '<div class="traj-step-detail">'+esc(s.detail)+'</div>';
+            if(cats) sec += '<div class="traj-step-cats">Tap to show on map: '+esc(cats)+'</div>';
+            sec += '</div>';
         });
-        h += '</div>';
-    }
-    if(c.referral_triggers && c.referral_triggers.length){
-        h += '<p><strong>Referral triggers:</strong></p><ul>';
-        c.referral_triggers.forEach(function(t){ h += '<li>'+esc(t)+'</li>'; });
-        h += '</ul>';
-    }
-    if(c.referral_text){
-        h += '<div class="gp-script"><strong>Referral text:</strong> '+esc(c.referral_text)+'</div>';
+        sec += '</div>';
     }
     if(c.patient_explanation){
-        h += '<div class="gp-script"><strong>For the patient:</strong> '+esc(c.patient_explanation)+'</div>';
+        sec += '<div class="gp-script"><strong>For the patient:</strong> '+esc(c.patient_explanation)+'</div>';
     }
     if(c.guideline_basis && c.guideline_basis.length){
-        h += '<p style="font-size:.82rem;color:#666;"><strong>Guideline basis:</strong> '+c.guideline_basis.map(esc).join('; ')+'</p>';
+        sec += '<p style="font-size:.82rem;color:#666;margin-top:.6rem;"><strong>Guideline basis:</strong> '+c.guideline_basis.map(esc).join('; ')+'</p>';
     }
     if(c.safety_flags && c.safety_flags.length){
-        h += '<div class="safety-box"><strong>⚠ Safety flags:</strong><ul>';
-        c.safety_flags.forEach(function(f){ h += '<li>'+esc(f)+'</li>'; });
-        h += '</ul></div>';
+        sec += '<div class="safety-box"><strong>⚠ Safety flags:</strong><ul>';
+        c.safety_flags.forEach(function(f){ sec += '<li>'+esc(f)+'</li>'; });
+        sec += '</ul></div>';
     }
+    if(sec) h += '<div class="ns-secondary"><div class="ns-secondary-h">Care pathway &amp; local providers</div>'+sec+'</div>';
+
     return h;
 }
+
+/* Generate-referral (Step 4 baseline: reveal the draft; Step 5 enhances the UI). */
+function openReferralDraft(btn){
+    var panel = btn.closest ? btn.closest('.next-steps') : null;
+    var slot = panel ? panel.querySelector('.referral-draft-slot') : null;
+    if(!slot) return;
+    slot.innerHTML = renderReferralDraft(_trajData && _trajData.referral_draft);
+}
+function renderReferralDraft(draft){
+    if(!draft) return '<p style="font-size:.85rem;color:#999;">No referral draft available.</p>';
+    var LABELS = {reason_for_referral:'Reason for referral', relevant_history:'Relevant history',
+        examination:'Examination', investigations:'Investigations', treatment_to_date:'Treatment to date',
+        missing_information:'Missing information', requested_input:'Requested specialist input'};
+    var order = ['reason_for_referral','relevant_history','examination','investigations',
+        'treatment_to_date','missing_information','requested_input'];
+    var txt = order.map(function(k){ return LABELS[k]+':\n'+(draft[k]||'[NOT PROVIDED]'); }).join('\n\n');
+    return '<textarea class="referral-draft-text" rows="16">'+esc(txt)+'</textarea>';
+}
+
 document.addEventListener('click', function (e) {
-    var step = e.target.closest ? e.target.closest('.traj-step.traj-clickable') : null;
-    if (!step) return;
-    var cats = (step.getAttribute('data-cats') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    var el = e.target.closest ? e.target.closest('.traj-step.traj-clickable, .ns-provider-chip') : null;
+    if (!el) return;
+    var cats = (el.getAttribute('data-cats') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
     if (cats.length && window.AlliedMap && window.AlliedMap.showOnly) {
         window.AlliedMap.showOnly(cats);
     }
@@ -2550,7 +2702,9 @@ function _performSearchRenderBlocking(data, q){
         setTimeout(function(){ reveal('sl-s', '<div class="response-section specialist"><div class="section-header specialist">Specialist Insight</div><div class="evidence-note">LLM parametric knowledge</div>' + renderSpecialist(s) + '</div>'); }, 200);
 
         var c = data.clinical_practice || {};
-        var cBody = renderClinical(c, data.calculator_results);
+        var cBody = (c.mode === 'trajectory')
+            ? renderTrajectory(c)
+            : renderClinical(c, data.calculator_results);
         var bCircles = _isFertility
             ? '<div class="l3-gate-circles">'
               +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()"><div class="l3-photo-ring"></div><img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks"></a>'
