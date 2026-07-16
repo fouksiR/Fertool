@@ -534,9 +534,28 @@
             cursor: pointer; box-shadow: 0 2px 8px rgba(184,148,78,0.35); transition: transform 0.15s, box-shadow 0.15s; }
         .ns-gen-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184,148,78,0.45); }
         .referral-draft-slot:not(:empty) { margin-top: 0.9rem; }
-        .referral-draft-text { width: 100%; box-sizing: border-box; font-family: 'Montserrat', system-ui, sans-serif;
-            font-size: 0.85rem; line-height: 1.55; color: #2a2a2a; background: #fffdf8;
-            border: 1px solid #e2d6b8; border-radius: 10px; padding: 0.85rem 1rem; resize: vertical; }
+        .referral-draft { background: #fffdf8; border: 1px solid #e2d6b8; border-radius: 12px; padding: 1rem 1.1rem; }
+        .rd-title { font-size: 0.82rem; color: #6a5f45; line-height: 1.5; margin-bottom: 0.85rem; }
+        .rd-field { margin-bottom: 0.75rem; }
+        .rd-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
+            color: #b8944e; margin-bottom: 0.2rem; }
+        .rd-value { font-size: 0.88rem; line-height: 1.55; color: #2a2a2a; background: #fff;
+            border: 1px solid #ece2c8; border-radius: 8px; padding: 0.5rem 0.7rem; white-space: pre-wrap;
+            outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+        .rd-value:focus { border-color: #c8a45e; box-shadow: 0 0 0 2px rgba(200,164,94,0.18); }
+        /* [NOT PROVIDED] — amber highlight (attention, not alarm; red is for red flags) */
+        .rd-value.rd-np { background: rgba(255,193,7,0.15); border-color: rgba(184,148,78,0.55);
+            border-style: dashed; color: #8a6d1e; font-weight: 600; }
+        .rd-np-legend { background: rgba(255,193,7,0.2); color: #8a6d1e; border-radius: 4px;
+            padding: 0 0.25rem; font-weight: 700; white-space: nowrap; }
+        .rd-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 0.9rem; }
+        .rd-copy-btn { background: #4a6741; color: #fff; border: none; border-radius: 8px;
+            padding: 0.55rem 1.1rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+        .rd-copy-btn:hover { background: #3d5636; }
+        .rd-virtus-btn { display: inline-block; background: #fff; color: #b8944e; text-decoration: none;
+            border: 1.5px solid #c8a45e; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.85rem; font-weight: 700; }
+        .rd-virtus-btn:hover { background: rgba(200,164,94,0.1); }
+        @media (max-width: 600px) { .rd-actions .rd-copy-btn, .rd-actions .rd-virtus-btn { flex: 1 1 100%; text-align: center; } }
         .ns-secondary { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed #e6dcc4; }
         .ns-secondary-h { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
             color: #a99; color: #b0a48a; margin-bottom: 0.6rem; }
@@ -2391,15 +2410,58 @@ function openReferralDraft(btn){
     if(!slot) return;
     slot.innerHTML = renderReferralDraft(_trajData && _trajData.referral_draft);
 }
+var RD_LABELS = {reason_for_referral:'Reason for referral', relevant_history:'Relevant history',
+    examination:'Examination', investigations:'Investigations', treatment_to_date:'Treatment to date',
+    missing_information:'Missing information', requested_input:'Requested specialist input'};
+var RD_ORDER = ['reason_for_referral','relevant_history','examination','investigations',
+    'treatment_to_date','missing_information','requested_input'];
+
 function renderReferralDraft(draft){
     if(!draft) return '<p style="font-size:.85rem;color:#999;">No referral draft available.</p>';
-    var LABELS = {reason_for_referral:'Reason for referral', relevant_history:'Relevant history',
-        examination:'Examination', investigations:'Investigations', treatment_to_date:'Treatment to date',
-        missing_information:'Missing information', requested_input:'Requested specialist input'};
-    var order = ['reason_for_referral','relevant_history','examination','investigations',
-        'treatment_to_date','missing_information','requested_input'];
-    var txt = order.map(function(k){ return LABELS[k]+':\n'+(draft[k]||'[NOT PROVIDED]'); }).join('\n\n');
-    return '<textarea class="referral-draft-text" rows="16">'+esc(txt)+'</textarea>';
+    var rows = RD_ORDER.map(function(k){
+        var v = (draft[k]==null || String(draft[k]).trim()==='') ? '[NOT PROVIDED]' : String(draft[k]);
+        var isNP = v.trim() === '[NOT PROVIDED]';
+        /* contenteditable so [NOT PROVIDED] can be highlighted (a <textarea> can't
+           style substrings); oninput clears the highlight once the GP fills it. */
+        return '<div class="rd-field"><div class="rd-label">'+esc(RD_LABELS[k])+'</div>'
+             + '<div class="rd-value'+(isNP?' rd-np':'')+'" contenteditable="true" data-key="'+k+'" '
+             + 'oninput="this.classList.toggle(\'rd-np\', this.textContent.indexOf(\'[NOT PROVIDED]\')>=0)">'
+             + esc(v)+'</div></div>';
+    }).join('');
+    return '<div class="referral-draft">'
+         + '<div class="rd-title">Referral draft — edit before sending. Fields marked '
+         + '<span class="rd-np-legend">[NOT PROVIDED]</span> are not from the query and need your input; '
+         + 'nothing here is auto-filled with unverified detail.</div>'
+         + rows
+         + '<div class="rd-actions">'
+         +   '<button type="button" class="rd-copy-btn" onclick="copyReferralDraft(this)">📋 Copy to clipboard</button>'
+         +   '<a href="https://virtushealth.tfaforms.net/246" target="_blank" rel="noopener" class="rd-virtus-btn">Send via Virtus referral →</a>'
+         + '</div></div>';
+}
+
+function copyReferralDraft(btn){
+    var wrap = btn.closest ? btn.closest('.referral-draft') : null;
+    if(!wrap) return;
+    var lines = [];
+    wrap.querySelectorAll('.rd-field').forEach(function(f){
+        var label = f.querySelector('.rd-label').textContent;
+        var val = (f.querySelector('.rd-value').textContent || '').trim();
+        lines.push(label + ':\n' + val);
+    });
+    var text = lines.join('\n\n');
+    var done = function(){ var o=btn.textContent; btn.textContent='✓ Copied';
+        setTimeout(function(){ btn.textContent=o; }, 1600); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done, function(){ _copyFallback(text, done); });
+    } else { _copyFallback(text, done); }
+}
+function _copyFallback(text, done){
+    /* in-app browsers (e.g. WhatsApp) can block the async clipboard API */
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); done(); } catch(e){}
+    document.body.removeChild(ta);
 }
 
 document.addEventListener('click', function (e) {
