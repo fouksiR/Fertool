@@ -535,9 +535,185 @@
    "clinic": "Open Circle Wellbeing",
    "lat": -37.7871148,
    "lng": 144.9515533
+  },
+  {
+   "name": "Lora Attia",
+   "profession": "dietitian",
+   "suburb": "Melbourne",
+   "clinic": "Nutrition Plus",
+   "lat": -37.8142454,
+   "lng": 144.9631732
+  },
+  {
+   "name": "Wendy Fedele",
+   "profession": "dietitian",
+   "suburb": "Balaclava",
+   "clinic": "Women's Health Melbourne",
+   "lat": -37.869543,
+   "lng": 144.9934871
+  },
+  {
+   "name": "Pooja Adhyaru",
+   "profession": "dietitian",
+   "suburb": "Frankston",
+   "clinic": "Powered By Nutrition",
+   "lat": -38.1457064,
+   "lng": 145.1263742
+  },
+  {
+   "name": "Back In Motion Werribee",
+   "profession": "pelvic-physio",
+   "suburb": "Werribee",
+   "clinic": "Back In Motion Werribee",
+   "lat": -37.8995007,
+   "lng": 144.6609036
+  },
+  {
+   "name": "Back In Motion Point Cook",
+   "profession": "pelvic-physio",
+   "suburb": "Point Cook",
+   "clinic": "Back In Motion Point Cook",
+   "lat": -37.9064862,
+   "lng": 144.7533059
+  },
+  {
+   "name": "Wyndham Physio",
+   "profession": "pelvic-physio",
+   "suburb": "Werribee",
+   "clinic": "Wyndham Physio",
+   "lat": -37.8995007,
+   "lng": 144.6609036
+  },
+  {
+   "name": "Physio Inq",
+   "profession": "pelvic-physio",
+   "suburb": "Footscray",
+   "clinic": "Physio Inq",
+   "lat": -37.7981339,
+   "lng": 144.897345
+  },
+  {
+   "name": "Range Physio",
+   "profession": "pelvic-physio",
+   "suburb": "Preston",
+   "clinic": "Range Physio",
+   "lat": -37.7418658,
+   "lng": 145.0078205
+  },
+  {
+   "name": "South East Pelvic Physio",
+   "profession": "pelvic-physio",
+   "suburb": "Berwick",
+   "clinic": "South East Pelvic Physio",
+   "lat": -38.0398297,
+   "lng": 145.3451089
+  },
+  {
+   "name": "VIP Physio",
+   "profession": "pelvic-physio",
+   "suburb": "Cranbourne",
+   "clinic": "VIP Physio",
+   "lat": -38.0997308,
+   "lng": 145.2807256
+  },
+  {
+   "name": "Narre Warren Physiotherapy",
+   "profession": "pelvic-physio",
+   "suburb": "Narre Warren",
+   "clinic": "Narre Warren Physiotherapy",
+   "lat": -38.0275167,
+   "lng": 145.3037408
+  },
+  {
+   "name": "Southern Continence Service (Jennifer Porch)",
+   "profession": "pelvic-physio",
+   "suburb": "Dandenong",
+   "clinic": "Southern Continence Service",
+   "lat": -37.9773876,
+   "lng": 145.2166302
+  },
+  {
+   "name": "Dr Gu (My Acupuncture)",
+   "profession": "chinese-med",
+   "suburb": "Oakleigh",
+   "clinic": "My Acupuncture",
+   "lat": -37.9006303,
+   "lng": 145.0886372
+  },
+  {
+   "name": "Women's Health Melbourne (acupuncture)",
+   "profession": "chinese-med",
+   "suburb": "Balaclava",
+   "clinic": "Women's Health Melbourne",
+   "lat": -37.869543,
+   "lng": 144.9934871
+  },
+  {
+   "name": "Almond Wellness Centre Coburg",
+   "profession": "chinese-med",
+   "suburb": "Coburg",
+   "clinic": "Almond Wellness Centre",
+   "lat": -37.7425661,
+   "lng": 144.9759915
+  },
+  {
+   "name": "Almond Wellness Centre Ringwood",
+   "profession": "chinese-med",
+   "suburb": "Ringwood",
+   "clinic": "Almond Wellness Centre",
+   "lat": -37.8195156,
+   "lng": 145.2274925
+  },
+  {
+   "name": "Fertile Ground Health Group",
+   "profession": "chinese-med",
+   "suburb": "Fitzroy",
+   "clinic": "Fertile Ground Health Group",
+   "lat": -37.8010382,
+   "lng": 144.9792611
+  },
+  {
+   "name": "Komyuniti Wellness",
+   "profession": "naturopath",
+   "suburb": "Fitzroy",
+   "clinic": "Komyuniti Wellness",
+   "lat": -37.8010382,
+   "lng": 144.9792611
+  },
+  {
+   "name": "Emma Berry",
+   "profession": "naturopath",
+   "suburb": "South Melbourne",
+   "clinic": "Melbourne Natural Medicine",
+   "lat": -37.83344,
+   "lng": 144.9570533
+  },
+  {
+   "name": "BabyCreate (Joanne Lipinski)",
+   "profession": "naturopath",
+   "suburb": "Elwood",
+   "clinic": "BabyCreate",
+   "lat": -37.8734689,
+   "lng": 144.9900157
+  },
+  {
+   "name": "Embrace Physio + Pilates",
+   "profession": "pelvic-physio",
+   "suburb": "Armadale",
+   "clinic": "Embrace Physio + Pilates",
+   "lat": -37.8563442,
+   "lng": 145.0193207
+  },
+  {
+   "name": "Embrace Physio + Pilates",
+   "profession": "yoga-pilates",
+   "suburb": "Armadale",
+   "clinic": "Embrace Physio + Pilates",
+   "lat": -37.8563442,
+   "lng": 145.0193207
   }
  ],
- "count": 67,
+ "count": 89,
  "professions": {
   "pelvic-physio": {
    "label": "Pelvic-health physiotherapist",
