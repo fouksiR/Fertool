@@ -2094,6 +2094,7 @@ function renderMenopauseMHTPanel(containerId){
       "#meno-panel .sb:hover{border-color:#bbb}",
       "#meno-panel .chk{display:flex;align-items:center;gap:8px;padding:7px 9px;border:1.5px solid #e5e5e0;border-radius:8px;margin-bottom:5px;cursor:pointer;font-size:12px;background:#fff;transition:all .15s}",
       "#meno-panel .chk input{margin:0;accent-color:#4a6741}",
+      "#meno-panel .chk.on{border-color:#4a6741;background:#eef3ea}",
       "#meno-panel .chk.red.on{border-color:#a4463b;background:#fbeeec}",
       "#meno-panel .chk.red.on input{accent-color:#a4463b}",
       "#meno-panel .chk.amber.on{border-color:#b07a22;background:#f8f0db}",
@@ -2116,8 +2117,12 @@ function renderMenopauseMHTPanel(containerId){
       "#meno-panel .agent .dose{font-size:12px;background:#f6f6f3;border:1px solid #ececec;border-radius:6px;padding:6px 9px;margin:5px 0}",
       "#meno-panel .agent .note{font-size:12px;color:#555;line-height:1.5;margin:4px 0 0}",
       "#meno-panel .agent .cav{font-size:11.5px;background:#f8f0db;border:1px solid #e7ce97;color:#6b511f;border-radius:6px;padding:6px 9px;margin-top:6px}",
-      "#meno-panel .nh{font-size:12px;color:#555;background:#f6f4f8;border:1px solid #e2dcea;border-radius:8px;padding:10px 12px;line-height:1.5;margin-top:4px}",
+      "#meno-panel .nh{font-size:12px;color:#555;background:#f6f4f8;border:1px solid #e2dcea;border-radius:8px;padding:10px 12px;line-height:1.5;margin-top:4px;margin-bottom:9px}",
       "#meno-panel .nh b{color:#29222E}",
+      "#meno-panel .notebox{position:relative;margin-top:4px}",
+      "#meno-panel .notebox textarea{width:100%;min-height:230px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.5;color:#333;background:#fbfaf6;border:1px solid #e5e5e0;border-radius:9px;padding:12px;resize:vertical;box-sizing:border-box}",
+      "#meno-panel .copybtn{position:absolute;top:8px;right:8px;background:#4a6741;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;padding:6px 11px;cursor:pointer;z-index:2;font-family:inherit}",
+      "#meno-panel .copybtn:hover{background:#3d5636}",
       "#meno-panel .resp{background:#29222E;color:#e8e2ea;border-radius:9px;padding:12px 14px;margin-top:14px;font-size:11.5px;line-height:1.55}",
       "#meno-panel .resp b{color:#fff}",
       "#meno-panel .refs{margin-top:12px;border-top:1px solid #e5e5e0;padding-top:10px}",
@@ -2133,12 +2138,12 @@ function renderMenopauseMHTPanel(containerId){
       RACGP:{s:'RACGP 2019',c:'#6b5b95',f:'Magraith K, Stuckey B. Making choices at menopause. Aust J Gen Pract 2019;48(7).'},
       AMS:{s:'AMS',c:'#0891b2',f:'Australasian Menopause Society \u2014 information sheets & MHT dose guide.'},
       MSOC:{s:'Menopause Soc 2022',c:'#c8781e',f:'The Menopause Society (NAMS). 2022 Hormone Therapy Position Statement.'},
-      TGA:{s:'TGA PI',c:'#a4463b',f:'TGA Product Information \u2014 Veoza (fezolinetant) 2024/25; Lynkuet (elinzanetant) 2025.'}
+      TGA:{s:'TGA PI',c:'#a4463b',f:'TGA Product Information \u2014 Veoza (fezolinetant) 2024/25; Lynkuet (elinzanetant) 2025; brand examples are illustrative.'}
     };
     var srcPills=Object.keys(SRC).map(function(k){var x=SRC[k];return '<span class="sp" style="background:'+x.c+'12;color:'+x.c+';border:1px solid '+x.c+'25">'+x.s+'</span>';}).join('');
     var refsH=Object.keys(SRC).map(function(k){return '<div class="ref">'+SRC[k].f+'</div>';}).join('');
 
-    var S={stage:'earlypost',uterus:'yes',target:'vms',contra:{},mod:{}};
+    var S={stage:'earlypost',uterus:'yes',sym:{vms:true},contra:{},mod:{}};
     var rootEl=document.createElement('div'); rootEl.className='mp'; container.appendChild(rootEl);
 
     function mcard(cls,tag,name,dose,note,cav){
@@ -2148,30 +2153,47 @@ function renderMenopauseMHTPanel(containerId){
       if(cav)h+='<div class="cav"><b>Caveat:</b> '+cav+'</div>';
       return h+'</div>';
     }
+    function nonHormCards(forCancer){
+      return mcard('','non-hormonal \u00b7 NK antagonist','Elinzanetant / Fezolinetant','Elinzanetant 60 mg nocte (Lynkuet); or fezolinetant 45 mg daily (Veoza)','Target the hypothalamic thermoregulatory pathway; hormone-free; effective for vasomotor symptoms.','Fezolinetant: baseline & serial LFTs, avoid CYP1A2 inhibitors, contraindicated in cirrhosis. Both private scripts (not PBS-listed for VMS).')
+        +mcard('','non-hormonal \u00b7 SSRI/SNRI','Venlafaxine / desvenlafaxine / escitalopram','Venlafaxine XR 37.5\u201375 mg (Efexor-XR); desvenlafaxine 50\u2013100 mg (Pristiq); escitalopram 10\u201320 mg (Lexapro)','Helps vasomotor symptoms and coexisting mood/anxiety.',(forCancer?'On tamoxifen: avoid paroxetine and fluoxetine (CYP2D6) \u2014 prefer venlafaxine/desvenlafaxine.':'Avoid paroxetine/fluoxetine with tamoxifen (CYP2D6).'))
+        +mcard('','non-hormonal \u00b7 adjunct','Gabapentin','100 mg nocte, titrate to ~900 mg/day','Useful for night sweats and disturbed sleep.','Sedation, dizziness; adjust in renal impairment.');
+    }
+
+    var symMeta={vms:'hot flushes',sweats:'night sweats',mood:'mood changes',joint:'joint / muscle pain',libido:'low libido',gsm:'vaginal / urinary (GSM)'};
+    var stageMeta={peri:'perimenopausal',earlypost:'postmenopausal (<60 / within 10y)',latepost:'late postmenopausal (>10y or age >60)',poi:'POI / early menopause'};
+    var uterusMeta={yes:'present',no:'absent (hysterectomy)',uncertain:'uncertain'};
+    var contraMeta={cancer:'oestrogen-dependent cancer',bleeding:'undiagnosed vaginal bleeding',vte:'active VTE / thrombophilia',liver:'severe liver disease',cvd:'uncontrolled CVD / hypertension'};
+    var modMeta={pastvte:'past VTE',migraine:'migraine (\u00b1 aura)',obesity:'BMI \u2265 30',diabetes:'diabetes',metabolic:'high triglycerides / hepatobiliary',smoker:'smoker'};
 
     function render(){
       var contra=Object.keys(S.contra).filter(function(k){return S.contra[k];});
       var mod=Object.keys(S.mod).filter(function(k){return S.mod[k];});
+      var sym=S.sym;
+      var flush=!!sym.vms,sweats=!!sym.sweats,mood=!!sym.mood,joint=!!sym.joint,libido=!!sym.libido,gsm=!!sym.gsm;
+      var systemicSx=flush||sweats||mood||joint;
       var hardStop=contra.length>0;
-      var gsmOnly=S.target==='gsm';
+      var gsmOnly=gsm && !systemicSx && !libido;
       var late=S.stage==='latepost';
       var poi=(S.stage==='poi');
       var transdermal=mod.length>0||late;
       var peri=S.stage==='peri';
+      var uterus=(S.uterus==='yes'||S.uterus==='uncertain');
 
       var risk=18+mod.length*11+(late?26:0); if(hardStop)risk=96; risk=Math.max(8,Math.min(risk,100));
-      var rc=risk>75?'#a4463b':risk>45?'#b07a22':'#4e7a5c';
+      var rcCol=risk>75?'#a4463b':risk>45?'#b07a22':'#4e7a5c';
 
       var level,bt,btitle,btext;
-      if(hardStop){level='stop';bt='Pause \u00b7 investigate first';btitle='Do not start systemic MHT yet';btext='A stop-and-assess feature is present. Address it through the relevant pathway before any hormonal therapy; non-hormonal relief may run in parallel.';}
+      if(hardStop){level='stop';bt='Pause \u00b7 investigate first';btitle='Do not start systemic MHT yet';btext='A stop-and-assess feature is present. Address it through the relevant pathway before hormonal therapy; non-hormonal relief may run in parallel.';}
       else if(gsmOnly){level='go';bt='Local therapy';btitle='A local, low-exposure decision';btext='Genitourinary symptoms without a systemic indication \u2014 local vaginal therapy is the proportionate choice.';}
+      else if(!systemicSx && libido){level='go';bt='Targeted \u00b7 non-oestrogen';btitle='No vasomotor indication for systemic MHT';btext='Low libido alone is not an indication for systemic oestrogen. Assess for HSDD and address contributing factors; consider testosterone.';}
+      else if(!systemicSx && !gsm && !libido){level='go';bt='Select a symptom';btitle='Choose the treatment target';btext='Tick the presenting symptoms on the left to generate a suggested approach.';}
       else if(late){level='caution';bt='Individualised late start';btitle='Later initiation \u2014 proceed with care';btext='Starting >10 years after menopause or over 60 has a less favourable profile. Not prohibited: low-dose transdermal, clear indication, vascular review.';}
       else if(mod.length){level='caution';bt='Suitable \u00b7 modify route';btitle='Systemic MHT is reasonable \u2014 go transdermal';btext='The selected modifiers favour avoiding the oral first-pass. Transdermal oestradiol carries no increased VTE risk.';}
       else {level='go';bt='Suitable candidate';btitle='Systemic MHT is a reasonable option';btext='Within the favourable window and no stop feature identified. Confirm screening, blood pressure and history.';}
 
       var stages=[['peri','Peri'],['earlypost','&lt;60 / \u226410y'],['latepost','Late / &gt;60'],['poi','POI']];
       var uters=[['yes','Uterus'],['no','No uterus'],['uncertain','Uncertain']];
-      var targets=[['vms','Flushes (VMS)'],['gsm','GSM only']];
+      var symOpts=[['vms','Hot flushes'],['sweats','Night sweats'],['mood','Mood changes'],['joint','Joint / muscle pain'],['libido','Low libido'],['gsm','Vaginal / urinary (GSM)']];
       var contraOpts=[['cancer','Oestrogen-dependent cancer'],['bleeding','Undiagnosed bleeding'],['vte','Active VTE / thrombophilia'],['liver','Severe liver disease'],['cvd','Uncontrolled CVD / HTN']];
       var modOpts=[['pastvte','Past VTE'],['migraine','Migraine (\u00b1 aura)'],['obesity','BMI \u2265 30'],['diabetes','Diabetes'],['metabolic','High TG / hepatobiliary'],['smoker','Smoker']];
 
@@ -2181,20 +2203,51 @@ function renderMenopauseMHTPanel(containerId){
       var sidebar='<div class="rf"><div class="rf-ti">Patient profile</div>'
         +'<div class="sl">Timing</div><div class="sbs">'+sbRow(stages,'stage')+'</div>'
         +'<div class="sl">Uterus</div><div class="sbs">'+sbRow(uters,'uterus')+'</div>'
-        +'<div class="sl">Target</div><div class="sbs">'+sbRow(targets,'target')+'</div>'
+        +'<div class="sl">Symptoms (tick all)</div>'+chkRow(symOpts,'sym','')
         +'<div class="sl">Absolute contraindications</div>'+chkRow(contraOpts,'contra','red')
         +'<div class="sl">Route modifiers</div>'+chkRow(modOpts,'mod','amber')
         +'</div>';
 
       var main='<div class="banner '+level+'"><div class="bt">'+bt+'</div><h3>'+btitle+'</h3><p>'+btext+'</p>'
-        +'<div class="meter"><i style="width:'+risk+'%;background:'+rc+'"></i></div></div>';
+        +'<div class="meter"><i style="width:'+risk+'%;background:'+rcCol+'"></i></div></div>';
+
+      var note=[];
+      note.push('MENOPAUSE / MHT \u2014 EDUCATIONAL SUMMARY (not a prescription)');
+      note.push('');
+      note.push('PROFILE');
+      note.push('- Stage: '+stageMeta[S.stage]);
+      note.push('- Uterus: '+uterusMeta[S.uterus]);
+      var symSel=Object.keys(sym).filter(function(k){return sym[k];}).map(function(k){return symMeta[k];});
+      note.push('- Symptoms: '+(symSel.length?symSel.join(', '):'not specified'));
+      note.push('- Absolute contraindications: '+(contra.length?contra.map(function(k){return contraMeta[k];}).join(', '):'none identified'));
+      note.push('- Route modifiers: '+(mod.length?mod.map(function(k){return modMeta[k];}).join(', '):'none'));
+      note.push('');
+      note.push('DIRECTION & SUGGESTED REGIMEN (educational examples \u2014 verify current AU PI)');
 
       if(hardStop){
-        main+='<div class="sec-t">Direction</div><div class="nh">Build no hormonal regimen until the flagged feature is investigated or resolved. Follow the relevant bleeding / cancer / VTE / liver / CVD pathway. For vasomotor relief meanwhile, consider an SSRI/SNRI, an NK-receptor antagonist (fezolinetant or elinzanetant), gabapentin or CBT \u2014 coordinating with oncology where there is a cancer history.</div>';
+        main+='<div class="sec-t">Direction</div><div class="nh">Build no hormonal regimen until the flagged feature is investigated or resolved. Follow the relevant bleeding / cancer / VTE / liver / CVD pathway.</div>';
+        main+='<div class="sec-t">Interim non-hormonal relief</div>'+nonHormCards(contra.indexOf('cancer')>-1);
+        if(gsm) main+='<div class="sec-t">Genitourinary</div>'+mcard('','local \u00b7 vaginal','Vaginal moisturiser \u00b1 low-dose vaginal oestrogen','Non-hormonal moisturiser/lubricant first-line; low-dose vaginal oestradiol only in selected patients','For refractory symptoms after non-hormonal measures.','With a cancer history, decide jointly with oncology \u2014 especially on aromatase inhibitors.');
+        note.push('- DO NOT start systemic MHT: '+contra.map(function(k){return contraMeta[k];}).join(', ')+' present \u2014 investigate/resolve first.');
+        note.push('- Interim (non-hormonal): elinzanetant 60 mg nocte (Lynkuet) OR fezolinetant 45 mg (Veoza) [baseline+serial LFTs; avoid CYP1A2 inhibitors]; or venlafaxine XR 37.5-75 mg (Efexor-XR); gabapentin 100-900 mg nocte; CBT.');
+        if(contra.indexOf('cancer')>-1) note.push('- Cancer history: coordinate all symptom therapy with oncology.');
       } else if(gsmOnly){
         main+='<div class="sec-t">Local therapy</div>'
-          +mcard('','first-line','Vaginal moisturiser & lubricant','Regular use','Non-hormonal base; often combined with local oestrogen.','')
-          +mcard('','local hormonal','Low-dose vaginal oestrogen','Oestradiol 10 mcg tablet nightly \u00d72 weeks then twice weekly; or estriol pessary/cream','Minimal systemic absorption; no progestogen required; safe long-term.','Investigate any bleeding; individualise in breast-cancer survivors with oncology input.');
+          +mcard('','local \u00b7 hormonal','Vaginal oestrogen','Oestradiol 10 mcg pessary nightly \u00d72 weeks then twice weekly (Vagifem); or estriol cream/pessary (Ovestin); or estradiol ring (Estring)','Minimal systemic absorption; no progestogen required; safe long-term.','Investigate any bleeding; individualise in breast-cancer survivors with oncology input.')
+          +mcard('','local \u00b7 non-hormonal','Moisturiser + lubricant','Regular vaginal moisturiser; lubricant for intercourse','First-line adjunct; ongoing use.','');
+        note.push('- Local vaginal therapy (no systemic indication).');
+        note.push('- Vaginal oestradiol 10 mcg pessary (Vagifem) nightly x2 weeks then twice weekly; OR estriol cream (Ovestin). No progestogen needed.');
+        note.push('- Ongoing non-hormonal moisturiser + lubricant.');
+      } else if(!systemicSx && libido){
+        main+='<div class="sec-t">Direction</div><div class="nh">Low libido without vasomotor symptoms is not an indication for systemic oestrogen. Assess for HSDD and treat contributors (GSM, mood, sleep, medications, relationship) before considering testosterone.</div>';
+        main+=mcard('plum','sexual desire \u00b7 HSDD','Testosterone 1% cream','0.5 mL (5 mg) daily to lower abdomen or outer thigh (AndroFeme)','After diagnosing HSDD and addressing other contributors. Monitor levels to keep within the female range.','Off-label indication; avoid supraphysiological levels; review at 3\u20136 months.');
+        if(gsm) main+=mcard('','genitourinary','Vaginal oestrogen','Oestradiol 10 mcg pessary (Vagifem) nightly \u00d72 weeks then twice weekly','Treats coexisting dryness/dyspareunia contributing to low desire.','',' ');
+        note.push('- No systemic oestrogen indication. Assess HSDD; address GSM, mood, sleep, medications, relationship.');
+        note.push('- Consider testosterone 1% cream 0.5 mL/day (AndroFeme); monitor levels. Off-label; review 3-6 months.');
+        if(gsm) note.push('- Genitourinary: vaginal oestradiol 10 mcg pessary (Vagifem) as above.');
+      } else if(!systemicSx && !gsm && !libido){
+        main+='<div class="nh">Tick the presenting symptoms on the left to generate a suggested approach.</div>';
+        note.push('- (Select symptoms to generate a plan.)');
       } else {
         var routeTxt = transdermal
           ? 'Prefer <strong>transdermal oestradiol</strong> \u2014 the selected modifiers/timing favour avoiding the oral first-pass (no increased VTE risk).'
@@ -2207,34 +2260,66 @@ function renderMenopauseMHTPanel(containerId){
         main+='<div class="sec-t">Direction</div><div class="nh"><b>Route.</b> '+routeTxt+'<br><b>Regimen.</b> '+regTxt+'</div>';
 
         main+='<div class="sec-t">Oestrogen</div>';
-        if(transdermal) main+=mcard('','oestrogen \u00b7 preferred','Transdermal oestradiol','Patch 25\u201350 mcg twice weekly, or gel 0.5\u20131.0 mg daily','No hepatic first-pass; not associated with increased VTE. Titrate to symptoms, not a blood level.','');
-        else main+=mcard('','oestrogen','Oral 17\u03b2-oestradiol','0.5\u20131.0 mg daily','Reasonable at low baseline risk; transdermal is an equally good default.','More first-pass VTE / gallbladder / triglyceride effect than transdermal.');
+        main+=mcard('','oestrogen \u00b7 transdermal','17\u03b2-oestradiol (transdermal)','Patch 25\u201350 mcg twice weekly (e.g. Estradot); or gel 0.5\u20131.0 mg daily (e.g. Sandrena sachet, Estrogel pump); or spray 1\u20133/day (Lenzetto)','No hepatic first-pass; not associated with increased VTE \u2014 the modern first-line default. Start low, titrate to symptoms, not a blood level.','');
+        if(!transdermal) main+=mcard('','oestrogen \u00b7 oral (alternative)','17\u03b2-oestradiol (oral)','0.5\u20132 mg daily (e.g. Estrofem 1 mg; or oestradiol valerate Progynova 1 mg)','A reasonable alternative at low baseline risk if tablets aid adherence.','More first-pass VTE / gallbladder / triglyceride effect than transdermal.');
+        else main+='<div class="nh"><b>Oral route less suitable here</b> given the selected modifiers \u2014 prefer transdermal.</div>';
 
-        if(S.uterus==='yes'||S.uterus==='uncertain'){
+        if(uterus){
           main+='<div class="sec-t">Endometrial protection</div>';
-          main+=mcard('','progestogen \u00b7 preferred','Micronised progesterone',(peri?'Sequential 200 mg nocte for 12\u201314 nights/month':'Continuous 100 mg nocte (or 200 mg sequential)'),'Body-identical; may aid sleep; lower breast-cancer signal.',(peri?'':'100 mg continuous may be insufficient with high-dose oestrogen.'));
-          main+=mcard('plum','protection + contraception','52 mg LNG-IUD (Mirena)','Device + systemic oestradiol','Protection, bleeding control and contraception in one. Only the 52 mg strength is adequate for endometrial protection.','');
+          main+=mcard('','progestogen \u00b7 preferred','Micronised progesterone (Prometrium)',(peri?'Sequential: 200 mg nocte for 12\u201314 nights/month':'Continuous: 100 mg nocte daily'),'Body-identical; may aid sleep; lower breast-cancer signal.',(peri?'':'100 mg may be insufficient with high-dose oestrogen \u2014 check adequacy.'));
+          main+=mcard('plum','protection + contraception','52 mg LNG-IUD (Mirena)','Intrauterine device + systemic oestradiol','Protection, bleeding control and contraception in one; 5-year duration. Only the 52 mg strength is adequate for protection.','');
+          main+=mcard('','convenience \u00b7 combined','Fixed-dose combined product','Oral: Femoston 1/10 or 2/10 (sequential), Femoston-conti 1/5 (continuous); Transdermal: Estalis sequential / continuous patch','One product delivers oestrogen + progestogen \u2014 simpler adherence.','');
         } else {
-          main+='<div class="sec-t">Endometrial protection</div>'+mcard('','no uterus','No progestogen required','Oestrogen-only','No endometrium to protect.','If residual endometriosis after hysterectomy, add a progestogen.');
+          main+='<div class="sec-t">Endometrial protection</div>'+mcard('','no uterus','Oestrogen alone','No progestogen required','No endometrium to protect.','Add a progestogen only if residual endometriosis after hysterectomy.');
         }
 
-        if(poi) main+=mcard('plum','replacement','POI / early menopause','Physiological replacement, often higher doses, usually to ~51','Replacement of prematurely lost hormones \u2014 a different risk context from a late start. Assess bone health; contraception may still be needed.','');
+        if(gsm) main+='<div class="sec-t">Genitourinary (add-on)</div>'+mcard('','local \u00b7 vaginal','Vaginal oestrogen','Oestradiol 10 mcg pessary (Vagifem) nightly \u00d72 weeks then twice weekly; or estriol (Ovestin)','GSM often persists despite adequate systemic MHT and responds to local therapy. No extra progestogen needed.','');
+        if(libido) main+='<div class="sec-t">Sexual desire</div>'+mcard('plum','HSDD','Testosterone 1% cream (AndroFeme)','0.5 mL (5 mg) daily to lower abdomen or outer thigh','After diagnosing HSDD and addressing GSM/mood/sleep/medication factors. Monitor levels (female range).','Off-label; avoid supraphysiological levels; review 3\u20136 months.');
+        if(poi) main+=mcard('plum','replacement','POI / early menopause','Physiological replacement, often higher doses, usually to ~51','Replacement of prematurely lost hormones \u2014 assess bone health; contraception may still be needed.','');
         if(late) main+=mcard('amber','late start','Later initiation','Low-dose transdermal, clear indication, vascular/VTE review','Individualise and document shared decision-making.','');
+        if(joint) main+='<div class="nh"><b>Joint / muscle pain:</b> menopausal arthralgia often improves with oestrogen; exclude inflammatory arthritis if red flags (persistent swelling, prolonged morning stiffness).</div>';
+        if(mood) main+='<div class="nh"><b>Mood:</b> perimenopausal low mood may respond to MHT; consider an SSRI/SNRI and psychological support, and screen for depression.</div>';
+        main+='<div class="sec-t">If declined or insufficient</div>'+nonHormCards(false);
 
-        main+='<div class="sec-t">If declined or insufficient</div><div class="nh"><b>Non-hormonal:</b> elinzanetant (Lynkuet) or fezolinetant (Veoza \u2014 baseline & serial LFTs, avoid CYP1A2 inhibitors); SSRI/SNRI (avoid paroxetine/fluoxetine with tamoxifen); gabapentin; CBT. For persistent genitourinary symptoms, add low-dose vaginal oestrogen.</div>';
+        note.push('- Candidacy: '+btitle+'.');
+        note.push('- Route: '+(transdermal?'transdermal oestradiol preferred (avoids first-pass; no increased VTE)':'oral or transdermal oestradiol reasonable')+'.');
+        note.push('- Regimen: '+(S.uterus==='no'?'oestrogen alone (no uterus)':(peri?'sequential \u2014 cyclical progestogen 12-14 days/month':'continuous combined \u2014 period-free'))+'.');
+        note.push('');
+        if(transdermal) note.push('- Oestrogen: transdermal 17b-oestradiol \u2014 patch 25-50 mcg twice weekly (e.g. Estradot) OR gel 0.5-1.0 mg/day (e.g. Sandrena / Estrogel) OR spray (Lenzetto). Titrate to symptoms. Oral route less suitable given the selected modifiers.');
+        else note.push('- Oestrogen: transdermal 17b-oestradiol first-line \u2014 patch 25-50 mcg twice weekly (e.g. Estradot) OR gel 0.5-1.0 mg/day (e.g. Sandrena / Estrogel). Alternative at low risk: oral 17b-oestradiol 0.5-1 mg/day (e.g. Estrofem). Titrate to symptoms.');
+        if(uterus) note.push('- Endometrial protection: micronised progesterone (Prometrium) '+(peri?'200 mg nocte 12-14 nights/month (sequential)':'100 mg nocte daily (continuous)')+'; OR 52 mg LNG-IUD (Mirena). Combined products (Femoston oral / Estalis patch) simplify adherence.');
+        else note.push('- No progestogen required (no uterus; add only if residual endometriosis).');
+        if(gsm) note.push('- Genitourinary: add vaginal oestradiol 10 mcg pessary (Vagifem) nightly x2 weeks then twice weekly.');
+        if(libido) note.push('- Sexual desire: consider testosterone 1% cream (AndroFeme) 0.5 mL/day after HSDD assessment; monitor levels.');
+        if(joint) note.push('- Arthralgia: menopausal joint pain may improve with oestrogen; exclude inflammatory causes.');
+        if(mood) note.push('- Mood: perimenopausal low mood may respond to MHT; consider SSRI/SNRI + psychological support; screen for depression.');
       }
 
-      main+='<div class="resp"><b>Prescriber responsibility.</b> This is an educational reasoning aid, not a prescription. It cannot see the patient or verify inputs, and does not capture every interaction, comorbidity or current product-information change. The decision to prescribe \u2014 agent, dose, route, monitoring \u2014 and the decision not to prescribe rest entirely with the treating clinician, who must confirm current Australian product information, PBS status and local pathways. Doses shown are illustrative.</div>';
+      note.push('');
+      note.push('SAFETY & REVIEW');
+      if(mod.length) note.push('- '+mod.map(function(k){return modMeta[k];}).join(', ')+' -> transdermal preferred (avoid oral first-pass).');
+      if(late) note.push('- Late initiation -> low-dose transdermal, clear indication, vascular review.');
+      if(poi) note.push('- POI -> replacement usually to ~51; assess bone density; contraception may still be needed.');
+      note.push('- Review 6-12 weeks (efficacy, side effects, bleeding), then 6-12 monthly.');
+      note.push('- Investigate abnormal bleeding: transvaginal ultrasound first-line -> endometrial sampling / hysteroscopy per pathway.');
+      note.push('');
+      note.push('Educational aid only \u2014 not a prescription. Confirm current AU product information, PBS status, interactions and contraindications. The prescribing decision rests with the treating clinician.');
+      var noteText=note.join('\n');
+
+      main+='<div class="sec-t">Copy-pastable note</div><div class="notebox"><button class="copybtn" id="menoCopyBtn">Copy note</button><textarea id="menoNote" readonly>'+esc(noteText)+'</textarea></div>';
+      main+='<div class="resp"><b>Prescriber responsibility.</b> This is an educational reasoning aid, not a prescription. It cannot see the patient or verify inputs, and does not capture every interaction, comorbidity or current product-information change. Product names are illustrative Australian examples. The decision to prescribe \u2014 agent, dose, route, monitoring \u2014 and the decision not to prescribe rest entirely with the treating clinician, who must confirm current Australian product information, PBS status and local pathways.</div>';
       main+='<a class="openfull" href="menopause-mht-stream.html">Open the full 7-step decision stream \u2192</a>';
       main+='<div class="refs"><div class="refs-t">References</div>'+refsH+'</div>';
 
       rootEl.innerHTML=
-        '<div class="hdr"><div class="hdr-top">Illustrative Counselling Aid \u00b7 Evidence-Informed</div><h1>Menopause: Selecting MHT</h1><div class="hdr-sub">Set the patient profile on the left to see how route, regimen and candidacy shift. Educational decision support for GPs \u2014 not a prescription.</div><div class="srcs">'+srcPills+'</div></div>'
+        '<div class="hdr"><div class="hdr-top">Illustrative Counselling Aid \u00b7 Evidence-Informed</div><h1>Menopause: Selecting MHT</h1><div class="hdr-sub">Set the patient profile on the left \u2014 timing, uterus, symptoms, contraindications and route factors \u2014 to see the direction, concrete regimen options and a copy-pastable note update live.</div><div class="srcs">'+srcPills+'</div></div>'
         +'<div class="kmsg"><div class="kmsg-t">The window principle</div><div class="kmsg-b">For a healthy symptomatic woman <strong>under 60 or within 10 years of menopause</strong>, the benefits of MHT generally outweigh the risks. Most \u201ccontraindications\u201d are reasons to choose the <strong>transdermal</strong> route, not to withhold therapy.</div></div>'
         +'<div class="layout"><div class="sidebar">'+sidebar+'</div><div class="main">'+main+'</div></div>';
 
       rootEl.querySelectorAll('[data-mk]').forEach(function(b){b.onclick=function(){S[b.getAttribute('data-mk')]=b.getAttribute('data-mv');render();};});
       rootEl.querySelectorAll('[data-bag]').forEach(function(cb){cb.onchange=function(){S[cb.getAttribute('data-bag')][cb.getAttribute('data-bk')]=cb.checked;render();};});
+      var cbtn=rootEl.querySelector('#menoCopyBtn'), ta=rootEl.querySelector('#menoNote');
+      if(cbtn&&ta){ cbtn.onclick=function(){ try{ta.focus();ta.select();}catch(e){} var done=function(){cbtn.textContent='Copied \u2713';setTimeout(function(){cbtn.textContent='Copy note';},1500);}; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(ta.value).then(done).catch(function(){try{document.execCommand('copy');}catch(e2){} done();}); } else { try{document.execCommand('copy');}catch(e3){} done(); } }; }
     }
     render();
 }
