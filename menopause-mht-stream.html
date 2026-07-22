@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MHT Decision Stream · An educational walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#29222E; --ink-soft:#4A4150;
+  --paper:#F5F1E8; --paper-2:#EFE9DC; --card:#FBF9F3;
+  --line:#D9D0BF;
+  --sage:#4a6741; --sage-deep:#3c5436;
+  --gold:#c8a45e; --gold-deep:#9c7a34;
+  --plum:#6b5b95;
+  --go:#4E7A5C; --go-bg:#E4EEE4; --go-line:#BcD6BE;
+  --caution:#B07A22; --caution-bg:#F5E9CF; --caution-line:#E7CE97;
+  --stop:#A4463B; --stop-bg:#F1DBD5; --stop-line:#E3B6AC;
+  --shadow:0 1px 2px rgba(41,34,46,.06),0 8px 28px rgba(41,34,46,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Montserrat",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.fertool-bar{background:#fff;border-bottom:1px solid var(--line);padding:11px 0}
+.fertool-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fertool-bar a{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--sage-deep);text-decoration:none;font-weight:600}
+.fertool-bar a:hover{color:var(--gold-deep)}
+.fertool-bar .badge{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--plum);background:#efe7ee;border:1px solid #d9c9d6;border-radius:100px;padding:4px 11px;font-weight:600}
+h1,h2,h3,h4{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.1;margin:0}
+p{margin:0 0 1em}
+a{color:var(--gold-deep)}
+.mono{font-family:"IBM Plex Mono",monospace}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500}
+
+/* HERO */
+.hero{background:
+  radial-gradient(120% 90% at 90% -10%,rgba(107,78,99,.5),transparent 55%),
+  radial-gradient(90% 80% at -5% 110%,rgba(111,128,98,.42),transparent 55%),
+  var(--ink);color:var(--paper);padding:54px 0 46px}
+.hero h1{font-size:clamp(2.5rem,7vw,4.4rem);font-weight:700;letter-spacing:-.01em;margin:.2em 0 .1em}
+.hero h1 em{font-style:italic;color:var(--gold);font-weight:500}
+.hero .lede{max-width:620px;color:#EBE4D8;font-size:1.08rem}
+.hero-disc{margin-top:22px;background:rgba(164,70,59,.16);border:1px solid rgba(227,182,172,.4);
+  border-radius:12px;padding:13px 17px;font-size:.86rem;color:#F3DED8;max-width:660px}
+.hero-disc b{color:#fff}
+
+/* WIZARD */
+.stream{padding:40px 0 20px}
+.progress-shell{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.progress-track{flex:1;height:8px;background:var(--paper-2);border:1px solid var(--line);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;width:14%;background:linear-gradient(90deg,var(--sage),var(--gold));border-radius:100px;transition:width .35s ease}
+.progress-label{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.08em;color:var(--gold-deep);font-weight:600;white-space:nowrap}
+
+.step{display:none}
+.step.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);font-weight:600}
+.step h2{font-size:clamp(1.7rem,4vw,2.5rem);margin:.15em 0 .1em}
+.step-why{color:var(--ink-soft);font-size:.95rem;margin:0 0 20px;padding-left:14px;border-left:3px solid var(--sage);font-style:italic}
+
+/* tile grid */
+.tiles{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+.tiles.one{grid-template-columns:1fr}
+@media(max-width:640px){.tiles{grid-template-columns:1fr}}
+.tile{position:relative;display:flex;align-items:flex-start;gap:12px;background:var(--card);
+  border:1.5px solid var(--line);border-radius:13px;padding:15px 16px;cursor:pointer;transition:.16s;box-shadow:var(--shadow)}
+.tile:hover{border-color:var(--sage)}
+.tile input{position:absolute;opacity:0;pointer-events:none}
+.tile .box{flex:none;width:22px;height:22px;border:2px solid var(--line);border-radius:6px;margin-top:2px;
+  display:grid;place-items:center;transition:.16s;background:#fff}
+.tile input[type=radio]~.box{border-radius:50%}
+.tile .box::after{content:"";width:11px;height:11px;border-radius:3px;background:var(--sage);transform:scale(0);transition:.16s}
+.tile input[type=radio]~.box::after{border-radius:50%}
+.tile .t-body b{display:block;font-size:1.02rem;line-height:1.25}
+.tile .t-body small{color:var(--ink-soft);font-size:.85rem}
+.tile:has(input:checked){border-color:var(--sage);background:var(--go-bg)}
+.tile:has(input:checked) .box{border-color:var(--sage)}
+.tile:has(input:checked) .box::after{transform:scale(1)}
+/* intensity variants */
+.tiles.danger .tile:has(input:checked){border-color:var(--stop);background:var(--stop-bg)}
+.tiles.danger .tile:has(input:checked) .box{border-color:var(--stop)}
+.tiles.danger .tile:has(input:checked) .box::after{background:var(--stop)}
+.tiles.warn .tile:has(input:checked){border-color:var(--caution);background:var(--caution-bg)}
+.tiles.warn .tile:has(input:checked) .box{border-color:var(--caution)}
+.tiles.warn .tile:has(input:checked) .box::after{background:var(--caution)}
+
+.age-row{display:flex;align-items:center;gap:12px;margin:0 0 18px;background:var(--card);
+  border:1.5px solid var(--line);border-radius:13px;padding:12px 16px;box-shadow:var(--shadow)}
+.age-row label{font-weight:600;font-size:.95rem}
+.age-row input{width:90px;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;font:inherit;background:#fff}
+.age-row small{color:var(--ink-soft);font-size:.82rem;margin-left:auto}
+
+.controls{display:flex;gap:10px;margin-top:26px;align-items:center;flex-wrap:wrap}
+.btn{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  border:none;border-radius:10px;padding:12px 20px;cursor:pointer;transition:.16s}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:#3d3448}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink-soft)}
+.btn.ghost:hover{border-color:var(--sage);color:var(--ink)}
+.btn.gold{background:var(--gold);color:var(--ink)}
+.btn.gold:hover{background:var(--gold-deep);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.step-count{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-soft)}
+
+/* RESULT */
+#result{display:none;padding:20px 0 40px}
+#result.show{display:block;animation:fade .4s ease}
+.res-banner{border-radius:16px;padding:22px 24px;margin-bottom:22px;border:1.5px solid}
+.res-banner .tag{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.res-banner h3{font-size:1.8rem;margin:4px 0 6px}
+.res-banner.go{background:var(--go-bg);border-color:var(--go-line)}.res-banner.go .tag{color:var(--go)}
+.res-banner.caution{background:var(--caution-bg);border-color:var(--caution-line)}.res-banner.caution .tag{color:var(--caution)}
+.res-banner.stop{background:var(--stop-bg);border-color:var(--stop-line)}.res-banner.stop .tag{color:var(--stop)}
+.meter{margin-top:14px}
+.meter-track{height:9px;background:rgba(41,34,46,.1);border-radius:100px;overflow:hidden}
+.meter-fill{height:100%;border-radius:100px;transition:width .5s ease}
+.meter-lab{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.64rem;
+  letter-spacing:.06em;color:var(--ink-soft);margin-top:5px;text-transform:uppercase}
+
+.res-block{margin-bottom:24px}
+.res-block>.h{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold-deep);font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.res-block>.h::after{content:"";flex:1;height:1px;background:var(--line)}
+.res-block>p{margin:0 0 8px}
+
+/* med cards */
+.meds{display:grid;gap:14px}
+.med{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 18px;box-shadow:var(--shadow);
+  border-left:4px solid var(--sage)}
+.med.go{border-left-color:var(--go)} .med.caution{border-left-color:var(--caution)} .med.stop{border-left-color:var(--stop)} .med.info{border-left-color:var(--plum)}
+.med-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.med-head h4{font-size:1.3rem}
+.med-dose{font-size:.92rem;background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:7px 11px;margin:6px 0}
+.med-note{font-size:.92rem;color:var(--ink-soft);margin:6px 0}
+.med-caveat,.med-contra{font-size:.88rem;border-radius:8px;padding:7px 11px;margin-top:7px}
+.med-caveat{background:var(--caution-bg);color:#6b511f;border:1px solid var(--caution-line)}
+.med-contra{background:var(--stop-bg);color:#7a2f28;border:1px solid var(--stop-line)}
+.med-caveat b,.med-contra b{font-weight:700}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;font-size:.62rem;
+  font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:100px;border:1px solid}
+.chip.go{color:var(--go);background:var(--go-bg);border-color:var(--go-line)}
+.chip.caution{color:var(--caution);background:var(--caution-bg);border-color:var(--caution-line)}
+.chip.stop{color:var(--stop);background:var(--stop-bg);border-color:var(--stop-line)}
+.chip.info{color:var(--plum);background:#efe7ee;border-color:#d9c9d6}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.responsibility{background:var(--ink);color:#EBE4D8;border-radius:14px;padding:20px 22px;margin:8px 0 24px}
+.responsibility .h{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.responsibility p{margin:0;font-size:.92rem}
+.responsibility b{color:#fff}
+
+.flags{display:grid;gap:8px;margin-bottom:6px}
+.flag{font-size:.9rem;padding:9px 13px;border-radius:9px;border:1px solid;display:flex;gap:9px;align-items:flex-start}
+.flag.stop{background:var(--stop-bg);border-color:var(--stop-line);color:#7a2f28}
+.flag.caution{background:var(--caution-bg);border-color:var(--caution-line);color:#6b511f}
+.flag.info{background:#eef2ea;border-color:#cdd8c4;color:#3f5236}
+.flag b{font-weight:700}
+
+/* references */
+section.refs-sec{background:var(--paper-2);border-top:1px solid var(--line);padding:44px 0}
+section.refs-sec h2{font-size:2rem;margin-bottom:6px}
+.refs{counter-reset:r;list-style:none;padding:0;margin:14px 0 0;font-size:.9rem}
+.refs li{counter-increment:r;position:relative;padding:9px 0 9px 34px;border-bottom:1px solid var(--line);color:var(--ink-soft)}
+.refs li::before{content:counter(r);position:absolute;left:0;top:9px;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  font-weight:600;color:var(--paper);background:var(--gold-deep);width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.refs li b{color:var(--ink)}
+.refs a{word-break:break-word}
+
+footer{background:var(--ink);color:#B7AAC0;padding:30px 0;font-size:.84rem}
+footer b{color:var(--paper);font-family:"Cormorant Garamond",serif;font-size:1.2rem;font-weight:600}
+
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+@media print{.hero-disc,.controls,.progress-shell{display:none}.step{display:block!important}#result{display:block!important}}
+</style>
+</head>
+<body>
+
+<div class="fertool-bar">
+  <div class="wrap">
+    <a href="index.html">← Fertool</a>
+    <span class="badge">Additional tool · educational</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Educational walkthrough · not a prescription</div>
+    <h1>MHT <em>Decision&nbsp;Stream</em></h1>
+    <p class="lede">A guided, step-by-step teaching tool. Answer the clinical questions and it assembles the reasoning — target, suitability, route, regimen and specific options with their caveats.</p>
+    <div class="hero-disc">
+      <b>Educational use only.</b> This tool illustrates a reasoning pathway; it does not diagnose, does not replace history, examination, current product information or clinical judgement, and generates <b>no prescription</b>. Every decision — including whether to prescribe at all — rests with the treating clinician.
+    </div>
+  </div>
+</header>
+
+<div class="stream">
+  <div class="wrap">
+    <div class="progress-shell">
+      <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-label" id="plabel">Step 1 / 7</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step active" data-step="1">
+      <div class="step-eyebrow">01 · Timing</div>
+      <h2>Where is she in the transition?</h2>
+      <p class="step-why">Timing sets the whole risk–benefit. The favourable window is under 60 or within 10 years of menopause. In POI it is replacement, not optional.</p>
+      <div class="age-row">
+        <label for="age">Age</label>
+        <input id="age" type="number" min="25" max="95" placeholder="52">
+        <small>Used to flag late initiation (&gt;60)</small>
+      </div>
+      <div class="tiles one" data-single="stage">
+        <label class="tile"><input type="radio" name="stage" value="peri"><span class="box"></span><span class="t-body"><b>Perimenopause</b><small>Irregular cycles, last period &lt;12 months ago</small></span></label>
+        <label class="tile"><input type="radio" name="stage" value="earlypost" checked><span class="box"></span><span class="t-body"><b>Postmenopause — within 10 years / under 60</b><small>The favourable initiation window</small></span></label>
+        <label class="tile"><input type="radio" name="stage" value="latepost"><span class="box"></span><span class="t-body"><b>Late postmenopause — &gt;10 years, or a new start over 60</b><small>Less favourable absolute risk; individualise</small></span></label>
+        <label class="tile"><input type="radio" name="stage" value="poi"><span class="box"></span><span class="t-body"><b>POI / early menopause (under 45)</b><small>Hormone replacement, usually to ~51</small></span></label>
+        <label class="tile"><input type="radio" name="stage" value="surgical"><span class="box"></span><span class="t-body"><b>Surgical menopause (both ovaries removed)</b><small>Abrupt, often severe symptoms</small></span></label>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" data-step="2">
+      <div class="step-eyebrow">02 · Anatomy</div>
+      <h2>Is the uterus present?</h2>
+      <p class="step-why">A uterus makes progestogen mandatory for endometrial protection. No uterus usually means oestrogen alone — with one exception.</p>
+      <div class="tiles one" data-single="uterus">
+        <label class="tile"><input type="radio" name="uterus" value="yes" checked><span class="box"></span><span class="t-body"><b>Uterus present</b><small>Progestogen (or 52 mg LNG-IUD, or a tissue-selective option) required</small></span></label>
+        <label class="tile"><input type="radio" name="uterus" value="no"><span class="box"></span><span class="t-body"><b>Total hysterectomy — no uterus</b><small>Oestrogen alone, unless residual endometriosis</small></span></label>
+        <label class="tile"><input type="radio" name="uterus" value="uncertain"><span class="box"></span><span class="t-body"><b>Uncertain / subtotal hysterectomy</b><small>Clarify operative anatomy before unopposed oestrogen</small></span></label>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" data-step="3">
+      <div class="step-eyebrow">03 · Target</div>
+      <h2>What are we actually treating?</h2>
+      <p class="step-why">Match the treatment to the dominant problem. Systemic MHT is for bothersome vasomotor symptoms; genitourinary symptoms are often a local decision. Tick all that apply.</p>
+      <div class="tiles" data-multi="sym">
+        <label class="tile"><input type="checkbox" name="sym" value="vms" checked><span class="box"></span><span class="t-body"><b>Vasomotor</b><small>Hot flushes, night sweats</small></span></label>
+        <label class="tile"><input type="checkbox" name="sym" value="gsm"><span class="box"></span><span class="t-body"><b>Genitourinary (GSM)</b><small>Dryness, dyspareunia, urinary symptoms</small></span></label>
+        <label class="tile"><input type="checkbox" name="sym" value="sleep"><span class="box"></span><span class="t-body"><b>Sleep / mood</b><small>Tracking with vasomotor symptoms</small></span></label>
+        <label class="tile"><input type="checkbox" name="sym" value="desire"><span class="box"></span><span class="t-body"><b>Low sexual desire</b><small>Consider HSDD after other factors</small></span></label>
+        <label class="tile"><input type="checkbox" name="sym" value="bone"><span class="box"></span><span class="t-body"><b>Bone protection</b><small>Early oestrogen loss / prevention</small></span></label>
+        <label class="tile"><input type="checkbox" name="sym" value="bleeding"><span class="box"></span><span class="t-body"><b>Abnormal bleeding</b><small>Postmenopausal / heavy / changed — a flag</small></span></label>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" data-step="4">
+      <div class="step-eyebrow">04 · Stop-and-assess</div>
+      <h2>Any absolute contraindications?</h2>
+      <p class="step-why">These pause systemic MHT until investigated or resolved. If any are present, the stream will not build a hormonal regimen. Tick all that apply.</p>
+      <div class="tiles danger" data-multi="contra">
+        <label class="tile"><input type="checkbox" name="contra" value="cancer"><span class="box"></span><span class="t-body"><b>Oestrogen-dependent cancer</b><small>Current or previous breast / endometrial</small></span></label>
+        <label class="tile"><input type="checkbox" name="contra" value="bleeding"><span class="box"></span><span class="t-body"><b>Undiagnosed vaginal bleeding</b><small>Investigate the cause first</small></span></label>
+        <label class="tile"><input type="checkbox" name="contra" value="vte"><span class="box"></span><span class="t-body"><b>Active VTE or known thrombophilia</b><small>Current clot / high thrombotic state</small></span></label>
+        <label class="tile"><input type="checkbox" name="contra" value="liver"><span class="box"></span><span class="t-body"><b>Severe active liver disease</b><small>Impaired hepatic function</small></span></label>
+        <label class="tile"><input type="checkbox" name="contra" value="cvd"><span class="box"></span><span class="t-body"><b>Untreated / uncontrolled CVD or HT</b><small>Includes recent MI or stroke</small></span></label>
+        <label class="tile"><input type="checkbox" name="contra" value="pregnancy"><span class="box"></span><span class="t-body"><b>Pregnancy not excluded</b><small>Confirm before hormonal therapy</small></span></label>
+        <label class="tile"><input type="checkbox" name="contra" value="none"><span class="box"></span><span class="t-body"><b>None of these</b><small>No absolute contraindication identified</small></span></label>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step" data-step="5">
+      <div class="step-eyebrow">05 · Route modifiers</div>
+      <h2>Anything that favours transdermal?</h2>
+      <p class="step-why">Most "contraindications" are really reasons to choose the patch, gel or spray rather than to withhold therapy. Tick all that apply.</p>
+      <div class="tiles warn" data-multi="mod">
+        <label class="tile"><input type="checkbox" name="mod" value="pastvte"><span class="box"></span><span class="t-body"><b>Past VTE</b><small>Provoked or unprovoked — with review</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="migraine"><span class="box"></span><span class="t-body"><b>Migraine</b><small>Especially with aura</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="obesity"><span class="box"></span><span class="t-body"><b>Obesity</b><small>BMI ≥ 30</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="diabetes"><span class="box"></span><span class="t-body"><b>Diabetes</b><small>Favours non-oral route</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="metabolic"><span class="box"></span><span class="t-body"><b>High triglycerides / hepatobiliary disease</b><small>Avoid oral first-pass</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="smoker"><span class="box"></span><span class="t-body"><b>Current smoker</b><small>Adds thrombotic risk</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="stablecvd"><span class="box"></span><span class="t-body"><b>Stable established CVD</b><small>Individualise; usually specialist input</small></span></label>
+        <label class="tile"><input type="checkbox" name="mod" value="none"><span class="box"></span><span class="t-body"><b>None of these</b><small>Low baseline route risk</small></span></label>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step" data-step="6">
+      <div class="step-eyebrow">06 · Contraception</div>
+      <h2>Is contraception still required?</h2>
+      <p class="step-why">MHT is not contraception. A perimenopausal woman can still conceive — 2 years after the LMP if under 50, 1 year if over 50.</p>
+      <div class="tiles one" data-single="need">
+        <label class="tile"><input type="radio" name="need" value="no" checked><span class="box"></span><span class="t-body"><b>No</b><small>Contraception not needed</small></span></label>
+        <label class="tile"><input type="radio" name="need" value="yes"><span class="box"></span><span class="t-body"><b>Yes</b><small>A 52 mg LNG-IUD can cover contraception, protection and bleeding at once</small></span></label>
+        <label class="tile"><input type="radio" name="need" value="uncertain"><span class="box"></span><span class="t-body"><b>Uncertain</b><small>Clarify pregnancy risk before finalising</small></span></label>
+      </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="step" data-step="7">
+      <div class="step-eyebrow">07 · Preference</div>
+      <h2>Route preference?</h2>
+      <p class="step-why">Shared decision-making matters for adherence. Preference is weighed against the risk profile, not instead of it.</p>
+      <div class="tiles one" data-single="pref">
+        <label class="tile"><input type="radio" name="pref" value="none" checked><span class="box"></span><span class="t-body"><b>No preference</b><small>Let the risk profile lead</small></span></label>
+        <label class="tile"><input type="radio" name="pref" value="transdermal"><span class="box"></span><span class="t-body"><b>Prefers transdermal</b><small>Patch, gel or spray</small></span></label>
+        <label class="tile"><input type="radio" name="pref" value="oral"><span class="box"></span><span class="t-body"><b>Prefers oral</b><small>Tablets — if risk profile allows</small></span></label>
+        <label class="tile"><input type="radio" name="pref" value="nonhormonal"><span class="box"></span><span class="t-body"><b>Prefers non-hormonal</b><small>No oestrogen</small></span></label>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn ghost" id="backBtn" disabled>← Back</button>
+      <button class="btn primary" id="nextBtn">Next →</button>
+      <button class="btn gold" id="genBtn" style="display:none">Generate educational plan</button>
+      <span class="step-count" id="stepCount">1 of 7</span>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result">
+  <div class="wrap">
+    <div id="resInner"></div>
+    <div class="controls" style="margin-top:8px">
+      <button class="btn ghost" id="restartBtn">↺ Start over</button>
+      <button class="btn ghost" id="printBtn">Print / PDF</button>
+    </div>
+  </div>
+</div>
+
+<section class="refs-sec">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--gold-deep)">Sources</div>
+    <h2>References &amp; resources</h2>
+    <ol class="refs">
+      <li><b>Davis SR et al. (Women's Health Research Program, Monash University).</b> A Practitioner's Toolkit for Managing Menopause. <i>Climacteric</i> 2023; toolkit current to May 2025. <a href="https://www.monash.edu/__data/assets/pdf_file/0011/3476072/menopause-toolkit-update.pdf">monash.edu</a></li>
+      <li><b>Magraith K, Stuckey B.</b> Making choices at menopause. <i>Aust J Gen Pract</i> 2019;48(7). <a href="https://www1.racgp.org.au/ajgp/2019/july/making-choices-at-menopause">racgp.org.au</a></li>
+      <li><b>Management of menopause.</b> <i>Aust Prescr</i> 2023. <a href="https://australianprescriber.tg.org.au/articles/management-of-menopause.html">australianprescriber.tg.org.au</a></li>
+      <li><b>Australasian Menopause Society</b> — information sheets, MHT dose guide, bleeding &amp; GSM resources. <a href="https://www.menopause.org.au/hp/information-sheets">menopause.org.au</a></li>
+      <li><b>The Menopause Society (formerly NAMS).</b> 2022 Hormone Therapy Position Statement. <a href="https://www.menopause.org.au/health-professionals/position-statements">menopause.org.au</a></li>
+      <li><b>Fezolinetant (Veoza)</b> — <i>Aust Prescr</i> 2024;47:162–3; TGA hepatotoxicity safety update &amp; PI monitoring, Oct 2025. <a href="https://www.tga.gov.au/news/safety-updates/new-warning-hepatotoxicity-risk-veoza-fezolinetant">tga.gov.au</a></li>
+      <li><b>Elinzanetant (Lynkuet).</b> Panay N et al, <i>JAMA Intern Med</i> 2025;185(11); TGA registration (ARTG) 2025. <a href="https://www.tga.gov.au/resources/auspar/lynkuet">tga.gov.au</a></li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>MHT Decision Stream</b>
+    <p style="margin:.4em 0 0;max-width:640px">A teaching companion to the Menopause Playbook. Educational only — verify every dose, indication, interaction and contraindication against current Australian product information and local pathways before prescribing.</p>
+  </div>
+</footer>
+
+<script>
+const TOTAL=7;
+let step=1;
+const steps=[...document.querySelectorAll('.step')];
+const pfill=document.getElementById('pfill');
+const plabel=document.getElementById('plabel');
+const stepCount=document.getElementById('stepCount');
+const backBtn=document.getElementById('backBtn');
+const nextBtn=document.getElementById('nextBtn');
+const genBtn=document.getElementById('genBtn');
+
+function show(n){
+  step=n;
+  steps.forEach(s=>s.classList.toggle('active',+s.dataset.step===n));
+  const pct=Math.round((n/TOTAL)*100);
+  pfill.style.width=pct+'%';
+  plabel.textContent='Step '+n+' / '+TOTAL;
+  stepCount.textContent=n+' of '+TOTAL;
+  backBtn.disabled=(n===1);
+  nextBtn.style.display=(n===TOTAL)?'none':'inline-block';
+  genBtn.style.display=(n===TOTAL)?'inline-block':'none';
+  window.scrollTo({top:document.querySelector('.stream').offsetTop-10,behavior:'smooth'});
+}
+nextBtn.onclick=()=>{ if(step<TOTAL) show(step+1); };
+backBtn.onclick=()=>{ if(step>1) show(step-1); };
+
+// keep "none" mutually exclusive with real options in danger/warn multi-groups
+function wireNone(group){
+  const boxes=[...document.querySelectorAll('input[name="'+group+'"]')];
+  boxes.forEach(b=>b.addEventListener('change',()=>{
+    if(b.value==='none' && b.checked){ boxes.forEach(o=>{if(o.value!=='none')o.checked=false}); }
+    else if(b.value!=='none' && b.checked){ const none=boxes.find(o=>o.value==='none'); if(none)none.checked=false; }
+  }));
+}
+wireNone('contra'); wireNone('mod');
+
+function radio(n){const el=document.querySelector('input[name="'+n+'"]:checked');return el?el.value:null}
+function checks(n){return [...document.querySelectorAll('input[name="'+n+'"]:checked')].map(x=>x.value).filter(v=>v!=='none')}
+
+/* ---------- PLAN ENGINE ---------- */
+function med(level,tag,name,dose,note,caveat,contra){
+  let h='<div class="med '+level+'"><div class="med-head"><span class="chip '+level+'">'+tag+'</span><h4>'+name+'</h4></div>';
+  if(dose) h+='<div class="med-dose"><b>Educational starting structure:</b> '+dose+'</div>';
+  if(note) h+='<p class="med-note">'+note+'</p>';
+  if(caveat) h+='<div class="med-caveat"><b>Caveat:</b> '+caveat+'</div>';
+  if(contra) h+='<div class="med-contra"><b>Avoid / re-think if:</b> '+contra+'</div>';
+  return h+'</div>';
+}
+function block(title,inner){return '<div class="res-block"><div class="h">'+title+'</div>'+inner+'</div>'}
+
+function nonHormonalMeds(forCancer){
+  let out='<div class="meds">';
+  out+=med('go','preferred','Elinzanetant (Lynkuet)','60 mg once daily at bedtime (per current PI)',
+    'Dual NK1/NK3 antagonist; large reductions in vasomotor symptoms plus a sleep benefit. Hormone-free.',
+    'Private script — not PBS-listed for VMS. Confirm current PI and interactions.', null);
+  out+=med('caution','monitor','Fezolinetant (Veoza)','45 mg once daily',
+    'NK3 antagonist; effective hormone-free option.',
+    'Baseline ALT/AST/ALP + total & direct bilirubin; do not start if ≥2× ULN; recheck monthly ×3, then months 6 & 9. Stop if transaminases >5× ULN or symptoms of liver injury. Contraindicated in cirrhosis; avoid CYP1A2 inhibitors. Private script.',
+    'Known cirrhosis; abnormal baseline LFTs.');
+  out+=med('go','antidepressant','SSRI / SNRI (low dose)','Venlafaxine 37.5–75 mg, desvenlafaxine 50–100 mg, or escitalopram 10–20 mg daily',
+    'Useful when mood or anxiety coexists with vasomotor symptoms.',
+    'Discontinuation effects, sexual side effects.',
+    forCancer?'On tamoxifen: avoid paroxetine and fluoxetine (CYP2D6). Prefer venlafaxine / desvenlafaxine.':'On tamoxifen: avoid paroxetine / fluoxetine (CYP2D6).');
+  out+=med('info','adjunct','Gabapentin','100 mg nocte, titrate up to ~900 mg/day',
+    'Helpful for night sweats and sleep disruption.','Sedation, dizziness, falls; renal dose adjustment.',null);
+  out+=med('info','non-drug','CBT · clinical hypnosis · weight loss','Structured programs',
+    'Improve symptom bother, coping and sleep even when flush frequency is unchanged.',null,null);
+  out+='</div>';
+  return out;
+}
+
+function build(){
+  const S={
+    age:parseInt(document.getElementById('age').value||'0',10)||null,
+    stage:radio('stage'), uterus:radio('uterus'),
+    sym:checks('sym'), contra:checks('contra'), mod:checks('mod'),
+    need:radio('need'), pref:radio('pref')
+  };
+  const hasVMS = S.sym.includes('vms')||S.sym.includes('sleep');
+  const gsm = S.sym.includes('gsm');
+  const gsmOnly = gsm && !S.sym.some(x=>['vms','sleep','bone','desire'].includes(x));
+  const hardStop = S.contra.length>0 || S.sym.includes('bleeding');
+  const late = S.stage==='latepost' || (S.age && S.age>60);
+  const modifiers = S.mod.length>0;
+  const isPost = S.stage!=='peri';
+
+  // risk intensity meter
+  let risk=18;
+  risk += S.mod.length*11;
+  if(late) risk+=26;
+  if(S.stage==='earlypost'||S.stage==='peri') risk-=4;
+  if(hardStop) risk=96;
+  risk=Math.max(8,Math.min(risk,100));
+  let riskColor = risk>75?'var(--stop)':risk>45?'var(--caution)':'var(--go)';
+  let riskWord = risk>75?'High — pause / individualise':risk>45?'Moderate — modify route & counsel':'Lower — within favourable range';
+
+  // banner
+  let level,tag,title;
+  if(hardStop){ level='stop'; tag='Pause · investigate first'; title='Do not start systemic MHT yet'; }
+  else if(S.pref==='nonhormonal'){ level='go'; tag='Non-hormonal pathway'; title='Patient prefers a hormone-free approach'; }
+  else if(gsmOnly){ level='go'; tag='Local therapy'; title='A local, low-exposure decision'; }
+  else if(late){ level='caution'; tag='Individualised late start'; title='Later initiation — proceed with care'; }
+  else if(modifiers){ level='caution'; tag='Suitable · modify route'; title='Systemic MHT is reasonable — go transdermal'; }
+  else { level='go'; tag='Suitable candidate'; title='Systemic MHT is a reasonable option'; }
+
+  let html='';
+  html+='<div class="res-banner '+level+'"><span class="tag">'+tag+'</span><h3>'+title+'</h3>';
+  html+='<div class="meter"><div class="meter-track"><div class="meter-fill" style="width:'+risk+'%;background:'+riskColor+'"></div></div>'
+      +'<div class="meter-lab"><span>Relative-risk intensity</span><span>'+riskWord+'</span></div></div></div>';
+
+  // flags
+  let flags='';
+  if(hardStop){
+    let list = S.contra.map(c=>({cancer:'oestrogen-dependent cancer',bleeding:'undiagnosed bleeding',vte:'active VTE / thrombophilia',liver:'severe liver disease',cvd:'uncontrolled CVD / hypertension',pregnancy:'possible pregnancy'}[c])).filter(Boolean);
+    if(S.sym.includes('bleeding')) list.push('abnormal bleeding to investigate');
+    flags+='<div class="flag stop"><b>Stop-and-assess:</b> '+list.join('; ')+'. Address these through the relevant pathway before any routine systemic MHT.</div>';
+  }
+  if(S.uterus==='uncertain') flags+='<div class="flag caution"><b>Clarify anatomy:</b> confirm operative details before any unopposed oestrogen — assume protection may be needed until proven otherwise.</div>';
+  if(S.need==='yes') flags+='<div class="flag info"><b>Contraception:</b> MHT is not contraceptive. A 52 mg LNG-IUD covers contraception, endometrial protection and bleeding control together.</div>';
+  if(S.need==='uncertain') flags+='<div class="flag info"><b>Contraception:</b> clarify pregnancy risk before finalising the regimen.</div>';
+  if(flags) html+=block('Flags to resolve','<div class="flags">'+flags+'</div>');
+
+  // target
+  const tmap={vms:'bothersome vasomotor symptoms',gsm:'genitourinary symptoms',sleep:'sleep / mood tracking with VMS',desire:'low sexual desire',bone:'bone protection',bleeding:'abnormal bleeding (a flag, not an MHT indication)'};
+  let targets=S.sym.map(x=>tmap[x]).filter(Boolean);
+  html+=block('1 · Target',' <p>'+(targets.length?'Treating: '+targets.join(', ')+'.':'Clarify the dominant clinical target before selecting therapy.')+'</p>');
+
+  // ---- BRANCHES ----
+  if(hardStop){
+    html+=block('2 · Direction','<p>Build no hormonal regimen until the flagged feature is investigated or resolved. Follow the appropriate bleeding, cancer, VTE, liver or cardiovascular pathway. Non-hormonal symptom relief may run in parallel where appropriate.</p>');
+    if(hasVMS){
+      const forCancer=S.contra.includes('cancer');
+      html+=block('3 · Symptom relief while assessing'+(forCancer?' (cancer history)':''), nonHormonalMeds(forCancer)
+        + (forCancer?'<div class="flag caution" style="margin-top:12px"><b>Coordinate with oncology.</b> Fezolinetant is not studied in current/previous breast cancer; NK antagonists and SNRIs are options for endocrine-therapy flushes but should be chosen with the treating team.</div>':''));
+    }
+    if(gsm){
+      html+=block('GSM (with cancer history)', med('caution','local','Vaginal symptom care','Non-hormonal moisturisers & lubricants first-line; low-dose vaginal oestrogen only in selected patients',
+        'For refractory symptoms after non-hormonal measures, low-dose vaginal oestrogen may be considered.',
+        'Decide jointly with oncology, particularly on aromatase inhibitors.',null));
+    }
+    html+=block('4 · Review','<p>Reassess menopausal treatment once the diagnosis and risk position are clear. Do not use MHT to mask an undiagnosed cause of bleeding.</p>');
+  }
+  else if(S.pref==='nonhormonal'){
+    html+=block('2 · Direction','<p>No absolute stop feature was selected, but the patient prefers to avoid oestrogen. Offer evidence-based non-hormonal options and revisit preferences if symptoms remain troublesome.</p>');
+    html+=block('3 · Options', nonHormonalMeds(false));
+    if(gsm) html+=block('GSM', med('go','local','Low-dose vaginal oestrogen ± moisturiser','Vaginal oestradiol 10 mcg tablet nightly ×2 weeks then twice weekly; or estriol pessary/cream',
+      'Minimal systemic exposure; a separate decision from systemic therapy. No progestogen required.',null,'Consistent with patient preference — confirm they accept a local hormonal product.'));
+    html+=block('4 · Review','<p>Review at 6–12 weeks for symptom control and tolerability. Adjust or reconsider systemic options through shared decision-making if response is inadequate.</p>');
+  }
+  else if(gsmOnly){
+    html+=block('2 · Direction','<p>The target is genitourinary syndrome without a systemic indication. Local vaginal therapy is the most proportionate treatment; systemic MHT is not required unless another indication emerges.</p>');
+    let m='<div class="meds">';
+    m+=med('go','first-line','Vaginal moisturiser & lubricant','Regular moisturiser; lubricant for intercourse','Ongoing non-hormonal base; often combined with local oestrogen.',null,null);
+    m+=med('go','local hormonal','Low-dose vaginal oestrogen','Oestradiol 10 mcg tablet nightly ×2 weeks then twice weekly; or estriol pessary/cream; or 3-monthly ring',
+      'Directly treats the tissue with minimal systemic absorption. No progestogen needed. Safe for long-term use.',null,'Investigate any bleeding; individualise in breast-cancer survivors with oncology input.');
+    m+=med('info','alternatives','Prasterone (DHEA) · Ospemifene','Prasterone 6.5 mg pessary nightly; or ospemifene 60 mg oral daily','Options for moderate–severe symptoms or where local oestrogen is unsuitable.',null,null);
+    m+='</div>';
+    html+=block('3 · Options',m);
+    html+=block('4 · Review','<p>Review at ~6–12 weeks; tissue recovery takes time. Reinforce ongoing maintenance and investigate any bleeding.</p>');
+  }
+  else {
+    // SYSTEMIC MHT
+    const transdermal = S.pref==='transdermal' || late || modifiers;
+    const oralOk = S.pref==='oral' && !transdermal;
+    let dir='';
+    dir+='<p><b>Route.</b> ';
+    if(transdermal) dir+='Prefer <b>transdermal oestradiol</b> — the selected modifiers and/or timing favour avoiding the oral first-pass (no increased VTE risk).';
+    else if(oralOk) dir+='Oral oestradiol is reasonable given a low-risk profile and patient preference; transdermal remains an equally good modern default.';
+    else dir+='Either oral or transdermal oestradiol is reasonable; transdermal is increasingly the default.';
+    dir+='</p><p><b>Regimen.</b> ';
+    if(S.uterus==='no') dir+='No uterus → <b>oestrogen alone</b> (add a progestogen only if residual endometriosis).';
+    else if(S.uterus==='uncertain') dir+='Anatomy uncertain → assume <b>endometrial protection is needed</b> until confirmed.';
+    else if(S.stage==='peri') dir+='Uterus + perimenopausal → <b>sequential</b> (cyclical progestogen 12–14 days/month) for a predictable bleed, or a 52 mg LNG-IUD.';
+    else dir+='Uterus + postmenopausal → <b>continuous combined</b> (period-free), or a 52 mg LNG-IUD with oestradiol.';
+    dir+='</p>';
+    html+=block('2 · Direction',dir);
+
+    // Oestrogen options
+    let e='<div class="meds">';
+    if(transdermal || !oralOk){
+      e+=med('go','oestrogen · preferred','Transdermal oestradiol','Patch 25–50 mcg twice weekly, or gel 0.5–1.0 mg / spray 1–2 actuations daily',
+        'No hepatic first-pass; not associated with increased VTE risk. Titrate to symptom control, not to a blood level.',
+        'Skin irritation or patch adhesion; rotate sites.',null);
+    }
+    if(oralOk){
+      e+=med('caution','oestrogen · oral','Oral 17β-oestradiol','0.5–1.0 mg daily',
+        'Reasonable when the risk review is low and tablets aid adherence.',
+        'Greater first-pass effect — more VTE, gallbladder and triglyceride impact than transdermal.',
+        'VTE risk, migraine, obesity, diabetes, hypertriglyceridaemia or hepatobiliary disease → switch to transdermal.');
+    } else if(!transdermal){
+      e+=med('go','oestrogen','Oral 17β-oestradiol (alternative)','0.5–1.0 mg daily','An option if tablets improve adherence and risk is low.',
+        'More first-pass VTE / gallbladder / triglyceride effect than transdermal.',null);
+    }
+    e+='</div>';
+    html+=block('3 · Oestrogen',e);
+
+    // Progestogen / protection
+    if(S.uterus==='yes' || S.uterus==='uncertain'){
+      let p='<div class="meds">';
+      const seq = S.stage==='peri';
+      p+=med('go','progestogen · preferred','Micronised progesterone','Sequential '+(seq?'':'or continuous: ')+'200 mg nocte for 12–14 nights/month'+(seq?'':', or 100 mg nocte continuously'),
+        'Body-identical; may aid sleep; lower breast-cancer signal than older progestogens.',
+        '100 mg continuous may be insufficient with high-dose oestrogen — check adequacy.',null);
+      p+=med('go','progestogen','Dydrogesterone','Sequential 10 mg for 12–14 days/month, or continuous 5–10 mg daily',
+        'Low breast-cancer / VTE signal; well tolerated.',null,null);
+      p+=med('go','protection + contraception','52 mg LNG-IUD (Mirena)','Intrauterine device + systemic oestradiol',
+        'Endometrial protection, bleeding control and contraception in one. The only LNG-IUD strength adequate for endometrial protection.',
+        'Insertion; initial irregular spotting.',null);
+      p+=med('caution','use with thought','MPA / norethisterone','MPA 2.5–10 mg or norethisterone per regimen',
+        'Effective but a higher breast-cancer signal — reserve where the preferred options don\'t suit.',null,null);
+      if(!seq){
+        p+=med('info','tissue-selective','Tibolone · or CEE + bazedoxifene','Tibolone 1.25–2.5 mg/day; or conjugated oestrogen 0.45 mg + bazedoxifene 20 mg/day',
+          'Single-agent alternatives that protect the endometrium without a separate progestogen. Postmenopausal use.',
+          'Not for perimenopausal women still bleeding.',null);
+      }
+      p+='</div>';
+      html+=block('4 · Endometrial protection',p);
+    } else {
+      html+=block('4 · Endometrial protection','<div class="meds">'+med('info','no uterus','No progestogen required','Oestrogen-only therapy',
+        'With no uterus there is no endometrium to protect.','If residual endometriosis after hysterectomy, add a progestogen.',null)+'</div>');
+    }
+
+    // overlays
+    let ov='';
+    if(S.stage==='poi'||S.stage==='surgical'){
+      ov+=med('info','replacement','POI / surgical menopause','Physiological replacement, often higher doses, usually continued to ~51',
+        'This is replacement of prematurely lost hormones — a different risk context from a late natural-menopause start. Assess bone health.',
+        S.need==='yes'?'Spontaneous POI can retain some fertility — contraception may still be needed.':null,null);
+    }
+    if(late){
+      ov+=med('caution','late start','Later initiation','Low-dose transdermal, clear indication, vascular/VTE review',
+        'Starting >10 years after menopause or over 60 has a less favourable absolute profile — not prohibited, but individualise and document shared decision-making.',null,null);
+    }
+    if(S.sym.includes('desire')){
+      ov+=med('info','if HSDD','Testosterone','Female-physiological dosing per an approved product; monitor levels',
+        'Only after diagnosing hypoactive sexual desire dysfunction and addressing GSM, pain, mood, sleep and medication effects. Not a general tonic.',
+        'Keep serum testosterone within the female range; avoid supraphysiological exposure.',null);
+    }
+    if(S.sym.includes('bone')){
+      ov+=med('info','bone','Bone protection','MHT / tibolone appropriate as prevention in younger postmenopausal women; DXA-guided',
+        'For established osteoporosis, follow a dedicated bone pathway (FRAX, local guidelines).',null,null);
+    }
+    if(ov) html+=block('5 · Overlays for this patient','<div class="meds">'+ov+'</div>');
+
+    // GSM alongside systemic
+    if(gsm){
+      html+=block('Alongside — GSM', med('go','local','Add low-dose vaginal oestrogen','Vaginal oestradiol 10 mcg or estriol, per product schedule',
+        'Genitourinary symptoms often persist despite adequate systemic MHT and respond to local therapy. No extra progestogen needed.',null,null));
+    }
+
+    // always show non-hormonal alternative briefly
+    html+=block('Alternative — if declined or insufficient', nonHormonalMeds(false));
+
+    // review
+    html+=block('Review','<p>Review at <b>6–12 weeks</b> for symptom control, side effects, adherence and bleeding, then <b>6–12 monthly</b>. Adjust dose or formulation rather than abandoning after one imperfect trial. Investigate bleeding that is heavy/prolonged, persists beyond ~6 months, or begins after established amenorrhoea — transvaginal ultrasound first-line, then sampling/hysteroscopy per pathway. There is no mandatory stop age; continue on a reviewed, individualised basis.</p>');
+  }
+
+  // responsibility
+  html+='<div class="responsibility"><div class="h">Prescriber responsibility</div>'
+     +'<p>This is an <b>educational reasoning aid</b>, not medical advice or a prescription. It cannot see the patient, cannot verify inputs, and does not capture every interaction, comorbidity or current product-information change. The decision to prescribe, the specific agent, dose, route, monitoring and follow-up — and the decision <b>not</b> to prescribe — remain entirely with the treating clinician, who must confirm current Australian product information, PBS status, interactions and local referral pathways. Doses shown are illustrative starting structures only.</p></div>';
+
+  document.getElementById('resInner').innerHTML=html;
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+
+genBtn.onclick=build;
+document.getElementById('restartBtn').onclick=()=>{
+  document.getElementById('result').classList.remove('show');
+  show(1);
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+document.getElementById('printBtn').onclick=()=>window.print();
+
+show(1);
+</script>
+</body>
+</html>

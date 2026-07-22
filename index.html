@@ -23,20 +23,12 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <style>
-      .traj-steps { margin-top: 0.5rem; }
-      .traj-step { border-left: 3px solid #cdd6c8; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem; background: rgba(74,103,65,0.03); border-radius: 0 8px 8px 0; }
-      .traj-step-head { font-size: 0.92rem; }
-      .traj-step-detail { font-size: 0.85rem; color: #555; margin-top: 0.25rem; }
-      .traj-step-cats { font-size: 0.75rem; color: #6b5b95; margin-top: 0.35rem; font-weight: 600; }
-      .traj-clickable { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
-      .traj-clickable:hover { background: rgba(107,91,149,0.07); border-left-color: #6b5b95; }
-
       /* Embedded allied-map styles — scoped under #alliedMapSection so they can't
          touch the rest of the homepage. */
       #alliedMapSection .amx-wrap{display:flex;gap:1rem;align-items:flex-start;margin-top:1rem}
-      #alliedMapSection .amx-side{flex:0 0 320px;max-width:320px}
+      #alliedMapSection .amx-side{flex:0 0 250px;max-width:250px}
       #alliedMapSection .amx-mapwrap{flex:1;min-width:0}
-      #alliedMapSection #amxMap{height:480px;width:100%;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+      #alliedMapSection #amxMap{height:600px;width:100%;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
       #alliedMapSection .amx-count{font-size:0.82rem;color:#666;margin-bottom:0.6rem}
       #alliedMapSection .amx-leg{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;margin:0.28rem 0;color:#444;cursor:pointer;user-select:none}
       #alliedMapSection .amx-leg input{accent-color:#4a6741}
@@ -51,16 +43,14 @@
          mauve (#6b5b95) accent from the existing palette; does not alter the map,
          clustering, profession filters, or All/None styling above. */
       #alliedMapSection .amx-subtitle{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:#6b5b95;margin:0.15rem 0 0.4rem}
-      #alliedMapSection .amx-add{display:inline-block;margin-top:0.5rem;padding:0.5rem 0.95rem;background:#6b5b95;color:#fff;border:none;border-radius:9px;text-decoration:none;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer}
+      #alliedMapSection .amx-add{display:inline-block;margin-top:0.5rem;padding:0.5rem 0.95rem;background:#6b5b95;color:#fff;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer}
       #alliedMapSection .amx-add:hover{background:#5a4c80}
       #alliedMapSection .amx-search{width:100%;padding:0.5rem 0.7rem;border:1.5px solid #d8d2da;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:0.84rem;margin-bottom:0.7rem;outline:none}
       #alliedMapSection .amx-search:focus{border-color:#6b5b95}
       #alliedMapSection .amx-list{margin-top:0.8rem;max-height:430px;overflow-y:auto;display:flex;flex-direction:column;gap:0.5rem}
-      #alliedMapSection .amx-card{display:flex;gap:0.7rem;align-items:flex-start;background:#fff;border:1px solid #ece6ef;border-radius:12px;padding:0.7rem 0.8rem;cursor:pointer;transition:transform .16s, box-shadow .16s, border-color .16s}
-      #alliedMapSection .amx-card-av{flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',Georgia,serif;font-weight:500;font-size:0.82rem;color:#fff}
-      #alliedMapSection .amx-card-body{min-width:0;flex:1}
-      #alliedMapSection .amx-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(107,91,149,0.10);border-color:#d9cfe2}
-      #alliedMapSection .amx-card-name{font-family:'Source Serif 4',Georgia,serif;font-weight:500;font-size:0.98rem;color:#2c2c2c;line-height:1.2}
+      #alliedMapSection .amx-card{border:1px solid #e7e1ea;border-left:3px solid #6b5b95;border-radius:8px;padding:0.5rem 0.6rem;cursor:pointer;transition:background 0.15s}
+      #alliedMapSection .amx-card:hover{background:#f6f3f8}
+      #alliedMapSection .amx-card-name{font-weight:600;font-size:0.86rem;color:#2c2c2c}
       #alliedMapSection .amx-card-svc{font-size:0.74rem;color:#555;margin-top:1px}
       #alliedMapSection .amx-card-meta{display:flex;align-items:center;gap:0.35rem;font-size:0.74rem;color:#777;margin-top:2px}
       #alliedMapSection .amx-card-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
@@ -201,17 +191,6 @@
         .digest-section-head { text-align: center; margin-bottom: 1.5rem; }
         .digest-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.85rem; font-weight: 400; color: #2c2c2c; margin-bottom: 0.35rem; }
         .digest-section-sub { font-size: 0.88rem; color: #888; max-width: 620px; margin: 0 auto; line-height: 1.55; }
-
-        /* Phase 1b — widen the weekly cluster + the map as whole units (desktop only) so the
-           two-column Additional Tools rail stays beside the carousels instead of being overrun. */
-        @media (min-width: 1024px) {
-            .cluster,
-            #alliedMapSection {
-                width: min(1280px, calc(100vw - 4rem));
-                margin-left: 50%;
-                transform: translateX(-50%);
-            }
-        }
 
         .digest-row-wrap { position: relative; }
         .digest-row {
@@ -452,11 +431,6 @@
         .response-section p, .response-section li { font-size: 0.93rem; line-height: 1.82; color: #333; margin-bottom: 0.45rem; }
         .response-section ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
         .response-section strong { color: #1a1a1a; font-weight: 600; }
-        .guideline-source { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: #4a6741; margin: 0.9rem 0 0.35rem; }
-        .guideline-source:first-child { margin-top: 0; }
-        .guideline-stmt { font-size: 0.93rem; line-height: 1.82; color: #333; margin: 0 0 0.4rem 0.9rem; padding-left: 0.7rem; border-left: 2px solid #e8e8e8; }
-        .coverage-note { font-size: 0.82rem; color: #888; margin-top: 0.9rem; padding-top: 0.6rem; border-top: 1px solid #e8e8e8; }
-        .coverage-note-label { font-weight: 600; color: #4a6741; }
         .calc-card { background: rgba(0,0,0,0.04); border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.5rem; font-size: 0.88rem; }
         .calc-card-title { font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; margin-bottom: 0.3rem; }
         .calc-row { margin-bottom: 0.15rem; }
@@ -468,103 +442,6 @@
         .referral-badge.not_needed { background: rgba(74,103,65,0.08); border-left: 3px solid #4a6741; }
         .safety-box { background: rgba(220,53,69,0.06); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; }
         .gp-script { background: rgba(74,103,65,0.07); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.75rem; font-style: italic; font-size: 0.88rem; }
-
-        /* ═══════════════════════════════════════════════════
-           NEXT STEPS — GP action panel (fertility trajectory)
-           Action-first: red flags dominate, then today's actions,
-           referral guidance, checklist. Confluence gold/green palette.
-        ═══════════════════════════════════════════════════ */
-        .next-steps { margin-bottom: 0.5rem; }
-        .ns-summary { font-size: 0.98rem; line-height: 1.6; color: #2a2a2a; font-weight: 600;
-            padding: 0 0 0.9rem; border-bottom: 1px solid #efe7d4; margin-bottom: 1rem; }
-        .ns-block { margin-bottom: 1.1rem; }
-        .ns-h { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            color: #b8944e; margin-bottom: 0.5rem; }
-
-        /* Red flags — visually dominant, above everything else */
-        .ns-redflags { background: rgba(220,53,69,0.09); border: 1px solid rgba(220,53,69,0.35);
-            border-left: 5px solid #dc3545; border-radius: 10px; padding: 0.85rem 1rem; margin-bottom: 1.15rem; }
-        .ns-rf-head { font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px;
-            color: #b02a37; margin-bottom: 0.5rem; }
-        .ns-rf-item { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.35rem 0;
-            border-top: 1px solid rgba(220,53,69,0.18); }
-        .ns-rf-item:first-of-type { border-top: none; }
-        .ns-rf-issue { font-weight: 700; color: #7a1c25; font-size: 0.9rem; }
-        .ns-rf-action { color: #333; font-size: 0.85rem; }
-
-        /* Actions today — checklist with status icons */
-        .ns-actions { list-style: none; padding: 0; margin: 0; }
-        .ns-action { display: flex; align-items: flex-start; gap: 0.55rem; padding: 0.4rem 0;
-            border-bottom: 1px solid #f4efe3; font-size: 0.9rem; line-height: 1.5; }
-        .ns-action:last-child { border-bottom: none; }
-        .ns-ai { flex-shrink: 0; width: 1.25rem; text-align: center; font-weight: 700; margin-top: 0.05rem; }
-        .ns-action.todo .ns-ai { color: #c8a45e; }
-        .ns-action.done .ns-ai { color: #4a6741; }
-        .ns-action.missing .ns-ai { color: #b8944e; }
-        .ns-action.done .ns-atext { color: #4a6741; }
-        .ns-missing-tag { color: #b8944e; font-style: normal; font-weight: 600; font-size: 0.78rem; }
-        .ns-arat { color: #777; }
-
-        /* Referral guidance */
-        .ns-referral .ns-ref-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-        .ns-ref-ind { font-weight: 700; font-size: 0.92rem; color: #2a2a2a; }
-        .ns-referral .referral-badge { margin-top: 0; padding: 0.25rem 0.7rem; border-radius: 20px;
-            font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .ns-ref-rat { font-size: 0.86rem; color: #555; margin-top: 0.4rem; line-height: 1.5; }
-        .ns-ref-providers { font-size: 0.82rem; color: #666; margin-top: 0.55rem; }
-        .ns-provider-chip { display: inline-block; background: rgba(107,91,149,0.1); color: #5a4b82;
-            border: 1px solid rgba(107,91,149,0.25); border-radius: 14px; padding: 0.12rem 0.6rem;
-            margin: 0.15rem 0.2rem 0.15rem 0; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
-        .ns-provider-chip:hover { background: rgba(107,91,149,0.2); }
-
-        /* Referral checklist — completed / missing, NO percentage */
-        .ns-checklist { display: flex; flex-direction: column; gap: 0.15rem; }
-        .ns-cl-item { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.86rem;
-            line-height: 1.45; padding: 0.18rem 0; }
-        .ns-cl-icon { flex-shrink: 0; font-weight: 800; width: 1rem; }
-        .ns-cl-item.done { color: #3f5a37; }
-        .ns-cl-item.done .ns-cl-icon { color: #4a6741; }
-        .ns-cl-item.missing { color: #333; }
-        .ns-cl-item.missing .ns-cl-icon { color: #dc3545; }
-
-        /* Generate referral button */
-        .ns-actions-bar { margin: 1.15rem 0 0.4rem; }
-        .ns-gen-btn { background: linear-gradient(135deg, #c8a45e 0%, #b8944e 100%); color: #fff;
-            border: none; border-radius: 10px; padding: 0.7rem 1.3rem; font-size: 0.92rem; font-weight: 700;
-            cursor: pointer; box-shadow: 0 2px 8px rgba(184,148,78,0.35); transition: transform 0.15s, box-shadow 0.15s; }
-        .ns-gen-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184,148,78,0.45); }
-        .referral-draft-slot:not(:empty) { margin-top: 0.9rem; }
-        .referral-draft { background: #fffdf8; border: 1px solid #e2d6b8; border-radius: 12px; padding: 1rem 1.1rem; }
-        .rd-title { font-size: 0.82rem; color: #6a5f45; line-height: 1.5; margin-bottom: 0.85rem; }
-        .rd-field { margin-bottom: 0.75rem; }
-        .rd-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
-            color: #b8944e; margin-bottom: 0.2rem; }
-        .rd-value { font-size: 0.88rem; line-height: 1.55; color: #2a2a2a; background: #fff;
-            border: 1px solid #ece2c8; border-radius: 8px; padding: 0.5rem 0.7rem; white-space: pre-wrap;
-            outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
-        .rd-value:focus { border-color: #c8a45e; box-shadow: 0 0 0 2px rgba(200,164,94,0.18); }
-        /* [NOT PROVIDED] — amber highlight (attention, not alarm; red is for red flags) */
-        .rd-value.rd-np { background: rgba(255,193,7,0.15); border-color: rgba(184,148,78,0.55);
-            border-style: dashed; color: #8a6d1e; font-weight: 600; }
-        .rd-np-legend { background: rgba(255,193,7,0.2); color: #8a6d1e; border-radius: 4px;
-            padding: 0 0.25rem; font-weight: 700; white-space: nowrap; }
-        .rd-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-top: 0.9rem; }
-        .rd-copy-btn { background: #4a6741; color: #fff; border: none; border-radius: 8px;
-            padding: 0.55rem 1.1rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
-        .rd-copy-btn:hover { background: #3d5636; }
-        .rd-virtus-btn { display: inline-block; background: #fff; color: #b8944e; text-decoration: none;
-            border: 1.5px solid #c8a45e; border-radius: 8px; padding: 0.5rem 1.1rem; font-size: 0.85rem; font-weight: 700; }
-        .rd-virtus-btn:hover { background: rgba(200,164,94,0.1); }
-        @media (max-width: 600px) { .rd-actions .rd-copy-btn, .rd-actions .rd-virtus-btn { flex: 1 1 100%; text-align: center; } }
-        .ns-secondary { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed #e6dcc4; }
-        .ns-secondary-h { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            color: #a99; color: #b0a48a; margin-bottom: 0.6rem; }
-
-        @media (max-width: 600px) {
-            .ns-summary { font-size: 0.94rem; }
-            .ns-gen-btn { width: 100%; }
-            .ns-action, .ns-cl-item { font-size: 0.88rem; }
-        }
 
         /* ═══════════════════════════════════════════════════
            L3 CLINICAL PRACTICE — PERMANENT GATE
@@ -673,14 +550,13 @@
         .l3-faded-body {
             background: #fef9f0;
             padding: 1.25rem 1.75rem;
-            opacity: 1;
-            user-select: text;
+            opacity: 0.55;
+            filter: blur(0.5px);
+            user-select: none;
+            pointer-events: none;
         }
         .l3-faded-body p, .l3-faded-body li { font-size: 0.93rem; line-height: 1.82; color: #333; margin-bottom: 0.4rem; }
         .l3-faded-body ul { padding-left: 1.2rem; }
-        .l3-faded-body .traj-steps { pointer-events: auto; user-select: text; opacity: 1; filter: none; }
-        .l3-faded-body .traj-step-cats { color: #6b5b95; }
-        .l3-faded-body.l3-trajectory-body { opacity: 1; filter: none; user-select: text; pointer-events: auto; }
 
         /* ── FEEDBACK ── */
         .feedback-row { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #eee; }
@@ -870,11 +746,6 @@
            WHATSAPP WIDGET — fixed bottom-left
         ═══════════════════════════════════════ */
         .wa-widget { position: fixed; bottom: 28px; left: 28px; z-index: 1000; display: flex; align-items: center; gap: 10px; animation: wafadeIn 0.6s ease-out; }
-        .contact-email{position:fixed;left:28px;bottom:96px;z-index:1000;font-size:0.72rem;
-          color:#6b5b95;background:rgba(255,255,255,0.82);padding:0.3rem 0.65rem;border-radius:999px;
-          text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:background .15s;}
-        .contact-email:hover{background:#fff;text-decoration:underline;}
-        @media(max-width:480px){.contact-email{font-size:0.66rem;bottom:88px;}}
         @keyframes wafadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
 
         /* Virtus referral circle */
@@ -996,29 +867,9 @@
     .cluster-rail .tool-card p { color: rgba(255,255,255,0.9); }
     .cluster-rail .tool-card .tool-meta { color: rgba(255,255,255,0.74); }
 
-    /* Phase 3 — Additional Tools as a right-side drawer (mirrors the Lenses drawer). */
-    #toolsPanel{position:fixed;top:0;right:-360px;width:360px;height:100%;z-index:1000;overflow-y:auto;
-      background:#fbf5f2;box-shadow:-8px 0 30px rgba(0,0,0,0.12);padding:1.4rem 1.2rem 2rem;
-      transition:right .35s ease;}
-    body.tools-open #toolsPanel{right:0;}
-    #toolsPanel .tool-card{min-height:124px;border-radius:14px;}
-    #toolsPanel .tool-card-content{padding:0.6rem 0.8rem;}
-    #toolsPanel .tool-card h3{font-size:0.92rem;margin-bottom:0.2rem;}
-    #toolsPanel .tool-card p{font-size:0.74rem;margin-bottom:0.3rem;}
-    #toolsPanel .tool-card .tool-meta{font-size:0.66rem;}
-    #toolsPanel .tools-grid{flex-direction:column;flex-wrap:nowrap;gap:0.7rem;}
-    #toolsPanel .tools-section{margin-top:0.5rem;}
-    #toolsPanel .tools-label{text-align:left;}
-    .tools-close{position:absolute;top:0.7rem;right:1rem;background:none;border:none;font-size:1.6rem;
-      line-height:1;color:#9a8f95;cursor:pointer;}
-    .tools-nav-btn{font-family:inherit;font-size:0.9rem;color:#4a6741;background:none;border:none;
-      cursor:pointer;margin-left:1.25rem;padding:0;}
-    .tools-nav-btn:hover{text-decoration:underline;}
-    @media(max-width:480px){#toolsPanel{width:88%;right:-92%;}}
-
     /* ≥1024px: two columns — weekly content left, Additional Tools rail right. */
     @media (min-width: 1024px) {
-        .cluster { display: grid; grid-template-columns: minmax(0,1fr); gap: 2.25rem; align-items: start; margin-top: 3.5rem; }
+        .cluster { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 2.25rem; align-items: start; margin-top: 3.5rem; }
         .cluster-main > :first-child { margin-top: 0; }
         .cluster-rail .tools-section { margin-top: 0; }
         .cluster-rail .tools-label { text-align: left; margin-bottom: 1rem; }
@@ -1041,7 +892,7 @@
 <!-- Access Gate -->
 <div class="gate-overlay" id="accessGate">
     <div class="gate-card">
-        <div class="gate-logo">Confluence</div>
+        <div class="gate-logo">fertile</div>
         <div class="gate-subtitle">GP Fertility Decision Support</div>
         <div class="gate-label">Access Code</div>
         <input type="text" class="gate-input" id="gateInput" placeholder="Enter code" autocomplete="off" spellcheck="false">
@@ -1078,7 +929,6 @@ function checkGateCode(){
         <a href="index.html" class="logo">Confluence</a>
         <nav>
             <a href="fertool-cpd-learning-hub.html">CPD Hub <span style="display:inline-block;font-size:0.58rem;font-weight:700;color:#fff;background:#c8a45e;border-radius:10px;padding:0.08rem 0.42rem;margin-left:0.25rem;letter-spacing:0.5px;text-transform:uppercase;vertical-align:middle;">soon!</span></a>
-            <button type="button" class="tools-nav-btn" onclick="toggleToolsPanel()">Tools</button>
         </nav>
     </div>
 </header>
@@ -1143,7 +993,7 @@ function checkGateCode(){
                 in or around women's health. Compiled from public sources; toggle a profession to filter,
                 or add your own listing.
             </p>
-            <a href="mailto:yuval.fouks@mivf.com.au?subject=Add%20my%20practice%20to%20Confluence&amp;body=Name%3A%0AProfession%3A%0AClinic%3A%0ASuburb%3A%0AKeywords%3A%0ALanguages%3A%0ATelehealth%20(y%2Fn)%3A" class="amx-add" id="amxAddBtn">Add your practice — free</a>
+            <button type="button" class="amx-add" id="amxAddBtn">Add your practice — free</button>
         </div>
         <div class="amx-wrap">
             <aside class="amx-side">
@@ -1211,7 +1061,68 @@ function checkGateCode(){
     </section>
 
     </div><!-- /cluster-main -->
+    <aside class="cluster-rail">
+    <!-- Tools -->
+    <div class="tools-section">
+        <div class="tools-label">Additional Tools</div>
+        <div class="tools-grid">
+            <a href="amh-guide.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
+            </a>
+            <a href="egg-freezing-calculator.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
+            </a>
+            <a href="endometriosis-landing.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Fertility Preservation in Endometriosis</h3><p>How endometriosis affects reproduction &amp; when to act</p><div class="tool-meta">La Marca et al. 2025</div></div>
+            </a>
+            <a href="fertility-assessment.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
+            </a>
+            <a href="endo-evidence-panel.html" class="tool-card">
+                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endo_surgery.mp4" type="video/mp4"></video>
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">Evidence Panel</span><h3>Surgery in Endometriosis</h3><p>Is surgery necessary? Evidence-based decision support</p><div class="tool-meta">Cochrane · ESHRE 2024</div></div>
+            </a>
+            <a href="rpl-workup.html" class="tool-card">
+                <img class="tool-card-video" src="rpl-hero.jpg" alt="" loading="lazy">
+                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#0E6E58,#2E9D80);">Evidence Panel</span><h3>Recurrent Pregnancy Loss</h3><p>Evidence-stratified workup matrix — do, consider, don't</p><div class="tool-meta">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
+            </a>
+        </div>
+    </div>
+
+    </aside><!-- /cluster-rail -->
     </div><!-- /cluster -->
+
+    <!-- Confluence — "Add your practice" modal -->
+    <div class="amx-modal-back" id="amxModalBack" role="dialog" aria-modal="true" aria-labelledby="amxModalTitle">
+        <div class="amx-modal">
+            <button type="button" class="amx-modal-close" id="amxModalClose" aria-label="Close">×</button>
+            <h3 id="amxModalTitle">Add your practice</h3>
+            <div class="amx-modal-sub">Free listing on the Confluence Ecosystem — open to any practitioner working in or around women's health. Reviewed before it appears.</div>
+            <form id="amxForm">
+                <label for="amxF-name">Name</label>
+                <input type="text" id="amxF-name" name="name" required>
+                <label for="amxF-clinic">Clinic / practice <span style="font-weight:400;text-transform:none;color:#aaa">(optional)</span></label>
+                <input type="text" id="amxF-clinic" name="clinic" placeholder="e.g. Pelvic Fit Melbourne">
+                <label for="amxF-prof">Profession</label>
+                <select id="amxF-prof" name="profession"></select>
+                <label for="amxF-suburb">Suburb</label>
+                <input type="text" id="amxF-suburb" name="suburb">
+                <label for="amxF-services">Services <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
+                <input type="text" id="amxF-services" name="services" placeholder="e.g. pelvic floor, prenatal, incontinence">
+                <label for="amxF-keywords">Keywords <span style="font-weight:400;text-transform:none;color:#aaa">— what makes you findable (comma-separated)</span></label>
+                <input type="text" id="amxF-keywords" name="keywords" placeholder="e.g. vaginismus, trauma-informed, LGBTQ+ friendly, home visits, vulvodynia">
+                <label for="amxF-langs">Languages <span style="font-weight:400;text-transform:none;color:#aaa">(comma-separated)</span></label>
+                <input type="text" id="amxF-langs" name="languages" placeholder="e.g. English, Mandarin">
+                <label class="amx-check"><input type="checkbox" id="amxF-tele" name="telehealth"> Telehealth available</label>
+                <button type="submit" class="amx-submit">Submit listing</button>
+                <div class="amx-note" id="amxNote" style="display:none"></div>
+            </form>
+        </div>
+    </div>
 
     <!-- Digest modal -->
     <div class="dmodal-back" id="dmodalBack" role="dialog" aria-modal="true" aria-labelledby="dmodalTitle" aria-hidden="true">
@@ -1233,14 +1144,13 @@ function checkGateCode(){
         <strong>Medical Disclaimer</strong>
         For informational and educational purposes only. Individual patient care decisions require consultation with qualified healthcare professionals.
         <strong>Copyright</strong>
-        &copy; 2025 Confluence. All rights reserved. Professional use only.
+        &copy; 2025 Fertool. All rights reserved. Professional use only.
     </div>
 </footer>
 
 <div class="version-badge">v4.0 · WH by-topic · STI+conception buckets · 24-Jun-2026</div>
 
 <!-- Fixed WhatsApp — bottom LEFT -->
-<a class="contact-email" href="mailto:yuval.fouks@mivf.com.au">yuval.fouks@mivf.com.au</a>
 <div class="wa-widget" id="waWidget">
     <a href="https://wa.me/61493835221?text=Hi%20Yuval%2C%20I%27d%20like%20to%20discuss%20a%20fertility%20case..."
        target="_blank" class="wa-btn" id="waBtn" aria-label="Chat with Dr Fouks">
@@ -1308,41 +1218,6 @@ function checkGateCode(){
     </div>
 </div>
 
-    <aside class="cluster-rail" id="toolsPanel">
-    <button type="button" class="tools-close" onclick="toggleToolsPanel()" aria-label="Close">×</button>
-    <!-- Tools -->
-    <div class="tools-section">
-        <div class="tools-label">Additional Tools</div>
-        <div class="tools-grid">
-            <a href="amh-guide.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="AMH.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Guide</span><h3>Understanding AMH</h3><p>Interactive guide to ovarian reserve testing</p><div class="tool-meta">Age-specific normograms</div></div>
-            </a>
-            <a href="egg-freezing-calculator.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Egg_freezing_outcomes.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Calculator</span><h3>Egg Freezing Outcomes</h3><p>Success rates by age and egg number</p><div class="tool-meta">2,891 patients</div></div>
-            </a>
-            <a href="endometriosis-landing.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endometriosis.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Interactive</span><h3>Fertility Preservation in Endometriosis</h3><p>How endometriosis affects reproduction &amp; when to act</p><div class="tool-meta">La Marca et al. 2025</div></div>
-            </a>
-            <a href="fertility-assessment.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="When_to_seek_help.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge">Assessment</span><h3>When to Seek Help</h3><p>Timing for fertility evaluation</p><div class="tool-meta">ASRM guidelines</div></div>
-            </a>
-            <a href="endo-evidence-panel.html" class="tool-card">
-                <video class="tool-card-video" autoplay loop muted playsinline><source src="Endo_surgery.mp4" type="video/mp4"></video>
-                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">Evidence Panel</span><h3>Surgery in Endometriosis</h3><p>Is surgery necessary? Evidence-based decision support</p><div class="tool-meta">Cochrane · ESHRE 2024</div></div>
-            </a>
-            <a href="rpl-workup.html" class="tool-card">
-                <img class="tool-card-video" src="rpl-hero.jpg" alt="" loading="lazy">
-                <div class="tool-card-content"><span class="tool-badge" style="background:linear-gradient(135deg,#0E6E58,#2E9D80);">Evidence Panel</span><h3>Recurrent Pregnancy Loss</h3><p>Evidence-stratified workup matrix — do, consider, don't</p><div class="tool-meta">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
-            </a>
-        </div>
-    </div>
-
-    </aside><!-- /cluster-rail -->
-
 <script>
 /* ─────────────────────────────────────────────
    LENSES — frontend-only instruction presets
@@ -1359,16 +1234,8 @@ var LENS_INSTRUCTIONS = {
 };
 
 function toggleLensPanel(){
-    document.body.classList.remove('tools-open');
     document.body.classList.toggle('lens-open');
 }
-function toggleToolsPanel(){
-    document.body.classList.remove('lens-open');
-    document.body.classList.toggle('tools-open');
-}
-document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape'){ document.body.classList.remove('tools-open','lens-open'); }
-});
 
 function selectLens(el){
     var lens = el.getAttribute('data-lens');
@@ -1419,10 +1286,9 @@ function getActiveLensInstruction(){
 /* ─────────────────────────────────────────────
    CONFIG
 ───────────────────────────────────────────── */
-var API  = 'https://fertility-gp-backend-h6yihe4bmq-ts.a.run.app';
+var API  = 'https://fertility-gp-backend-532857641879.australia-southeast2.run.app';
 var WAURL= 'https://wa.me/61493835221?text=Hi%20Yuval%2C%20I%27d%20like%20to%20discuss%20a%20fertility%20case...';
 var _lastId='', _lastQ='', _timers=[];
-var _isFertility = true;  // gates per-response referral CTA; set from tier event (SSE) or response data (blocking). Default true = behave as today.
 var STEPS_DEFAULT=['Reading fertility guidelines','Retrieving specialist knowledge','Synthesising clinical context'];
 
 /* ─────────────────────────────────────────────
@@ -1517,9 +1383,10 @@ function fmtFallback(text){
         var body=fmtText((parts[i+1]||'').trim());
 
         if(k==='CLINICAL'){
-            if(_isFertility) setTimeout(burstWA, 400);
-            var gateCircles = _isFertility
-                ? '<div class="l3-gate-circles">'
+            setTimeout(burstWA, 400);
+            h+='<div class="l3-block">'
+              +'<div class="l3-gate-bar">'
+                +'<div class="l3-gate-circles">'
                   +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
                     +'<div class="l3-photo-ring"></div>'
                     +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
@@ -1529,10 +1396,6 @@ function fmtFallback(text){
                     +'<span class="refer-lbl">Refer</span>'
                   +'</a>'
                 +'</div>'
-                : '';
-            h+='<div class="l3-block">'
-              +'<div class="l3-gate-bar">'
-                + gateCircles
                 +'<div class="l3-gate-text">'
                   +'<div class="l3-gate-title">⚠ Clinical guidance — not a management tool</div>'
                   +'<div class="l3-gate-msg">The suggestions below are for educational reference only. Clinical decisions require specialist input. Tap Dr Fouks or Refer to discuss this case.</div>'
@@ -1554,49 +1417,19 @@ function renderFooter(d){
     return h;
 }
 
-// Shared source-name cleaner. Kills "Prefix: Title" echoes, prettifies filename
-// slugs (upper-casing short tokens: ivf->IVF, who->WHO), and leaves already-cased
-// citations (NICE-NG257-2026, ESHRE-COS-2025) untouched.
-function cleanName(raw){
-    raw = (raw || '').trim();
-    if(!raw) return '';
-    // Drop a leading "PREFIX: REST" when PREFIX (case-insensitive) is a prefix or
-    // substring of REST — e.g. "Role: Role Of...", "Optimizing: Optimizing...", "X: X".
-    var m = raw.match(/^([^:]{1,40}):\s*(.+)$/);
-    if(m){
-        var pre = m[1].trim(), rest = m[2].trim();
-        var pl = pre.toLowerCase(), rl = rest.toLowerCase();
-        if(pl && (rl === pl || rl.indexOf(pl) !== -1)){ raw = rest; }
-    }
-    // Entirely lower-case => filename slug: spaces for _/-, Title-Case words.
-    // Short tokens (<=3 letters) are treated as acronyms (ivf->IVF, who->WHO,
-    // cdc->CDC) EXCEPT small connector words, which stay Title-Cased (of->Of, in->In).
-    if(raw === raw.toLowerCase()){
-        var SMALL_WORDS = {of:1,in:1,on:1,at:1,to:1,as:1,by:1,or:1,and:1,the:1,for:1,a:1,an:1,vs:1,per:1};
-        raw = raw.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
-        raw = raw.split(' ').map(function(w){
-            if(!w) return w;
-            var lw = w.toLowerCase();
-            if(lw.length <= 3 && !SMALL_WORDS[lw]) return lw.toUpperCase();
-            return lw.charAt(0).toUpperCase() + lw.slice(1);
-        }).join(' ');
-    }
-    // Already contains upper-case (acronym citations): return unchanged.
-    return raw;
-}
-
 function renderSources(d){
     if(!d.sources||!d.sources.length) return '';
     var seen={}, list=[];
     d.sources.forEach(function(s){
         var layer = s.layer || '';
         var raw   = s.title || s.source || s.name || '';
-        var name  = cleanName(
-            raw.replace(/\bCh\d+\s+S\d+\s*/gi, '')
-               .replace(/\bCh\d+\s*/gi, '')
-               .replace(/\bS\d{2}\b\s*/gi, '')
-               .trim()
-        );
+        var name  = raw
+            .replace(/\bCh\d+\s+S\d+\s*/gi, '')
+            .replace(/\bCh\d+\s*/gi, '')
+            .replace(/\bS\d{2}\b\s*/gi, '')
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, function(x){ return x.toUpperCase(); })
+            .trim();
         if(!name) return;
         if(seen[name]) return;
         seen[name] = true;
@@ -2139,15 +1972,15 @@ function escalateIfNeeded(answerText, queryText){
     var ring = document.querySelector('.wa-ring');
     var tip = document.getElementById('waTooltip');
 
-    /* Tier 1: faster pulse + updated tooltip (referral nudge — fertility only) */
-    if(_isFertility && result.tier >= 1){
+    /* Tier 1: faster pulse + updated tooltip */
+    if(result.tier >= 1){
         if(ring) ring.style.animationDuration = '1.2s';
         var msg = (ESC_MESSAGES[result.category]||ESC_MESSAGES.clinical)[result.tier] || '';
         if(tip) tip.innerHTML = msg + '<span>Tap to discuss with Dr Fouks</span>';
     }
 
-    /* Tier 2: grow widget + show tooltip for 6s (referral nudge — fertility only) */
-    if(_isFertility && result.tier >= 2){
+    /* Tier 2: grow widget + show tooltip for 6s */
+    if(result.tier >= 2){
         if(w) w.classList.add('escalated-t2');
         burstWA();
         if(tip){
@@ -2159,8 +1992,8 @@ function escalateIfNeeded(answerText, queryText){
 
     /* Tier 3: strong escalation + inject safety banner above response */
     if(result.tier >= 3){
-        if(_isFertility && w){ w.classList.remove('escalated-t2'); w.classList.add('escalated-t3'); }
-        injectSafetyBanner(result.category);  // banner still shows (text only when !_isFertility)
+        if(w){ w.classList.remove('escalated-t2'); w.classList.add('escalated-t3'); }
+        injectSafetyBanner(result.category);
     }
 }
 
@@ -2204,19 +2037,15 @@ function injectSafetyBanner(category){
 
     var banner = document.createElement('div');
     banner.id = 'safety-banner';
-    // Referral buttons only on fertility queries; non-fertility shows safety text + official links only.
-    var referBtns = _isFertility
-        ? '<div style="margin-top:0.7rem;display:flex;gap:0.6rem;align-items:center;">'
-          +'<a href="'+WAURL+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#25D366;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">💬 Discuss with Dr Fouks</a>'
-          +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#6b5b95;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">📋 Refer Patient</a>'
-        +'</div>'
-        : '';
     banner.innerHTML =
         '<div style="background:linear-gradient(135deg,#fff3cd 0%,#ffeeba 100%);border:2px solid #f0c36d;border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.25rem;box-shadow:0 4px 14px rgba(200,164,94,0.25);">'
         +'<div style="font-size:0.82rem;font-weight:700;color:#856404;margin-bottom:0.5rem;">'+cfg.title+'</div>'
         +'<div style="font-size:0.88rem;color:#856404;line-height:1.6;">'+cfg.body+'</div>'
         + linksHtml
-        + referBtns
+        +'<div style="margin-top:0.7rem;display:flex;gap:0.6rem;align-items:center;">'
+          +'<a href="'+WAURL+'" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#25D366;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">💬 Discuss with Dr Fouks</a>'
+          +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;background:#6b5b95;color:#fff;border-radius:8px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">📋 Refer Patient</a>'
+        +'</div>'
         +'</div>';
 
     var rc = document.getElementById('resultContent');
@@ -2235,40 +2064,12 @@ function renderGuidelines(g){
     if(g._raw && g._parse_error) return '<p>'+esc(g._raw).slice(0,500)+'</p>';
     var stmts = g.guideline_statements || [];
     if(!stmts.length) return '<p style="color:#888;">No specific guidelines retrieved for this query.</p>';
-
-    // Direction A: group statements under one cleaned source heading, in first-
-    // appearance order, suppressing degenerate "source == statement" echoes.
-    var order = [], groups = {};
-    stmts.forEach(function(s){
-        var srcName = cleanName(s.source || '');
-        var stmt    = (s.statement || '').trim();
-        if(!stmt) return;
-        // Suppress the source when empty, or when the statement starts with /
-        // equals the source (kills the remaining "source == statement" echoes).
-        var sl = stmt.toLowerCase(), nl = srcName.toLowerCase();
-        var key = (!srcName || (nl && (sl === nl || sl.indexOf(nl) === 0))) ? '' : srcName;
-        if(!(key in groups)){ groups[key] = []; order.push(key); }
-        groups[key].push(stmt);
-    });
-
     var h = '';
-    order.forEach(function(key){
-        // Collapse EXACT-duplicate statements within the group (trim + lower-case).
-        var seen = {}, lines = [];
-        groups[key].forEach(function(stmt){
-            var k = stmt.toLowerCase();
-            if(seen[k]) return;
-            seen[k] = true;
-            lines.push(stmt);
-        });
-        if(key){ h += '<div class="guideline-source">' + esc(key) + '</div>'; }
-        lines.forEach(function(stmt){
-            h += '<div class="guideline-stmt">' + esc(stmt) + '</div>';
-        });
+    stmts.forEach(function(s){
+        h += '<p><strong>' + esc(s.source||'') + ':</strong> ' + esc(s.statement||'') + '</p>';
     });
-
     if(g.gaps && g.gaps !== 'None' && g.coverage !== 'full'){
-        h += '<div class="coverage-note"><span class="coverage-note-label">Coverage note:</span> '+esc(g.gaps)+'</div>';
+        h += '<p style="color:#888;font-size:0.85rem;"><em>Gaps: '+esc(g.gaps)+'</em></p>';
     }
     return h;
 }
@@ -2291,187 +2092,6 @@ function renderSpecialist(s){
     return h;
 }
 
-/* Latest trajectory clinical_practice block — stashed so the Generate-referral
-   button can build the draft from the same data the panel rendered. */
-var _trajData = null;
-
-function renderTrajectory(c){
-    if(!c) return '<p>No trajectory data.</p>';
-    if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
-    _trajData = c;
-    var h = '<div class="next-steps">';
-
-    /* 1. Clinical summary (<=2 sentences) */
-    var summary = c.clinical_summary || c.identified_pathway || '';
-    if(summary) h += '<div class="ns-summary">'+esc(summary)+'</div>';
-
-    /* 2. Red flags — visually dominant, above everything else, only if present */
-    var rf = (c.red_flags || []).filter(function(r){ return r && r.issue; });
-    if(rf.length){
-        h += '<div class="ns-redflags"><div class="ns-rf-head">⚠ Red flags — act now</div>';
-        rf.forEach(function(r){
-            h += '<div class="ns-rf-item"><span class="ns-rf-issue">'+esc(r.issue)+'</span>'
-               + (r.action ? '<span class="ns-rf-action">'+esc(r.action)+'</span>' : '')+'</div>';
-        });
-        h += '</div>';
-    }
-
-    /* 3. Actions today — checklist with status icons */
-    var acts = (c.actions_today || []).filter(function(a){ return a && a.action; });
-    if(acts.length){
-        h += '<div class="ns-block"><div class="ns-h">Actions today</div><ul class="ns-actions">';
-        acts.forEach(function(a){
-            var st = a.status || 'recommended';
-            var icon = st==='completed' ? '✓' : (st==='missing_information' ? '○' : '○');
-            var cls  = st==='completed' ? 'done' : (st==='missing_information' ? 'missing' : 'todo');
-            h += '<li class="ns-action '+cls+'"><span class="ns-ai">'+icon+'</span>'
-               + '<span class="ns-atext">'+esc(a.action)
-               + (st==='missing_information' ? ' <em class="ns-missing-tag">(missing info)</em>' : '')
-               + (a.rationale ? '<span class="ns-arat"> — '+esc(a.rationale)+'</span>' : '')
-               + '</span></li>';
-        });
-        h += '</ul></div>';
-    }
-
-    /* 4. Referral guidance — indicated + urgency badge + provider types */
-    var ref = c.referral || {};
-    var pts = (ref.provider_types || []).filter(Boolean);
-    if(ref.indicated !== undefined || ref.urgency || ref.rationale || pts.length){
-        var ind = ref.indicated===true ? 'Referral indicated'
-                : ref.indicated===false ? 'Referral not indicated yet'
-                : 'Referral — use clinical judgement';
-        var ubadge = {emergency:'urgent', urgent:'urgent', soon:'standard', routine:'not_needed', uncertain:'not_needed'};
-        h += '<div class="ns-block ns-referral"><div class="ns-h">Referral guidance</div>';
-        h += '<div class="ns-ref-row"><span class="ns-ref-ind">'+esc(ind)+'</span>';
-        if(ref.urgency) h += '<span class="referral-badge '+(ubadge[ref.urgency]||'not_needed')+'">'+esc(ref.urgency)+'</span>';
-        h += '</div>';
-        if(ref.rationale) h += '<div class="ns-ref-rat">'+esc(ref.rationale)+'</div>';
-        if(pts.length){
-            h += '<div class="ns-ref-providers">Allied providers: '
-               + pts.map(function(p){ return '<span class="ns-provider-chip" data-cats="'+esc(p)+'">'+esc(p)+'</span>'; }).join(' ')
-               + '</div>';
-        }
-        h += '</div>';
-    }
-
-    /* 5. Referral checklist — completed ✓ / missing ✗, NO percentage */
-    var cl = c.referral_checklist || {};
-    var comp = (cl.completed || []).filter(Boolean), miss = (cl.missing || []).filter(Boolean);
-    if(comp.length || miss.length){
-        h += '<div class="ns-block"><div class="ns-h">Referral checklist</div><div class="ns-checklist">';
-        comp.forEach(function(i){ h += '<div class="ns-cl-item done"><span class="ns-cl-icon">✓</span>'+esc(i)+'</div>'; });
-        miss.forEach(function(i){ h += '<div class="ns-cl-item missing"><span class="ns-cl-icon">✗</span>'+esc(i)+'</div>'; });
-        h += '</div></div>';
-    }
-
-    /* 6. Generate referral button */
-    h += '<div class="ns-actions-bar"><button type="button" class="ns-gen-btn" onclick="openReferralDraft(this)">📋 Generate referral draft</button></div>';
-    h += '<div class="referral-draft-slot"></div>';
-    h += '</div>'; /* .next-steps */
-
-    /* ── Secondary: care-pathway steps (map routing) + patient explanation ── */
-    var sec = '';
-    if(c.trajectory_steps && c.trajectory_steps.length){
-        sec += '<p style="font-size:.82rem;color:#8a7d5f;margin:0 0 .4rem;">Tap a step to show matching local providers on the map.</p><div class="traj-steps">';
-        c.trajectory_steps.forEach(function(s){
-            var cats = (s.map_categories && s.map_categories.length) ? s.map_categories.join(',') : '';
-            var clickable = cats ? ' traj-clickable' : '';
-            var gb = s.guideline_grounded
-                ? '<span class="ev ev-s"><span class="d">●●●</span>Grounded</span>'
-                : '<span class="ev ev-l"><span class="d">○○○</span>Confirm</span>';
-            sec += '<div class="traj-step'+clickable+'" data-cats="'+esc(cats)+'">'
-               +'<div class="traj-step-head"><strong>'+esc(s.step||'')+'</strong> '+gb+'</div>';
-            if(s.detail) sec += '<div class="traj-step-detail">'+esc(s.detail)+'</div>';
-            if(cats) sec += '<div class="traj-step-cats">Tap to show on map: '+esc(cats)+'</div>';
-            sec += '</div>';
-        });
-        sec += '</div>';
-    }
-    if(c.patient_explanation){
-        sec += '<div class="gp-script"><strong>For the patient:</strong> '+esc(c.patient_explanation)+'</div>';
-    }
-    if(c.guideline_basis && c.guideline_basis.length){
-        sec += '<p style="font-size:.82rem;color:#666;margin-top:.6rem;"><strong>Guideline basis:</strong> '+c.guideline_basis.map(esc).join('; ')+'</p>';
-    }
-    if(c.safety_flags && c.safety_flags.length){
-        sec += '<div class="safety-box"><strong>⚠ Safety flags:</strong><ul>';
-        c.safety_flags.forEach(function(f){ sec += '<li>'+esc(f)+'</li>'; });
-        sec += '</ul></div>';
-    }
-    if(sec) h += '<div class="ns-secondary"><div class="ns-secondary-h">Care pathway &amp; local providers</div>'+sec+'</div>';
-
-    return h;
-}
-
-/* Generate-referral (Step 4 baseline: reveal the draft; Step 5 enhances the UI). */
-function openReferralDraft(btn){
-    var panel = btn.closest ? btn.closest('.next-steps') : null;
-    var slot = panel ? panel.querySelector('.referral-draft-slot') : null;
-    if(!slot) return;
-    slot.innerHTML = renderReferralDraft(_trajData && _trajData.referral_draft);
-}
-var RD_LABELS = {reason_for_referral:'Reason for referral', relevant_history:'Relevant history',
-    examination:'Examination', investigations:'Investigations', treatment_to_date:'Treatment to date',
-    missing_information:'Missing information', requested_input:'Requested specialist input'};
-var RD_ORDER = ['reason_for_referral','relevant_history','examination','investigations',
-    'treatment_to_date','missing_information','requested_input'];
-
-function renderReferralDraft(draft){
-    if(!draft) return '<p style="font-size:.85rem;color:#999;">No referral draft available.</p>';
-    var rows = RD_ORDER.map(function(k){
-        var v = (draft[k]==null || String(draft[k]).trim()==='') ? '[NOT PROVIDED]' : String(draft[k]);
-        var isNP = v.trim() === '[NOT PROVIDED]';
-        /* contenteditable so [NOT PROVIDED] can be highlighted (a <textarea> can't
-           style substrings); oninput clears the highlight once the GP fills it. */
-        return '<div class="rd-field"><div class="rd-label">'+esc(RD_LABELS[k])+'</div>'
-             + '<div class="rd-value'+(isNP?' rd-np':'')+'" contenteditable="true" data-key="'+k+'" '
-             + 'oninput="this.classList.toggle(\'rd-np\', this.textContent.indexOf(\'[NOT PROVIDED]\')>=0)">'
-             + esc(v)+'</div></div>';
-    }).join('');
-    return '<div class="referral-draft">'
-         + '<div class="rd-title">Referral draft — edit before sending. Fields marked '
-         + '<span class="rd-np-legend">[NOT PROVIDED]</span> are not from the query and need your input; '
-         + 'nothing here is auto-filled with unverified detail.</div>'
-         + rows
-         + '<div class="rd-actions">'
-         +   '<button type="button" class="rd-copy-btn" onclick="copyReferralDraft(this)">📋 Copy to clipboard</button>'
-         +   '<a href="https://virtushealth.tfaforms.net/246" target="_blank" rel="noopener" class="rd-virtus-btn">Send via Virtus referral →</a>'
-         + '</div></div>';
-}
-
-function copyReferralDraft(btn){
-    var wrap = btn.closest ? btn.closest('.referral-draft') : null;
-    if(!wrap) return;
-    var lines = [];
-    wrap.querySelectorAll('.rd-field').forEach(function(f){
-        var label = f.querySelector('.rd-label').textContent;
-        var val = (f.querySelector('.rd-value').textContent || '').trim();
-        lines.push(label + ':\n' + val);
-    });
-    var text = lines.join('\n\n');
-    var done = function(){ var o=btn.textContent; btn.textContent='✓ Copied';
-        setTimeout(function(){ btn.textContent=o; }, 1600); };
-    if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(done, function(){ _copyFallback(text, done); });
-    } else { _copyFallback(text, done); }
-}
-function _copyFallback(text, done){
-    /* in-app browsers (e.g. WhatsApp) can block the async clipboard API */
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.focus(); ta.select();
-    try { document.execCommand('copy'); done(); } catch(e){}
-    document.body.removeChild(ta);
-}
-
-document.addEventListener('click', function (e) {
-    var el = e.target.closest ? e.target.closest('.traj-step.traj-clickable, .ns-provider-chip') : null;
-    if (!el) return;
-    var cats = (el.getAttribute('data-cats') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-    if (cats.length && window.AlliedMap && window.AlliedMap.showOnly) {
-        window.AlliedMap.showOnly(cats);
-    }
-});
 function renderClinical(c, calcResults){
     if(!c) return '<p>No clinical data.</p>';
     if(c._raw && c._parse_error) return '<p>'+esc(c._raw).slice(0,800)+'</p>';
@@ -2581,7 +2201,6 @@ async function performSearch(){
 
                 /* ── tier event — immediate feedback ── */
                 if(evt.type==='tier'){
-                    _isFertility = (evt.is_fertility !== false);  // default true when flag absent
                     var tierMsg = evt.tier===1 ? 'Answering factual query...'
                                 : evt.tier===3 ? 'Analysing clinical values...'
                                 : 'Analysing clinical query...';
@@ -2618,7 +2237,7 @@ async function performSearch(){
                             if(slG){
                                 slG.innerHTML = '<div class="response-section guideline">'
                                     + '<div class="section-header guideline">Guidelines</div>'
-                                    + '<div class="evidence-note">From published guidelines</div>'
+                                    + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
                                     + '<div id="guide-stream" class="stream-raw"></div></div>';
                                 slG.classList.add('revealed');
                             }
@@ -2646,7 +2265,7 @@ async function performSearch(){
                     _l1Data = evt.data || {};
                     var gHtml = '<div class="response-section guideline">'
                               + '<div class="section-header guideline">Guidelines</div>'
-                              + '<div class="evidence-note">From published guidelines</div>'
+                              + '<div class="evidence-note">RAG-retrieved from knowledge base</div>'
                               + renderGuidelines(_l1Data) + '</div>';
                     reveal('sl-g', gHtml);
                     var msgEl3 = document.getElementById('stream-msg');
@@ -2657,11 +2276,10 @@ async function performSearch(){
                 else if(evt.type==='clinical'){
                     _l3Data = evt.data || {};
                     _calcData = evt.calculator_results || {};
-                    var cBody = (evt.mode === 'trajectory')
-                        ? renderTrajectory(_l3Data)
-                        : renderClinical(_l3Data, _calcData);
-                    var cCircles = _isFertility
-                        ? '<div class="l3-gate-circles">'
+                    var cBody = renderClinical(_l3Data, _calcData);
+                    var cHtml = '<div class="l3-block">'
+                        +'<div class="l3-gate-bar">'
+                          +'<div class="l3-gate-circles">'
                             +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()">'
                               +'<div class="l3-photo-ring"></div>'
                               +'<img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks">'
@@ -2671,20 +2289,16 @@ async function performSearch(){
                               +'<span class="refer-lbl">Refer</span>'
                             +'</a>'
                           +'</div>'
-                        : '';
-                    var cHtml = '<div class="l3-block">'
-                        +'<div class="l3-gate-bar">'
-                          + cCircles
                           +'<div class="l3-gate-text">'
                             +'<div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div>'
                             +'<div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div>'
                           +'</div>'
                           +'<span class="l3-section-pill">Clinical Practice</span>'
                         +'</div>'
-                        +'<div class="l3-faded-body'+(evt.mode==='trajectory'?' l3-trajectory-body':'')+'">'+cBody+'</div>'
+                        +'<div class="l3-faded-body">'+cBody+'</div>'
                       +'</div>';
                     reveal('sl-c', cHtml);
-                    if(_isFertility) burstWA();
+                    burstWA();
                 }
 
                 /* ── done — metadata, sources, footer ── */
@@ -2748,7 +2362,6 @@ async function performSearch(){
    BLOCKING RENDER — fallback for non-streaming /query
 ───────────────────────────────────────────── */
 function _performSearchRenderBlocking(data, q){
-    _isFertility = (data.is_fertility !== false);  // non-streaming path: flag comes from /query JSON
     if(data.answer){
         reveal('sl-g', fmtFallback(data.answer));
         ['sl-s','sl-c'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
@@ -2758,26 +2371,19 @@ function _performSearchRenderBlocking(data, q){
         if(data.visualizations && data.visualizations.length) renderVisualizations(data.visualizations);
 
         var g = data.guidelines || {};
-        reveal('sl-g', '<div class="response-section guideline"><div class="section-header guideline">Guidelines</div><div class="evidence-note">From published guidelines</div>' + renderGuidelines(g) + '</div>');
+        reveal('sl-g', '<div class="response-section guideline"><div class="section-header guideline">Guidelines</div><div class="evidence-note">RAG-retrieved from knowledge base</div>' + renderGuidelines(g) + '</div>');
 
         var s = data.specialist_insight || {};
         setTimeout(function(){ reveal('sl-s', '<div class="response-section specialist"><div class="section-header specialist">Specialist Insight</div><div class="evidence-note">LLM parametric knowledge</div>' + renderSpecialist(s) + '</div>'); }, 200);
 
         var c = data.clinical_practice || {};
-        var cBody = (c.mode === 'trajectory')
-            ? renderTrajectory(c)
-            : renderClinical(c, data.calculator_results);
-        var bCircles = _isFertility
-            ? '<div class="l3-gate-circles">'
-              +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()"><div class="l3-photo-ring"></div><img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks"></a>'
-              +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()"><span class="refer-icon-lrg">\uD83D\uDCCB</span><span class="refer-lbl">Refer</span></a>'
-              +'</div>'
-            : '';
-        var cHtml = '<div class="l3-block"><div class="l3-gate-bar">'
-            + bCircles
-            +'<div class="l3-gate-text"><div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div><div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div></div>'
+        var cBody = renderClinical(c, data.calculator_results);
+        var cHtml = '<div class="l3-block"><div class="l3-gate-bar"><div class="l3-gate-circles">'
+            +'<a href="'+WAURL+'" target="_blank" class="l3-gate-circle photo" title="Discuss with Dr Fouks" onclick="burstWA()"><div class="l3-photo-ring"></div><img class="circle-img" src="yuval-photo.jpg" alt="Dr Fouks"></a>'
+            +'<a href="https://virtushealth.tfaforms.net/246" target="_blank" class="l3-gate-circle refer" title="Request referral" onclick="burstWA()"><span class="refer-icon-lrg">\uD83D\uDCCB</span><span class="refer-lbl">Refer</span></a>'
+            +'</div><div class="l3-gate-text"><div class="l3-gate-title">\u26A0 Clinical guidance \u2014 not a management tool</div><div class="l3-gate-msg">Educational reference only. Clinical decisions require specialist input.</div></div>'
             +'<span class="l3-section-pill">Clinical Practice</span></div><div class="l3-faded-body">'+cBody+'</div></div>';
-        setTimeout(function(){ reveal('sl-c', cHtml); if(_isFertility) burstWA(); }, 400);
+        setTimeout(function(){ reveal('sl-c', cHtml); burstWA(); }, 400);
         setTimeout(function(){ escalateIfNeeded(JSON.stringify(data), q); }, 600);
     }
     var f=document.getElementById('sl-f');
