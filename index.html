@@ -1445,6 +1445,35 @@ function _isMenopauseQuery(q){
     return /\b(menopaus\w*|perimenopaus\w*|postmenopaus\w*|mht|hrt|hormone (replacement|therapy)|hot flush\w*|hot flash\w*|night sweat\w*|vasomotor|vms|genitourinary|gsm|vaginal atroph\w*|oestrogen therapy|estrogen therapy|tibolone|fezolinetant|elinzanetant)\b/i.test(q||'');
 }
 
+/* Mount the menopause panel in a PERSISTENT container above #resultContent,
+   so a failed/blocking backend re-render of resultContent can't wipe it. */
+function showMenopausePanel(on){
+    var results=document.getElementById('results');
+    var rc=document.getElementById('resultContent');
+    var mount=document.getElementById('meno-mount');
+    if(!on){ if(mount) mount.innerHTML=''; return; }
+    if(!mount){
+        mount=document.createElement('div');
+        mount.id='meno-mount';
+        mount.style.marginBottom='0.75rem';
+        if(results && rc){ results.insertBefore(mount, rc); }
+        else if(results){ results.appendChild(mount); }
+        else if(rc){ rc.parentNode.insertBefore(mount, rc); }
+    }
+    mount.innerHTML =
+        '<div id="meno-panel" class="viz-interactive-panel expanded">'
+          +'<div class="viz-panel-header" onclick="toggleVizPanel(\'meno-panel\')">'
+            +'<div class="viz-panel-title"><span class="viz-icon">\uD83C\uDF19</span>Menopause &amp; MHT \u2014 Interactive Decision Stream</div>'
+            +'<div style="display:flex;align-items:center;gap:0.5rem;">'
+              +'<span class="viz-badge" style="background:#6b5b95">INTERACTIVE</span>'
+              +'<span class="viz-panel-toggle">\u25BC</span>'
+            +'</div>'
+          +'</div>'
+          +'<div class="viz-panel-body" id="meno-panel-body"></div>'
+        +'</div>';
+    try { renderMenopauseMHTPanel('meno-panel-body'); } catch(e){ if(window.console) console.error('meno panel', e); }
+}
+
 /* ─────────────────────────────────────────────
    WHATSAPP BURST
 ───────────────────────────────────────────── */
@@ -2740,10 +2769,8 @@ async function performSearch(){
     document.getElementById('results').classList.add('active');
     document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
 
-    /* Menopause / MHT → surface the inline decision panel immediately (frontend-triggered) */
-    if(_isMenopauseQuery(q)){
-        renderVisualizations([{type:'interactive_panel', id:'menopause_mht_panel', title:'Menopause & MHT \u2014 Interactive Decision Stream'}]);
-    }
+    /* Menopause / MHT → persistent inline decision panel (survives backend errors & re-renders) */
+    showMenopausePanel(_isMenopauseQuery(q));
 
     var payload = {question:q};
     var lensInstr = getActiveLensInstruction();
