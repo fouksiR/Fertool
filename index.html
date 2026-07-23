@@ -1448,28 +1448,28 @@ function esc(s){
    'light' = compact spec rendered generically
 ───────────────────────────────────────────── */
 var FERTOOL_TOPICS=[
- {id:'menopause',
-  rx:/\b(menopaus\w*|perimenopaus\w*|postmenopaus\w*|mht|hrt|hormone (replacement|therapy)|hot flush\w*|hot flash\w*|night sweat\w*|vasomotor|vms|genitourinary|gsm|vaginal atroph\w*|oestrogen therapy|estrogen therapy|tibolone|fezolinetant|elinzanetant)\b/i,
+ {id:'menopause', panelId:'meno-panel',
+  rx:/\b(menopaus\w*|peri.?menopaus\w*|post.?menopaus\w*|climacteric|mht\b|hrt\b|hormone (replacement|therapy)|hot flush\w*|hot flash\w*|night sweat\w*|vasomotor|vms\b|genitourinary syndrome|gsm\b|vaginal atroph\w*|atrophic vaginitis|vaginal dryness|oestrogen (therapy|patch|gel|cream|replacement)|estrogen (therapy|patch|gel|cream|replacement)|oestradiol patch|estradiol patch|vaginal (oestrogen|estrogen)|tibolone|fezolinetant|elinzanetant|premature ovarian insufficiency|\bpoi\b|early menopause|surgical menopause|oophorectomy|estradot|sandrena|estrogel|lenzetto|estrofem|progynova|prometrium|femoston|estalis|vagifem|ovestin|androfeme|veoza|lynkuet)\b/i,
   title:'Menopause & MHT \u2014 Interactive Decision Stream', icon:'\uD83C\uDF19', color:'#6b5b95',
   href:'menopause-mht-stream.html', rich:'renderMenopauseMHTPanel'},
 
  {id:'rpl',
-  rx:/\b(recurrent (pregnancy loss|miscarriage|abortion)\w*|rpl\b|repeated miscarriage\w*|miscarriage\w*|pregnancy loss(es)?|early pregnancy loss|antiphospholipid|aps\b|habitual abortion)\b/i,
+  rx:/\b(recurrent (pregnancy loss\w*|miscarriage\w*|abortion\w*)|repeated (pregnancy loss\w*|miscarriage\w*|abortion\w*)|multiple miscarriage\w*|rpl\b|miscarriage\w*|miscarry\w*|miscarried|pregnancy loss(es)?|early pregnancy loss|first.?trimester loss|second.?trimester loss|missed (abortion|miscarriage)|silent miscarriage|spontaneous abortion|habitual abortion|blighted ovum|anembryonic|chemical pregnancy|biochemical pregnancy|antiphospholipid|\baps\b|lupus anticoagulant|anticardiolipin|glycoprotein i\b|products of conception|parental karyotyp\w*|septate uterus|uterine septum|cervical insufficiency|incompetent cervix|thrombophilia screen\w*)\b/i,
   title:'Recurrent Pregnancy Loss \u2014 Workup & Management', icon:'\uD83E\uDDEC', color:'#a4463b',
   href:'rpl-workup.html', rich:'renderRPLPanel'},
 
- {id:'endo',
-  rx:/\b(endometrio(sis|ma|mas|tic)|adenomyosis|deep infiltrating endometriosis|\bdie\b)\b/i,
+ {id:'endo', panelId:'endo-panel',
+  rx:/\b(endometrio(sis|ma|mas|tic)|adenomyosis|deep infiltrating|chocolate cyst|endometriosis (surgery|excision|ivf|fertility|pain))\b/i,
   title:'Endometriosis \u2014 Surgery vs IVF Evidence Panel', icon:'\uD83E\uDE7A', color:'#0E6E58',
   href:'endometriosis-landing.html', rich:'renderEndoEvidencePanel'},
 
  {id:'refer',
-  rx:/\b(infertil\w*|subfertil\w*|trying to (conceive|get pregnant)|ttc\b|unable to conceive|not conceiv\w*|cannot conceive|can'?t (get pregnant|conceive)|when to refer|when to seek help|fertility (assessment|workup|work.?up|referral|investigation\w*)|preconception|semen analysis|failure to conceive)\b/i,
+  rx:/\b(infertil\w*|sub.?fertil\w*|trying to (conceive|get pregnant|fall pregnant)|trying for a (baby|child)|\bttc\b|unable to conceive|cannot conceive|can'?t conceive|can'?t get pregnant|not getting pregnant|not conceiv\w*|failure to conceive|difficulty conceiving|struggling to conceive|when (to|should i|do i) refer|when to seek help|refer\w* to (a |an |the )?(fertility|reproductive|rei\b|ivf|specialist)|reproductive endocrinolog\w*|fertility (specialist|referral|assessment|work.?up|investigation\w*|check|test\w*|clinic|doctor)|preconception|semen analysis|sperm (count|test|analysis|quality)|male factor|primary infertility|secondary infertility|hysterosalpingogram|\bhsg\b|hycosy|tubal patency|mid.?luteal progesterone|day 21 progesterone|ovulation (tracking|induction)|anovulat\w*|how long (should we|to) try)\b/i,
   title:'When to Refer \u2014 Fertility Assessment', icon:'\uD83D\uDCCB', color:'#0891b2',
   href:'fertility-assessment.html', rich:'renderReferPanel'},
 
  {id:'eggfreeze',
-  rx:/\b(egg freezing|freeze (my |her )?eggs|oocyte cryopreservation|oocyte freezing|elective fertility preservation|social egg freezing|vitrif\w*)\b/i,
+  rx:/\b(egg freezing|egg.?freeze|freez\w* (my |her |your |their )?eggs|oocyte cryopreservation|oocyte freezing|oocyte vitrification|elective (fertility preservation|egg freezing|oocyte)|social egg freezing|planned oocyte cryopreservation|egg banking|fertility preservation|oncofertility|vitrif\w*)\b/i,
   title:'Egg Freezing \u2014 Outcomes & Counselling', icon:'\u2744\uFE0F', color:'#4a6741',
   href:'egg-freezing-calculator.html',
   light:{
@@ -1485,7 +1485,7 @@ var FERTOOL_TOPICS=[
   }},
 
  {id:'amh',
-  rx:/\b(amh\b|anti.?m(u|\u00fc)llerian|ovarian reserve|antral follicle count|\bafc\b|diminished ovarian reserve|\bdor\b|ovarian reserve testing|nomogram\w*|normogram\w*)\b/i,
+  rx:/\b(amh\b|anti.?m(u|\u00fc)llerian|ovarian reserve|antral follicle count|antral follicle\w*|\bafc\b|diminished ovarian reserve|\bdor\b|low ovarian reserve|low amh|high amh|ovarian reserve (test\w*|marker\w*)|nomogram\w*|normogram\w*|egg count|egg reserve|ovarian age)\b/i,
   title:'AMH & Ovarian Reserve \u2014 Interpretation', icon:'\uD83D\uDCCA', color:'#c8781e',
   href:'amh-guide.html',
   light:{
@@ -1523,20 +1523,22 @@ function showTopicPanel(q){
     else if(results){ results.appendChild(mount); }
     else if(rc){ rc.parentNode.insertBefore(mount,rc); }
   }
+  /* Use each topic's NATIVE panel id so its scoped CSS (#endo-panel / #meno-panel) still applies */
+  var pid=topic.panelId||'topic-panel';
   mount.innerHTML=
-    '<div id="topic-panel" class="viz-interactive-panel expanded">'
-      +'<div class="viz-panel-header" onclick="toggleVizPanel(\'topic-panel\')">'
+    '<div id="'+pid+'" class="viz-interactive-panel expanded">'
+      +'<div class="viz-panel-header" onclick="toggleVizPanel(\''+pid+'\')">'
         +'<div class="viz-panel-title"><span class="viz-icon">'+topic.icon+'</span>'+esc(topic.title)+'</div>'
         +'<div style="display:flex;align-items:center;gap:0.5rem;">'
           +'<span class="viz-badge" style="background:'+topic.color+'">INTERACTIVE</span>'
           +'<span class="viz-panel-toggle">\u25BC</span>'
         +'</div>'
       +'</div>'
-      +'<div class="viz-panel-body" id="topic-panel-body"></div>'
+      +'<div class="viz-panel-body" id="'+pid+'-body"></div>'
     +'</div>';
   try{
-    if(topic.rich && typeof window[topic.rich]==='function'){ window[topic.rich]('topic-panel-body'); }
-    else if(topic.light){ renderLightTopicPanel('topic-panel-body',topic); }
+    if(topic.rich && typeof window[topic.rich]==='function'){ window[topic.rich](pid+'-body'); }
+    else if(topic.light){ renderLightTopicPanel(pid+'-body',topic); }
   }catch(e){ if(window.console) console.error('topic panel ('+topic.id+')',e); }
 }
 
@@ -1867,6 +1869,7 @@ function renderVisualizations(items){
 
         /* ── Interactive panel visualization ── */
         if(item.type === 'interactive_panel' && item.id === 'endo_evidence_panel'){
+            if(document.getElementById('endo-panel')) return; /* already keyword-mounted */
             var panelDiv = document.createElement('div');
             panelDiv.id = 'endo-panel';
             panelDiv.className = 'viz-interactive-panel expanded';
