@@ -1111,6 +1111,7 @@ function checkGateCode(){
             <span class="quick-search" onclick="qs('Initial workup')">Initial workup</span>
             <span class="quick-search" onclick="qs('PMOS diagnosis')">PMOS diagnosis</span>
             <span class="quick-search" onclick="qs('Menopause MHT selection')">Menopause / MHT</span>
+            <span class="quick-search" onclick="qs('Recurrent pregnancy loss workup')">Recurrent loss</span>
         </div>
 
         <!-- Loading -->
@@ -1440,38 +1441,203 @@ function esc(s){
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* Detect menopause / MHT queries → surface the inline decision panel */
-function _isMenopauseQuery(q){
-    return /\b(menopaus\w*|perimenopaus\w*|postmenopaus\w*|mht|hrt|hormone (replacement|therapy)|hot flush\w*|hot flash\w*|night sweat\w*|vasomotor|vms|genitourinary|gsm|vaginal atroph\w*|oestrogen therapy|estrogen therapy|tibolone|fezolinetant|elinzanetant)\b/i.test(q||'');
+/* ─────────────────────────────────────────────
+   TOPIC PANEL REGISTRY
+   Add a topic = add one entry below.
+   'rich'  = name of a bespoke render function
+   'light' = compact spec rendered generically
+───────────────────────────────────────────── */
+var FERTOOL_TOPICS=[
+ {id:'menopause',
+  rx:/\b(menopaus\w*|perimenopaus\w*|postmenopaus\w*|mht|hrt|hormone (replacement|therapy)|hot flush\w*|hot flash\w*|night sweat\w*|vasomotor|vms|genitourinary|gsm|vaginal atroph\w*|oestrogen therapy|estrogen therapy|tibolone|fezolinetant|elinzanetant)\b/i,
+  title:'Menopause & MHT \u2014 Interactive Decision Stream', icon:'\uD83C\uDF19', color:'#6b5b95',
+  href:'menopause-mht-stream.html', rich:'renderMenopauseMHTPanel'},
+
+ {id:'rpl',
+  rx:/\b(recurrent (pregnancy loss|miscarriage|abortion)\w*|rpl\b|repeated miscarriage\w*|miscarriage\w*|pregnancy loss(es)?|early pregnancy loss|antiphospholipid|aps\b|habitual abortion)\b/i,
+  title:'Recurrent Pregnancy Loss \u2014 Workup & Management', icon:'\uD83E\uDDEC', color:'#a4463b',
+  href:'rpl-workup.html', rich:'renderRPLPanel'},
+
+ {id:'endo',
+  rx:/\b(endometrio(sis|ma|mas|tic)|adenomyosis|deep infiltrating endometriosis|\bdie\b)\b/i,
+  title:'Endometriosis \u2014 Surgery vs IVF Evidence Panel', icon:'\uD83E\uDE7A', color:'#0E6E58',
+  href:'endometriosis-landing.html', rich:'renderEndoEvidencePanel'},
+
+ {id:'refer',
+  rx:/\b(infertil\w*|subfertil\w*|trying to (conceive|get pregnant)|ttc\b|unable to conceive|not conceiv\w*|cannot conceive|can'?t (get pregnant|conceive)|when to refer|when to seek help|fertility (assessment|workup|work.?up|referral|investigation\w*)|preconception|semen analysis|failure to conceive)\b/i,
+  title:'When to Refer \u2014 Fertility Assessment', icon:'\uD83D\uDCCB', color:'#0891b2',
+  href:'fertility-assessment.html', rich:'renderReferPanel'},
+
+ {id:'eggfreeze',
+  rx:/\b(egg freezing|freeze (my |her )?eggs|oocyte cryopreservation|oocyte freezing|elective fertility preservation|social egg freezing|vitrif\w*)\b/i,
+  title:'Egg Freezing \u2014 Outcomes & Counselling', icon:'\u2744\uFE0F', color:'#4a6741',
+  href:'egg-freezing-calculator.html',
+  light:{
+    lede:'Counselling for elective oocyte cryopreservation turns on two numbers: age at freeze and number of mature (MII) oocytes stored. Both must be discussed as a probability, never a guarantee.',
+    points:[
+      {t:'Age at freezing is the dominant variable',d:'Oocyte quality (euploidy rate) falls with age. Eggs frozen at 32 behave like 32-year-old eggs when thawed \u2014 which is the entire rationale for freezing earlier rather than later.'},
+      {t:'Counsel on egg number, not cycles',d:'Cumulative live-birth probability rises with the number of mature oocytes banked. Women in their late 30s typically need substantially more oocytes \u2014 and often more than one collection cycle \u2014 to reach the same probability as a woman in her early 30s.'},
+      {t:'Set expectations across the attrition chain',d:'Not all eggs collected are mature; not all mature eggs survive thaw; not all survivors fertilise, become blastocysts, or are euploid. Counsel across the whole chain rather than quoting a single figure.'},
+      {t:'Most stored eggs are never used',d:'A substantial proportion of women who freeze do not return to use their eggs \u2014 many conceive spontaneously. Frame it as insurance with a real cost, not a plan.'},
+      {t:'Practical points for the referral',d:'Discuss ovarian reserve context (AMH/AFC) as a yield predictor only, storage duration and cost, OHSS risk, and that freezing does not alter the age-related risks of a later pregnancy.'}
+    ],
+    refs:['ESHRE Guideline: Female Fertility Preservation (2020).','RANZCOG \u2014 Elective oocyte cryopreservation statements.','Practice Committees ASRM/SART \u2014 planned oocyte cryopreservation.']
+  }},
+
+ {id:'amh',
+  rx:/\b(amh\b|anti.?m(u|\u00fc)llerian|ovarian reserve|antral follicle count|\bafc\b|diminished ovarian reserve|\bdor\b|ovarian reserve testing|nomogram\w*|normogram\w*)\b/i,
+  title:'AMH & Ovarian Reserve \u2014 Interpretation', icon:'\uD83D\uDCCA', color:'#c8781e',
+  href:'amh-guide.html',
+  light:{
+    lede:'AMH estimates the size of the remaining follicle pool. It is a good predictor of response to stimulation \u2014 and a poor predictor of natural conception.',
+    points:[
+      {t:'What AMH does predict',d:'Ovarian response to gonadotrophin stimulation and expected oocyte yield. This makes it useful for planning IVF or egg freezing, and for flagging likely poor or hyper-response.'},
+      {t:'What AMH does not predict',d:'The chance of conceiving naturally, or the time to natural conception, in women with no other fertility concern. A low AMH in a woman with regular cycles is not a diagnosis of infertility and should not prompt fatalistic counselling.'},
+      {t:'Do not use it as a screening test',d:'AMH is not recommended as a general fertility screen in women who are not trying to conceive and have no fertility concern. It cannot reliably time menopause.'},
+      {t:'Interpret against age',d:'AMH must be read against age-specific reference ranges \u2014 an identical value carries a different meaning at 28 and at 41. Assay and unit variation (pmol/L vs ng/mL) matters when comparing results across labs.'},
+      {t:'Where a low result does change management',d:'It can justify not delaying assessment or treatment, informs stimulation protocol and expected yield, and supports earlier referral in a woman already trying to conceive.'}
+    ],
+    refs:['ESHRE Guideline: Ovarian Stimulation for IVF/ICSI (2019, updated).','ASRM Committee Opinion \u2014 testing and interpreting ovarian reserve (2020).','RANZCOG \u2014 ovarian reserve testing guidance.']
+  }}
+];
+
+function _matchTopic(q){
+  q=q||'';
+  for(var i=0;i<FERTOOL_TOPICS.length;i++){ if(FERTOOL_TOPICS[i].rx.test(q)) return FERTOOL_TOPICS[i]; }
+  return null;
 }
 
-/* Mount the menopause panel in a PERSISTENT container above #resultContent,
-   so a failed/blocking backend re-render of resultContent can't wipe it. */
-function showMenopausePanel(on){
-    var results=document.getElementById('results');
-    var rc=document.getElementById('resultContent');
-    var mount=document.getElementById('meno-mount');
-    if(!on){ if(mount) mount.innerHTML=''; return; }
-    if(!mount){
-        mount=document.createElement('div');
-        mount.id='meno-mount';
-        mount.style.marginBottom='0.75rem';
-        if(results && rc){ results.insertBefore(mount, rc); }
-        else if(results){ results.appendChild(mount); }
-        else if(rc){ rc.parentNode.insertBefore(mount, rc); }
-    }
-    mount.innerHTML =
-        '<div id="meno-panel" class="viz-interactive-panel expanded">'
-          +'<div class="viz-panel-header" onclick="toggleVizPanel(\'meno-panel\')">'
-            +'<div class="viz-panel-title"><span class="viz-icon">\uD83C\uDF19</span>Menopause &amp; MHT \u2014 Interactive Decision Stream</div>'
-            +'<div style="display:flex;align-items:center;gap:0.5rem;">'
-              +'<span class="viz-badge" style="background:#6b5b95">INTERACTIVE</span>'
-              +'<span class="viz-panel-toggle">\u25BC</span>'
-            +'</div>'
-          +'</div>'
-          +'<div class="viz-panel-body" id="meno-panel-body"></div>'
-        +'</div>';
-    try { renderMenopauseMHTPanel('meno-panel-body'); } catch(e){ if(window.console) console.error('meno panel', e); }
+/* Mount the matched topic panel in a PERSISTENT container above #resultContent,
+   so a failed/blocking backend re-render cannot wipe it. */
+function showTopicPanel(q){
+  var topic=_matchTopic(q);
+  var results=document.getElementById('results');
+  var rc=document.getElementById('resultContent');
+  var mount=document.getElementById('topic-mount')||document.getElementById('meno-mount');
+  if(!topic){ if(mount) mount.innerHTML=''; return; }
+  if(!mount){
+    mount=document.createElement('div');
+    mount.id='topic-mount';
+    mount.style.marginBottom='0.75rem';
+    if(results&&rc){ results.insertBefore(mount,rc); }
+    else if(results){ results.appendChild(mount); }
+    else if(rc){ rc.parentNode.insertBefore(mount,rc); }
+  }
+  mount.innerHTML=
+    '<div id="topic-panel" class="viz-interactive-panel expanded">'
+      +'<div class="viz-panel-header" onclick="toggleVizPanel(\'topic-panel\')">'
+        +'<div class="viz-panel-title"><span class="viz-icon">'+topic.icon+'</span>'+esc(topic.title)+'</div>'
+        +'<div style="display:flex;align-items:center;gap:0.5rem;">'
+          +'<span class="viz-badge" style="background:'+topic.color+'">INTERACTIVE</span>'
+          +'<span class="viz-panel-toggle">\u25BC</span>'
+        +'</div>'
+      +'</div>'
+      +'<div class="viz-panel-body" id="topic-panel-body"></div>'
+    +'</div>';
+  try{
+    if(topic.rich && typeof window[topic.rich]==='function'){ window[topic.rich]('topic-panel-body'); }
+    else if(topic.light){ renderLightTopicPanel('topic-panel-body',topic); }
+  }catch(e){ if(window.console) console.error('topic panel ('+topic.id+')',e); }
+}
+
+/* Backwards-compatible shim */
+function _isMenopauseQuery(q){ return FERTOOL_TOPICS[0].rx.test(q||''); }
+
+/* Shared panel stylesheet (used by light panels + RPL/Refer rich panels) */
+function _fpInjectCSS(container,scope){
+  var css=[
+   scope+" .fp{padding:20px 16px;font-family:Montserrat,system-ui,-apple-system,sans-serif;color:#2c2c2c}",
+   scope+" .fp-hdr{margin-bottom:16px;border-bottom:2px solid #29222E;padding-bottom:14px}",
+   scope+" .fp-top{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:#8a8a8a;margin-bottom:4px}",
+   scope+" .fp-hdr h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:29px;font-weight:700;color:#29222E;line-height:1.08;margin:0 0 6px}",
+   scope+" .fp-sub{font-size:13px;color:#555;line-height:1.5;max-width:690px}",
+   scope+" .fp-srcs{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}",
+   scope+" .fp-sp{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}",
+   scope+" .fp-key{border-left:4px solid #4a6741;padding:12px 16px;margin-bottom:16px;background:#f6f8f4;border-radius:0 8px 8px 0}",
+   scope+" .fp-key-t{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;font-weight:700;color:#29222E;margin-bottom:3px}",
+   scope+" .fp-key-b{font-size:13px;color:#4a4a4a;line-height:1.6}",
+   scope+" .fp-key-b strong{color:#29222E}",
+   scope+" .fp-layout{display:grid;grid-template-columns:248px 1fr;gap:18px;align-items:start}",
+   scope+" .fp-rf{background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}",
+   scope+" .fp-rf-ti{font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:700;margin:0 0 6px}",
+   scope+" .fp-sl{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px}",
+   scope+" .fp-sbs{display:flex;gap:4px;flex-wrap:wrap}",
+   scope+" .fp-sb{flex:1 1 auto;min-width:54px;padding:6px 5px;border-radius:6px;border:1.5px solid #e5e5e0;background:#fff;color:#777;font-weight:600;font-size:12px;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit}",
+   scope+" .fp-sb.on{border-color:#4a6741;background:rgba(74,103,65,.08);color:#4a6741}",
+   scope+" .fp-sb:hover{border-color:#bbb}",
+   scope+" .fp-chk{display:flex;align-items:center;gap:8px;padding:7px 9px;border:1.5px solid #e5e5e0;border-radius:8px;margin-bottom:5px;cursor:pointer;font-size:12px;background:#fff;transition:all .15s}",
+   scope+" .fp-chk input{margin:0;accent-color:#4a6741}",
+   scope+" .fp-chk.on{border-color:#4a6741;background:#eef3ea}",
+   scope+" .fp-chk.amber.on{border-color:#b07a22;background:#f8f0db}",
+   scope+" .fp-chk.amber.on input{accent-color:#b07a22}",
+   scope+" .fp-ban{border-radius:11px;padding:15px 17px;margin-bottom:14px;border:1.5px solid}",
+   scope+" .fp-ban .bt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}",
+   scope+" .fp-ban h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;margin:2px 0 4px;font-weight:700}",
+   scope+" .fp-ban p{font-size:12.5px;margin:0;line-height:1.5}",
+   scope+" .fp-ban.go{background:#e4eee4;border-color:#bcd6be}"+scope+" .fp-ban.go .bt{color:#4e7a5c}",
+   scope+" .fp-ban.caution{background:#f5e9cf;border-color:#e7ce97}"+scope+" .fp-ban.caution .bt{color:#b07a22}",
+   scope+" .fp-ban.stop{background:#f1dbd5;border-color:#e3b6ac}"+scope+" .fp-ban.stop .bt{color:#a4463b}",
+   scope+" .fp-sec{font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:700;color:#29222E;margin:14px 0 8px}",
+   scope+" .fp-item{background:#fff;border:1px solid #e5e5e0;border-left:4px solid #4a6741;border-radius:9px;padding:11px 13px;margin-bottom:9px}",
+   scope+" .fp-item.do{border-left-color:#4e7a5c}",
+   scope+" .fp-item.consider{border-left-color:#b07a22}",
+   scope+" .fp-item.dont{border-left-color:#a4463b}",
+   scope+" .fp-item.plum{border-left-color:#6b5b95}",
+   scope+" .fp-item .tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:2px 6px;border-radius:4px;background:rgba(74,103,65,.1);color:#4a6741}",
+   scope+" .fp-item.do .tag{background:#e4eee4;color:#4e7a5c}",
+   scope+" .fp-item.consider .tag{background:#f8f0db;color:#b07a22}",
+   scope+" .fp-item.dont .tag{background:#f1dbd5;color:#a4463b}",
+   scope+" .fp-item.plum .tag{background:#efe7ee;color:#6b5b95}",
+   scope+" .fp-item h4{font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;margin:5px 0 3px;font-weight:700}",
+   scope+" .fp-item .d{font-size:12px;color:#555;line-height:1.5;margin:3px 0 0}",
+   scope+" .fp-note{font-size:12px;color:#555;background:#f6f4f8;border:1px solid #e2dcea;border-radius:8px;padding:10px 12px;line-height:1.5;margin-bottom:9px}",
+   scope+" .fp-note b{color:#29222E}",
+   scope+" .fp-box{position:relative;margin-top:4px}",
+   scope+" .fp-box textarea{width:100%;min-height:210px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.5;color:#333;background:#fbfaf6;border:1px solid #e5e5e0;border-radius:9px;padding:12px;resize:vertical;box-sizing:border-box}",
+   scope+" .fp-copy{position:absolute;top:8px;right:8px;background:#4a6741;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;padding:6px 11px;cursor:pointer;z-index:2;font-family:inherit}",
+   scope+" .fp-copy:hover{background:#3d5636}",
+   scope+" .fp-resp{background:#29222E;color:#e8e2ea;border-radius:9px;padding:12px 14px;margin-top:14px;font-size:11.5px;line-height:1.55}",
+   scope+" .fp-resp b{color:#fff}",
+   scope+" .fp-refs{margin-top:12px;border-top:1px solid #e5e5e0;padding-top:10px}",
+   scope+" .fp-refs-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:5px}",
+   scope+" .fp-ref{font-size:11px;color:#777;margin-bottom:3px;line-height:1.4}",
+   scope+" .fp-open{display:inline-block;margin-top:12px;color:#fff;text-decoration:none;font-size:12px;font-weight:700;padding:9px 15px;border-radius:8px}",
+   "@media(max-width:640px){"+scope+" .fp-layout{grid-template-columns:1fr}}"
+  ].join("");
+  var s=document.createElement('style'); s.textContent=css; container.appendChild(s);
+}
+
+function _fpCopyWire(root,btnId,taId){
+  var b=root.querySelector('#'+btnId), t=root.querySelector('#'+taId);
+  if(!b||!t) return;
+  b.onclick=function(){
+    try{t.focus();t.select();}catch(e){}
+    var done=function(){b.textContent='Copied \u2713';setTimeout(function(){b.textContent='Copy note';},1500);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t.value).then(done).catch(function(){try{document.execCommand('copy');}catch(e2){}done();});
+    } else { try{document.execCommand('copy');}catch(e3){} done(); }
+  };
+}
+
+/* Generic renderer for 'light' topics */
+function renderLightTopicPanel(containerId,topic){
+  var c=document.getElementById(containerId); if(!c) return;
+  _fpInjectCSS(c,'#topic-panel');
+  var L=topic.light;
+  var pts=L.points.map(function(p){
+    return '<div class="fp-item"><h4>'+p.t+'</h4><div class="d">'+p.d+'</div></div>';
+  }).join('');
+  var refs=(L.refs||[]).map(function(r){return '<div class="fp-ref">'+r+'</div>';}).join('');
+  var root=document.createElement('div'); root.className='fp';
+  root.innerHTML=
+    '<div class="fp-hdr"><div class="fp-top">Illustrative Counselling Aid \u00b7 Evidence-Informed</div>'
+    +'<h1>'+esc(topic.title.split(' \u2014 ')[0])+'</h1>'
+    +'<div class="fp-sub">'+L.lede+'</div></div>'
+    +pts
+    +'<a class="fp-open" style="background:'+topic.color+'" href="'+topic.href+'">Open the full interactive tool \u2192</a>'
+    +'<div class="fp-resp"><b>Clinical responsibility.</b> This is an educational summary, not individual medical advice. It cannot see the patient and does not replace history, examination, current guidelines or specialist referral. Clinical decisions rest with the treating clinician.</div>'
+    +(refs?'<div class="fp-refs"><div class="fp-refs-t">Key sources</div>'+refs+'</div>':'');
+  c.appendChild(root);
 }
 
 /* ─────────────────────────────────────────────
@@ -2325,6 +2491,242 @@ function renderMenopauseMHTPanel(containerId){
 }
 
 /* ─────────────────────────────────────────────
+   RECURRENT PREGNANCY LOSS PANEL
+   ESHRE 2022 (Hum Reprod Open 2023;2023(1):hoad002)
+───────────────────────────────────────────── */
+function renderRPLPanel(containerId){
+  var c=document.getElementById(containerId); if(!c) return;
+  _fpInjectCSS(c,'#topic-panel');
+  var SRC={
+    ESHRE:{s:'ESHRE 2022',col:'#0E6E58',f:'ESHRE Guideline Group on RPL. Recurrent pregnancy loss: an update in 2022. Hum Reprod Open 2023;2023(1):hoad002.'},
+    RCOG:{s:'RCOG GTG 17',col:'#6b5b95',f:'RCOG Green-top Guideline No. 17 \u2014 recurrent first-trimester and second-trimester miscarriage.'},
+    RANZCOG:{s:'RANZCOG',col:'#0891b2',f:'RANZCOG C-Gyn 38 \u2014 investigation of recurrent pregnancy loss.'},
+    PRISM:{s:'PRISM/ALIFE2',col:'#c8781e',f:'Coomarasamy A et al. Progesterone in women with bleeding in early pregnancy (PRISM). N Engl J Med 2019;380:1815\u201324. ALIFE2 (LMWH in inherited thrombophilia), Lancet 2023.'},
+    ASRM:{s:'ASRM',col:'#a4463b',f:'ASRM Practice Committee \u2014 evaluation and treatment of recurrent pregnancy loss.'}
+  };
+  var pills=Object.keys(SRC).map(function(k){var x=SRC[k];return '<span class="fp-sp" style="background:'+x.col+'12;color:'+x.col+';border:1px solid '+x.col+'25">'+x.s+'</span>';}).join('');
+  var refs=Object.keys(SRC).map(function(k){return '<div class="fp-ref">'+SRC[k].f+'</div>';}).join('');
+
+  var S={losses:'2',timing:'early',age:'u35',f:{}};
+  var root=document.createElement('div'); root.className='fp'; c.appendChild(root);
+
+  function item(cls,tag,name,desc){return '<div class="fp-item '+cls+'"><span class="tag">'+tag+'</span><h4>'+name+'</h4><div class="d">'+desc+'</div></div>';}
+
+  function render(){
+    var f=S.f, three=(S.losses==='3plus'), late=(S.timing==='late'||S.timing==='mixed');
+    var karyoIndicated = three || f.consang || f.familyhx || (S.age==='u35'&&three);
+    var thrombIndicated = !!f.vte;
+
+    var level,bt,btitle,btext;
+    if(three){level='caution';bt='Investigate \u00b7 higher yield';btitle='Three or more losses \u2014 full workup indicated';btext='Investigation is clearly warranted. Yield of a treatable finding rises with the number of losses and with second-trimester loss.';}
+    else {level='go';bt='Investigate \u00b7 ESHRE threshold met';btitle='Two losses \u2014 investigation is warranted';btext='ESHRE defines RPL as two or more pregnancy losses and recommends investigation at this point. Waiting for a third loss is no longer standard.';}
+    if(late){level='caution';btitle='Second-trimester loss \u2014 broaden the workup';btext='Loss at or beyond 10 weeks raises the yield of antiphospholipid syndrome, uterine and cervical factors, and warrants careful review of the loss histology.';}
+
+    var lossOpts=[['2','2 losses'],['3plus','3 or more']];
+    var timeOpts=[['early','&lt;10 wk'],['late','\u226510 wk'],['mixed','Mixed']];
+    var ageOpts=[['u35','&lt;35'],['35_39','35\u201339'],['40plus','\u226540']];
+    var flagOpts=[['vte','Personal/family VTE'],['thyroid','Known thyroid disease'],['anomaly','Suspected uterine anomaly'],['consang','Consanguinity'],['familyhx','Family hx / affected child'],['bleeding','Bleeding in early pregnancy']];
+
+    function sb(list,key){return list.map(function(o){return '<button class="fp-sb'+(S[key]===o[0]?' on':'')+'" data-k="'+key+'" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('');}
+    function ck(list){return list.map(function(o){var on=!!S.f[o[0]];return '<label class="fp-chk amber'+(on?' on':'')+'"><input type="checkbox" data-f="'+o[0]+'"'+(on?' checked':'')+'><span>'+o[1]+'</span></label>';}).join('');}
+
+    var side='<div class="fp-rf"><div class="fp-rf-ti">Presentation</div>'
+      +'<div class="fp-sl">Number of losses</div><div class="fp-sbs">'+sb(lossOpts,'losses')+'</div>'
+      +'<div class="fp-sl">Gestation at loss</div><div class="fp-sbs">'+sb(timeOpts,'timing')+'</div>'
+      +'<div class="fp-sl">Maternal age</div><div class="fp-sbs">'+sb(ageOpts,'age')+'</div>'
+      +'<div class="fp-sl">Additional features</div>'+ck(flagOpts)
+      +'</div>';
+
+    var m='<div class="fp-ban '+level+'"><div class="bt">'+bt+'</div><h3>'+btitle+'</h3><p>'+btext+'</p></div>';
+
+    m+='<div class="fp-sec">Offer \u2014 core workup</div>';
+    m+=item('do','offer','Antiphospholipid antibodies','Lupus anticoagulant and anticardiolipin IgG/IgM (anti-\u03b2\u2082-glycoprotein I where available). A positive result must be confirmed on repeat testing at least 12 weeks apart before diagnosing APS.');
+    m+=item('do','offer','Thyroid function \u2014 TSH, with TPO antibodies','Screen for overt and subclinical thyroid dysfunction; TPO antibody status informs monitoring in pregnancy.');
+    m+=item('do','offer','Pelvic ultrasound \u2014 uterine anatomy and adenomyosis','Transvaginal ultrasound, 3D where available, to assess congenital uterine anomaly and acquired pathology. ESHRE\u2019s 2022 update added a specific recommendation to assess for adenomyosis in women with RPL.');
+    if(late) m+=item('do','offer','Second-trimester loss \u2014 targeted review','Review histology/placental pathology, consider cervical assessment and cervical insufficiency, and re-check antiphospholipid status; late loss shifts the differential.');
+
+    m+='<div class="fp-sec">Consider \u2014 selected couples</div>';
+    m+=item('consider','consider','Genetic analysis of pregnancy tissue','Testing products of conception can be considered for explanatory value \u2014 an aneuploid result reframes the loss and may spare further investigation. Use array-based methods where available.');
+    m+=item('consider',(karyoIndicated?'indicated here':'consider'),'Parental karyotyping','Not recommended routinely. Offer after individual risk assessment \u2014 younger maternal age, three or more losses, consanguinity, a family history of chromosomal abnormality, or a previous affected child.'+(karyoIndicated?' <b>The profile selected supports offering it.</b>':''));
+    if(f.anomaly) m+=item('consider','indicated here','Hysteroscopy','Where ultrasound suggests a septum, submucosal fibroid, polyp or adhesions, proceed to hysteroscopic assessment \u00b1 treatment.');
+    if(thrombIndicated) m+=item('consider','indicated here','Inherited thrombophilia screen','Not part of routine RPL workup, but reasonable here given the personal or family history of thrombosis \u2014 test for a venous-thrombosis indication, not to explain the losses. ALIFE2 showed LMWH did not improve live birth in inherited thrombophilia with recurrent loss.');
+    m+=item('consider','consider','Vitamin D','Reasonable to check and replete deficiency, acknowledging the evidence for improving live birth is limited.');
+
+    m+='<div class="fp-sec">Do not offer routinely</div>';
+    m+=item('dont','avoid','Natural killer (NK) cell testing','Peripheral blood or uterine NK cell assays are not recommended \u2014 they do not guide management and drive unproven immunotherapy.');
+    if(!thrombIndicated) m+=item('dont','avoid','Inherited thrombophilia screening','Not recommended in the absence of a separate venous-thrombosis indication.');
+    m+=item('dont','avoid','HLA typing, cytokine and immunophenotype panels','Not recommended outside research.');
+    m+=item('dont','avoid','PGT-A purely to treat RPL','Not recommended as a routine intervention for unexplained recurrent loss; discuss honestly if raised by the couple.');
+
+    m+='<div class="fp-sec">Management</div>';
+    m+=item('plum','treat','Confirmed antiphospholipid syndrome','Low-dose aspirin plus prophylactic heparin (LMWH), commenced with a positive pregnancy test, is the established regimen \u2014 the single clearest treatable cause.');
+    if(f.thyroid||true) m+=item('plum','treat','Thyroid disease','Treat overt hypothyroidism with levothyroxine. For subclinical hypothyroidism or TPO positivity, individualise and monitor through pregnancy.');
+    m+=item('plum','treat','Progesterone \u2014 a defined subgroup','Vaginal micronised progesterone is not for all RPL. PRISM showed benefit concentrated in women with early-pregnancy bleeding and previous miscarriages, with effect increasing with the number of previous losses.'+(f.bleeding?' <b>The selected profile (bleeding in early pregnancy) fits this subgroup.</b>':''));
+    m+=item('plum','support','Supportive care and lifestyle','Smoking cessation, alcohol reduction, BMI optimisation, and access to a dedicated early-pregnancy or recurrent-loss service. Supportive care and early reassurance scanning matter and should be offered explicitly.');
+    m+='<div class="fp-note"><b>Unexplained RPL:</b> after a negative workup the prognosis remains reasonable, and the honest message is that most couples go on to a live birth. Aspirin and heparin are <b>not</b> recommended for unexplained recurrent loss, and immunotherapies (IVIG, steroids, lymphocyte immunisation, intralipid) should not be offered outside trials.</div>';
+
+    var lossTxt=(three?'3 or more':'2'), gestTxt=({early:'<10 weeks',late:'>=10 weeks',mixed:'mixed gestations'})[S.timing];
+    var ageTxt=({u35:'<35',"35_39":'35-39',"40plus":'>=40'})[S.age];
+    var fSel=Object.keys(S.f).filter(function(k){return S.f[k];}).map(function(k){return ({vte:'personal/family VTE',thyroid:'known thyroid disease',anomaly:'suspected uterine anomaly',consang:'consanguinity',familyhx:'family history / affected child',bleeding:'bleeding in early pregnancy'})[k];});
+    var n=[];
+    n.push('RECURRENT PREGNANCY LOSS - EDUCATIONAL SUMMARY (not individual medical advice)');
+    n.push('');
+    n.push('PRESENTATION');
+    n.push('- Losses: '+lossTxt+' | Gestation: '+gestTxt+' | Maternal age: '+ageTxt);
+    n.push('- Additional features: '+(fSel.length?fSel.join(', '):'none selected'));
+    n.push('- ESHRE defines RPL as 2 or more pregnancy losses; investigation is warranted at this threshold.');
+    n.push('');
+    n.push('CORE WORKUP (offer)');
+    n.push('- Antiphospholipid antibodies: lupus anticoagulant + anticardiolipin IgG/IgM (+/- anti-b2GPI); confirm positives >=12 weeks apart.');
+    n.push('- TSH + TPO antibodies.');
+    n.push('- Transvaginal (3D where available) pelvic ultrasound: congenital anomaly, acquired pathology, and adenomyosis (ESHRE 2022 addition).');
+    if(late) n.push('- Second-trimester loss: review histology/placental pathology; consider cervical factor.');
+    n.push('');
+    n.push('CONSIDER');
+    n.push('- Genetic analysis of pregnancy tissue (explanatory value).');
+    n.push('- Parental karyotyping after individual risk assessment'+(karyoIndicated?' - SUPPORTED by this profile.':' - not routine.'));
+    if(f.anomaly) n.push('- Hysteroscopy for suspected septum/submucosal fibroid/polyp/adhesions.');
+    if(thrombIndicated) n.push('- Inherited thrombophilia screen for the VTE indication (not to explain losses); ALIFE2: LMWH did not improve live birth.');
+    n.push('- Vitamin D.');
+    n.push('');
+    n.push('DO NOT OFFER ROUTINELY');
+    n.push('- NK cell testing (peripheral or uterine); HLA/cytokine panels; PGT-A purely for RPL'+(thrombIndicated?'':'; inherited thrombophilia screening')+'.');
+    n.push('');
+    n.push('MANAGEMENT');
+    n.push('- Confirmed APS: low-dose aspirin + prophylactic LMWH from positive pregnancy test.');
+    n.push('- Overt hypothyroidism: levothyroxine; subclinical/TPO+: individualise and monitor.');
+    n.push('- Vaginal micronised progesterone: benefit concentrated in women with early-pregnancy bleeding + previous losses (PRISM)'+(f.bleeding?' - fits this profile.':'.'));
+    n.push('- Unexplained RPL: do NOT offer aspirin/heparin or immunotherapy (IVIG, steroids, lymphocyte immunisation). Offer supportive care, early reassurance scanning, lifestyle optimisation.');
+    n.push('');
+    n.push('Educational aid only. Confirm against current ESHRE/RANZCOG guidance and local pathways; clinical decisions rest with the treating clinician.');
+    var note=n.join('\n');
+
+    m+='<div class="fp-sec">Copy-pastable note</div><div class="fp-box"><button class="fp-copy" id="rplCopy">Copy note</button><textarea id="rplNote" readonly>'+esc(note)+'</textarea></div>';
+    m+='<a class="fp-open" style="background:#a4463b" href="rpl-workup.html">Open the full RPL workup tool \u2192</a>';
+    m+='<div class="fp-resp"><b>Clinical responsibility.</b> An educational reasoning aid, not individual medical advice or a prescription. It cannot see the patient, and does not capture every history, comorbidity or local pathway. Investigation and treatment decisions rest with the treating clinician against current guidelines.</div>';
+    m+='<div class="fp-refs"><div class="fp-refs-t">Key sources</div>'+refs+'</div>';
+
+    root.innerHTML='<div class="fp-hdr"><div class="fp-top">Illustrative Counselling Aid \u00b7 Evidence-Stratified</div><h1>Recurrent Pregnancy Loss</h1><div class="fp-sub">Set the presentation on the left to see which investigations are core, which are selective, and which should be avoided \u2014 with management and a copy-pastable note.</div><div class="fp-srcs">'+pills+'</div></div>'
+      +'<div class="fp-key"><div class="fp-key-t">The threshold has moved</div><div class="fp-key-b">ESHRE defines RPL as <strong>two or more</strong> pregnancy losses and recommends investigating at that point \u2014 couples should not be told to wait for a third. The highest-value findings are <strong>antiphospholipid syndrome</strong>, thyroid dysfunction and uterine pathology, because they are the treatable ones.</div></div>'
+      +'<div class="fp-layout"><div>'+side+'</div><div>'+m+'</div></div>';
+
+    root.querySelectorAll('[data-k]').forEach(function(b){b.onclick=function(){S[b.getAttribute('data-k')]=b.getAttribute('data-v');render();};});
+    root.querySelectorAll('[data-f]').forEach(function(cb){cb.onchange=function(){S.f[cb.getAttribute('data-f')]=cb.checked;render();};});
+    _fpCopyWire(root,'rplCopy','rplNote');
+  }
+  render();
+}
+
+/* ─────────────────────────────────────────────
+   WHEN TO REFER \u2014 FERTILITY ASSESSMENT PANEL
+   ASRM 2021 committee opinion; NICE CG156
+───────────────────────────────────────────── */
+function renderReferPanel(containerId){
+  var c=document.getElementById(containerId); if(!c) return;
+  _fpInjectCSS(c,'#topic-panel');
+  var SRC={
+    ASRM:{s:'ASRM 2021',col:'#a4463b',f:'ASRM Practice Committee. Fertility evaluation of infertile women: a committee opinion (2021). Fertil Steril.'},
+    NICE:{s:'NICE CG156',col:'#0891b2',f:'NICE CG156 \u2014 Fertility problems: assessment and treatment (updated). NICE QS73 statement 2 \u2014 referral for specialist consultation.'},
+    RANZCOG:{s:'RANZCOG',col:'#0E6E58',f:'RANZCOG \u2014 pre-pregnancy counselling and initial investigation of infertility.'},
+    WHO:{s:'WHO',col:'#6b5b95',f:'WHO \u2014 infertility defined as failure to achieve pregnancy after 12 months of regular unprotected intercourse.'}
+  };
+  var pills=Object.keys(SRC).map(function(k){var x=SRC[k];return '<span class="fp-sp" style="background:'+x.col+'12;color:'+x.col+';border:1px solid '+x.col+'25">'+x.s+'</span>';}).join('');
+  var refs=Object.keys(SRC).map(function(k){return '<div class="fp-ref">'+SRC[k].f+'</div>';}).join('');
+
+  var S={age:'u35',dur:'6_12',f:{}};
+  var root=document.createElement('div'); root.className='fp'; c.appendChild(root);
+  function item(cls,tag,name,desc){return '<div class="fp-item '+cls+'"><span class="tag">'+tag+'</span><h4>'+name+'</h4><div class="d">'+desc+'</div></div>';}
+
+  function render(){
+    var f=S.f;
+    var flagList=Object.keys(f).filter(function(k){return f[k];});
+    var anyFlag=flagList.length>0;
+    var threshold = (S.age==='u35')?12:(S.age==='40plus'?0:6);
+    var monthsDone = (S.dur==='lt6')?3:(S.dur==='6_12'?9:15);
+    var meets = (monthsDone>=threshold);
+
+    var level,bt,btitle,btext;
+    if(anyFlag){level='stop';bt='Refer now \u00b7 do not wait';btitle='Refer without completing the waiting period';btext='A condition known to cause or predict infertility is present. Guidelines are explicit that evaluation should begin immediately rather than waiting out a 6- or 12-month window.';}
+    else if(S.age==='40plus'){level='stop';bt='Refer now \u00b7 age';btitle='Age 40 or over \u2014 refer immediately';btext='More immediate evaluation and treatment is warranted; the cost of a further 6\u201312 months of waiting is high at this age.';}
+    else if(meets){level='caution';bt='Refer now \u00b7 threshold met';btitle='The waiting period has been met \u2014 refer';btext='Evaluation should be initiated at 12 months under 35, and at 6 months from 35 onward. Begin the baseline workup in primary care in parallel with the referral.';}
+    else {level='go';bt='Continue \u00b7 with baseline workup';btitle='Below the referral threshold \u2014 but start the basics';btext='Continue trying, and use the interval well: confirm ovulation, arrange a semen analysis, and complete preconception screening so the specialist visit starts from data rather than zero.';}
+
+    var ageOpts=[['u35','&lt;35'],['35_37','35\u201337'],['38_39','38\u201339'],['40plus','\u226540']];
+    var durOpts=[['lt6','&lt;6 mo'],['6_12','6\u201312 mo'],['gt12','&gt;12 mo']];
+    var flagOpts=[['irregular','Irregular / absent periods'],['endo','Known or suspected endometriosis'],['pid','Prior PID, ectopic or pelvic surgery'],['male','Known/suspected male factor'],['onco','Prior chemo/radiotherapy'],['rpl','Two or more miscarriages'],['genetic','Genetic condition (e.g. FMR1 premutation)'],['undescended','Undescended testes / testicular surgery']];
+
+    function sb(list,key){return list.map(function(o){return '<button class="fp-sb'+(S[key]===o[0]?' on':'')+'" data-k="'+key+'" data-v="'+o[0]+'">'+o[1]+'</button>';}).join('');}
+    function ck(list){return list.map(function(o){var on=!!S.f[o[0]];return '<label class="fp-chk amber'+(on?' on':'')+'"><input type="checkbox" data-f="'+o[0]+'"'+(on?' checked':'')+'><span>'+o[1]+'</span></label>';}).join('');}
+
+    var side='<div class="fp-rf"><div class="fp-rf-ti">Couple profile</div>'
+      +'<div class="fp-sl">Female age</div><div class="fp-sbs">'+sb(ageOpts,'age')+'</div>'
+      +'<div class="fp-sl">Duration trying</div><div class="fp-sbs">'+sb(durOpts,'dur')+'</div>'
+      +'<div class="fp-sl">Early-referral triggers</div>'+ck(flagOpts)
+      +'</div>';
+
+    var m='<div class="fp-ban '+level+'"><div class="bt">'+bt+'</div><h3>'+btitle+'</h3><p>'+btext+'</p></div>';
+
+    m+='<div class="fp-sec">The thresholds</div>';
+    m+='<div class="fp-note"><b>Under 35</b> \u2014 evaluate after <b>12 months</b> of regular unprotected intercourse. &nbsp;<b>35 and over</b> \u2014 evaluate after <b>6 months</b> (NICE frames this as age 36+). &nbsp;<b>40 and over</b> \u2014 <b>immediate</b> evaluation and treatment. &nbsp;Any known cause or predisposing factor \u2014 <b>do not wait at all</b>.</div>';
+
+    if(anyFlag){
+      var reasons=flagList.map(function(k){return ({irregular:'irregular or absent cycles (ovulatory disorder)',endo:'known or suspected endometriosis',pid:'prior PID, ectopic or pelvic surgery (tubal risk)',male:'known or suspected male factor',onco:'prior gonadotoxic chemotherapy or radiotherapy',rpl:'two or more miscarriages',genetic:'genetic condition affecting fertility',undescended:'undescended testes or testicular surgery'})[k];});
+      m+=item('dont','why now','Immediate referral triggers present',reasons.join('; ')+'. Each of these independently justifies starting evaluation now.');
+    }
+
+    m+='<div class="fp-sec">Start in primary care \u2014 in parallel with referral</div>';
+    m+=item('do','both partners','Semen analysis','The single highest-yield early test, and often forgotten. Male factor contributes in roughly a third of couples. Arrange early; repeat after ~3 months if abnormal.');
+    m+=item('do','ovulation','Confirm ovulation','Mid-luteal progesterone (day 21 of a 28-day cycle, or 7 days before the expected period). With regular 21\u201335 day cycles, further ovulation testing is usually unnecessary.');
+    if(f.irregular) m+=item('do','indicated here','Irregular cycles \u2014 extend the panel','TSH, prolactin, LH/FSH, androgens and a PCOS assessment. Anovulation is the most treatable cause and changes the referral pathway.');
+    m+=item('do','screening','Preconception screening','Rubella and varicella immunity, chlamydia screen, cervical screening current, ferritin/FBE, vitamin D, and folic acid (higher dose where BMI is raised, diabetic, or on antiepileptics).');
+    m+=item('do','imaging','Pelvic ultrasound','Transvaginal ultrasound for uterine and ovarian anatomy, antral follicle count, and to flag endometrioma, fibroid or hydrosalpinx before the specialist visit.');
+    m+=item('consider','context','Ovarian reserve \u2014 interpret carefully','AMH or AFC helps predict response to stimulation and supports not delaying, but does <b>not</b> predict natural conception and must not be used to tell a woman she cannot conceive or to deny treatment.');
+    m+=item('consider','specialist','Tubal patency','HSG or HyCoSy assesses tubal patency but is generally arranged through the specialist pathway; flag risk factors (prior PID, ectopic, pelvic surgery) in the referral.');
+    m+='<div class="fp-note"><b>Modifiable factors worth raising at the same visit:</b> smoking (both partners), alcohol, BMI at either extreme, and intercourse frequency \u2014 every 2\u20133 days across the cycle outperforms timed intercourse and reduces distress.</div>';
+
+    var ageT=({u35:'<35',"35_37":'35-37',"38_39":'38-39',"40plus":'>=40'})[S.age];
+    var durT=({lt6:'<6 months',"6_12":'6-12 months',gt12:'>12 months'})[S.dur];
+    var n=[];
+    n.push('FERTILITY ASSESSMENT / REFERRAL - EDUCATIONAL SUMMARY (not individual medical advice)');
+    n.push('');
+    n.push('PROFILE');
+    n.push('- Female age: '+ageT+' | Duration trying: '+durT);
+    n.push('- Early-referral triggers: '+(anyFlag?flagList.map(function(k){return ({irregular:'irregular/absent cycles',endo:'endometriosis',pid:'prior PID/ectopic/pelvic surgery',male:'male factor',onco:'prior chemo/radiotherapy',rpl:'2+ miscarriages',genetic:'genetic condition',undescended:'undescended testes/testicular surgery'})[k];}).join(', '):'none'));
+    n.push('');
+    n.push('RECOMMENDATION: '+btitle);
+    n.push('- Thresholds: <35 evaluate at 12 months; >=35 at 6 months; >=40 immediately; any known cause - do not wait.');
+    n.push('');
+    n.push('BASELINE WORKUP TO START NOW');
+    n.push('- Semen analysis (arrange early; repeat ~3 months if abnormal).');
+    n.push('- Mid-luteal progesterone (day 21 of 28-day cycle) to confirm ovulation.');
+    if(f.irregular) n.push('- Irregular cycles: TSH, prolactin, LH/FSH, androgens, PCOS assessment.');
+    n.push('- Rubella/varicella immunity, chlamydia screen, cervical screening, FBE/ferritin, vitamin D, folic acid.');
+    n.push('- Transvaginal pelvic ultrasound (anatomy, AFC, endometrioma/fibroid/hydrosalpinx).');
+    n.push('- AMH/AFC for treatment planning only - does NOT predict natural conception.');
+    n.push('- Tubal patency (HSG/HyCoSy) usually via specialist pathway.');
+    n.push('');
+    n.push('LIFESTYLE: smoking cessation (both partners), alcohol, BMI optimisation, intercourse every 2-3 days across the cycle.');
+    n.push('');
+    n.push('Educational aid only. Confirm against current ASRM/NICE/RANZCOG guidance and local referral criteria; clinical decisions rest with the treating clinician.');
+    var note=n.join('\n');
+
+    m+='<div class="fp-sec">Copy-pastable note</div><div class="fp-box"><button class="fp-copy" id="refCopy">Copy note</button><textarea id="refNote" readonly>'+esc(note)+'</textarea></div>';
+    m+='<a class="fp-open" style="background:#0891b2" href="fertility-assessment.html">Open the full assessment tool \u2192</a>';
+    m+='<div class="fp-resp"><b>Clinical responsibility.</b> An educational reasoning aid, not individual medical advice. Referral criteria and funding thresholds vary by jurisdiction and service. Assessment and referral decisions rest with the treating clinician.</div>';
+    m+='<div class="fp-refs"><div class="fp-refs-t">Key sources</div>'+refs+'</div>';
+
+    root.innerHTML='<div class="fp-hdr"><div class="fp-top">Illustrative Counselling Aid \u00b7 Evidence-Informed</div><h1>When to Refer</h1><div class="fp-sub">Set the couple\u2019s profile on the left to see whether the referral threshold is met, what should be started in primary care now, and a copy-pastable note for the record.</div><div class="fp-srcs">'+pills+'</div></div>'
+      +'<div class="fp-key"><div class="fp-key-t">Time is the variable you cannot get back</div><div class="fp-key-b">The thresholds are <strong>12 months under 35</strong>, <strong>6 months from 35</strong>, and <strong>immediate at 40</strong> \u2014 but any known cause or predisposing factor overrides all of them. The most common avoidable delay is waiting out a full year before arranging a <strong>semen analysis</strong>.</div></div>'
+      +'<div class="fp-layout"><div>'+side+'</div><div>'+m+'</div></div>';
+
+    root.querySelectorAll('[data-k]').forEach(function(b){b.onclick=function(){S[b.getAttribute('data-k')]=b.getAttribute('data-v');render();};});
+    root.querySelectorAll('[data-f]').forEach(function(cb){cb.onchange=function(){S.f[cb.getAttribute('data-f')]=cb.checked;render();};});
+    _fpCopyWire(root,'refCopy','refNote');
+  }
+  render();
+}
+
+/* ─────────────────────────────────────────────
    FEEDBACK
 ───────────────────────────────────────────── */
 async function sendFb(h){
@@ -2855,7 +3257,7 @@ async function performSearch(){
     document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
 
     /* Menopause / MHT → persistent inline decision panel (survives backend errors & re-renders) */
-    showMenopausePanel(_isMenopauseQuery(q));
+    showTopicPanel(q);
 
     var payload = {question:q};
     var lensInstr = getActiveLensInstruction();
