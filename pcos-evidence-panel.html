@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCOS: Diagnose, Assess, Manage | Confluence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--hd:'Playfair Display',Georgia,serif;
+--bd:'Source Serif 4',Georgia,'Times New Roman',serif;
+--ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;
+--bg:#f8f8f6;--card:#fff;--border:#e5e5e0;--txt:#1a1a1a;--txt2:#4a4a4a;--txt3:#888;
+}
+body{font-family:var(--bd);background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.6}
+.page{max-width:1280px;margin:0 auto;padding:32px 28px}
+.hdr{margin-bottom:28px;border-bottom:2px solid #1a1a1a;padding-bottom:20px}
+.hdr-top{font-family:var(--ui);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--txt3);margin-bottom:4px}
+.hdr h1{font-family:var(--hd);font-size:40px;font-weight:900;color:var(--txt);line-height:1.15;letter-spacing:-.5px;margin-bottom:8px}
+.hdr-sub{font-size:17px;color:var(--txt2);line-height:1.55;max-width:760px}
+.hdr-sub strong{color:var(--txt)}
+.srcs{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.sp{font-family:var(--ui);font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px}
+.kmsg{border-left:4px solid #1a1a1a;padding:16px 20px;margin-bottom:24px;background:#fff}
+.kmsg-t{font-family:var(--hd);font-size:20px;font-weight:800;color:var(--txt);margin-bottom:8px}
+.kmsg-b{font-size:16px;color:var(--txt2);line-height:1.65}
+.kmsg-b strong{color:var(--txt)}
+.hl{background:#fef3c7;padding:1px 5px;border-radius:3px;font-weight:700}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start}
+.sidebar{position:sticky;top:76px}
+.rf{font-family:var(--ui);background:var(--card);border-radius:10px;padding:18px 16px 14px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.rf-ti{font-family:var(--hd);font-size:18px;font-weight:800;margin-bottom:4px}
+.rf-ct{font-family:var(--ui);display:inline-block;padding:2px 8px;border-radius:8px;font-size:12px;font-weight:700;margin-bottom:14px}
+.sl{font-size:13px;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.sbs{display:flex;gap:4px;margin-bottom:14px}
+.sb{flex:1;padding:7px 4px;border-radius:6px;border:1.5px solid var(--border);background:#fff;color:#888;font-weight:600;font-size:13px;cursor:pointer;transition:all .15s;text-align:center}
+.sb.ap{border-color:#7c3aed;background:rgba(124,58,237,.06);color:#7c3aed}
+.sb.ac{border-color:#0891b2;background:rgba(8,145,178,.06);color:#0891b2}
+.sb.ag{border-color:#059669;background:rgba(5,150,105,.06);color:#059669}
+.sb:hover{border-color:#bbb}
+.sb:focus-visible{outline:2px solid #1a1a1a;outline-offset:2px}
+.tg-label{font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.tgs-side{display:flex;flex-direction:column;gap:5px}
+.tg{display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:7px 10px;border-radius:7px;border:1.5px solid var(--border);background:#fff;transition:all .15s}
+.tg.on{background:#f0fdf4;border-color:#86efac}
+.tg.ona{background:#fef2f2;border-color:#fca5a5}
+.tg input{margin-top:2px;accent-color:#16a34a;width:15px;height:15px;flex-shrink:0}
+.tl{font-size:13px;font-weight:600;color:var(--txt)}
+.ts{font-size:11px;color:var(--txt3);margin-top:1px}
+.sec-t{font-family:var(--hd);font-size:24px;font-weight:800;color:var(--txt);margin-bottom:4px}
+.sec-s{font-size:14px;color:var(--txt3);margin-bottom:12px}
+.cds{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:28px}
+.cd{background:var(--card);border-radius:10px;padding:18px 20px;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.cd-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:8px}
+.cd-ti{font-family:var(--ui);font-size:16px;font-weight:700;line-height:1.3;color:var(--txt)}
+.cd-ds{font-size:15px;color:var(--txt3);margin-bottom:12px;line-height:1.45}
+.cd-ab{font-size:15px;color:var(--txt2);margin-top:10px;line-height:1.6}
+.cd-ab em{font-style:normal;font-weight:700;color:var(--txt)}
+.cd-ci{margin-top:8px;display:flex;gap:4px;flex-wrap:wrap}
+.efi{margin-top:10px;padding:10px 14px;border-radius:8px;background:#fefce8;border:1px solid #fde047;font-size:15px;line-height:1.55;color:#713f12}
+.efi strong{color:#92400e}
+.ev{font-family:var(--ui);display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.ev .d{font-size:10px;letter-spacing:2px}
+.ev-s{background:#dcfce7;color:#16a34a}
+.ev-m{background:#fef3c7;color:#d97706}
+.ev-l{background:#fee2e2;color:#dc2626}
+.ev-c{background:#ede9fe;color:#7c3aed}
+.sw{position:relative;padding-top:24px;margin-bottom:2px}
+.sw-e{font-family:var(--ui);display:flex;justify-content:space-between;font-size:10px;font-weight:600;color:var(--txt3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px}
+.sw-t{position:relative;height:26px;border-radius:13px}
+.sw-bg{position:absolute;inset:0;border-radius:13px}
+.sw-t.benefit .sw-bg{background:linear-gradient(90deg,#e2e8f0 0%,#fcd34d 25%,#67e8f9 52%,#6ee7b7 78%,#22c55e 100%)}
+.sw-t.risk .sw-bg{background:linear-gradient(90deg,#86efac 0%,#fcd34d 30%,#fda4af 62%,#f87171 85%,#dc2626 100%)}
+.sw-t.suit .sw-bg{background:linear-gradient(90deg,#cbd5e1 0%,#93c5fd 28%,#67e8f9 52%,#5eead4 78%,#2dd4bf 100%)}
+.sw-dv{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.4);z-index:1}
+.sw-bd{position:absolute;top:2px;bottom:2px;border-radius:11px;background:rgba(255,255,255,.5);border-top:2px solid rgba(255,255,255,.85);border-bottom:2px solid rgba(255,255,255,.85);z-index:2;transition:left .6s cubic-bezier(.4,0,.2,1),width .6s cubic-bezier(.4,0,.2,1)}
+.sw-mk{position:absolute;top:50%;width:16px;height:16px;background:#1a1a1a;border:2.5px solid #fff;border-radius:3px;transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:4;transition:left .7s cubic-bezier(.4,0,.2,1)}
+.sw-zn{font-family:var(--ui);position:absolute;top:-22px;transform:translateX(-50%);font-size:11px;font-weight:800;letter-spacing:.3px;padding:3px 10px;border-radius:6px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.08);z-index:5;transition:left .7s cubic-bezier(.4,0,.2,1),background .3s,color .3s}
+.cb{font-family:var(--ui);display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;cursor:help;position:relative;transition:all .15s}
+.cb:hover{filter:brightness(.88)}
+.ctt{display:none;position:absolute;bottom:100%;left:0;margin-bottom:6px;z-index:9999;width:330px;padding:12px 14px;border-radius:8px;background:#1a1a1a;color:#f0f0f0;font-size:13px;line-height:1.55;box-shadow:0 8px 30px rgba(0,0,0,.3);pointer-events:none;font-family:var(--bd)}
+.cb:hover .ctt,.cb:focus .ctt{display:block}
+.ctt-t{font-family:var(--ui);font-weight:700;margin-bottom:4px;color:#999;font-size:10px;text-transform:uppercase;letter-spacing:.8px}
+.vd{padding:18px 22px;border-radius:10px;margin-bottom:20px}
+.vd-l{font-family:var(--hd);font-size:22px;font-weight:800;margin-bottom:8px}
+.vd-tx{font-size:17px;color:var(--txt);line-height:1.6}
+/* Diagnostic step strip */
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.st{font-family:var(--ui);background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;opacity:.5;transition:all .3s}
+.st.act{opacity:1;border-color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.st.done{opacity:1;border-color:#86efac;background:#f0fdf4}
+.st-n{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.st-t{font-size:14px;font-weight:700;color:var(--txt);line-height:1.35}
+.st-s{font-size:12px;color:var(--txt2);margin-top:4px;line-height:1.45}
+/* Checklist */
+.ck{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:28px}
+.ck-row{display:flex;gap:12px;align-items:flex-start;padding:13px 18px;border-bottom:1px solid #f0f0ec}
+.ck-row:last-child{border-bottom:none}
+.ck-row.no{background:#fafafa}
+.ck-ic{font-family:var(--ui);flex-shrink:0;width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:2px}
+.ck-ic.y{background:#dcfce7;color:#16a34a}
+.ck-ic.n{background:#fee2e2;color:#dc2626}
+.ck-bd{flex:1}
+.ck-t{font-family:var(--ui);font-size:14px;font-weight:700;color:var(--txt);margin-bottom:2px}
+.ck-d{font-size:14px;color:var(--txt2);line-height:1.5}
+.ck-tag{font-family:var(--ui);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:2px 7px;border-radius:4px;background:#f1f5f9;color:#475569;white-space:nowrap;margin-left:8px}
+/* Ladder */
+.ld{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.ld-i{background:#fff;border:1px solid var(--border);border-left:4px solid #0891b2;border-radius:8px;padding:14px 18px}
+.ld-i.l2{border-left-color:#7c3aed}
+.ld-i.l3{border-left-color:#d97706}
+.ld-n{font-family:var(--ui);font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
+.ld-t{font-family:var(--ui);font-size:15px;font-weight:700;margin-bottom:4px}
+.ld-b{font-size:15px;color:var(--txt2);line-height:1.55}
+.leg{font-family:var(--ui);margin-bottom:16px;padding:12px 16px;border-radius:8px;background:var(--card);border:1px solid var(--border)}
+.leg-t{font-size:12px;font-weight:700;color:var(--txt3);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.leg-g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.leg-i{font-size:12px;color:var(--txt2);display:flex;align-items:center;gap:6px}
+.leg-sw{display:inline-block;width:32px;height:11px;border-radius:5px;flex-shrink:0}
+.refs{margin-bottom:16px;padding:18px 22px;border-radius:10px;background:var(--card);border:1px solid var(--border)}
+.refs-t{font-family:var(--hd);font-size:18px;font-weight:800;color:var(--txt);margin-bottom:10px}
+.ref{font-size:14px;color:var(--txt2);line-height:1.55;padding:4px 0;border-bottom:1px solid #f0f0ec}
+.ref:last-child{border-bottom:none}
+.ref b{font-family:var(--ui);color:#7c3aed;margin-right:4px;font-size:12px}
+.disc{padding:14px 20px;border-radius:10px;background:#fef2f2;border:1.5px solid #fecaca}
+.disc-t{font-family:var(--ui);font-size:13px;font-weight:800;color:#dc2626;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.disc-b{font-size:15px;color:#7f1d1d;line-height:1.6}
+.redflag{padding:14px 20px;border-radius:10px;background:#fef2f2;border:2px solid #dc2626;margin-bottom:20px}
+.redflag-t{font-family:var(--ui);font-size:13px;font-weight:800;color:#dc2626;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.redflag-b{font-size:15px;color:#7f1d1d;line-height:1.6}
+header{padding:1.5rem 5%;background:rgba(248,247,245,0.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(44,44,44,0.1);position:sticky;top:0;z-index:100}
+.header-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#2c2c2c;display:flex;align-items:center;gap:2px;text-decoration:none}
+nav{display:flex;gap:2rem;align-items:center}
+nav a{color:#4a6741;text-decoration:none;font-size:0.88rem;font-weight:500;transition:opacity 0.2s;font-family:var(--ui)}
+nav a:hover{opacity:0.7}
+.ft{background:rgba(248,247,245,0.97);border-top:1px solid rgba(44,44,44,0.08);padding:2.5rem 5%;margin-top:2rem}
+.ft-text{font-family:var(--ui);font-size:0.78rem;color:#777;line-height:1.8;max-width:900px;margin:0 auto}
+.ft-text strong{color:#444;font-weight:600;display:block;margin-top:0.75rem}
+@media(max-width:768px){nav{gap:1rem}}
+@media(max-width:960px){
+.layout{grid-template-columns:1fr;gap:16px}
+.sidebar{position:static}
+.tgs-side{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.steps{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+.page{padding:16px 12px}
+.hdr h1{font-size:30px}
+.kmsg-t{font-size:18px}
+.cds{grid-template-columns:1fr}
+.leg-g{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+.hdr h1{font-size:26px}
+.tgs-side{grid-template-columns:1fr}
+.sbs{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<!-- Header mirrors index.html. Tools is an anchor here, not a button:
+     toggleToolsPanel() does not exist on this page. -->
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">Confluence</a>
+        <nav>
+            <a href="fertool-cpd-learning-hub.html">CPD Hub <span style="display:inline-block;font-size:0.58rem;font-weight:700;color:#fff;background:#c8a45e;border-radius:10px;padding:0.08rem 0.42rem;margin-left:0.25rem;letter-spacing:0.5px;text-transform:uppercase;vertical-align:middle;">soon!</span></a>
+            <a href="index.html">Tools</a>
+        </nav>
+    </div>
+</header>
+
+<div class="page" id="root"></div>
+
+<script>
+(function(){
+
+/* ─── Recommendation index: 2023 International Evidence-based PCOS Guideline ───
+   Tooltip text is a condensed paraphrase written for this tool, not guideline text. */
+var REC={
+'1.1.1':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Defines irregular cycles by years post-menarche. If present, assess for PCOS.'},
+'1.1.4':{t:'PP',g:'',x:'Adolescents with features but not full criteria: label "increased risk" and reassess at or before 8 years post-menarche.'},
+'1.1.5':{t:'PP',g:'',x:'Ovulatory dysfunction can occur with regular cycles; mid-luteal serum progesterone confirms anovulation.'},
+'1.2.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Use total and free testosterone (free T by calculated FAI) to assess biochemical hyperandrogenism.'},
+'1.2.2':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'If testosterone is not elevated, androstenedione and DHEAS may be considered, with poorer specificity.'},
+'1.2.4':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Labs should use LC-MS/MS rather than direct immunoassay; immunoassays perform poorly at female androgen levels.'},
+'1.2.6':{t:'PP',g:'',x:'Androgens cannot be reliably interpreted on the COCP. If assessment is essential, withdraw for at least 3 months with alternative contraception.'},
+'1.2.9':{t:'PP',g:'',x:'Androgens well above the reference range, or rapid-onset virilisation, warrant work-up for androgen-secreting tumour, CAH, Cushing\u2019s or hyperthecosis.'},
+'1.3.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Hirsutism alone predicts biochemical hyperandrogenism and PCOS in adults.'},
+'1.3.2':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Female pattern hair loss and acne without hirsutism are weak predictors of biochemical hyperandrogenism.'},
+'1.3.5':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Use a modified Ferriman-Gallwey score of 4\u20136 to define hirsutism, varying by ethnicity.'},
+'1.4.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Follicle number per ovary is the most effective ultrasound marker of polycystic ovarian morphology in adults.'},
+'1.4.4':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Threshold for PCOM in adults: 20 or more follicles in at least one ovary.'},
+'1.4.5':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Where follicle counting is unreliable, use ovarian volume of 10 mL or more, or 10 or more follicles per cross-section.'},
+'1.4.6':{t:'PP',g:'',x:'No validated PCOM criteria exist for adolescents; ultrasound is not recommended in this group.'},
+'1.4.9':{t:'PP',g:'',x:'With both irregular cycles and hyperandrogenism, ultrasound adds nothing to the diagnosis.'},
+'1.5.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u2295\u2295\u25ef',x:'Serum AMH may be used to define PCOM in adults.'},
+'1.5.3':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u2295\u25ef',x:'AMH must not be used as a stand-alone diagnostic test for PCOS.'},
+'1.5.4':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u2295\u25ef',x:'AMH should not yet be used in adolescents.'},
+'1.5.5':{t:'PP',g:'',x:'Use either AMH or ultrasound to define PCOM \u2014 not both, to avoid over-diagnosis.'},
+'1.5.6':{t:'PP',g:'',x:'AMH is influenced by age, BMI, recent COCP use and ovarian surgery; use assay-specific cut-offs.'},
+'1.7.3':{t:'CR',g:'\u2756\u2756\u2756',x:'Post-menopause, PCOS can be assumed from a prior diagnosis, or a long history of oligo-amenorrhoea with hyperandrogenism and/or PCOM aged 20\u201340.'},
+'1.7.4':{t:'CR',g:'\u2756\u2756\u2756',x:'New-onset or worsening hyperandrogenism after menopause requires exclusion of androgen-secreting tumour and hyperthecosis.'},
+'1.8.2':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'All women with PCOS should have cardiovascular risk factors assessed.'},
+'1.8.3':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Fasting lipid profile at diagnosis regardless of age and BMI; repeat frequency guided by results and global risk.'},
+'1.8.4':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Blood pressure annually, and when planning pregnancy or starting fertility treatment.'},
+'1.9.2':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Assess glycaemic status at diagnosis in all adults and adolescents with PCOS.'},
+'1.9.3':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Reassess glycaemic status every 1\u20133 years, guided by individual diabetes risk.'},
+'1.9.9':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'The 75 g OGTT is the most accurate test of glycaemic status in PCOS, regardless of BMI.'},
+'1.9.10':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Where OGTT is not feasible, fasting glucose and/or HbA1c may be used, with notably reduced accuracy.'},
+'1.9.11':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'OGTT preconception or at first antenatal visit, and again at 24\u201328 weeks.'},
+'1.9.12':{t:'PP',g:'',x:'Insulin resistance is central to PCOS but available insulin assays are not clinically useful; do not order them.'},
+'1.10.2':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u2295\u25ef',x:'Ask about snoring with unrefreshing sleep, daytime sleepiness or fatigue; screen or refer if present.'},
+'1.10.3':{t:'PP',g:'',x:'Screening questionnaires such as the Berlin questionnaire help identify sleep apnoea; diagnosis needs a sleep study.'},
+'1.11.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Premenopausal endometrial hyperplasia and cancer risk is markedly increased in PCOS.'},
+'1.11.2':{t:'PP',g:'',x:'Absolute endometrial cancer risk stays low; routine screening is not recommended.'},
+'1.11.4':{t:'PP',g:'',x:'Preventive options include weight management, cycle regulation and regular progestogen.'},
+'1.11.5':{t:'PP',g:'',x:'A thickened endometrium warrants consideration of biopsy and a withdrawal bleed.'},
+'2.2.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u2295\u2295',x:'Screen every adult and adolescent with PCOS for depression using a regionally validated tool.'},
+'2.2.2':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u2295\u2295',x:'Screen every adult with PCOS for anxiety using a regionally validated tool.'},
+'2.2.3':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Moderate or severe symptoms warrant further assessment, referral or treatment.'},
+'2.5.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Consider eating disorders and disordered eating at any weight, especially around weight and lifestyle discussions.'},
+'3.1.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Lifestyle intervention is recommended for all women with PCOS to improve metabolic health.'},
+'3.1.5':{t:'PP',g:'',x:'Healthy lifestyle benefits health even without weight loss.'},
+'3.3.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'No single diet composition outperforms another for metabolic, hormonal, reproductive or psychological outcomes.'},
+'3.4.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'No single exercise type or intensity outperforms another; follow general population activity guidance.'},
+'3.6.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Weight stigma in healthcare is common in PCOS and carries real biopsychosocial harm.'},
+'3.6.4':{t:'PP',g:'',x:'Seek permission before weighing, explain how the measurement will be used, and offer weight-inclusive options.'},
+'4.2.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'COCP may be recommended in adults with PCOS for hirsutism and/or irregular cycles.'},
+'4.2.2':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'COCP may be considered in adolescents at risk of, or with, PCOS for hirsutism and/or cycle control.'},
+'4.2.3':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'No clinical advantage to ethinyloestradiol 30 micrograms or more over lower doses for hirsutism.'},
+'4.2.5':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Ethinyloestradiol 35 micrograms with cyproterone acetate is second-line, given thromboembolic risk.'},
+'4.2.6':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Progestogen-only pills may be used for endometrial protection, extrapolating from general population guidance.'},
+'4.3.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Metformin alone should be considered in adults with BMI 25 or above for anthropometric and metabolic outcomes.'},
+'4.3.3':{t:'CR',g:'\u2756\u2756\u2756',x:'Metformin may be considered at BMI under 25, with limited evidence.'},
+'4.3.4':{t:'PP',g:'',x:'Start low, increase by 500 mg every 1\u20132 weeks, extended-release helps tolerance; max 2.5 g adults, 2 g adolescents; watch B12.'},
+'4.4.2':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Metformin is preferred over COCP where the indication is metabolic.'},
+'4.4.3':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Combining COCP and metformin adds little over either alone at BMI 30 or below.'},
+'4.4.4':{t:'PP',g:'',x:'Combination is most useful at BMI above 30, impaired glucose tolerance or high-risk ethnic background.'},
+'4.4.5':{t:'PP',g:'',x:'Where COCP is contraindicated or not tolerated, metformin may be used for cycle irregularity; hirsutism needs other options.'},
+'4.5.1':{t:'CR',g:'\u2756\u2756\u2756',x:'Anti-obesity agents including GLP-1 receptor agonists and orlistat may be added to lifestyle, per general population guidance.'},
+'4.5.2':{t:'PP',g:'',x:'Ensure effective contraception on GLP-1 receptor agonists; pregnancy safety data are lacking.'},
+'4.6.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Anti-androgens may be added for hirsutism after at least 6 months of COCP and/or cosmetic therapy, with effective contraception.'},
+'4.6.3':{t:'PP',g:'',x:'Anti-androgens risk undervirilisation of a male fetus; effective contraception is mandatory.'},
+'4.6.5':{t:'PP',g:'',x:'Spironolactone 25\u2013100 mg daily has the most favourable profile; cyproterone acetate at 10 mg or more is not advised (meningioma).'},
+'4.7.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Inositol may be considered by preference: little harm, possible metabolic effect, limited clinical benefit.'},
+'4.7.2':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Metformin is preferred over inositol for hirsutism and central adiposity, accepting more GI side effects.'},
+'4.8.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Laser and light therapy should be considered for facial hirsutism and its psychological impact.'},
+'4.9.1':{t:'CR',g:'\u2756\u2756\u2756',x:'Bariatric/metabolic surgery may be considered for weight, metabolic, hirsutism, cycle, ovulation and pregnancy outcomes.'},
+'4.9.4':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Counsel on rapid return of fertility after bariatric surgery; contraception until weight is stable, usually about a year.'},
+'4.10.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'PCOS is a high-risk pregnancy status; flag it in antenatal care with appropriate monitoring.'},
+'4.10.2':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Increased risk of miscarriage, gestational diabetes, hypertensive disorders, growth restriction, preterm birth and caesarean.'},
+'4.11.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Metformin in pregnancy has not been shown to prevent gestational diabetes, hypertension, pre-eclampsia or macrosomia.'},
+'5.1.2':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Optimise weight, blood pressure, smoking, alcohol, diet, folate (higher dose if BMI above 30), exercise, sleep and mental health before conception.'},
+'5.2.1':{t:'CR',g:'\u2756\u2756\u2756',x:'Decide on tubal patency testing individually before ovulation induction, weighing history, cost and treatment complexity.'},
+'5.3.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u2295\u2295\u2295',x:'Letrozole is first-line ovulation induction in anovulatory PCOS with no other infertility factor.'},
+'5.3.3':{t:'PP',g:'',x:'Exclude pregnancy before letrozole; no evidence of increased teratogenicity versus other agents.'},
+'5.4.1.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Metformin alone improves pregnancy and live birth rates, but more effective agents exist.'},
+'5.4.3.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Clomiphene with metformin outperforms clomiphene alone for ovulation and clinical pregnancy.'},
+'5.4.5.1':{t:'EBR',g:'\u2756\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Letrozole outperforms clomiphene for ovulation, clinical pregnancy and live birth.'},
+'5.5.5':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Gonadotrophins are second-line after failed first-line oral ovulation induction.'},
+'5.5.8':{t:'PP',g:'',x:'Avoid multiple pregnancy: consider cancelling when more than two follicles exceed 14 mm, and advise avoiding unprotected intercourse.'},
+'5.6.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u2295\u25ef\u25ef',x:'Laparoscopic ovarian surgery is an alternative second-line option in clomiphene-resistant anovulation.'},
+'5.7.0.1':{t:'CR',g:'\u2756\u2756\u2756',x:'IVF is third-line for anovulatory PCOS where first- and second-line induction has failed, absent another IVF indication.'},
+'5.7.0.3':{t:'PP',g:'',x:'Counsel on increased OHSS risk before starting IVF and offer risk-reduction strategies.'},
+'5.7.1.2':{t:'PP',g:'',x:'A GnRH antagonist protocol enables an agonist trigger and freeze-all without compromising cumulative live birth rate.'},
+'5.7.2.1':{t:'CR',g:'\u2756\u2756\u2756\u2756',x:'Where fresh transfer is not planned or OHSS risk is raised, trigger with a GnRH agonist and freeze all suitable embryos.'},
+'5.7.6.1':{t:'EBR',g:'\u2756\u2756 \u2295\u2295\u2295\u25ef',x:'IVM with ICSI is an alternative to stimulated IVF: no OHSS risk, but lower cumulative live birth rate.'},
+'5.8.1':{t:'EBR',g:'\u2756\u2756\u2756 \u2295\u25ef\u25ef\u25ef',x:'Inositol for infertility remains experimental; benefits and risks are too uncertain to recommend.'},
+'ALG1':{t:'ALGORITHM',g:'',x:'Diagnostic algorithm (Figure 1). Exclusion of other causes: TSH, prolactin, 17-OH progesterone, FSH; add LH where hypogonadotrophic hypogonadism is suspected.'},
+'ALG2':{t:'ALGORITHM',g:'',x:'Infertility algorithm (Figure 2). Baseline work-up, preconception optimisation, then letrozole, gonadotrophins or ovarian surgery, then IVF.'}
+};
+var TCOL={EBR:'#1d4ed8',CR:'#059669',PP:'#7c3aed',ALGORITHM:'#d97706'};
+var TLAB={EBR:'Evidence-based recommendation',CR:'Consensus recommendation',PP:'Practice point',ALGORITHM:'Guideline algorithm'};
+
+var BZ=[{m:15,l:'Unlikely',c:'#64748b',b:'#f1f5f9'},{m:35,l:'Possible',c:'#b45309',b:'#fef3c7'},{m:55,l:'Moderately Likely',c:'#0e7490',b:'#e0f7fa'},{m:75,l:'Likely',c:'#059669',b:'#dcfce7'},{m:100,l:'Very Likely',c:'#15803d',b:'#bbf7d0'}];
+var RZ=[{m:20,l:'Low',c:'#16a34a',b:'#dcfce7'},{m:40,l:'Some Risk',c:'#b45309',b:'#fef3c7'},{m:60,l:'Moderate',c:'#ea580c',b:'#ffedd5'},{m:80,l:'High',c:'#dc2626',b:'#fee2e2'},{m:100,l:'Very High',c:'#991b1b',b:'#fecaca'}];
+var SZn=[{m:20,l:'Low Priority',c:'#64748b',b:'#f1f5f9'},{m:40,l:'Consider',c:'#0284c7',b:'#e0f2fe'},{m:60,l:'Recommended',c:'#0891b2',b:'#e0f7fa'},{m:80,l:'Strongly Rec.',c:'#0d9488',b:'#ccfbf1'},{m:100,l:'First Line',c:'#059669',b:'#d1fae5'}];
+function gz(v,z){for(var i=0;i<z.length;i++)if(v<=z[i].m)return z[i];return z[z.length-1];}
+
+var S={
+ stage:'adult',            // adult | adolescent | postmeno
+ cycles:'irregular',       // regular | irregular
+ clinHA:true,              // hirsutism / mFG 4-6
+ bioHA:'nd',               // yes | no | nd
+ pcom:'nd',                // yes | no | nd  (ultrasound OR AMH)
+ goal:'cycle',             // cycle | metabolic | fertility
+ bmi25:false, bmi30:false, cocpCI:false, onCOCP:false, severeHA:false, amen90:false
+};
+
+function citeH(id){var r=REC[id];if(!r)return '';var c=TCOL[r.t];
+ return '<span class="cb" tabindex="0" style="background:'+c+'10;color:'+c+';border:1px solid '+c+'25">'+id+' \u00b7 '+r.t+'<span class="ctt"><div class="ctt-t">'+TLAB[r.t]+(r.g?' \u00b7 '+r.g:'')+'</div>'+r.x+'</span></span>';}
+function citesH(a){return a.map(citeH).join('');}
+function evH(lv){var m={strong:{c:'ev-s',d:'\u25cf\u25cf\u25cf',l:'High/Mod certainty'},moderate:{c:'ev-m',d:'\u25cf\u25cf\u25cb',l:'Low\u2013mod certainty'},limited:{c:'ev-l',d:'\u25cf\u25cb\u25cb',l:'Very low certainty'},consensus:{c:'ev-c',d:'\u25cb\u25cb\u25cb',l:'Consensus'}};var x=m[lv];return '<span class="ev '+x.c+'"><span class="d">'+x.d+'</span>'+x.l+'</span>';}
+
+function spH(val,lo,hi,type,zones,uid){
+ var endL={benefit:'Unlikely',risk:'Low',suit:'Low Priority'},endR={benefit:'Very Likely',risk:'Very High',suit:'First Line'};
+ var z=gz(val,zones);
+ return '<div class="sw" data-v="'+val+'" data-lo="'+lo+'" data-hi="'+hi+'" id="'+uid+'"><div class="sw-e"><span>'+endL[type]+'</span><span>'+endR[type]+'</span></div><div class="sw-t '+type+'"><div class="sw-bg"></div><div class="sw-dv" style="left:25%"></div><div class="sw-dv" style="left:50%"></div><div class="sw-dv" style="left:75%"></div><div class="sw-bd"></div><div class="sw-mk"></div><div class="sw-zn" style="background:'+z.b+';color:'+z.c+'">'+z.l+'</div></div></div>';
+}
+function cardH(o,uid){
+ return '<div class="cd"><div class="cd-hd"><div class="cd-ti">'+o.title+'</div>'+evH(o.ev)+'</div><div class="cd-ds">'+o.desc+'</div>'+spH(o.val,o.lo,o.hi,o.type,o.zones,uid)+'<div class="cd-ab">'+o.abs+'</div>'+(o.callout?'<div class="efi">'+o.callout+'</div>':'')+'<div class="cd-ci">'+citesH(o.src)+'</div></div>';
+}
+
+/* ─── Diagnostic engine (Algorithm 1) ─── */
+function diagnose(){
+ var od=S.cycles==='irregular';
+ var ha=S.clinHA||S.bioHA==='yes';
+ var haKnown=S.clinHA||S.bioHA!=='nd';
+ var d={status:'',step:1,col:'#d97706',bg:'#fffbeb',txt:'',next:[]};
+
+ if(S.stage==='adolescent'){
+  d.step=od&&ha?2:1;
+  if(od&&ha){d.status='Criteria met';d.col='#16a34a';d.bg='#f0fdf4';
+   d.txt='<strong>Adolescent criteria met:</strong> both ovulatory dysfunction and hyperandrogenism are present. Ultrasound and AMH are <em>not</em> used at this life stage. Confirm exclusions before labelling.';
+   d.next=['Exclusions: TSH, prolactin, 17-OH progesterone, FSH.','Start the baseline assessment panel below.'];}
+  else{d.status=od||ha?'Increased risk \u2014 not yet diagnostic':'PCOS not supported';
+   d.txt='Adolescents need <em>both</em> hyperandrogenism and ovulatory dysfunction. '+(od||ha?'With features but incomplete criteria, document <span class="hl">"increased risk of PCOS"</span> and reassess at or before 8 years post-menarche.':'Neither criterion is currently met \u2014 look for other causes of the presenting symptom.');
+   d.next=['Do not order pelvic ultrasound or AMH for diagnosis at this age.','If cycles are irregular, apply the post-menarche cycle definitions before calling them abnormal.','Reassess at or before 8 years post-menarche, sooner if features progress.'];}
+  return d;
+ }
+
+ if(S.stage==='postmeno'){
+  d.status='Retrospective diagnosis';d.col='#7c3aed';d.bg='#faf5ff';
+  d.txt='Post-menopause, PCOS is diagnosed on history: a prior diagnosis, or long-standing oligo-amenorrhoea with hyperandrogenism and/or PCOM between ages 20 and 40. The diagnosis is <em>lifelong</em> \u2014 cardiometabolic surveillance continues.';
+  d.next=['New-onset, severe or worsening hyperandrogenism after menopause is not PCOS until tumour and hyperthecosis are excluded.','Continue lipid, glycaemic and blood pressure surveillance.'];
+  return d;
+ }
+
+ /* Adult pathway */
+ if(od&&ha){d.status='Criteria met';d.step=S.clinHA?1:2;d.col='#16a34a';d.bg='#f0fdf4';
+  d.txt='<strong>Diagnosis established:</strong> irregular cycles plus '+(S.clinHA?'clinical':'biochemical')+' hyperandrogenism. <span class="hl">No ultrasound and no AMH required</span> \u2014 ordering either adds cost, not certainty.';
+  d.next=['Exclusions: TSH, prolactin, 17-OH progesterone, FSH.','Move straight to the baseline assessment panel.'];
+  return d;}
+
+ if(od&&!S.clinHA&&S.bioHA==='nd'){d.status='Step 2 \u2014 test biochemical androgens';d.step=2;
+  d.txt='Irregular cycles without clinical hyperandrogenism. Next test is <em>biochemical androgens</em>: total testosterone plus calculated free androgen index, by LC-MS/MS.';
+  d.next=['Total testosterone + SHBG for calculated FAI, LC-MS/MS assay.','If testosterone is normal, androstenedione and DHEAS may be added \u2014 lower specificity.'+(S.onCOCP?' <strong>On the COCP, androgens are uninterpretable \u2014 withdraw for at least 3 months with alternative contraception first.</strong>':'')];
+  return d;}
+
+ if((od&&haKnown&&!ha)||(!od&&ha)){
+  if(S.pcom==='yes'){d.status='Criteria met';d.step=3;d.col='#16a34a';d.bg='#f0fdf4';
+   d.txt='<strong>Diagnosis established</strong> on one clinical criterion plus PCOM. Threshold in adults: 20 or more follicles in at least one ovary, or ovarian volume 10 mL or more where counting is unreliable.';
+   d.next=['Exclusions: TSH, prolactin, 17-OH progesterone, FSH.','Move to the baseline assessment panel.'];return d;}
+  if(S.pcom==='no'){d.status='Criteria not met';d.col='#64748b';d.bg='#f8fafc';
+   d.txt='One criterion only, with PCOM absent. PCOS is <em>not</em> diagnosed. Reassess the presenting problem on its own terms.';
+   d.next=['Investigate the symptom directly: thyroid, prolactin, hypothalamic causes, primary ovarian insufficiency.','Re-evaluate if features change.'];return d;}
+  d.status='Step 3 \u2014 define PCOM';d.step=3;
+  d.txt='One criterion present. Define PCOM with <em>either</em> transvaginal ultrasound <em>or</em> serum AMH \u2014 <span class="hl">not both</span>. AMH is never a stand-alone diagnostic test.';
+  d.next=['Transvaginal ultrasound: FNPO 20 or more in at least one ovary (or OV 10 mL or more if counting is unreliable).','Or serum AMH, using an assay- and population-specific cut-off. Recent COCP, high BMI and age all shift the result.'];
+  return d;}
+
+ if(!od&&!ha&&haKnown){d.status='Criteria not met';d.col='#64748b';d.bg='#f8fafc';
+  d.txt='Neither ovulatory dysfunction nor hyperandrogenism. PCOM alone does not diagnose PCOS. Note that ovulatory dysfunction can coexist with regular cycles \u2014 a mid-luteal progesterone will confirm.';
+  d.next=['If anovulation is still suspected despite regular cycles, check mid-luteal serum progesterone.','Do not order AMH as a stand-alone PCOS test.'];return d;}
+
+ d.status='Step 1 \u2014 establish the two clinical criteria';
+ d.txt='Start with cycle history and clinical hyperandrogenism. Regular cycles are 21\u201335 days after 3 years post-menarche; fewer than 8 cycles a year, or any cycle beyond 90 days, is abnormal.';
+ d.next=['Examine for hirsutism using mFG 4\u20136 (ethnicity-dependent). Acne or hair loss alone are weak predictors.','If clinical hyperandrogenism is absent, proceed to biochemical androgens.'];
+ return d;
+}
+
+/* ─── Baseline assessment panel ─── */
+function investigations(dx){
+ var L=[],adol=S.stage==='adolescent';
+ L.push({y:true,t:'75 g oral glucose tolerance test',tag:'At diagnosis',d:'Most accurate test of glycaemic status in PCOS <em>regardless of BMI</em>. Repeat every 1\u20133 years by individual risk. Fasting glucose or HbA1c only if OGTT is not feasible \u2014 accuracy drops materially.',c:['1.9.2','1.9.9','1.9.10','1.9.3']});
+ L.push({y:true,t:'Fasting lipid profile',tag:'At diagnosis',d:'At diagnosis for everyone, <em>irrespective of age and BMI</em>. Repeat interval set by the result and global cardiovascular risk.',c:['1.8.3','1.8.2']});
+ L.push({y:true,t:'Blood pressure',tag:'Annually',d:'Annually, and again when planning pregnancy or starting fertility treatment.',c:['1.8.4']});
+ L.push({y:true,t:'Depression screen'+(adol?'':' and anxiety screen'),tag:'At diagnosis',d:'Depression screening applies to adults and adolescents; anxiety screening is recommended in adults. Use a regionally validated tool and act on moderate or severe scores. Ask about disordered eating at any weight.',c:adol?['2.2.1','2.2.3','2.5.1']:['2.2.1','2.2.2','2.2.3','2.5.1']});
+ L.push({y:true,t:'Obstructive sleep apnoea symptom check',tag:'At diagnosis',d:'Snoring plus unrefreshing sleep, daytime sleepiness or fatigue. If positive, screen with a validated questionnaire (e.g. Berlin) or refer \u2014 diagnosis still needs a sleep study.',c:['1.10.2','1.10.3']});
+ L.push({y:true,t:'Weight and waist, with permission',tag:'Ongoing',d:'Ask before weighing and explain what the number will be used for. Weight stigma is common and harmful in this group; offer weight-inclusive framing.',c:['3.6.1','3.6.4']});
+ if(S.amen90) L.push({y:true,t:'Endometrial assessment',tag:'Triggered',d:'Long-standing untreated amenorrhoea is an additional endometrial risk factor. Where endometrial thickness is excessive, consider biopsy with a withdrawal bleed. Routine screening is <em>not</em> indicated otherwise.',c:['1.11.1','1.11.5','1.11.2']});
+ if(S.goal==='fertility'){
+  L.push({y:true,t:'Preconception panel',tag:'Fertility',d:'OGTT preconception (repeat 24\u201328 weeks), blood pressure, rubella, folate at higher dose if BMI above 30, smoking, alcohol, sleep, mental health. Semen analysis; decide tubal patency testing case by case.',c:['1.9.11','5.1.2','5.2.1']});
+ }
+ L.push({y:false,t:'Fasting insulin / insulin resistance assays',tag:'Do not order',d:'Insulin resistance is central to the pathophysiology, but available assays are not clinically informative. Not part of routine care.',c:['1.9.12']});
+ if(S.stage==='adolescent') L.push({y:false,t:'Pelvic ultrasound and AMH for diagnosis',tag:'Do not order',d:'Neither is validated in adolescents \u2014 specificity is poor and over-diagnosis is the result.',c:['1.4.6','1.5.4']});
+ else if(dx.status==='Criteria met'&&S.cycles==='irregular'&&(S.clinHA||S.bioHA==='yes')) L.push({y:false,t:'Pelvic ultrasound and AMH',tag:'Not needed',d:'Both criteria are already met. Imaging or AMH changes nothing and risks over-investigation. Never order both.',c:['1.4.9','1.5.5','1.5.3']});
+ L.push({y:false,t:'Routine endometrial cancer screening',tag:'Do not order',d:'Relative risk is raised but absolute risk stays low. Inform, offer cycle regulation and progestogen, and investigate on symptoms.',c:['1.11.2','1.11.4']});
+ return L;
+}
+function ckH(L){
+ return '<div class="ck">'+L.map(function(i){
+  return '<div class="ck-row'+(i.y?'':' no')+'"><div class="ck-ic '+(i.y?'y':'n')+'">'+(i.y?'\u2713':'\u2715')+'</div><div class="ck-bd"><div class="ck-t">'+i.t+'<span class="ck-tag">'+i.tag+'</span></div><div class="ck-d">'+i.d+'</div><div class="cd-ci">'+citesH(i.c)+'</div></div></div>';
+ }).join('')+'</div>';
+}
+
+/* ─── Management ─── */
+function management(){
+ var c=[];
+ if(S.goal==='cycle'){
+  c.push({id:'sw-cocp',title:'COCP for cycle regulation and hirsutism',desc:'First-line pharmacological option in adults and in adolescents at risk or diagnosed',val:74,lo:52,hi:88,ev:'limited',type:'suit',zones:SZn,
+   abs:'No specific preparation is recommended; <em>prefer lower ethinyloestradiol doses</em> (20\u201330 micrograms or equivalent). The 35 microgram plus cyproterone acetate combination is second-line on thromboembolic grounds. Expect 6 months before judging hirsutism response.',
+   callout:S.cocpCI?'<strong>COCP contraindicated or not tolerated:</strong> metformin may be used for cycle irregularity. Hirsutism will need a separate strategy \u2014 cosmetic or laser therapy, then anti-androgen with effective contraception. Progestogen-only options cover endometrial protection.':null,
+   src:S.stage==='adolescent'?['4.2.2','4.2.3','4.2.5','4.2.7'].filter(function(k){return REC[k];}):['4.2.1','4.2.3','4.2.5','4.2.6']});
+  c.push({id:'sw-aa',title:'Anti-androgen add-on for hirsutism',desc:'Added after suboptimal response to at least 6 months of COCP and/or cosmetic therapy',val:52,lo:30,hi:70,ev:'limited',type:'benefit',zones:BZ,
+   abs:'Spironolactone 25\u2013100 mg daily has the most favourable profile. <em>Cyproterone acetate at 10 mg or more is not advised</em> (meningioma risk); finasteride, flutamide and bicalutamide carry hepatotoxicity.',
+   callout:'<strong>Contraception is mandatory.</strong> Anti-androgens risk undervirilisation of a male fetus. Do not prescribe without an effective method in place.',
+   src:['4.6.1','4.6.5','4.6.3']});
+  c.push({id:'sw-laser',title:'Laser and light therapy for facial hirsutism',desc:'Mechanical hair reduction, including its psychological benefit',val:70,lo:48,hi:85,ev:'limited',type:'benefit',zones:BZ,
+   abs:'Improves facial hirsutism and the associated depression, anxiety and quality-of-life burden. <em>More sessions are usually needed than in idiopathic hirsutism.</em> Ineffective on blond, grey or white hair. Adding COCP with or without an anti-androgen improves and maintains the result. IPL is weaker; home kits have no supporting evidence.',
+   src:['4.8.1']});
+  c.push({id:'sw-endo',title:'Endometrial protection',desc:'Where cycles remain infrequent or amenorrhoeic',val:66,lo:44,hi:82,ev:'consensus',type:'suit',zones:SZn,
+   abs:'Cycle regulation with COCP, cyclical or continuous progestogen, or a levonorgestrel IUD per general population guidance. <em>Long-standing untreated amenorrhoea is the modifiable risk factor</em>, alongside higher weight, type 2 diabetes and a persistently thickened endometrium.',
+   src:['1.11.1','1.11.4','4.2.6']});
+ }
+ if(S.goal==='metabolic'){
+  c.push({id:'sw-life',title:'Lifestyle intervention',desc:'Recommended for everyone with PCOS, at every weight',val:80,lo:58,hi:93,ev:'limited',type:'suit',zones:SZn,
+   abs:'<em>No diet composition and no exercise modality outperforms another</em> \u2014 the winner is the one that is sustained. Benefits exist without weight loss. Target the general population activity guidance: 150\u2013300 minutes moderate or 75\u2013150 minutes vigorous weekly, plus resistance work twice weekly; adolescents 60 minutes daily.',
+   src:['3.1.1','3.3.1','3.4.1','3.1.5']});
+  c.push({id:'sw-met',title:'Metformin',desc:'Primary pharmacological option where the indication is metabolic',val:S.bmi25||S.bmi30?72:48,lo:S.bmi25||S.bmi30?50:28,hi:S.bmi25||S.bmi30?86:66,ev:'limited',type:'suit',zones:SZn,
+   abs:(S.bmi25||S.bmi30?'At BMI 25 or above, metformin alone should be considered for anthropometric and metabolic outcomes.':'Below BMI 25 metformin may still be considered, on limited evidence.')+' <em>Preferred over COCP when the driver is metabolic</em>, and over inositol for hirsutism and central adiposity.',
+   callout:'<strong>Titration:</strong> start low, increase by 500 mg every 1\u20132 weeks, extended-release improves tolerance. Maximum 2.5 g daily in adults, 2 g in adolescents. Monitor B12 where risk factors exist.'+(S.bmi30?' At BMI above 30, adding metformin to the COCP is where combination therapy earns its place.':''),
+   src:S.bmi30?['4.3.1','4.4.2','4.4.4','4.3.4']:['4.3.1','4.3.3','4.4.2','4.3.4']});
+  c.push({id:'sw-glp',title:'Anti-obesity pharmacotherapy',desc:'GLP-1 receptor agonists or orlistat, added to lifestyle',val:S.bmi30?66:40,lo:S.bmi30?44:22,hi:S.bmi30?82:60,ev:'consensus',type:'suit',zones:SZn,
+   abs:'Considered per general population guidance rather than PCOS-specific evidence. Escalate the dose gradually to limit GI effects, and discuss the likelihood of <em>weight regain on discontinuation</em> and the absence of long-term safety data.',
+   callout:'<strong>Contraception is required</strong> wherever pregnancy is possible on a GLP-1 receptor agonist \u2014 pregnancy safety data are lacking.',
+   src:['4.5.1','4.5.2']});
+  c.push({id:'sw-ino',title:'Inositol',desc:'Frequently self-started; worth addressing directly',val:26,lo:12,hi:44,ev:'limited',type:'benefit',zones:BZ,
+   abs:'Little harm and possible metabolic effect, but <em>limited clinical benefit</em> for ovulation, hirsutism or weight. Metformin is preferred where either is being considered. Regulation and dose consistency vary between products.',
+   src:['4.7.1','4.7.2']});
+  c.push({id:'sw-bar',title:'Bariatric / metabolic surgery',desc:'Where general population thresholds are approached or met',val:S.bmi30?58:26,lo:S.bmi30?36:12,hi:S.bmi30?76:46,ev:'consensus',type:'suit',zones:SZn,
+   abs:'May improve weight, hypertension, diabetes, hirsutism, cycles, ovulation and pregnancy rates. PCOS is itself a metabolic condition and could justify a lower BMI threshold, as with diabetes.',
+   callout:'<strong>Counsel on rapid return of fertility.</strong> Contraception should be in place before surgery and continued until weight is stable, usually about a year, to avoid growth restriction, prematurity and other complications.',
+   src:['4.9.1','4.9.4']});
+ }
+ if(S.goal==='fertility'){
+  c.push({id:'sw-letro',title:'Letrozole \u2014 first-line ovulation induction',desc:'Anovulatory PCOS with no other infertility factor',val:88,lo:70,hi:97,ev:'strong',type:'suit',zones:SZn,
+   abs:'The clearest recommendation in the guideline: <em>highest certainty evidence in the document</em>, and superior to clomiphene for ovulation, clinical pregnancy and live birth. Off-label in many countries \u2014 discuss and document. Exclude pregnancy before starting; no signal of increased teratogenicity versus alternatives.',
+   src:['5.3.1','5.4.5.1','5.3.3']});
+  c.push({id:'sw-cc',title:'Clomiphene \u00b1 metformin, or metformin alone',desc:'Alternatives where letrozole is unavailable or not permitted',val:56,lo:36,hi:74,ev:'moderate',type:'benefit',zones:BZ,
+   abs:'Clomiphene with metformin beats clomiphene alone for ovulation and clinical pregnancy, and beats metformin alone for live birth. Metformin alone works but is the weakest of the oral options \u2014 lower cost, no monitoring burden. <em>Clomiphene raises the multiple pregnancy rate</em>, so cycles may need ultrasound monitoring.',
+   src:['5.4.3.1','5.4.1.1','5.4.5.1']});
+  c.push({id:'sw-gonad',title:'Gonadotrophins or laparoscopic ovarian surgery',desc:'Second line after failed first-line oral induction',val:62,lo:42,hi:80,ev:'moderate',type:'suit',zones:SZn,
+   abs:'Gonadotrophins give higher live birth rates than clomiphene but higher multiple pregnancy rates and require intensive monitoring; use a <em>low-dose step-up protocol</em> for monofollicular development. Ovarian surgery is the alternative, with lower multiple pregnancy rates and the usual operative and ovarian reserve considerations.',
+   callout:'<strong>Multiple pregnancy safeguard:</strong> consider cancelling the cycle when more than two follicles exceed 14 mm, and advise avoiding unprotected intercourse.',
+   src:['5.5.5','5.6.1','5.5.8']});
+  c.push({id:'sw-ivf',title:'IVF / ICSI \u2014 third line',desc:'Where first- and second-line induction has failed, absent another IVF indication',val:74,lo:52,hi:90,ev:'consensus',type:'suit',zones:SZn,
+   abs:'Effective, and multiple pregnancy is minimised with elective single embryo transfer. <em>OHSS risk must be counselled before starting.</em> A GnRH antagonist protocol allows an agonist trigger and freeze-all without compromising cumulative live birth rate. IVM with ICSI carries no OHSS risk but a lower cumulative live birth rate and needs specialist expertise.',
+   src:['5.7.0.1','5.7.0.3','5.7.1.2','5.7.2.1','5.7.6.1']});
+  c.push({id:'sw-ohss',title:'OHSS risk in stimulation',desc:'The characteristic hazard of PCOS in assisted reproduction',val:72,lo:52,hi:88,ev:'consensus',type:'risk',zones:RZ,
+   abs:'Mitigation is protocol-level: antagonist cycle, agonist trigger, freeze-all. <em>Adjunct metformin</em> before and during stimulation reduces OHSS and miscarriage where a long agonist protocol is used.',
+   src:['5.7.0.3','5.7.1.2','5.7.2.1']});
+  c.push({id:'sw-preg',title:'Pregnancy risk once conception occurs',desc:'PCOS is a high-risk pregnancy status',val:66,lo:46,hi:82,ev:'strong',type:'risk',zones:RZ,
+   abs:'Increased miscarriage, gestational diabetes, hypertensive disorders and pre-eclampsia, growth restriction and small-for-gestational-age, preterm birth and caesarean. <em>Flag PCOS status in antenatal care.</em> ART itself does not add to this baseline risk. Metformin has not been shown to prevent gestational diabetes, hypertension, pre-eclampsia or macrosomia.',
+   callout:'<strong>OGTT preconception, and again at 24\u201328 weeks.</strong> Blood pressure at the same points. Early lifestyle input given baseline weight and gestational weight gain risk.',
+   src:['4.10.1','4.10.2','4.11.1','1.9.11']});
+ }
+ return c;
+}
+
+function ladderH(){
+ if(S.goal!=='fertility')return '';
+ return '<div class="sec-t">Ovulation Induction Ladder</div><div class="sec-s">Algorithm 2 \u2014 the preferred pathway, assuming anovulation is the only factor</div>'+
+ '<div class="ld">'+
+ '<div class="ld-i"><div class="ld-n">Before starting</div><div class="ld-t">Baseline work-up and preconception optimisation</div><div class="ld-b">Endocrine profile, BMI, blood pressure, OGTT or HbA1c, rubella and infection screen, folate (higher dose above BMI 30), semen analysis, and an individual decision on tubal patency testing. Exclude pregnancy. '+citesH(['5.1.2','5.2.1','ALG2'])+'</div></div>'+
+ '<div class="ld-i"><div class="ld-n">First line</div><div class="ld-t">Letrozole, dose increasing as required</div><div class="ld-b">Alternatives with full explanation of risks, efficacy and cost: clomiphene with metformin (preferred over clomiphene alone), metformin alone (low cost, low efficacy, no monitoring), or gonadotrophins (high cost, high efficacy, monitoring, multiple pregnancy). '+citesH(['5.3.1','5.4.3.1'])+'</div></div>'+
+ '<div class="ld-i l2"><div class="ld-n">Second line</div><div class="ld-t">Gonadotrophins with ultrasound monitoring, or laparoscopic ovarian surgery</div><div class="ld-b">Low-dose step-up protocol for monofollicular growth. Ovarian surgery is the alternative where facilities and experience exist. '+citesH(['5.5.5','5.6.1'])+'</div></div>'+
+ '<div class="ld-i l3"><div class="ld-n">Third line</div><div class="ld-t">IVF / ICSI</div><div class="ld-b">Where induction has failed, or earlier if another infertility factor is present. PCOS-specific protocols to minimise OHSS; consider IVM where available. Single embryo transfer preferred given the pregnancy risk profile. '+citesH(['5.7.0.1','5.7.2.1','5.7.6.1'])+'</div></div>'+
+ '</div>';
+}
+
+function summaryH(dx){
+ var stageL={adult:'Adult',adolescent:'Adolescent',postmeno:'Post-menopausal'}[S.stage];
+ var goalL={cycle:'cycle regulation and hyperandrogenism',metabolic:'metabolic risk',fertility:'fertility'}[S.goal];
+ var lines=[];
+ lines.push('Life stage: '+stageL+'. Cycles: '+(S.cycles==='irregular'?'irregular':'regular')+'. Clinical hyperandrogenism: '+(S.clinHA?'present':'absent')+'. Biochemical androgens: '+({yes:'elevated',no:'normal',nd:'not done'}[S.bioHA])+'. PCOM (ultrasound or AMH): '+({yes:'present',no:'absent',nd:'not assessed'}[S.pcom])+'.');
+ lines.push('');
+ lines.push('Diagnostic status: '+dx.status+'.');
+ lines.push(dx.txt.replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim());
+ lines.push('');
+ lines.push('Next steps:');
+ dx.next.forEach(function(n){lines.push('- '+n.replace(/<[^>]+>/g,''));});
+ lines.push('');
+ lines.push('Baseline assessment (2023 International Evidence-based PCOS Guideline):');
+ investigations(dx).forEach(function(i){lines.push((i.y?'- ':'- NOT indicated: ')+i.t+' ['+i.tag+']');});
+ lines.push('');
+ lines.push('Management focus: '+goalL+'.');
+ management().forEach(function(m){lines.push('- '+m.title+': '+gz(m.val,m.zones).l.toLowerCase()+' ('+({strong:'high/moderate certainty',moderate:'low-moderate certainty',limited:'very low certainty',consensus:'consensus recommendation'}[m.ev])+')');});
+ if(S.severeHA){lines.push('');lines.push('RED FLAG: androgen excess out of keeping with PCOS - exclude androgen-secreting tumour, ovarian hyperthecosis, congenital adrenal hyperplasia, Cushing syndrome.');}
+ lines.push('');
+ lines.push('Generated using Confluence - an evidence-informed counselling aid. Not a substitute for specialist advice.');
+ var full=lines.join('\n');
+ return '<div style="background:#fff;border:2px solid #1a1a1a;border-radius:12px;margin-top:20px;margin-bottom:20px;overflow:hidden">'+
+ '<div style="background:#1a1a1a;padding:10px 18px;display:flex;justify-content:space-between;align-items:center">'+
+ '<div style="font-family:var(--ui);font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1.2px">\uD83D\uDCCB Consultation Summary \u2014 Copy to Notes</div>'+
+ '<button onclick="copyPcosSummary()" id="ds-copy-btn" style="background:#fff;color:#1a1a1a;border:none;border-radius:6px;padding:5px 14px;font-family:var(--ui);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.5px">Copy</button>'+
+ '</div>'+
+ '<pre id="ds-text" style="padding:16px 20px;font-family:var(--ui);font-size:13px;line-height:1.7;color:var(--txt);white-space:pre-wrap;word-break:break-word;margin:0;user-select:all">'+full.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</pre>'+
+ '</div>';
+}
+
+function render(){
+ var dx=diagnose();
+ var mgmt=management();
+ var stages=[{v:'adolescent',l:'Adolescent'},{v:'adult',l:'Adult'},{v:'postmeno',l:'Post-men.'}];
+ var cyc=[{v:'irregular',l:'Irregular'},{v:'regular',l:'Regular'}];
+ var tri=[{v:'yes',l:'Elevated'},{v:'no',l:'Normal'},{v:'nd',l:'Not done'}];
+ var pcomOpt=[{v:'yes',l:'Present'},{v:'no',l:'Absent'},{v:'nd',l:'Not done'}];
+ var goals=[{v:'cycle',l:'Cycle / hair'},{v:'metabolic',l:'Metabolic'},{v:'fertility',l:'Fertility'}];
+
+ var tgData=[
+  {k:'clinHA',l:'Clinical hyperandrogenism',s:'Hirsutism, mFG 4\u20136 by ethnicity'},
+  {k:'bmi25',l:'BMI 25 or above',s:'Metformin threshold'},
+  {k:'bmi30',l:'BMI above 30',s:'Combination therapy threshold'},
+  {k:'cocpCI',l:'COCP contraindicated',s:'Or not tolerated / declined'},
+  {k:'onCOCP',l:'Currently on COCP',s:'Androgens uninterpretable'},
+  {k:'amen90',l:'Amenorrhoea beyond 90 days',s:'Endometrial risk'},
+  {k:'severeHA',l:'Rapid or severe virilisation',s:'Red flag \u2014 exclude tumour'}
+ ];
+
+ var stgBtns=stages.map(function(a){return '<button class="sb'+(a.v===S.stage?' ap':'')+'" data-stg="'+a.v+'">'+a.l+'</button>';}).join('');
+ var cycBtns=cyc.map(function(a){return '<button class="sb'+(a.v===S.cycles?' ac':'')+'" data-cyc="'+a.v+'">'+a.l+'</button>';}).join('');
+ var bioBtns=tri.map(function(a){return '<button class="sb'+(a.v===S.bioHA?' ac':'')+'" data-bio="'+a.v+'">'+a.l+'</button>';}).join('');
+ var pcomBtns=pcomOpt.map(function(a){return '<button class="sb'+(a.v===S.pcom?' ac':'')+'" data-pcom="'+a.v+'">'+a.l+'</button>';}).join('');
+ var goalBtns=goals.map(function(a){return '<button class="sb'+(a.v===S.goal?' ag':'')+'" data-goal="'+a.v+'">'+a.l+'</button>';}).join('');
+ var tgsH=tgData.map(function(t){var on=S[t.k];var cls='tg'+(on?(t.k==='severeHA'?' ona':' on'):'');return '<label class="'+cls+'"><input type="checkbox" data-tk="'+t.k+'"'+(on?' checked':'')+'><div><div class="tl">'+t.l+'</div><div class="ts">'+t.s+'</div></div></label>';}).join('');
+
+ var srcPills=['2023 International Evidence-based Guideline','NHMRC approved','Monash CRE WHiRL','GRADE'].map(function(l,i){var c=['#1d4ed8','#059669','#7c3aed','#d97706'][i];return '<span class="sp" style="background:'+c+'10;color:'+c+';border:1px solid '+c+'20">'+l+'</span>';}).join('');
+
+ var stepsDef=[
+  {n:'Step 1',t:'Irregular cycles + clinical hyperandrogenism',s:'Both present in an adult: that is the diagnosis. No imaging, no AMH.'},
+  {n:'Step 2',t:'No clinical hyperandrogenism? Test biochemically',s:'Total and free testosterone by LC-MS/MS. Elevated with irregular cycles: diagnosis.'},
+  {n:'Step 3',t:'Only one criterion? Define PCOM',s:'Ultrasound or AMH \u2014 one, never both. Not applicable in adolescents.'}
+ ];
+ var stepsH=stepsDef.map(function(s,i){var idx=i+1;var cls=idx<dx.step?' done':(idx===dx.step?' act':'');return '<div class="st'+cls+'"><div class="st-n">'+s.n+'</div><div class="st-t">'+s.t+'</div><div class="st-s">'+s.s+'</div></div>';}).join('');
+
+ var mgmtTitle={cycle:'Cycle Regulation and Hyperandrogenism',metabolic:'Metabolic Risk and Weight',fertility:'Fertility and Ovulation Induction'}[S.goal];
+ var mgmtSub={cycle:'Where the presenting problem is periods, hirsutism or acne',metabolic:'Where the priority is cardiometabolic risk',fertility:'Where the priority is conception'}[S.goal];
+
+ var refsH=[
+  '<div class="ref"><b>1.</b> Teede HJ, Tay CT, Laven JJE, et al. Recommendations from the 2023 International Evidence-based Guideline for the Assessment and Management of Polycystic Ovary Syndrome. J Clin Endocrinol Metab 2023;108(10):2447\u20132469. (Co-published in Hum Reprod, Fertil Steril, Eur J Endocrinol.)</div>',
+  '<div class="ref"><b>2.</b> International Evidence-based Guideline for the Assessment and Management of Polycystic Ovary Syndrome 2023 \u2014 full guideline and translation resources. Monash University, NHMRC Centre for Research Excellence in Women\u2019s Health in Reproductive Life. www.monash.edu/medicine/mchri/pcos</div>',
+  '<div class="ref"><b>3.</b> Mousa A, Tay CT, Teede H. Technical Report for the 2023 International Evidence-based Guideline for the Assessment and Management of Polycystic Ovary Syndrome. Monash University, 2023. doi:10.26180/23625288.v1</div>',
+  '<div class="ref"><b>4.</b> Diagnostic algorithm (Figure 1) and infertility algorithm (Figure 2), 2023 International Evidence-based PCOS Guideline. \u00a9 Monash University on behalf of the NHMRC CRE WHiRL. Reproduced here in paraphrase only.</div>'
+ ].join('');
+
+ var html=
+ '<div class="hdr"><div class="hdr-top">Clinical Decision Aid \u00b7 2023 International Evidence-based PCOS Guideline</div>'+
+ '<h1>PCOS: What to Diagnose, What to Test, What to Treat</h1>'+
+ '<div class="hdr-sub">Built for the general practice consultation. Set the patient profile in the sidebar and the panel resolves the <strong>diagnostic step you are actually at</strong>, the investigations that are indicated (and the ones that are not), and the management options for the presenting priority. Spectrums show the <strong>direction and relative strength</strong> of each recommendation, not precise probabilities. Hover any <span style="font-family:var(--ui);padding:1px 6px;border-radius:3px;background:#dbeafe;color:#1d4ed8;font-weight:600;font-size:11px">recommendation badge</span> for its category, GRADE strength and content.</div>'+
+ '<div class="srcs">'+srcPills+'</div></div>'+
+
+ '<div class="kmsg"><div class="kmsg-t">The four things that change practice</div><div class="kmsg-b">'+
+ '<strong>1. Two criteria are enough.</strong> Irregular cycles plus hyperandrogenism in an adult <span class="hl">is the diagnosis</span> \u2014 ultrasound and AMH add cost, not certainty.<br><br>'+
+ '<strong>2. AMH now substitutes for ultrasound</strong> in adults where PCOM must be defined \u2014 but only one of the two, never as a stand-alone test, and never in adolescents.<br><br>'+
+ '<strong>3. Diagnosis triggers a fixed assessment set:</strong> OGTT, lipids, blood pressure, depression and anxiety screening, sleep apnoea symptoms. <span class="hl">Fasting insulin is not one of them.</span><br><br>'+
+ '<strong>4. Letrozole is first line for ovulation induction</strong> \u2014 the highest-certainty recommendation in the guideline, ahead of clomiphene.</div></div>'+
+
+ '<div class="layout">'+
+ '<div class="sidebar"><div class="rf">'+
+ '<div class="rf-ti">Patient Profile</div>'+
+ '<div class="rf-ct" style="background:'+dx.bg+';color:'+dx.col+'">'+dx.status+'</div>'+
+ '<div class="sl">Life stage</div><div class="sbs">'+stgBtns+'</div>'+
+ '<div class="sl">Menstrual cycles</div><div class="sbs">'+cycBtns+'</div>'+
+ '<div class="sl">Biochemical androgens</div><div class="sbs">'+bioBtns+'</div>'+
+ '<div class="sl">PCOM (US or AMH)</div><div class="sbs">'+pcomBtns+'</div>'+
+ '<div class="sl">Management priority</div><div class="sbs">'+goalBtns+'</div>'+
+ '<div class="tg-label">Modifiers</div>'+
+ '<div class="tgs-side">'+tgsH+'</div>'+
+ '</div></div>'+
+
+ '<div class="main">'+
+ (S.severeHA?'<div class="redflag"><div class="redflag-t">Red flag \u2014 do not label this PCOS yet</div><div class="redflag-b">Androgens markedly above the reference range, rapid onset, or progressive virilisation require exclusion of an <strong>androgen-secreting ovarian or adrenal tumour</strong>, ovarian hyperthecosis, congenital adrenal hyperplasia, Cushing\u2019s syndrome and iatrogenic causes. Some androgen-secreting tumours produce only mild to moderate elevations \u2014 <strong>the history of onset and rate of progression carries the diagnostic weight</strong>. '+citesH(['1.2.9','1.7.4'])+'</div></div>':'')+
+
+ '<div class="sec-t">Diagnostic Position</div><div class="sec-s">Algorithm 1, resolved against the current profile</div>'+
+ '<div class="steps">'+stepsH+'</div>'+
+ '<div class="vd" style="background:'+dx.bg+';border:1.5px solid '+dx.col+'25"><div class="vd-l" style="color:'+dx.col+'">'+dx.status+'</div><div class="vd-tx">'+dx.txt+'</div>'+
+ '<ul style="margin:10px 0 0 20px;font-size:16px;color:var(--txt2);line-height:1.6">'+dx.next.map(function(n){return '<li>'+n+'</li>';}).join('')+'</ul>'+
+ '<div class="cd-ci" style="margin-top:10px">'+citesH(['ALG1','1.1.1','1.3.1','1.2.1','1.4.4','1.5.5'])+'</div></div>'+
+
+ '<div class="sec-t">Baseline Assessment</div><div class="sec-s">Once the diagnosis is made \u2014 and the tests that should not be ordered</div>'+
+ ckH(investigations(dx))+
+
+ '<div class="sec-t">'+mgmtTitle+'</div><div class="sec-s">'+mgmtSub+'</div>'+
+ '<div class="cds">'+mgmt.map(function(m){return cardH(m,m.id);}).join('')+'</div>'+
+
+ ladderH()+
+ summaryH(dx)+
+ '</div></div>'+
+
+ '<div class="leg"><div class="leg-t">How to read this panel</div><div class="leg-g">'+
+ '<div class="leg-i"><span class="leg-sw" style="background:linear-gradient(90deg,#cbd5e1,#93c5fd,#5eead4,#2dd4bf)"></span>Recommendation strength: low priority \u2192 first line</div>'+
+ '<div class="leg-i"><span class="leg-sw" style="background:linear-gradient(90deg,#86efac,#fcd34d,#fda4af,#dc2626)"></span>Risk: low \u2192 very high</div>'+
+ '<div class="leg-i"><span style="width:13px;height:13px;background:#1a1a1a;border:2px solid #fff;border-radius:2px;transform:rotate(45deg);display:inline-block;box-shadow:0 1px 3px rgba(0,0,0,.2);flex-shrink:0"></span> = best estimate &emsp;<span style="width:24px;height:9px;display:inline-block;border-radius:4px;background:rgba(255,255,255,.6);border:1.5px solid rgba(200,200,200,.7)"></span> = uncertainty range</div>'+
+ '<div class="leg-i"><span class="ev ev-s"><span class="d">\u25cf\u25cf\u25cf</span>High/Mod</span> GRADE certainty of the underlying evidence</div>'+
+ '<div class="leg-i"><span class="ev ev-c"><span class="d">\u25cb\u25cb\u25cb</span>Consensus</span> Consensus recommendation \u2014 evidence insufficient in PCOS</div>'+
+ '<div class="leg-i"><span class="cb" style="background:#1d4ed810;color:#1d4ed8;border:1px solid #1d4ed825">5.3.1 \u00b7 EBR</span> Recommendation number and category</div>'+
+ '</div></div>'+
+
+ '<div class="refs"><div class="refs-t">References</div>'+refsH+'</div>'+
+
+ '<div class="disc"><div class="disc-t">Disclaimer</div><div class="disc-b">This tool is for <strong>informational and educational purposes only</strong> and is <strong>not a substitute for professional medical advice, diagnosis, or treatment</strong>. Recommendation text is paraphrased; the source guideline recommendations are copyright Monash University on behalf of the NHMRC Centre for Research Excellence in Women\u2019s Health in Reproductive Life and should be consulted directly. Several medications referenced \u2014 including letrozole, metformin and clomiphene \u2014 are used off-label in PCOS in many jurisdictions; prescribers must confirm local regulatory status and counsel accordingly. Always apply clinical judgement to the individual patient.</div></div>';
+
+ document.getElementById('root').innerHTML=html;
+
+ document.querySelectorAll('.sw').forEach(function(sw){
+  var v=parseInt(sw.getAttribute('data-v')),lo=parseInt(sw.getAttribute('data-lo')),hi=parseInt(sw.getAttribute('data-hi'));
+  var bd=sw.querySelector('.sw-bd'),mk=sw.querySelector('.sw-mk'),zn=sw.querySelector('.sw-zn');
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+   bd.style.left=lo+'%';bd.style.width=(hi-lo)+'%';
+   mk.style.left=Math.max(8,Math.min(92,v))+'%';
+   zn.style.left=Math.max(14,Math.min(86,v))+'%';
+  });});
+ });
+
+ document.querySelectorAll('[data-stg]').forEach(function(b){b.onclick=function(){S.stage=b.getAttribute('data-stg');if(S.stage==='adolescent'){S.pcom='nd';}render();};});
+ document.querySelectorAll('[data-cyc]').forEach(function(b){b.onclick=function(){S.cycles=b.getAttribute('data-cyc');render();};});
+ document.querySelectorAll('[data-bio]').forEach(function(b){b.onclick=function(){S.bioHA=b.getAttribute('data-bio');render();};});
+ document.querySelectorAll('[data-pcom]').forEach(function(b){b.onclick=function(){S.pcom=b.getAttribute('data-pcom');render();};});
+ document.querySelectorAll('[data-goal]').forEach(function(b){b.onclick=function(){S.goal=b.getAttribute('data-goal');render();};});
+ document.querySelectorAll('[data-tk]').forEach(function(cb){cb.onchange=function(){S[cb.getAttribute('data-tk')]=cb.checked;if(cb.getAttribute('data-tk')==='bmi30'&&cb.checked)S.bmi25=true;render();};});
+}
+
+window.copyPcosSummary=function(){
+ var el=document.getElementById('ds-text');if(!el)return;
+ navigator.clipboard.writeText(el.textContent).then(function(){
+  var btn=document.getElementById('ds-copy-btn');
+  if(btn){btn.textContent='\u2713 Copied!';setTimeout(function(){btn.textContent='Copy';},2000);}
+ });
+};
+
+render();
+})();
+</script>
+
+<footer class="ft">
+<div class="ft-text">
+<strong>Clinical Decision Support Tool</strong>
+Evidence-based guidance derived from the 2023 International Evidence-based Guideline for the Assessment and Management of Polycystic Ovary Syndrome (NHMRC approved). All information requires independent verification and clinical judgment.
+<strong>Medical Disclaimer</strong>
+For informational and educational purposes only. Individual patient care decisions require consultation with qualified healthcare professionals.
+<strong>Copyright</strong>
+&copy; 2025 Confluence. All rights reserved. Professional use only.
+</div>
+</footer>
+</body>
+</html>
