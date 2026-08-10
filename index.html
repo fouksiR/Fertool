@@ -2668,10 +2668,10 @@ function renderReferPanel(containerId){
     var meets = (monthsDone>=threshold);
 
     var level,bt,btitle,btext;
-    if(anyFlag){level='stop';bt='Refer now \u00b7 do not wait';btitle='Refer without completing the waiting period';btext='A condition known to cause or predict infertility is present. Guidelines are explicit that evaluation should begin immediately rather than waiting out a 6- or 12-month window.';}
-    else if(S.age==='40plus'){level='stop';bt='Refer now \u00b7 age';btitle='Age 40 or over \u2014 refer immediately';btext='More immediate evaluation and treatment is warranted; the cost of a further 6\u201312 months of waiting is high at this age.';}
-    else if(meets){level='caution';bt='Refer now \u00b7 threshold met';btitle='The waiting period has been met \u2014 refer';btext='Evaluation should be initiated at 12 months under 35, and at 6 months from 35 onward. Begin the baseline workup in primary care in parallel with the referral.';}
-    else {level='go';bt='Continue \u00b7 with baseline workup';btitle='Below the referral threshold \u2014 but start the basics';btext='Continue trying, and use the interval well: confirm ovulation, arrange a semen analysis, and complete preconception screening so the specialist visit starts from data rather than zero.';}
+    if(anyFlag){level='stop';bt='Guidelines \u00b7 no waiting period';btitle='Guidelines support evaluation without completing the waiting period';btext='A condition known to cause or predict infertility is present. Guidelines are explicit that evaluation can begin immediately rather than waiting out a 6- or 12-month window.';}
+    else if(S.age==='40plus'){level='stop';bt='Guidelines \u00b7 age criterion';btitle='Age 40 or over \u2014 guidelines support immediate evaluation';btext='Guidelines describe more immediate evaluation and treatment at this age; the cost of a further 6\u201312 months of waiting is high.';}
+    else if(meets){level='caution';bt='Guideline threshold met';btitle='The waiting period has been met \u2014 guidelines support referral';btext='Guidelines place evaluation at 12 months under 35, and at 6 months from 35 onward. A baseline workup in primary care typically runs in parallel with referral.';}
+    else {level='go';bt='Below threshold \u00b7 baseline workup';btitle='Below the referral threshold \u2014 the basics can begin';btext='Many couples use this interval to confirm ovulation, arrange a semen analysis, and complete preconception screening so any specialist visit starts from data rather than zero.';}
 
     var ageOpts=[['u35','&lt;35'],['35_37','35\u201337'],['38_39','38\u201339'],['40plus','\u226540']];
     var durOpts=[['lt6','&lt;6 mo'],['6_12','6\u201312 mo'],['gt12','&gt;12 mo']];
@@ -2689,14 +2689,14 @@ function renderReferPanel(containerId){
     var m='<div class="fp-ban '+level+'"><div class="bt">'+bt+'</div><h3>'+btitle+'</h3><p>'+btext+'</p></div>';
 
     m+='<div class="fp-sec">The thresholds</div>';
-    m+='<div class="fp-note"><b>Under 35</b> \u2014 evaluate after <b>12 months</b> of regular unprotected intercourse. &nbsp;<b>35 and over</b> \u2014 evaluate after <b>6 months</b> (NICE frames this as age 36+). &nbsp;<b>40 and over</b> \u2014 <b>immediate</b> evaluation and treatment. &nbsp;Any known cause or predisposing factor \u2014 <b>do not wait at all</b>.</div>';
+    m+='<div class="fp-note"><b>Under 35</b> \u2014 evaluate after <b>12 months</b> of regular unprotected intercourse. &nbsp;<b>35 and over</b> \u2014 evaluate after <b>6 months</b> (NICE frames this as age 36+). &nbsp;<b>40 and over</b> \u2014 <b>immediate</b> evaluation and treatment. &nbsp;Any known cause or predisposing factor \u2014 guidelines advise <b>no waiting period</b>.</div>';
 
     if(anyFlag){
       var reasons=flagList.map(function(k){return ({irregular:'irregular or absent cycles (ovulatory disorder)',endo:'known or suspected endometriosis',pid:'prior PID, ectopic or pelvic surgery (tubal risk)',male:'known or suspected male factor',onco:'prior gonadotoxic chemotherapy or radiotherapy',rpl:'two or more miscarriages',genetic:'genetic condition affecting fertility',undescended:'undescended testes or testicular surgery'})[k];});
-      m+=item('dont','why now','Immediate referral triggers present',reasons.join('; ')+'. Each of these independently justifies starting evaluation now.');
+      m+=item('dont','why now','Immediate-evaluation triggers present',reasons.join('; ')+'. Guidelines treat each of these as an independent trigger for early evaluation.');
     }
 
-    m+='<div class="fp-sec">Start in primary care \u2014 in parallel with referral</div>';
+    m+='<div class="fp-sec">Typically started in primary care \u2014 in parallel with referral</div>';
     m+=item('do','both partners','Semen analysis','The single highest-yield early test, and often forgotten. Male factor contributes in roughly a third of couples. Arrange early; repeat after ~3 months if abnormal.');
     m+=item('do','ovulation','Confirm ovulation','Mid-luteal progesterone (day 21 of a 28-day cycle, or 7 days before the expected period). With regular 21\u201335 day cycles, further ovulation testing is usually unnecessary.');
     if(f.irregular) m+=item('do','indicated here','Irregular cycles \u2014 extend the panel','TSH, prolactin, LH/FSH, androgens and a PCOS assessment. Anovulation is the most treatable cause and changes the referral pathway.');
@@ -2715,10 +2715,10 @@ function renderReferPanel(containerId){
     n.push('- Female age: '+ageT+' | Duration trying: '+durT);
     n.push('- Early-referral triggers: '+(anyFlag?flagList.map(function(k){return ({irregular:'irregular/absent cycles',endo:'endometriosis',pid:'prior PID/ectopic/pelvic surgery',male:'male factor',onco:'prior chemo/radiotherapy',rpl:'2+ miscarriages',genetic:'genetic condition',undescended:'undescended testes/testicular surgery'})[k];}).join(', '):'none'));
     n.push('');
-    n.push('RECOMMENDATION: '+btitle);
-    n.push('- Thresholds: <35 evaluate at 12 months; >=35 at 6 months; >=40 immediately; any known cause - do not wait.');
+    n.push('GUIDELINE POSITION: '+btitle);
+    n.push('- Thresholds: <35 evaluate at 12 months; >=35 at 6 months; >=40 immediately; any known cause - no waiting period.');
     n.push('');
-    n.push('BASELINE WORKUP TO START NOW');
+    n.push('BASELINE WORKUP (PRIMARY CARE)');
     n.push('- Semen analysis (arrange early; repeat ~3 months if abnormal).');
     n.push('- Mid-luteal progesterone (day 21 of 28-day cycle) to confirm ovulation.');
     if(f.irregular) n.push('- Irregular cycles: TSH, prolactin, LH/FSH, androgens, PCOS assessment.');
@@ -2737,7 +2737,7 @@ function renderReferPanel(containerId){
     m+='<div class="fp-resp"><b>Clinical responsibility.</b> An educational reasoning aid, not individual medical advice. Referral criteria and funding thresholds vary by jurisdiction and service. Assessment and referral decisions rest with the treating clinician.</div>';
     m+='<div class="fp-refs"><div class="fp-refs-t">Key sources</div>'+refs+'</div>';
 
-    root.innerHTML='<div class="fp-hdr"><div class="fp-top">Illustrative Counselling Aid \u00b7 Evidence-Informed</div><h1>When to Refer</h1><div class="fp-sub">Set the couple\u2019s profile on the left to see whether the referral threshold is met, what should be started in primary care now, and a copy-pastable note for the record.</div><div class="fp-srcs">'+pills+'</div></div>'
+    root.innerHTML='<div class="fp-hdr"><div class="fp-top">Illustrative Counselling Aid \u00b7 Evidence-Informed</div><h1>When to Refer</h1><div class="fp-sub">Set the couple\u2019s profile on the left to see whether the guideline threshold is met, what is typically started in primary care, and a copy-pastable note for the record.</div><div class="fp-srcs">'+pills+'</div></div>'
       +'<div class="fp-key"><div class="fp-key-t">Time is the variable you cannot get back</div><div class="fp-key-b">The thresholds are <strong>12 months under 35</strong>, <strong>6 months from 35</strong>, and <strong>immediate at 40</strong> \u2014 but any known cause or predisposing factor overrides all of them. The most common avoidable delay is waiting out a full year before arranging a <strong>semen analysis</strong>.</div></div>'
       +'<div class="fp-layout"><div>'+side+'</div><div>'+m+'</div></div>';
 
