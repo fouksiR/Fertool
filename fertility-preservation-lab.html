@@ -74,7 +74,7 @@ body{
 .crit-ic{color:var(--vio)}
 .cat-ti .ic{color:var(--vio);display:flex;align-items:center}
 .medicare .ic svg{width:24px;height:24px;stroke:#059669}
-.ct-row .ic{display:flex;align-items:center}
+.ct-row .ic{display:flex;align-items:center;color:var(--vio)}
 .ct-row .ic svg{width:16px;height:16px}
 .curve-note{font-family:var(--bd);font-size:12px;color:var(--ink2);margin-top:8px;border-top:1px dashed var(--border);padding-top:8px}
 
@@ -238,6 +238,7 @@ input[type=range]::-moz-range-thumb{width:21px;height:21px;border-radius:50%;bac
 .mb-fill{position:absolute;top:0;bottom:0;left:0;border-radius:9px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
 .mb-fill.fast{background:linear-gradient(90deg,#0284c7,#22d3ee)}
 .mb-fill.slow{background:linear-gradient(90deg,#e11d48,#fb7185)}
+.mb-fill.supp{background:repeating-linear-gradient(-55deg,#fcd34d 0 7px,#fde68a 7px 14px)}
 .mb-fill.slow::after{content:'';position:absolute;top:0;bottom:0;right:0;width:46%;background:repeating-linear-gradient(-55deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px);border-radius:0 9px 9px 0}
 .mb-steps{position:absolute;inset:0;display:flex;align-items:center;padding-left:10px;gap:6px;z-index:2}
 .mb-steps span{font-size:9.5px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
@@ -257,12 +258,14 @@ input[type=range]::-moz-range-thumb{width:21px;height:21px;border-radius:50%;bac
 /* urgency spectrum */
 .spect{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 15px 8px;box-shadow:0 2px 10px rgba(80,60,150,.06);margin-bottom:13px}
 .spect-t{font-size:13.5px;font-weight:800;margin-bottom:10px}
-.sp-bar{position:relative;height:14px;border-radius:8px;background:linear-gradient(90deg,#f43f5e 0%,#fb923c 38%,#38bdf8 75%,#a78bfa 100%)}
-.sp-pts{position:relative;height:74px;margin-top:4px}
-.sp-pt{position:absolute;transform:translateX(-50%);text-align:center;width:104px}
-.sp-pt::before{content:'';display:block;width:2px;height:10px;background:#cfc9e2;margin:0 auto 3px}
-.sp-pt b{font-size:10.5px;display:block;line-height:1.25}
-.sp-pt span{font-size:9.5px;color:var(--ink3);line-height:1.2;display:block}
+.lanes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.lane3{border-radius:12px;padding:10px 9px 11px;text-align:center;border:1.5px solid}
+.lane3 b{display:block;font-size:12.5px;margin-bottom:4px}
+.lane3 span{font-family:var(--bd);font-size:11px;line-height:1.45;display:block}
+.l-a{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
+.l-b{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.l-c{background:#f0f9ff;border-color:#bae6fd;color:#0c4a6e}
+.lane-ax{display:flex;justify-content:space-between;font-size:9.5px;font-weight:700;color:var(--ink3);margin-top:9px;padding-top:7px;background:linear-gradient(90deg,#f43f5e,#f59e0b,#38bdf8) top/100% 3px no-repeat}
 
 /* category cards */
 details.cat{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:9px;box-shadow:0 1px 6px rgba(80,60,150,.05);overflow:hidden}
@@ -283,15 +286,18 @@ details.cat[open] .chev{transform:rotate(180deg)}
 .cat-ex span{font-size:10.5px;font-weight:700;color:var(--vio-d);background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:8px;padding:3px 8px}
 
 /* wrap-up */
-.ort{background:linear-gradient(135deg,#6d28d9,#a21caf);border-radius:18px;padding:18px;margin:0 0 13px;color:#f3ecff;box-shadow:0 10px 30px rgba(109,40,217,.35)}
-.ort-k{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#ddd0ff;margin-bottom:4px}
-.ort h3{font-family:var(--hd);font-size:22px;font-weight:900;line-height:1.15;color:#fff;margin-bottom:12px}
-.ort-cards{display:flex;flex-direction:column;gap:9px;margin-bottom:13px}
-.ort-c{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:11px 14px;display:flex;gap:12px;align-items:flex-start}
-.ort-n{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:#fbbf24;color:#451a03;font-family:var(--hd);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center}
-.ort-c b{font-size:14px;color:#fff;display:block;margin-bottom:1px}
-.ort-c p{font-family:var(--bd);font-size:12.5px;color:#e4d7ff;line-height:1.45}
-.ort-rule{background:#fbbf24;color:#451a03;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:700;line-height:1.45}
+.ort{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 0 13px;box-shadow:0 2px 12px rgba(80,60,150,.07)}
+.ort-k{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--vio);margin-bottom:4px}
+.ort h3{font-family:var(--hd);font-size:22px;font-weight:900;line-height:1.15;margin-bottom:14px}
+.ort-cards{display:flex;flex-direction:column;gap:13px;margin-bottom:14px}
+.ort-c{display:flex;gap:13px;align-items:flex-start}
+.ort-n{flex-shrink:0;width:38px;height:38px;border-radius:50%;color:#fff;font-family:var(--hd);font-size:19px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.ort-c:nth-child(1) .ort-n{background:linear-gradient(135deg,#fb7185,#e11d48)}
+.ort-c:nth-child(2) .ort-n{background:linear-gradient(135deg,#fbbf24,#d97706)}
+.ort-c:nth-child(3) .ort-n{background:linear-gradient(135deg,#38bdf8,#0284c7)}
+.ort-c b{font-size:14px;display:block;margin-bottom:1px}
+.ort-c p{font-family:var(--bd);font-size:12.5px;color:var(--ink2);line-height:1.45}
+.ort-rule{background:#f7f5fc;border:1.5px dashed #ddd6fe;color:var(--vio-d);border-radius:12px;padding:11px 14px;font-size:13px;font-weight:700;line-height:1.45}
 .ort-rule b{font-weight:900}
 .bfl{position:relative;margin:2px 0 15px;padding-left:24px}
 .bfl::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2.5px;border-radius:2px;background:linear-gradient(180deg,var(--vio),var(--fux))}
@@ -303,16 +309,16 @@ details.cat[open] .chev{transform:rotate(180deg)}
 .bf-item p{font-family:var(--bd);font-size:12.5px;color:var(--ink2);line-height:1.45;margin-top:1px}
 
 /* contact */
-.contact{background:linear-gradient(145deg,#7c3aed,#c026d3);border-radius:20px;padding:22px 18px;color:#f6f0ff;text-align:center;box-shadow:0 12px 34px rgba(124,58,237,.38);margin-bottom:13px}
-.ct-qr{width:min(260px,70vw);border-radius:22px;background:#fff;display:block;margin:4px auto 16px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
-.ct-name{font-family:var(--hd);font-size:24px;font-weight:900;color:#fff}
-.ct-cred{font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#e9d8ff;margin:3px 0 2px}
-.ct-role{font-family:var(--bd);font-size:13px;color:#ecdcff;margin-bottom:13px}
+.contact{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 4px 18px rgba(80,60,150,.1);margin-bottom:13px}
+.ct-qr{width:min(260px,70vw);border-radius:22px;background:#fff;display:block;margin:4px auto 16px;box-shadow:0 5px 16px rgba(80,60,150,.18)}
+.ct-name{font-family:var(--hd);font-size:24px;font-weight:900;color:var(--ink)}
+.ct-cred{font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--vio);margin:3px 0 2px}
+.ct-role{font-family:var(--bd);font-size:13px;color:var(--ink2);margin-bottom:13px}
 .ct-rows{display:flex;flex-direction:column;gap:7px;max-width:330px;margin:0 auto}
-.ct-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:11px;padding:10px 13px;color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;text-align:left}
+.ct-row{display:flex;align-items:center;gap:10px;background:#faf9fd;border:1.5px solid var(--border);border-radius:11px;padding:10px 13px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:600;text-align:left;word-break:break-word}
 .ct-row .ic{font-size:15px}
-.ct-row small{display:block;font-size:9.5px;color:#e9d8ff;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
-.ct-note{font-family:var(--bd);font-size:12.5px;color:#ecdcff;margin-top:12px}
+.ct-row small{display:block;font-size:9.5px;color:var(--vio);font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.ct-note{font-family:var(--bd);font-size:12.5px;color:var(--ink3);margin-top:12px}
 
 /* misc */
 .unc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:11px 15px;margin-bottom:13px}
@@ -464,7 +470,7 @@ details.cat[open] .chev{transform:rotate(180deg)}
     </svg>
     <div class="plot-cap">
       <span><i style="background:#7c3aed"></i>Her supply now</span>
-      <span><i style="background:#e11d48"></i>After excision — lasting level</span>
+      <span><i style="background:#e11d48"></i>After excision</span>
       <span><i style="background:#d4cfe6"></i>No surgery</span>
     </div>
     <div class="plot-slider">
@@ -550,6 +556,10 @@ details.cat[open] .chev{transform:rotate(180deg)}
       <div class="mb-l"><b>Surgery first, IVF later</b><span style="color:var(--coral)">12–24+ months</span></div>
       <div class="mb-track"><div class="mb-fill slow" data-w="100%"></div><div class="mb-steps"><span>Operate</span><span class="sep">→</span><span>Wait &amp; try</span><span class="sep">→</span><span>If not pregnant</span><span class="sep">→</span><span>IVF, with less reserve</span></div></div>
     </div>
+    <div class="mb-row">
+      <div class="mb-l"><b>+ if suppression is used</b><span style="color:var(--amber)">+3–6 months</span></div>
+      <div class="mb-track" style="height:18px"><div class="mb-fill supp" data-w="25%"></div><div class="mb-steps"><span style="color:#92400e;text-shadow:none">Conception on hold</span></div></div>
+    </div>
     <div class="mb-axis">
       <span style="left:0%">0</span><span style="left:25%">6</span><span style="left:50%">12</span><span style="left:75%">18</span><span style="left:100%">24 mo</span>
     </div>
@@ -558,9 +568,9 @@ details.cat[open] .chev{transform:rotate(180deg)}
   </div>
 
   <div class="meno">
-    <div class="meno-k">The outcome to anticipate</div>
-    <div class="meno-t">Early menopause caused by treatment</div>
-    <p>Surgery on both ovaries, repeat ovarian surgery, ovary removal, chemotherapy, pelvic radiotherapy — each can end ovarian function early. When that risk is foreseeable, the egg-freezing conversation sits naturally <strong>within consent, before treatment begins</strong>.</p>
+    <div class="meno-k">Worth counting in</div>
+    <div class="meno-t">Hormonal suppression after surgery adds waiting time</div>
+    <p>After excision, ovarian suppression (a GnRH agonist or continuous hormonal therapy) is sometimes used to settle disease and reduce recurrence. It isn’t routine — but when it is used, conception stays <strong>on hold for those extra months</strong>, on top of surgical recovery. One more reason the timeline conversation belongs <strong>before surgery</strong>.</p>
   </div>
 </section>
 
@@ -574,13 +584,13 @@ details.cat[open] .chev{transform:rotate(180deg)}
 
   <div class="spect">
     <div class="spect-t">How soon should the conversation happen?</div>
-    <div class="sp-bar"></div>
-    <div class="sp-pts">
-      <div class="sp-pt" style="left:12%"><b>Days</b><span>Chemo · radiotherapy</span></div>
-      <div class="sp-pt" style="left:46%"><b>Weeks</b><span>Low reserve · genetic risk</span></div>
-      <div class="sp-pt" style="left:84%"><b>Before treatment</b><span>Ovarian surgery · hormones</span></div>
+    <div class="lanes">
+      <div class="lane3 l-a"><b>Within days</b><span>Chemotherapy<br>Pelvic radiotherapy</span></div>
+      <div class="lane3 l-b"><b>Within weeks</b><span>Low reserve for age<br>Genetic risk</span></div>
+      <div class="lane3 l-c"><b>Before it starts</b><span>Ovarian surgery<br>Hormonal therapy</span></div>
     </div>
-    <div class="viz-tag">Illustrative timing guide</div>
+    <div class="lane-ax"><span>most time-critical</span><span>plan ahead</span></div>
+    <div class="viz-tag">A timing guide, not a rule</div>
   </div>
 
   <details class="cat">
@@ -590,8 +600,8 @@ details.cat[open] .chev{transform:rotate(180deg)}
   </details>
 
   <details class="cat">
-    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-dna"/></svg></span>Genetic risk of early menopause<span class="chev">▼</span></div><span class="urg u2">Refer young</span></summary>
-    <div class="cat-body"><div class="cat-b"><strong>Fragile X carriers</strong> (FMR1 — about 1 in 5 develop early menopause) and <strong>Turner mosaic</strong> (45,X/46,XX). The window is the teens to mid-20s. A family history of menopause before 40 counts too.</div>
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-dna"/></svg></span>Genetic risk of ovarian insufficiency<span class="chev">▼</span></div><span class="urg u2">Refer young</span></summary>
+    <div class="cat-body"><div class="cat-b"><strong>Fragile X carriers</strong> (FMR1 — about 1 in 5 develop premature ovarian insufficiency) and <strong>Turner mosaic</strong> (45,X/46,XX). The window is the teens to mid-20s. A family history of ovarian insufficiency before 40 counts too.</div>
     <div class="cat-ex"><span>FMR1 carrier</span><span>45,X/46,XX</span><span>Family history POI</span></div></div>
   </details>
 
@@ -615,12 +625,12 @@ details.cat[open] .chev{transform:rotate(180deg)}
 <section class="step" data-step="6">
   <div class="step-hd">
     <div class="step-k">Step 6 · Take-home <span class="min">~1 min</span></div>
-    <h2>The referral screen</h2>
+    <h2>Three questions to ask yourself</h2>
   </div>
 
   <div class="ort">
-    <div class="ort-k">Three questions</div>
-    <h3>Think <span style="color:#fbbf24">O·R·T</span> before treatment</h3>
+    <div class="ort-k">The quick screen</div>
+    <h3>Think <span style="color:var(--vio)">O·R·T</span> before treatment</h3>
     <div class="ort-cards">
       <div class="ort-c"><div class="ort-n">O</div><div><b>Ovary — in the treatment field?</b><p>Ovarian surgery, chemo, pelvic radiotherapy.</p></div></div>
       <div class="ort-c"><div class="ort-n">R</div><div><b>Reserve — low, or at genetic risk?</b><p>Low AMH for age, both ovaries involved, prior surgery, fragile X, Turner mosaic. Unknown? Measure it.</p></div></div>
@@ -661,7 +671,7 @@ details.cat[open] .chev{transform:rotate(180deg)}
     <div class="ct-role">Reproductive Endocrinologist &amp; Fertility Specialist</div>
     <div class="ct-rows">
       <a class="ct-row" href="tel:+61493835221"><span class="ic"><svg class="i"><use href="#i-phone"/></svg></span><span><small>Phone / WhatsApp</small>+61 493 835 221</span></a>
-      <a class="ct-row" href="mailto:fouksi@gmail.com"><span class="ic"><svg class="i"><use href="#i-mail"/></svg></span><span><small>Email</small>fouksi@gmail.com</span></a>
+      <a class="ct-row" href="mailto:yuval.fouks@melbourneivf.com.au"><span class="ic"><svg class="i"><use href="#i-mail"/></svg></span><span><small>Email</small>yuval.fouks@melbourneivf.com.au</span></a>
       <div class="ct-row"><span class="ic"><svg class="i"><use href="#i-pin"/></svg></span><span><small>Melbourne IVF</small>36 Wellington St, Collingwood · also at Caulfield</span></div>
     </div>
     <div class="ct-note">Scan the code to connect.</div>
@@ -1016,8 +1026,8 @@ function drawCurve(age){
   dl.setAttribute('x1',x);dl.setAttribute('x2',x);dl.setAttribute('y1',y1);dl.setAttribute('y2',y2);
   el('c-dot').setAttribute('cx',x);el('c-dot').setAttribute('cy',y1);
   var lbl=el('c-droplabel');
-  lbl.textContent='\u2212'+Math.round((1-retF)*100)+'% lasting';
-  lbl.setAttribute('x',Math.min(x+8,CX1-66));lbl.setAttribute('y',(y1+y2)/2+3);
+  lbl.textContent=age>=35?'limited recovery':'more recovery';
+  lbl.setAttribute('x',Math.min(x+8,CX1-80));lbl.setAttribute('y',(y1+y2)/2+3);
   el('curve-val').textContent=age;
   var note=el('curve-note');
   if(note){note.textContent=age<=31?'At '+age+', the ovary typically regains a good share of function in the months after surgery.':age<=37?'Through the 30s, recovery after surgery becomes more limited.':'At '+age+', little recovery is expected \u2014 the step down is largely lasting.';}
