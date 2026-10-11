@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#7c3aed">
+<title>Egg Freezing — When Do We Refer? | Fertile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --hd:'Playfair Display',Georgia,serif;
+  --ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --bd:'Source Serif 4',Georgia,serif;
+  --ink:#2b2f45; --ink2:#525a74; --ink3:#8f96ab;
+  --vio:#7c3aed; --vio-d:#5b21b6; --fux:#c026d3;
+  --coral:#e11d48; --coral-l:#fb7185;
+  --amber:#d97706; --sky:#0284c7; --green:#059669;
+  --bg:#fcfbf8; --card:#ffffff; --border:#e9e6f2;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--ui);color:var(--ink);line-height:1.5;background-color:var(--bg);
+  background-image:linear-gradient(rgba(124,58,237,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.045) 1px,transparent 1px);
+  background-size:26px 26px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 110px}
+@media(min-width:900px){.wrap{max-width:700px}}
+
+/* ── TOP BAR ── */
+.top{position:sticky;top:0;z-index:50;background:rgba(252,251,248,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.top-in{max-width:560px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+@media(min-width:900px){.top-in{max-width:700px}}
+.logo{font-family:var(--bd);font-weight:600;font-size:1.3rem;color:var(--ink);display:flex;align-items:center;gap:1px;text-decoration:none}
+.logo svg{width:13px;height:21px;margin:0 -1px}
+.logo .lab{font-family:var(--ui);font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--vio);background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.22);border-radius:20px;padding:2px 9px;margin-left:8px}
+.topstep{font-size:11px;font-weight:800;color:var(--ink3);letter-spacing:.6px}
+
+/* ── STEPS ── */
+.step{display:none}
+.step.on{display:block;animation:stepin .35s ease}
+@keyframes stepin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.step-hd{padding:18px 2px 8px}
+.step-k{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--vio);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.step-k::before{content:'';width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--vio),var(--fux))}
+.step-k .min{font-weight:700;letter-spacing:.3px;text-transform:none;color:var(--ink3);background:#fff;border:1px solid var(--border);border-radius:12px;padding:1px 8px}
+.step h2{font-family:var(--hd);font-size:25px;font-weight:900;line-height:1.14;letter-spacing:-.3px}
+.step-sub{font-family:var(--bd);font-size:14px;color:var(--ink2);margin-top:5px;line-height:1.5}
+.step-sub strong{color:var(--ink)}
+
+/* ── NAV ── */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.nav-in{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:10px}
+@media(min-width:900px){.nav-in{max-width:700px}}
+.nbtn{flex-shrink:0;font-family:var(--ui);font-size:13px;font-weight:800;border-radius:12px;padding:12px 16px;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--ink2);transition:all .15s;min-width:84px}
+.nbtn:active{transform:scale(.96)}
+.nbtn.next{background:linear-gradient(135deg,var(--vio),var(--fux));border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(124,58,237,.35);flex:1}
+.nbtn[disabled]{opacity:.35;pointer-events:none}
+.dots{flex:1;display:flex;justify-content:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;background:#ded9ec;cursor:pointer;transition:all .25s;border:none;padding:0}
+.dot.on{background:var(--vio);transform:scale(1.35)}
+.dot.done{background:#c4b5fd}
+
+/* ── GENERIC ── */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px;box-shadow:0 2px 10px rgba(80,60,150,.06);margin-bottom:13px}
+.panel-t{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink3);margin-bottom:11px;display:flex;justify-content:space-between;align-items:center}
+.viz-tag{font-size:9.5px;color:var(--ink3);font-style:italic;margin-top:6px;text-align:right}
+.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;flex-shrink:0}
+.i.lg{width:28px;height:28px}
+.i.sm{width:13px;height:13px;vertical-align:-2px}
+.crit-ic{color:var(--vio)}
+.cat-ti .ic{color:var(--vio);display:flex;align-items:center}
+.medicare .ic svg{width:24px;height:24px;stroke:#059669}
+.ct-row .ic{display:flex;align-items:center}
+.ct-row .ic svg{width:16px;height:16px}
+.curve-note{font-family:var(--bd);font-size:12px;color:var(--ink2);margin-top:8px;border-top:1px dashed var(--border);padding-top:8px}
+
+/* criteria rows */
+.crit{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid #f1eef8}
+.crit:last-child{border-bottom:none}
+.crit-ic{flex-shrink:0;width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(124,58,237,.07)}
+.crit-b{flex:1}
+.crit-b b{font-size:13.5px;display:block;line-height:1.3}
+.crit-b p{font-family:var(--bd);font-size:12px;color:var(--ink3);line-height:1.35;margin-top:1px}
+.when{flex-shrink:0;font-size:9.5px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;border-radius:10px;padding:4px 9px;text-align:center;line-height:1.25;max-width:92px}
+.when.w12{background:#f1f5f9;color:#475569}
+.when.w6{background:#fef3c7;color:#92400e}
+.when.w0{background:#e0f2fe;color:var(--sky)}
+
+/* two doors */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px}
+.door{border-radius:16px;padding:14px 13px;text-align:center}
+.door .big{font-size:30px;display:block;margin-bottom:6px}
+.door b{font-size:13px;display:block;line-height:1.3;margin-bottom:3px}
+.door p{font-family:var(--bd);font-size:11.5px;line-height:1.4}
+.door .tag{display:inline-block;margin-top:8px;font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:10px;padding:3px 10px}
+.door.d1{background:#f0f9ff;border:1.5px solid #bae6fd;color:#0c4a6e}
+.door.d1 .tag{background:#e0f2fe;color:var(--sky)}
+.door.d2{background:linear-gradient(135deg,#7c3aed,#c026d3);color:#fff;box-shadow:0 8px 22px rgba(124,58,237,.3)}
+.door.d2 p{color:#f0e7ff}
+.door.d2 .tag{background:rgba(255,255,255,.22);color:#fff}
+
+/* stat tiles */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:13px}
+@media(max-width:380px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--coral-l);border-radius:13px;padding:11px 9px;text-align:center}
+.stat-n{font-family:var(--hd);font-size:23px;font-weight:900;color:var(--coral);line-height:1.1}
+.stat-l{font-size:10.5px;font-weight:700;color:var(--ink2);line-height:1.3;margin-top:3px}
+.stat-s{font-size:9.5px;color:var(--ink3);margin-top:3px}
+
+/* medicare */
+.medicare{display:flex;gap:12px;align-items:flex-start;background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:14px;padding:13px 15px;margin-bottom:13px}
+.medicare .ic{font-size:22px;flex-shrink:0;margin-top:2px}
+.medicare b{font-size:13.5px;color:#065f46;display:block;margin-bottom:2px}
+.medicare p{font-family:var(--bd);font-size:12.5px;color:#064e3b;line-height:1.5}
+.medicare p strong{color:#065f46}
+
+/* risk grid */
+.rf-list{display:grid;grid-template-columns:1fr 1fr;column-gap:18px}
+.rf-list span{position:relative;padding:7px 0 7px 16px;font-size:12.5px;font-weight:700;line-height:1.3;border-bottom:1px dashed #efecf7}
+.rf-list span:nth-last-child(-n+2){border-bottom:none}
+.rf-list span::before{content:'';position:absolute;left:0;top:12px;width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,#fb7185,#e11d48)}
+
+/* plots */
+.plot{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 15px 10px;box-shadow:0 2px 10px rgba(80,60,150,.06);margin-bottom:13px}
+.plot-t{font-size:13.5px;font-weight:800;margin-bottom:2px}
+.plot-s{font-size:11.5px;color:var(--ink3);margin-bottom:8px}
+.plot svg{width:100%;height:auto;display:block}
+.plot-cap{display:flex;gap:12px;flex-wrap:wrap;font-size:10.5px;font-weight:700;color:var(--ink2);margin:6px 0 8px}
+.plot-cap i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.plot-slider{display:flex;align-items:center;gap:10px}
+.plot-slider .lbl{font-size:12px;font-weight:700;white-space:nowrap}
+.plot-slider .val{font-variant-numeric:tabular-nums;font-size:14px;font-weight:800;color:var(--vio-d);background:rgba(124,58,237,.08);border-radius:7px;padding:1px 9px}
+
+/* controls */
+.ghead{font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--vio);margin:2px 0 8px;padding-top:4px;border-top:1px dashed var(--border)}
+.ghead:first-child{border-top:none;padding-top:0}
+.ghead small{font-weight:600;letter-spacing:.2px;text-transform:none;color:var(--ink3);margin-left:5px}
+.ctl{margin-bottom:13px}
+.ctl-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+.ctl-l{font-size:13px;font-weight:700;line-height:1.25}
+.ctl-l small{font-weight:500;color:var(--ink3);font-size:11px;display:block}
+.ctl-v{font-variant-numeric:tabular-nums;font-size:14px;font-weight:800;color:var(--vio-d);background:rgba(124,58,237,.08);border-radius:7px;padding:1px 9px;min-width:48px;text-align:center}
+.ctl-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:5px;background:var(--trk,linear-gradient(90deg,var(--vio) 0%,var(--vio) 50%,#ece9f5 50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:25px;height:25px;border-radius:50%;background:#fff;border:3px solid var(--vio);box-shadow:0 2px 8px rgba(124,58,237,.35);margin-top:-8.5px;transition:transform .12s}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.18)}
+input[type=range]::-moz-range-track{height:8px;border-radius:5px;background:#ece9f5}
+input[type=range]::-moz-range-progress{height:8px;border-radius:5px;background:var(--vio)}
+input[type=range]::-moz-range-thumb{width:21px;height:21px;border-radius:50%;background:#fff;border:3px solid var(--vio);box-shadow:0 2px 8px rgba(124,58,237,.35)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;min-width:0;font-size:12px;font-weight:700;padding:9px 7px;border-radius:9px;border:1.5px solid var(--border);background:#fff;color:var(--ink3);cursor:pointer;transition:all .15s;line-height:1.2}
+.seg button.on{border-color:var(--vio);background:rgba(124,58,237,.08);color:var(--vio-d)}
+.seg button:active{transform:scale(.97)}
+.seg.wrap2 button{flex-basis:calc(50% - 3px)}
+.reset{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink2);background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:6px 11px;cursor:pointer}
+.reset:active{border-color:var(--vio);color:var(--vio)}
+
+/* case card */
+.case{background:linear-gradient(135deg,#7c3aed,#c026d3);color:#f6f0ff;border-radius:16px;padding:14px 17px 13px;margin:0 0 13px;box-shadow:0 8px 24px rgba(124,58,237,.3);position:relative;overflow:hidden}
+.case::after{content:'';position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.08)}
+.case-k{font-size:9.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#e3d2ff;margin-bottom:4px}
+.case-t{font-family:var(--bd);font-size:15.5px;line-height:1.5;position:relative;z-index:1}
+.case-t strong{color:#fff;font-weight:700}
+
+/* gauges */
+.gauge{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px 11px;margin-bottom:10px;box-shadow:0 1px 6px rgba(80,60,150,.05)}
+.g-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:21px}
+.g-ti{font-size:14px;font-weight:800;line-height:1.25}
+.g-tag{flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 8px;border-radius:10px;white-space:nowrap}
+.g-tag.q{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+.g-tag.j{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.g-track{position:relative;height:21px;border-radius:12px;margin:0 2px 7px}
+.g-bg{position:absolute;inset:0;border-radius:12px}
+.g-track.concern .g-bg{background:linear-gradient(90deg,#86efac 0%,#fde047 34%,#fdba74 64%,#f87171 88%,#dc2626 100%)}
+.g-track.priority .g-bg{background:linear-gradient(90deg,#cbd5e1 0%,#7dd3fc 30%,#a78bfa 62%,#8b5cf6 84%,#7c3aed 100%)}
+.g-dv{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.45);z-index:1}
+.g-band{position:absolute;top:2px;bottom:2px;border-radius:10px;background:rgba(255,255,255,.45);border-top:2px solid rgba(255,255,255,.9);border-bottom:2px solid rgba(255,255,255,.9);z-index:2;transition:left .55s cubic-bezier(.4,0,.2,1),width .55s cubic-bezier(.4,0,.2,1)}
+.g-mk{position:absolute;top:50%;width:15px;height:15px;background:var(--ink);border:2.5px solid #fff;border-radius:3px;transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:4;transition:left .55s cubic-bezier(.4,0,.2,1)}
+.g-zn{position:absolute;top:-19px;transform:translateX(-50%);font-size:10.5px;font-weight:800;letter-spacing:.3px;padding:3px 10px;border-radius:7px;white-space:nowrap;box-shadow:0 1px 5px rgba(0,0,0,.1);z-index:5;transition:left .55s cubic-bezier(.4,0,.2,1),background .3s,color .3s}
+.g-note{font-family:var(--bd);font-size:13px;color:var(--ink2);line-height:1.5;margin-top:4px}
+.g-note strong{color:var(--ink)}
+.qn{background:#fef3c7;border-bottom:1.5px solid #f59e0b;padding:0 3px;border-radius:3px;font-weight:600;color:#78350f}
+.g-cites{margin-top:7px;display:flex;gap:4px;flex-wrap:wrap}
+.cb{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;position:relative}
+.cb:active{filter:brightness(.85)}
+.ctt{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:999;width:min(300px,78vw);padding:11px 13px;border-radius:10px;background:var(--ink);color:#f3f1fa;font-size:12px;line-height:1.5;box-shadow:0 10px 30px rgba(0,0,0,.35);font-family:var(--bd);text-align:left}
+.cb.open .ctt{display:block}
+.ctt-t{font-family:var(--ui);font-weight:700;margin-bottom:3px;color:#c4b5fd;font-size:9.5px;text-transform:uppercase;letter-spacing:.8px}
+
+/* referral banner */
+.refb{border-radius:16px;padding:14px 17px;margin:4px 0 13px;border:2px solid;transition:background .35s,border-color .35s}
+.refb.l1{background:#f0fdf4;border-color:#86efac}
+.refb.l2{background:#fffbeb;border-color:#fcd34d}
+.refb.l3{background:#fdf4ff;border-color:#e9a8f5}
+.refb-k{font-size:9.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:3px;color:var(--ink3)}
+.refb-l{font-family:var(--hd);font-size:20px;font-weight:900;line-height:1.1;margin-bottom:3px}
+.refb.l1 .refb-l{color:var(--green)}.refb.l2 .refb-l{color:var(--amber)}.refb.l3 .refb-l{color:#a21caf}
+.refb-timing{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:14px;margin-bottom:7px}
+.refb.l1 .refb-timing{background:#dcfce7;color:var(--green)}.refb.l2 .refb-timing{background:#fef3c7;color:#92400e}.refb.l3 .refb-timing{background:#fae8ff;color:#a21caf}
+.refb-tx{font-family:var(--bd);font-size:13.5px;color:var(--ink2);line-height:1.5}
+.refb-tx strong{color:var(--ink)}
+
+/* why box */
+.why{background:linear-gradient(135deg,#fdf8ef,#fef9f1);border:1.5px dashed #e3b96e;border-radius:14px;padding:13px 15px;margin-bottom:13px;display:none;animation:stepin .35s ease}
+.why.show{display:block}
+.why-k{font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:#a16207;margin-bottom:5px}
+.why-change{font-size:13px;font-weight:800;margin-bottom:4px}
+.why-mech{font-family:var(--bd);font-size:13px;color:#57452a;line-height:1.5;margin-bottom:7px}
+.why-moves{display:flex;flex-direction:column;gap:5px}
+.why-mv{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;color:var(--ink2);flex-wrap:wrap}
+.zp{font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap}
+.why-mv .arr{color:#b45309;font-weight:800}
+.why-none{font-size:12px;color:var(--ink3);font-style:italic}
+
+/* pearls */
+.pearl{border-radius:14px;padding:13px 15px;margin-bottom:10px;border:1px solid;animation:stepin .4s ease}
+.pearl.teach{background:#f0f9ff;border-color:#bae6fd}
+.pearl.warn{background:#fff7ed;border-color:#fed7aa}
+.pearl-k{font-size:9.5px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:4px}
+.pearl.teach .pearl-k{color:var(--sky)}.pearl.warn .pearl-k{color:#c2410c}
+.pearl-t{font-size:13.5px;font-weight:800;margin-bottom:3px;line-height:1.3}
+.pearl-b{font-family:var(--bd);font-size:13px;color:var(--ink2);line-height:1.5}
+.pearl-b strong{color:var(--ink)}
+
+/* month bars */
+.mbar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px;box-shadow:0 2px 10px rgba(80,60,150,.06);margin-bottom:13px}
+.mb-row{margin-bottom:14px}
+.mb-row:last-of-type{margin-bottom:6px}
+.mb-l{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.mb-l b{font-size:13.5px}
+.mb-l span{font-size:12px;font-weight:800}
+.mb-track{position:relative;height:26px;background:#f4f2fa;border-radius:9px;overflow:hidden}
+.mb-fill{position:absolute;top:0;bottom:0;left:0;border-radius:9px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.mb-fill.fast{background:linear-gradient(90deg,#0284c7,#22d3ee)}
+.mb-fill.slow{background:linear-gradient(90deg,#e11d48,#fb7185)}
+.mb-fill.slow::after{content:'';position:absolute;top:0;bottom:0;right:0;width:46%;background:repeating-linear-gradient(-55deg,rgba(255,255,255,.35) 0 6px,transparent 6px 12px);border-radius:0 9px 9px 0}
+.mb-steps{position:absolute;inset:0;display:flex;align-items:center;padding-left:10px;gap:6px;z-index:2}
+.mb-steps span{font-size:9.5px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+.mb-steps .sep{opacity:.7}
+.mb-axis{position:relative;height:18px;margin-top:3px}
+.mb-axis span{position:absolute;transform:translateX(-50%);font-size:9.5px;font-weight:700;color:var(--ink3)}
+.mbar-note{font-family:var(--bd);font-size:12.5px;color:var(--ink2);line-height:1.5;border-top:1px dashed var(--border);padding-top:9px}
+.mbar-note strong{color:var(--coral)}
+
+/* early menopause card */
+.meno{background:#fff1f2;border:1.5px solid #fecdd3;border-radius:16px;padding:15px 17px;margin-bottom:13px}
+.meno-k{font-size:9.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);margin-bottom:4px}
+.meno-t{font-family:var(--hd);font-size:18px;font-weight:900;color:#9f1239;line-height:1.2;margin-bottom:5px}
+.meno p{font-family:var(--bd);font-size:13px;color:#7b4a52;line-height:1.55}
+.meno p strong{color:#9f1239}
+
+/* urgency spectrum */
+.spect{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 15px 8px;box-shadow:0 2px 10px rgba(80,60,150,.06);margin-bottom:13px}
+.spect-t{font-size:13.5px;font-weight:800;margin-bottom:10px}
+.sp-bar{position:relative;height:14px;border-radius:8px;background:linear-gradient(90deg,#f43f5e 0%,#fb923c 38%,#38bdf8 75%,#a78bfa 100%)}
+.sp-pts{position:relative;height:74px;margin-top:4px}
+.sp-pt{position:absolute;transform:translateX(-50%);text-align:center;width:104px}
+.sp-pt::before{content:'';display:block;width:2px;height:10px;background:#cfc9e2;margin:0 auto 3px}
+.sp-pt b{font-size:10.5px;display:block;line-height:1.25}
+.sp-pt span{font-size:9.5px;color:var(--ink3);line-height:1.2;display:block}
+
+/* category cards */
+details.cat{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:9px;box-shadow:0 1px 6px rgba(80,60,150,.05);overflow:hidden}
+details.cat summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 15px}
+details.cat summary::-webkit-details-marker{display:none}
+.cat-ti{font-size:14px;font-weight:800;line-height:1.25;display:flex;align-items:center;gap:9px;flex:1}
+.cat-ti .ic{font-size:17px}
+.cat-ti .chev{margin-left:auto;font-size:11px;color:var(--ink3);transition:transform .25s}
+details.cat[open] .chev{transform:rotate(180deg)}
+.urg{flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.urg.u1{background:#ffe4e6;color:var(--coral)}
+.urg.u2{background:#fef3c7;color:#92400e}
+.urg.u3{background:#e0f2fe;color:var(--sky)}
+.cat-body{padding:0 15px 13px}
+.cat-b{font-family:var(--bd);font-size:13px;color:var(--ink2);line-height:1.5}
+.cat-b strong{color:var(--ink)}
+.cat-ex{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.cat-ex span{font-size:10.5px;font-weight:700;color:var(--vio-d);background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:8px;padding:3px 8px}
+
+/* wrap-up */
+.ort{background:linear-gradient(135deg,#6d28d9,#a21caf);border-radius:18px;padding:18px;margin:0 0 13px;color:#f3ecff;box-shadow:0 10px 30px rgba(109,40,217,.35)}
+.ort-k{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#ddd0ff;margin-bottom:4px}
+.ort h3{font-family:var(--hd);font-size:22px;font-weight:900;line-height:1.15;color:#fff;margin-bottom:12px}
+.ort-cards{display:flex;flex-direction:column;gap:9px;margin-bottom:13px}
+.ort-c{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:11px 14px;display:flex;gap:12px;align-items:flex-start}
+.ort-n{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:#fbbf24;color:#451a03;font-family:var(--hd);font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.ort-c b{font-size:14px;color:#fff;display:block;margin-bottom:1px}
+.ort-c p{font-family:var(--bd);font-size:12.5px;color:#e4d7ff;line-height:1.45}
+.ort-rule{background:#fbbf24;color:#451a03;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:700;line-height:1.45}
+.ort-rule b{font-weight:900}
+.bfl{position:relative;margin:2px 0 15px;padding-left:24px}
+.bfl::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2.5px;border-radius:2px;background:linear-gradient(180deg,var(--vio),var(--fux))}
+.bf-item{position:relative;padding-bottom:15px}
+.bf-item:last-child{padding-bottom:0}
+.bf-item::before{content:'';position:absolute;left:-22px;top:3px;width:11px;height:11px;border-radius:50%;background:#fff;border:3px solid var(--vio)}
+.bf-item b{font-size:14px;display:block}
+.bf-item b em{font-style:normal;color:var(--fux)}
+.bf-item p{font-family:var(--bd);font-size:12.5px;color:var(--ink2);line-height:1.45;margin-top:1px}
+
+/* contact */
+.contact{background:linear-gradient(145deg,#7c3aed,#c026d3);border-radius:20px;padding:22px 18px;color:#f6f0ff;text-align:center;box-shadow:0 12px 34px rgba(124,58,237,.38);margin-bottom:13px}
+.ct-qrwrap{--s:min(250px,66vw);width:var(--s);position:relative;margin:4px auto 16px}
+.ct-qr{width:100%;border-radius:50%;background:#fff;padding:12px;display:block;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.ct-sperm{position:absolute;left:50%;top:50%;width:calc(var(--s)*.24);margin-left:calc(var(--s)*-.12);margin-top:calc(var(--s)*-.03);animation:orbit 9s linear infinite;pointer-events:none;z-index:2}
+.ct-sperm img{width:100%;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));animation:wig .55s ease-in-out infinite alternate}
+@keyframes orbit{from{transform:rotate(0deg) translateX(calc(var(--s)*.56))}to{transform:rotate(-360deg) translateX(calc(var(--s)*.56))}}
+@keyframes wig{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@media (prefers-reduced-motion: reduce){.ct-sperm,.ct-sperm img{animation:none}}
+.ct-name{font-family:var(--hd);font-size:24px;font-weight:900;color:#fff}
+.ct-cred{font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#e9d8ff;margin:3px 0 2px}
+.ct-role{font-family:var(--bd);font-size:13px;color:#ecdcff;margin-bottom:13px}
+.ct-rows{display:flex;flex-direction:column;gap:7px;max-width:330px;margin:0 auto}
+.ct-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:11px;padding:10px 13px;color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;text-align:left}
+.ct-row .ic{font-size:15px}
+.ct-row small{display:block;font-size:9.5px;color:#e9d8ff;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.ct-note{font-family:var(--bd);font-size:12.5px;color:#ecdcff;margin-top:12px}
+
+/* misc */
+.unc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:11px 15px;margin-bottom:13px}
+.unc summary{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);cursor:pointer}
+.unc li{font-family:var(--bd);font-size:12.5px;color:var(--ink2);line-height:1.45;margin:7px 0 0 2px;list-style:none;padding-left:18px;position:relative}
+.unc li::before{content:'≈';position:absolute;left:0;top:-1px;color:var(--amber);font-weight:800;font-family:var(--ui)}
+.refs{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:11px 15px;margin-bottom:12px}
+.refs summary{font-family:var(--hd);font-size:16px;font-weight:800;cursor:pointer}
+.ref{font-family:var(--bd);font-size:12px;color:var(--ink2);line-height:1.5;padding:4px 0;border-bottom:1px solid #f3f1f9}
+.ref:last-child{border-bottom:none}
+.ref b{color:var(--vio);margin-right:4px;font-size:11px;font-family:var(--ui)}
+.disc{padding:12px 15px;border-radius:12px;background:#fef2f2;border:1.5px solid #fecaca;margin-bottom:10px}
+.disc-t{font-size:10.5px;font-weight:800;color:#dc2626;margin-bottom:3px;text-transform:uppercase;letter-spacing:.6px}
+.disc-b{font-family:var(--bd);font-size:12px;color:#7f1d1d;line-height:1.5}
+.ft{text-align:center;font-size:11px;color:var(--ink3);padding:8px 0 16px}
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="16" y1="3" x2="16" y2="7"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><line x1="5" y1="21" x2="5" y2="3"/><path d="M5 4h12l-2.2 4L17 12H5"/></symbol>
+<symbol id="i-male" viewBox="0 0 24 24"><circle cx="10" cy="14" r="6"/><line x1="14.3" y1="9.7" x2="21" y2="3"/><polyline points="15.5 3 21 3 21 8.5"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20v-.8a6.5 6.5 0 0 1 13 0v.8"/><circle cx="17.3" cy="9.3" r="2.7"/><path d="M16.6 20v-.5a5.4 5.4 0 0 1 4.9-5.4"/></symbol>
+<symbol id="i-snow" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="3.4" y1="7" x2="20.6" y2="17"/><line x1="3.4" y1="17" x2="20.6" y2="7"/><polyline points="9.6 4.4 12 6.8 14.4 4.4"/><polyline points="9.6 19.6 12 17.2 14.4 19.6"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+<symbol id="i-dna" viewBox="0 0 24 24"><path d="M8 2c0 5 8 5 8 10s-8 5-8 10"/><path d="M16 2c0 5-8 5-8 10s8 5 8 10"/><line x1="9.2" y1="7" x2="14.8" y2="7"/><line x1="9.2" y1="17" x2="14.8" y2="17"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><polyline points="3 7 10 14 14 10 21 17"/><polyline points="15 17 21 17 21 11"/></symbol>
+<symbol id="i-scis" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><line x1="8.3" y1="7.6" x2="20" y2="19"/><line x1="8.3" y1="16.4" x2="20" y2="5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 21v-.7a7.5 7.5 0 0 1 15 0v.7"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><polyline points="1.5 4 1.5 10 7.5 10"/><path d="M3.8 15a9 9 0 1 0 1.8-9.4L1.5 10"/></symbol>
+</svg>
+
+<div class="top">
+  <div class="top-in">
+    <a class="logo" href="index.html" aria-label="Fertile home">
+      <span>fert</span><svg viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg"><ellipse cx="8" cy="8" rx="5" ry="7" fill="#2b2f45"/><path d="M 8 15 Q 7 23, 10 31 Q 8 35, 7 40" stroke="#2b2f45" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg><span>le</span>
+      <span class="lab">Masterclass</span>
+    </a>
+    <div class="topstep" id="topstep">1 / 7</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ═══════════ STEP 1 — FERTILITY REVIEW (the familiar lane) ═══════════ -->
+<section class="step" data-step="1">
+  <div class="step-hd">
+    <div class="step-k">Step 1 · The familiar referral <span class="min">~2 min</span></div>
+    <h2>When do we refer for a fertility review?</h2>
+    <div class="step-sub">The lane we all know well — the patient or couple <strong>trying without success</strong>.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-t"><span>Fertility review — when to refer</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-cal"/></svg></div><div class="crit-b"><b>Under 35, trying</b><p>Regular intercourse, no conception</p></div><span class="when w12">12 months</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-clock"/></svg></div><div class="crit-b"><b>35 and over, trying</b><p>The window is shorter — earlier review helps</p></div><span class="when w6">6 months</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-flag"/></svg></div><div class="crit-b"><b>Known problem</b><p>Endometriosis · no ovulation · tubal disease · pelvic surgery</p></div><span class="when w0">Early review</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-male"/></svg></div><div class="crit-b"><b>Male factor</b><p>Abnormal semen analysis</p></div><span class="when w0">Early review</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-heart"/></svg></div><div class="crit-b"><b>Two or more miscarriages</b><p>Work up — don't wait for three</p></div><span class="when w0">Early review</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-users"/></svg></div><div class="crit-b"><b>Donor pathways</b><p>Single women · same-sex couples</p></div><span class="when w0">When planning</span></div>
+  </div>
+
+  <div class="doors">
+    <div class="door d1"><span class="big"><svg class="i lg"><use href="#i-users"/></svg></span><b>Trying, not conceiving</b><p>Fertility review — the familiar referral above</p><span class="tag">✓ We know this one</span></div>
+    <div class="door d2"><span class="big"><svg class="i lg"><use href="#i-snow"/></svg></span><b>Not trying yet — treatment ahead</b><p>A disease or its treatment may affect future fertility</p><span class="tag">Medical egg freezing →</span></div>
+  </div>
+  <div class="viz-tag">From here on: the second door — the conversation that helps most before treatment starts.</div>
+</section>
+
+<!-- ═══════════ STEP 2 — ENDOMETRIOSIS ═══════════ -->
+<section class="step" data-step="2">
+  <div class="step-hd">
+    <div class="step-k">Step 2 · The lead indication <span class="min">~2.5 min</span></div>
+    <h2>Endometriosis: planning fertility alongside surgery</h2>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-n">−2.1</div><div class="stat-l">ng/mL — average AMH change after excision</div><div class="stat-s">Murdock 2025, meta-analysis</div></div>
+    <div class="stat"><div class="stat-n">~40%</div><div class="stat-l">average relative change in AMH</div><div class="stat-s">Raffi 2012, meta-analysis</div></div>
+    <div class="stat"><div class="stat-n">2.4%</div><div class="stat-l">reported ovarian insufficiency after <b>both-sided</b> excision</div><div class="stat-s">CI 0.5–6.8 · Busacca 2006</div></div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-t">Why excision touches the reserve</div>
+    <div class="plot-s">The cyst wall and healthy ovarian tissue share a plane.</div>
+    <svg viewBox="0 0 340 198" aria-label="Ovary and cyst schematic">
+      <defs>
+        <radialGradient id="ovg" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#ffffff"/><stop offset="62%" stop-color="#f4f0fe"/><stop offset="100%" stop-color="#e7dffa"/></radialGradient>
+        <radialGradient id="cyg" cx="38%" cy="32%" r="78%"><stop offset="0%" stop-color="#ffdce4"/><stop offset="100%" stop-color="#fca5b6"/></radialGradient>
+        <filter id="soft" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#5b21b6" flood-opacity="0.16"/></filter>
+      </defs>
+      <ellipse cx="152" cy="118" rx="120" ry="62" fill="url(#ovg)" stroke="#b9a7ef" stroke-width="2" filter="url(#soft)"/>
+      <ellipse cx="152" cy="118" rx="103" ry="48" fill="none" stroke="#ddd2f5" stroke-width="1.4" stroke-dasharray="1 5" stroke-linecap="round"/>
+      <g stroke="#8b5cf6" stroke-width="1.7" fill="#fff">
+        <circle cx="76" cy="94" r="6"/><circle cx="101" cy="79" r="7.5"/><circle cx="132" cy="71" r="6"/>
+        <circle cx="164" cy="68" r="7"/><circle cx="64" cy="120" r="7"/><circle cx="195" cy="74" r="5.5"/>
+        <circle cx="72" cy="146" r="5.5"/><circle cx="94" cy="160" r="6.5"/>
+      </g>
+      <g fill="#8b5cf6">
+        <circle cx="76" cy="94" r="2"/><circle cx="101" cy="79" r="2.5"/><circle cx="132" cy="71" r="2"/>
+        <circle cx="164" cy="68" r="2.3"/><circle cx="64" cy="120" r="2.3"/><circle cx="195" cy="74" r="1.8"/>
+        <circle cx="72" cy="146" r="1.8"/><circle cx="94" cy="160" r="2.2"/>
+      </g>
+      <circle cx="202" cy="130" r="53" fill="none" stroke="#e11d48" stroke-width="1.8" stroke-dasharray="6 5"/>
+      <circle cx="202" cy="130" r="41" fill="url(#cyg)" stroke="#f05a7a" stroke-width="2" filter="url(#soft)"/>
+      <path d="M100 76 C 92 58, 80 48, 66 42" fill="none" stroke="#a79ad1" stroke-width="1.2"/>
+      <circle cx="100" cy="76" r="2" fill="#a79ad1"/>
+      <path d="M246 98 C 256 82, 266 72, 276 66" fill="none" stroke="#d98a9d" stroke-width="1.2"/>
+      <circle cx="246" cy="98" r="2" fill="#d98a9d"/>
+      <g font-family="Inter,sans-serif" font-weight="700">
+        <rect x="8" y="24" rx="9" width="152" height="20" fill="#fff" stroke="#e5ddf6"/>
+        <text x="84" y="37.5" text-anchor="middle" font-size="9.5" fill="#5b21b6">Follicles — the egg reserve</text>
+        <rect x="176" y="36" rx="9" width="158" height="31" fill="#fff" stroke="#f3d3da"/>
+        <text x="255" y="48.5" text-anchor="middle" font-size="9.5" fill="#be123c">Healthy tissue removed</text>
+        <text x="255" y="60" text-anchor="middle" font-size="9.5" fill="#be123c">with the cyst wall</text>
+        <text x="202" y="127" text-anchor="middle" font-size="10" fill="#9f1239">Endometriosis</text>
+        <text x="202" y="139" text-anchor="middle" font-size="10" fill="#9f1239">cyst</text>
+      </g>
+    </svg>
+    <div class="viz-tag">Schematic illustration — not to scale</div>
+  </div>
+
+  <div class="medicare">
+    <span class="ic"><svg class="i lg"><use href="#i-card"/></svg></span>
+    <div><b>Medicare: a medical indication changes the cost</b>
+    <p>Medically indicated egg freezing (endometriosis and the other conditions in this talk) attracts <strong>Medicare rebates — including PBS-subsidised stimulation medications</strong>, not just part of the cycle cost. Elective freezing is fully self-funded. Worth telling patients.</p></div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-t">Egg supply declines with age — and recovers less after surgery</div>
+    <div class="plot-s">Drag her age. Younger ovaries typically regain more after excision.</div>
+    <svg viewBox="0 0 340 170" id="curve-svg" aria-label="Egg supply versus age">
+      <line x1="34" y1="10" x2="34" y2="140" stroke="#e4e0ef" stroke-width="1"/>
+      <line x1="34" y1="140" x2="330" y2="140" stroke="#e4e0ef" stroke-width="1"/>
+      <text x="10" y="80" font-size="9" fill="#8f96ab" font-weight="700" transform="rotate(-90 10 80)" text-anchor="middle" font-family="Inter,sans-serif">Egg supply</text>
+      <g id="xticks" font-size="9" fill="#8f96ab" font-weight="700" font-family="Inter,sans-serif" text-anchor="middle"></g>
+      <path id="c-ghost" fill="none" stroke="#d4cfe6" stroke-width="2" stroke-dasharray="3 4"/>
+      <path id="c-pre" fill="none" stroke="#7c3aed" stroke-width="3.5" stroke-linecap="round"/>
+      <line id="c-drop" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="4 3"/>
+      <path id="c-post" fill="none" stroke="#e11d48" stroke-width="3.5" stroke-linecap="round"/>
+      <circle id="c-dot" r="5.5" fill="#2b2f45" stroke="#fff" stroke-width="2.5"/>
+      <text id="c-droplabel" font-size="10" fill="#e11d48" font-weight="800" font-family="Inter,sans-serif">≈ −40%</text>
+    </svg>
+    <div class="plot-cap">
+      <span><i style="background:#7c3aed"></i>Her supply now</span>
+      <span><i style="background:#e11d48"></i>After excision — lasting level</span>
+      <span><i style="background:#d4cfe6"></i>No surgery</span>
+    </div>
+    <div class="plot-slider">
+      <span class="lbl">Age at surgery</span>
+      <input type="range" id="curve-age" min="25" max="42" step="1" value="33" aria-label="Age at surgery">
+      <span class="val" id="curve-val">33</span>
+    </div>
+    <div class="curve-note" id="curve-note"></div>
+    <div class="viz-tag">Illustrative curve — not an individual prediction</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-t"><span>Worth a fertility conversation before surgery</span></div>
+    <div class="rf-list">
+      <span>Cysts on both ovaries</span>
+      <span>Previous ovarian surgery</span>
+      <span>Low reserve markers for age</span>
+      <span>Cyst has come back</span>
+      <span>Cyst &gt; 4 cm</span>
+      <span>Deep (severe) disease</span>
+    </div>
+  </div>
+
+  <div class="pearl teach">
+    <div class="pearl-k">A nuance for tomorrow's consults</div>
+    <div class="pearl-t">Low AMH ≠ low natural fertility</div>
+    <div class="pearl-b">AMH (anti-Müllerian hormone) counts <strong>how many</strong> eggs are left — not her chance of conceiving naturally. What it does predict: <strong>eggs per freezing or IVF cycle</strong> — which is what surgery may affect.</div>
+  </div>
+</section>
+
+<!-- ═══════════ STEP 3 ═══════════ -->
+<section class="step" data-step="3">
+  <div class="step-hd">
+    <div class="step-k">Step 3 · Your turn <span class="min">~3 min</span></div>
+    <h2>Try it — move the sliders</h2>
+    <div class="step-sub">The advice updates live. Colours show <strong>direction of concern</strong>, not a prediction.</div>
+  </div>
+
+  <div class="case" id="case-card">
+    <div class="case-k">Your patient</div>
+    <div class="case-t" id="case-text"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-t"><span>Change the patient</span><button class="reset" id="btn-reset"><svg class="i sm"><use href="#i-reset"/></svg> Reset</button></div>
+    <div id="controls"></div>
+  </div>
+
+  <div class="why" id="why">
+    <div class="why-k"><svg class="i sm"><use href="#i-zap"/></svg> Why did the advice change?</div>
+    <div class="why-change" id="why-change"></div>
+    <div class="why-mech" id="why-mech"></div>
+    <div class="why-moves" id="why-moves"></div>
+  </div>
+
+  <div id="refbanner"></div>
+  <div id="gauges"></div>
+  <div id="pearls"></div>
+
+  <details class="unc">
+    <summary>Honest uncertainties</summary>
+    <ul>
+      <li>Whether removing the cyst improves <em>natural</em> conception is genuinely unclear.</li>
+      <li>No tool can predict one woman's AMH after surgery — these bars show direction only.</li>
+      <li>"Low for age" cut-offs are approximate; single AMH values fluctuate.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ═══════════ STEP 4 ═══════════ -->
+<section class="step" data-step="4">
+  <div class="step-hd">
+    <div class="step-k">Step 4 · Two clocks <span class="min">~2 min</span></div>
+    <h2>Same patient, two pathways — very different calendars</h2>
+  </div>
+
+  <div class="mbar">
+    <div class="mb-row">
+      <div class="mb-l"><b>Egg freeze / IVF first</b><span style="color:var(--sky)">2–4 months</span></div>
+      <div class="mb-track"><div class="mb-fill fast" data-w="15%"></div><div class="mb-steps"><span>Stimulate</span><span class="sep">→</span><span>Collect</span><span class="sep">→</span><span>Freeze</span></div></div>
+    </div>
+    <div class="mb-row">
+      <div class="mb-l"><b>Surgery first, IVF later</b><span style="color:var(--coral)">12–24+ months</span></div>
+      <div class="mb-track"><div class="mb-fill slow" data-w="100%"></div><div class="mb-steps"><span>Operate</span><span class="sep">→</span><span>Wait &amp; try</span><span class="sep">→</span><span>If not pregnant</span><span class="sep">→</span><span>IVF, with less reserve</span></div></div>
+    </div>
+    <div class="mb-axis">
+      <span style="left:0%">0</span><span style="left:25%">6</span><span style="left:50%">12</span><span style="left:75%">18</span><span style="left:100%">24 mo</span>
+    </div>
+    <div class="mbar-note"><strong>The hidden time cost:</strong> at 38, a 12–24-month detour means arriving at IVF older, with lower reserve and fewer options than at the start.</div>
+    <div class="viz-tag">Typical timelines — illustrative</div>
+  </div>
+
+  <div class="meno">
+    <div class="meno-k">The outcome to anticipate</div>
+    <div class="meno-t">Early menopause caused by treatment</div>
+    <p>Surgery on both ovaries, repeat ovarian surgery, ovary removal, chemotherapy, pelvic radiotherapy — each can end ovarian function early. When that risk is foreseeable, the egg-freezing conversation sits naturally <strong>within consent, before treatment begins</strong>.</p>
+  </div>
+</section>
+
+<!-- ═══════════ STEP 5 ═══════════ -->
+<section class="step" data-step="5">
+  <div class="step-hd">
+    <div class="step-k">Step 5 · The full list <span class="min">~2 min</span></div>
+    <h2>Medical egg freezing — beyond endometriosis</h2>
+    <div class="step-sub">Same idea: counselling helps most <strong>before treatment starts</strong>. Many of these also attract <strong>Medicare rebates</strong>. Tap each card.</div>
+  </div>
+
+  <div class="spect">
+    <div class="spect-t">How soon should the conversation happen?</div>
+    <div class="sp-bar"></div>
+    <div class="sp-pts">
+      <div class="sp-pt" style="left:12%"><b>Days</b><span>Chemo · radiotherapy</span></div>
+      <div class="sp-pt" style="left:46%"><b>Weeks</b><span>Low reserve · genetic risk</span></div>
+      <div class="sp-pt" style="left:84%"><b>Before treatment</b><span>Ovarian surgery · hormones</span></div>
+    </div>
+    <div class="viz-tag">Illustrative timing guide</div>
+  </div>
+
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-zap"/></svg></span>Chemo / radiotherapy<span class="chev">▼</span></div><span class="urg u1">Time-critical</span></summary>
+    <div class="cat-body"><div class="cat-b">Cancer treatment — and strong immune drugs like cyclophosphamide. Oncofertility teams can start <strong>within days</strong> — ideally before the first dose.</div>
+    <div class="cat-ex"><span>Breast cancer · lymphoma</span><span>Pelvic radiotherapy</span><span>Cyclophosphamide</span></div></div>
+  </details>
+
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-dna"/></svg></span>Genetic risk of early menopause<span class="chev">▼</span></div><span class="urg u2">Refer young</span></summary>
+    <div class="cat-body"><div class="cat-b"><strong>Fragile X carriers</strong> (FMR1 — about 1 in 5 develop early menopause) and <strong>Turner mosaic</strong> (45,X/46,XX). The window is the teens to mid-20s. A family history of menopause before 40 counts too.</div>
+    <div class="cat-ex"><span>FMR1 carrier</span><span>45,X/46,XX</span><span>Family history POI</span></div></div>
+  </details>
+
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-down"/></svg></span>Low egg reserve for her age<span class="chev">▼</span></div><span class="urg u2">Weeks</span></summary>
+    <div class="cat-body"><div class="cat-b">Unexpectedly low AMH in a woman delaying pregnancy. Her natural fertility may be fine (step 2) — but if she will ever freeze, <strong>earlier banks more</strong>.</div></div>
+  </details>
+
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-scis"/></svg></span>Surgery on the ovary<span class="chev">▼</span></div><span class="urg u1">Before surgery</span></summary>
+    <div class="cat-body"><div class="cat-b">Repeat cyst surgery, planned ovary removal, BRCA risk-reducing surgery. <strong>A fertility opinion beforehand keeps options open.</strong></div></div>
+  </details>
+
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-user"/></svg></span>Gender-affirming care<span class="chev">▼</span></div><span class="urg u3">Before starting</span></summary>
+    <div class="cat-body"><div class="cat-b">Discuss fertility before long-term testosterone or surgery — a standard part of consent.</div></div>
+  </details>
+</section>
+
+<!-- ═══════════ STEP 6 ═══════════ -->
+<section class="step" data-step="6">
+  <div class="step-hd">
+    <div class="step-k">Step 6 · Take-home <span class="min">~1 min</span></div>
+    <h2>The referral screen</h2>
+  </div>
+
+  <div class="ort">
+    <div class="ort-k">Three questions</div>
+    <h3>Think <span style="color:#fbbf24">O·R·T</span> before treatment</h3>
+    <div class="ort-cards">
+      <div class="ort-c"><div class="ort-n">O</div><div><b>Ovary — in the treatment field?</b><p>Ovarian surgery, chemo, pelvic radiotherapy.</p></div></div>
+      <div class="ort-c"><div class="ort-n">R</div><div><b>Reserve — low, or at genetic risk?</b><p>Low AMH for age, both ovaries involved, prior surgery, fragile X, Turner mosaic. Unknown? Measure it.</p></div></div>
+      <div class="ort-c"><div class="ort-n">T</div><div><b>Time — is pregnancy years away?</b><p>Age ≥35, or plans deferred. Longer runway = today's reserve matters more.</p></div></div>
+    </div>
+    <div class="ort-rule"><b>Any one YES</b> → raise egg freezing in the consult.&nbsp; <b>O plus another YES</b> → consider fertility input first.</div>
+  </div>
+
+  <div class="bfl">
+    <div class="bf-item"><b>Before <em>surgery</em></b><p>A fertility conversation before booking keeps options open.</p></div>
+    <div class="bf-item"><b>Before <em>the first dose</em></b><p>Chemo / radiotherapy: an oncofertility review within days is ideal.</p></div>
+    <div class="bf-item"><b>Before <em>the window closes</em></b><p>Genetic and low-reserve risk: earlier always banks more.</p></div>
+  </div>
+
+  <details class="refs">
+    <summary>Evidence anchors</summary>
+    <div id="refs"></div>
+  </details>
+
+  <div class="disc">
+    <div class="disc-t">Educational tool</div>
+    <div class="disc-b">For facilitated group teaching. The bars summarise guideline direction — they are <strong>not prediction tools</strong>. AMH reflects egg <strong>numbers</strong>, not quality or natural fertility. Egg freezing is an <strong>option to discuss</strong>, never automatic. Decisions need specialist input.</div>
+  </div>
+  <div class="ft">Fertool · Dr Yuval Fouks · Melbourne IVF — professional education use</div>
+</section>
+
+<!-- ═══════════ STEP 7 ═══════════ -->
+<section class="step" data-step="7">
+  <div class="step-hd">
+    <div class="step-k">Step 7 · Stay in touch <span class="min">any time</span></div>
+    <h2>Questions, cases, second opinions — welcome</h2>
+    <div class="step-sub">Happy to talk through any patient. No formal referral needed for advice.</div>
+  </div>
+  <div class="contact">
+    <div class="ct-qrwrap">
+      <img class="ct-qr" src="data:image/png;base64,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" alt="QR code — connect with Dr Yuval Fouks">
+      <div class="ct-sperm"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJgAAAAmBAMAAADKLE8XAAAAGFBMVEUAAAAXREwQPUcHLjNPam/u8vOTp6pvi5CJWZYmAAAACHRSTlMA/v789BPs9H6FwCwAAANvSURBVHja7Zbvb1NVGMc/p91tbwNd7+1E3HRrxwsSaIgwARUVJls2IkT6ginRqCO+9JWJif/G/AvkjTHx1RIiMZEXxJA4Y7BFZKlA14HKall2zx2wntuxe3zRdmvXjoRJIi88yc39cXI++T7PeZ7vufD/+A/HiPF06nqysgYbwU8AHajdhbVleBjGNg3qqF0QOuQKUYh1iR2bhq0AQQBiJannylJrx3+wSZiowwZQmBEFOH2bpYVWqjn7WGrLciWA5fS8/KglG+d0d20DstIFsGxbSCErG9PC3B0egXQ7YXurYQZDZkSLsg0SPLMYPZZti0rPpHoq0yHvle8Mv3U2AwR5Z3vBM4UbQ0YiChHxFm8stYXdjAb+ltqOX3/3aitsJA8EudEpTCirHqRpmsr0YttPT7UrpET3nYEDU3e95M+nWqVHi0Ag7TuA0M7+k0mQSC1ut9N1Jur/6VyQPJy3E1da8nZqtloeYp8EFiTh5zVIEHrnT60J3mo5Tu15/FzvemlCN7STBLyYkBLQ1nxLn4bewKizOOsGB9fNH6z3ptYSAXRILADLXXh/Pc134q82NHT23njzRscMqqXRrUxRlqCTCgW2JB4MfjCVzjVEYYveyQbYiYFfSo07ev2mX1UWuiVE/aOsRu9ntvwwaq2502dW561kw9rlyS8q+xqVDdctqNKvwf58HFxhgyWxXe04l/8YHYQxMMSnX8bFw7NNcZ24umKt66VqmKWkQhZk926JBFOJcjwSK/V5v3WOZg5e843U7Vj0mdnmHOb8Ympu9W3o61WY8WwZU0p3zjMVwlTC2jZ0P7RYFEivkloI23L+0GRr4ZX2nr5czVs4/teq075l4wqNxtKgJZb8feJC5jCJznzCLwUs/957X7Vzw6OXPjEAQq/XNzoI+XxAmwpEOaJshU3PySlIvuQtdcUUCSP+63PT7Xrix10zR7PAh9e+XYP56a6wUoDt4NmmG4mc8yHXd76YuvTC1otjD/LT7V3k+6XKnqE9V9ifbXBb6LdmAUuCjZM8MlGrieOTGMsbO2X6/GuLMPPRBGvKgPu7wtJWClCe2FnPkJ8D/xG2m1uZfbt84GLvNE3K6DjiUACwrRm56ROqXvyhM9/sQMbQhcdjNaWhfgjrBefNTP+2wy8OPp6Y5Y1Pnqf0p+jfj38Ao8E+7PYjinUAAAAASUVORK5CYII=" alt=""></div>
+    </div>
+    <div class="ct-name">Dr Yuval Fouks</div>
+    <div class="ct-cred">MD · MPH · FRANZCOG</div>
+    <div class="ct-role">Reproductive Endocrinologist &amp; Fertility Specialist</div>
+    <div class="ct-rows">
+      <a class="ct-row" href="tel:+61493835221"><span class="ic"><svg class="i"><use href="#i-phone"/></svg></span><span><small>Phone / WhatsApp</small>+61 493 835 221</span></a>
+      <a class="ct-row" href="mailto:fouksi@gmail.com"><span class="ic"><svg class="i"><use href="#i-mail"/></svg></span><span><small>Email</small>fouksi@gmail.com</span></a>
+      <div class="ct-row"><span class="ic"><svg class="i"><use href="#i-pin"/></svg></span><span><small>Melbourne IVF</small>36 Wellington St, Collingwood · also at Caulfield</span></div>
+    </div>
+    <div class="ct-note">Scan the code to connect.</div>
+  </div>
+  <div class="ft">Fertool · professional education use</div>
+</section>
+
+</div>
+
+<!-- bottom nav -->
+<div class="nav">
+  <div class="nav-in">
+    <button class="nbtn" id="nav-prev">← Back</button>
+    <div class="dots" id="dots"></div>
+    <button class="nbtn next" id="nav-next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ───────── REFERENCES ───────── */
+var SRC={
+  ESHRE:  {s:"ESHRE 2022",   t:"Clinical Guideline",        f:"Becker CM, et al. ESHRE Guideline: Endometriosis. Hum Reprod Open 2022;hoac009. Counsel on fertility preservation where reserve is threatened; avoid repeat ovarian surgery where possible.", c:"#059669", n:1},
+  ESHREFP:{s:"ESHRE FP 2020",t:"Clinical Guideline",        f:"ESHRE Female Fertility Preservation Guideline (Anderson RA, et al.). Hum Reprod Open 2020;hoaa052. Indications across cancer, benign, genetic and surgical threats.", c:"#047857", n:2},
+  NICE:   {s:"NICE NG73",    t:"Clinical Guideline",        f:"NICE NG73: Endometriosis (upd. 2024). Cystectomy reduces ovarian reserve; drainage/ablation may preserve more.", c:"#1d4ed8", n:3},
+  RANZCOG:{s:"RANZCOG",      t:"Guideline / statement",     f:"RANZCOG referral guidance: review at 12 months under 35, 6 months at 35+, and earlier with known pathology, male factor or recurrent loss.", c:"#d97706", n:4},
+  LAMARCA:{s:"La Marca 2025",t:"Systematic Review",         f:"La Marca A, Mastellari E. Fertility preservation in women with endometriosis. Hum Reprod Open 2025;hoaf012.", c:"#7c3aed", n:5},
+  RAFFI:  {s:"Raffi 2012",   t:"Meta-analysis",             f:"Raffi F, et al. J Clin Endocrinol Metab 2012;97:3146–54. ~38–40% relative fall in AMH after endometrioma cystectomy.", c:"#dc2626", n:6},
+  MURDOCK:{s:"Murdock 2025", t:"Meta-analysis",             f:"Murdock T, et al. 2025. Mean AMH reduction ≈2.1 ng/mL after laparoscopic endometrioma cystectomy.", c:"#dc2626", n:7},
+  BUSACCA:{s:"Busacca 2006", t:"Observational (n=126)",     f:"Busacca M, et al. Am J Obstet Gynecol 2006;195:421–5. Ovarian failure after bilateral endometrioma excision: 2.4% (3/126; 95% CI 0.5–6.8%). Higher rates reported in some series; bilateral surgery ~2.9× relative risk of POI (Coccia 2019).", c:"#475569", n:8},
+  COBO:   {s:"Cobo 2020/21", t:"Observational cohorts",     f:"Cobo A, et al. Fertil Steril 2020 (n=1,044); RBMO 2021 (n=485). Egg-freezing outcomes in endometriosis depend on age at freezing and number banked (~10–20 mature eggs).", c:"#0891b2", n:9},
+  ZAREK:  {s:"Zarek 2015",   t:"Prospective cohort",        f:"Zarek SM, et al. J Clin Endocrinol Metab 2015;100:4215–21. Low AMH not associated with reduced natural fecundability in ovulatory women.", c:"#0e7490", n:10},
+  STEINER:{s:"Steiner 2017", t:"Prospective cohort (JAMA)", f:"Steiner AZ, et al. JAMA 2017;318:1367–76. Low AMH did not predict reduced natural conception.", c:"#0e7490", n:11},
+  EVERS:  {s:"Evers 2002",   t:"Pathway comparator",        f:"Evers JLH. Female subfertility. Lancet 2002;360:151–9. The post-surgical wait-and-see pathway — the comparator for the time cost.", c:"#9a3412", n:12},
+  FMR1:   {s:"FMR1 / POI",   t:"Consensus evidence",        f:"FMR1 premutation carriers: ~20% develop premature ovarian insufficiency. Carrier status found on family screening is a fertility-preservation trigger.", c:"#be185d", n:13},
+  TURNER: {s:"Turner mosaic",t:"Consensus guidance",        f:"45,X/46,XX mosaicism: accelerated egg loss; where ovarian function exists, counselling is advised in adolescence/early adulthood.", c:"#be185d", n:14}
+};
+function cite(ids){return ids.map(function(id){var s=SRC[id];return '<span class="cb" data-cb style="background:'+s.c+'12;color:'+s.c+';border:1px solid '+s.c+'30">'+s.s+'<span class="ctt"><span class="ctt-t">'+s.t+'</span>'+s.f+'</span></span>';}).join('');}
+
+/* ───────── ZONES & HELPERS ───────── */
+var ZC=[{m:25,l:'Low',c:'#15803d',b:'#dcfce7'},{m:50,l:'Moderate',c:'#a16207',b:'#fef9c3'},{m:75,l:'High',c:'#c2410c',b:'#ffedd5'},{m:101,l:'Very high',c:'#be123c',b:'#ffe4e6'}];
+var ZP=[{m:25,l:'Mention it',c:'#64748b',b:'#f1f5f9'},{m:50,l:'Worth discussing',c:'#0369a1',b:'#e0f2fe'},{m:75,l:'Recommend it',c:'#6d28d9',b:'#ede9fe'},{m:101,l:'Ideally pre-surgery',c:'#fff',b:'#7c3aed'}];
+function zone(v,z){for(var i=0;i<z.length;i++)if(v<z[i].m)return z[i];return z[z.length-1];}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function expAMH(age){
+  var pts=[[25,3.2],[30,2.5],[35,1.6],[38,1.2],[40,0.9],[42,0.7]];
+  if(age<=25)return 3.2; if(age>=42)return 0.7;
+  for(var i=0;i<pts.length-1;i++){var a=pts[i],b=pts[i+1];
+    if(age>=a[0]&&age<=b[0]){var t=(age-a[0])/(b[0]-a[0]);return a[1]+t*(b[1]-a[1]);}}
+  return 1.5;
+}
+function amhBandFor(amh,age){var e=expAMH(age);if(amh<0.55*e)return 'low';if(amh<0.85*e)return 'borderline';return 'normal';}
+var TL_LABEL={now:'now',soon:'in 1–2 years',later:'in 3–5 years',unsure:'someday, undecided'};
+
+/* ───────── PEARLS ───────── */
+var PEARLS={
+  amhQuant:{cls:'warn',k:'What studies show',t:'Excision and AMH',
+    b:'Across studies, AMH averages <span class="qn">≈2 ng/mL (~40%) lower</span> after excision. Draining/burning is gentler on reserve, with more recurrence — a technique question worth planning together.',
+    src:['MURDOCK','RAFFI','NICE']},
+  pof:{cls:'warn',k:'What studies show',t:'Both ovaries involved — less margin',
+    b:'After excision on <strong>both sides</strong>, ovarian insufficiency has been reported in <span class="qn">≈2.4%</span>. A good moment to discuss egg banking <strong>beforehand</strong>.',
+    src:['BUSACCA','ESHRE','LAMARCA']},
+  amhNatural:{cls:'teach',k:'Counter-intuitive but true',t:'Low AMH ≠ low natural fertility',
+    b:'If she ovulates, low AMH doesn’t reduce her monthly chance. It predicts <strong>fewer eggs per freezing/IVF cycle</strong> — a different conversation.',
+    src:['ZAREK','STEINER']},
+  repeat:{cls:'warn',k:'Guideline position',t:'Second operations cost more',
+    b:'Ovarian tissue doesn’t grow back, so effects add up. ESHRE suggests avoiding repeat cyst surgery where possible — before a <strong>second</strong> operation, a fertility opinion is worthwhile.',
+    src:['ESHRE','LAMARCA']},
+  eggTarget:{cls:'teach',k:'What freezing buys',t:'Age at freezing decides the result',
+    b:'Success depends on <span class="qn">age when frozen</span> and reaching <span class="qn">~10–20 mature eggs</span>. Freezing at 33 and at 39 are different products — say so honestly.',
+    src:['COBO','LAMARCA']}
+};
+
+/* ───────── CONTROLS ───────── */
+var CONTROLS=[
+  {type:'head',txt:'Patient'},
+  {k:'age', type:'range',half:true,label:'Age',min:25,max:42,step:1,def:31,fmt:function(v){return v;}},
+  {k:'size',type:'range',half:true,label:'Cyst size',sub:'cm',min:1,max:10,step:0.5,def:4,fmt:function(v){return (v%1?v.toFixed(1):v)+'';}},
+  {type:'head',txt:'Reserve markers',hint:'how many eggs are left'},
+  {k:'amh', type:'range',half:true,label:'AMH',sub:'blood test · ng/mL',min:0.2,max:6,step:0.1,def:2.6,fmt:function(v){return v.toFixed(1);}},
+  {k:'afc', type:'range',half:true,label:'Follicle count',sub:'on ultrasound (AFC)',min:2,max:30,step:1,def:14,fmt:function(v){return v;}},
+  {type:'head',txt:'Situation'},
+  {k:'lat', type:'seg',label:'Cysts on',opts:[['uni','One ovary'],['bi','Both ovaries']],def:'uni'},
+  {k:'prior',type:'seg',label:'Previous ovarian surgery',opts:[['no','No'],['yes','Yes']],def:'no'},
+  {k:'plan',type:'seg',wrap:true,label:'The plan',opts:[['obs','Watch &amp; re-scan'],['abl','Drain / burn'],['cyst','Remove the cyst'],['die','Remove + deep disease']],def:'cyst'},
+  {k:'tl',  type:'seg',label:'Baby plans',opts:[['now','Now'],['soon','1–2 y'],['later','3–5 y'],['unsure','Unsure']],def:'later'}
+];
+var MECH={
+  age:'Older means fewer eggs, lower quality, and less time to recover after surgery.',
+  amh:'AMH counts the eggs left — it sets what a freezing cycle could bank, and what surgery could cost.',
+  afc:'The ultrasound follicle count tells the same story as AMH: fewer follicles, less margin.',
+  size:'Bigger cysts mean more healthy ovary handled — a small effect on the dial.',
+  lat:'With both ovaries involved there is less margin, and reported ovarian insufficiency rates are higher.',
+  prior:'Ovarian tissue doesn’t grow back — each operation spends from a smaller balance.',
+  plan:'Watching costs nothing today. Draining spares tissue but recurs. Excision is associated with a measurable AMH change.',
+  tl:'Trying now → timing matters most. Waiting years → today is the youngest her eggs will ever be.'
+};
+function vignette(s){
+  var band=amhBandFor(s.amh,s.age);
+  var planTx={obs:'watch and re-scan',abl:'drain/burn the cyst',cyst:'remove the cyst',die:'remove the cyst + deep disease'}[s.plan];
+  return '<strong>'+s.age+'</strong>, endometriosis cyst <strong>'+(s.size%1?s.size.toFixed(1):s.size)+' cm</strong> on <strong>'+(s.lat==='bi'?'both ovaries':'one ovary')+'</strong>'+(s.prior==='yes'?', <strong>operated before</strong>':'')+
+    '. Reserve markers <strong>'+band+' for age</strong> (AMH '+s.amh.toFixed(1)+', follicles '+s.afc+'). Plan: <strong>'+planTx+'</strong>. Wants a baby <strong>'+TL_LABEL[s.tl]+'</strong>.';
+}
+function compute(s){
+  var band=amhBandFor(s.amh,s.age), afcLow=s.afc<8, afcBord=s.afc>=8&&s.afc<12;
+  var r=8;
+  if(band==='low')r+=32; else if(band==='borderline')r+=16;
+  if(afcLow)r+=14; else if(afcBord)r+=7;
+  if(s.lat==='bi')r+=13;
+  if(s.prior==='yes')r+=16;
+  if(s.age>=38)r+=12; else if(s.age>=35)r+=6;
+  r=clamp(r,4,96);
+  var t,tNote;
+  if(s.plan==='obs'){t=8;tNote='Watching spares the ovary — but re-check the markers rather than assume them.';}
+  else if(s.plan==='abl'){t=28+(s.lat==='bi'?8:0)+(s.prior==='yes'?6:0);tNote='Draining/burning spares more tissue than excision — the trade is <strong>more recurrence</strong>.';}
+  else if(s.plan==='cyst'){t=56+(s.lat==='bi'?18:0)+(s.prior==='yes'?13:0)+(s.size>=6?5:0);tNote='Studies report an average <span class="qn">AMH fall of ≈2 ng/mL (~40%)</span> after excision'+(s.lat==='bi'?'; with both sides operated, <span class="qn">≈2.4% ovarian insufficiency</span> has been reported':'')+'.';}
+  else {t=66+(s.lat==='bi'?16:0)+(s.prior==='yes'?11:0);tNote='Bigger operation around an already-stretched reserve — the ovarian considerations still apply.';}
+  t=clamp(t,4,95);
+  var f=6 + r*0.34 + t*0.30;
+  f+={later:22,unsure:14,soon:10,now:3}[s.tl];
+  if(s.age>=35)f+=7;
+  f=clamp(Math.round(f),4,97);
+  var fNote;
+  if(s.tl==='now'){fNote=f>=50?'She’s trying <strong>now</strong> — the question becomes fast-tracked fertility care (possibly IVF first), before any ovary is spent.':'Trying now: support conception, keep the surgery question separate, re-check markers if plans change.';}
+  else{fNote=f>=75?'Costly surgery + baby plans years away: freezing <strong>before</strong> the operation keeps the most options open.':f>=50?'Enough on the board to give egg freezing a <strong>named place in the pre-op consult</strong>.':'Lower risk — mention it, and re-check markers if surgery or plans change.';}
+  var surg=(s.plan==='cyst'||s.plan==='die');
+  var lvl,timing,txt;
+  if(surg&&(r>=40||s.lat==='bi'||s.prior==='yes'||(s.age>=35&&s.tl!=='now'))){
+    lvl=3;timing='Ideally before surgery is booked';
+    txt='Ovarian surgery is planned with '+(s.lat==='bi'?'<strong>both ovaries involved</strong>':r>=40?'<strong>already-low reserve</strong>':s.prior==='yes'?'<strong>a previously operated ovary</strong>':'<strong>age 35+ and baby plans deferred</strong>')+'. A fertility consult beforehand keeps every option open.';
+  } else if(surg&&s.tl!=='now'){
+    lvl=2;timing='Ideally before surgery';
+    txt='Young, good reserve, one ovary involved: surgery is reasonable — but she deserves the reserve conversation and a <strong>documented AMH before</strong> the operation.';
+  } else if(r>=50||f>=55||(s.tl==='now'&&s.age>=35)||(s.tl==='now'&&band==='low')){
+    lvl=2;timing='Within weeks';
+    txt=(s.tl==='now'&&s.age>=35)?'35+ with endometriosis and trying: <strong>early review is indicated</strong>.':'Reserve findings justify a specialist conversation soon.';
+  } else {
+    lvl=1;timing='Usual pathway';
+    txt='No costly intervention planned, reserve reassuring. Safety-net: re-check markers if surgery is proposed or plans change.';
+  }
+  var pearls=[];
+  if(s.lat==='bi'&&surg)pearls.push('pof');
+  if(surg)pearls.push('amhQuant');
+  if(s.tl==='now'&&band==='low')pearls.push('amhNatural');
+  if(s.prior==='yes')pearls.push('repeat');
+  if(f>=60&&s.tl!=='now')pearls.push('eggTarget');
+  pearls=pearls.slice(0,2);
+  return {
+    gauges:[
+      {id:'reserve',title:'Her egg reserve — concern',type:'concern',tag:'q',val:r,lo:clamp(r-14,2,100),hi:clamp(r+12,0,98),zones:ZC,
+       note:'Markers are <strong>'+band+' for age</strong>'+(afcLow?', follicle count low':'')+(s.prior==='yes'?'; past surgery has already spent some reserve':'')+'. This measures <strong>egg numbers</strong> — not natural fertility.',
+       src:['LAMARCA','ZAREK']},
+      {id:'threat',title:'Reserve and the planned procedure',type:'concern',tag:surg?'q':'j',val:t,lo:clamp(t-15,2,100),hi:clamp(t+13,0,98),zones:ZC,
+       note:tNote,src:surg?['MURDOCK','RAFFI','BUSACCA']:['NICE','ESHRE']},
+      {id:'fp',title:'Egg-freezing discussion — priority',type:'priority',tag:'j',val:f,lo:clamp(f-14,2,100),hi:clamp(f+12,0,99),zones:ZP,
+       note:fNote,src:['LAMARCA','ESHRE','COBO']}
+    ],
+    ref:{lvl:lvl,timing:timing,txt:txt},
+    pearls:pearls
+  };
+}
+
+/* ───────── ENGINE ───────── */
+function el(id){return document.getElementById(id);}
+function defaults(){var o={};CONTROLS.forEach(function(c){if(c.k)o[c.k]=c.def;});return o;}
+var state=defaults(), settled=defaults(), lastOut=null, activeKey=null;
+
+function trackFill(input){
+  var v=(input.value-input.min)/(input.max-input.min)*100;
+  input.style.setProperty('--trk','linear-gradient(90deg,var(--vio) 0%,var(--vio) '+v+'%,#ece9f5 '+v+'%)');
+}
+function rangeHTML(c){
+  return '<div class="ctl"><div class="ctl-hd"><div class="ctl-l">'+c.label+(c.sub?'<small>'+c.sub+'</small>':'')+'</div>'+
+    '<div class="ctl-v" id="v-'+c.k+'">'+c.fmt(state[c.k])+'</div></div>'+
+    '<input type="range" id="in-'+c.k+'" min="'+c.min+'" max="'+c.max+'" step="'+c.step+'" value="'+state[c.k]+'" aria-label="'+c.label+'"></div>';
+}
+function buildControls(){
+  var html='',i=0;
+  while(i<CONTROLS.length){
+    var c=CONTROLS[i];
+    if(c.type==='head'){html+='<div class="ghead">'+c.txt+(c.hint?'<small>'+c.hint+'</small>':'')+'</div>';i++;continue;}
+    if(c.type==='range'&&c.half&&CONTROLS[i+1]&&CONTROLS[i+1].half){
+      html+='<div class="ctl-row">'+rangeHTML(c)+rangeHTML(CONTROLS[i+1])+'</div>';i+=2;continue;
+    }
+    if(c.type==='range'){html+=rangeHTML(c);i++;continue;}
+    html+='<div class="ctl"><div class="ctl-hd"><div class="ctl-l">'+c.label+'</div></div>'+
+      '<div class="seg'+(c.wrap?' wrap2':'')+'" id="seg-'+c.k+'">'+c.opts.map(function(o){
+        return '<button data-seg="'+c.k+'" data-v="'+o[0]+'"'+(state[c.k]===o[0]?' class="on"':'')+'>'+o[1]+'</button>';
+      }).join('')+'</div></div>';
+    i++;
+  }
+  el('controls').innerHTML=html;
+  CONTROLS.forEach(function(c){
+    if(c.type==='range'){
+      var inp=el('in-'+c.k);
+      trackFill(inp);
+      inp.addEventListener('input',function(){
+        if(activeKey!==c.k){settleBaseline();activeKey=c.k;}
+        state[c.k]=parseFloat(inp.value);
+        el('v-'+c.k).textContent=c.fmt(state[c.k]);
+        trackFill(inp);
+        scheduleUpdate(c.k);
+      });
+    }
+  });
+}
+function buildGauges(out){
+  el('gauges').innerHTML=out.gauges.map(function(g){
+    return '<div class="gauge" id="g-'+g.id+'">'+
+      '<div class="g-top"><div class="g-ti">'+g.title+'</div><span class="g-tag '+g.tag+'" id="gt-'+g.id+'">'+(g.tag==='q'?'Evidence-based':'Clinical judgement')+'</span></div>'+
+      '<div class="g-track '+g.type+'"><div class="g-bg"></div><div class="g-dv" style="left:25%"></div><div class="g-dv" style="left:50%"></div><div class="g-dv" style="left:75%"></div>'+
+      '<div class="g-band" id="gb-'+g.id+'"></div><div class="g-mk" id="gm-'+g.id+'"></div><div class="g-zn" id="gz-'+g.id+'"></div></div>'+
+      '<div class="g-note" id="gn-'+g.id+'"></div>'+
+      '<div class="g-cites" id="gc-'+g.id+'"></div></div>';
+  }).join('');
+}
+function paintGauge(g,animateFirst){
+  var z=zone(g.val,g.zones);
+  var mk=el('gm-'+g.id),zn=el('gz-'+g.id),bd=el('gb-'+g.id);
+  var set=function(){
+    mk.style.left=clamp(g.val,6,94)+'%';
+    zn.style.left=clamp(g.val,16,84)+'%';
+    bd.style.left=g.lo+'%';bd.style.width=Math.max(g.hi-g.lo,4)+'%';
+  };
+  zn.textContent=z.l; zn.style.background=z.b; zn.style.color=z.c;
+  el('gn-'+g.id).innerHTML=g.note;
+  el('gc-'+g.id).innerHTML=cite(g.src);
+  var tag=el('gt-'+g.id);
+  tag.className='g-tag '+g.tag; tag.textContent=(g.tag==='q'?'Evidence-based':'Clinical judgement');
+  if(animateFirst){mk.style.left='6%';zn.style.left='16%';bd.style.left='4%';bd.style.width='6%';
+    requestAnimationFrame(function(){requestAnimationFrame(set);});}
+  else set();
+}
+function paintReferral(rf){
+  el('refbanner').innerHTML='<div class="refb l'+rf.lvl+'">'+
+    '<div class="refb-k">Suggested next step</div>'+
+    '<div class="refb-l">'+(rf.lvl===3?'Fertility counselling first':rf.lvl===2?'Early fertility review':'Routine pathway')+'</div>'+
+    '<div class="refb-timing"><svg class="i sm"><use href="#i-clock"/></svg> '+rf.timing+'</div>'+
+    '<div class="refb-tx">'+rf.txt+'</div></div>';
+}
+function paintPearls(keys){
+  var cont=el('pearls');
+  var sig=keys.join('|');
+  if(cont.getAttribute('data-sig')===sig)return;
+  cont.setAttribute('data-sig',sig);
+  cont.innerHTML=keys.map(function(k){
+    var p=PEARLS[k];
+    return '<div class="pearl '+p.cls+'"><div class="pearl-k">'+p.k+'</div><div class="pearl-t">'+p.t+'</div>'+
+      '<div class="pearl-b">'+p.b+'</div><div class="g-cites" style="margin-top:7px">'+cite(p.src)+'</div></div>';
+  }).join('');
+}
+function paint(out,prevOut){
+  el('case-text').innerHTML=vignette(state);
+  var first=!prevOut;
+  out.gauges.forEach(function(g){paintGauge(g,first);});
+  paintReferral(out.ref);
+  paintPearls(out.pearls);
+  lastOut=out;
+}
+function fmtVal(k,v){
+  var c=CONTROLS.filter(function(x){return x.k===k;})[0];
+  if(!c)return v;
+  if(c.type==='range')return c.fmt(typeof v==='number'?v:parseFloat(v));
+  var o=c.opts.filter(function(x){return x[0]===v;})[0];
+  return o?o[1].replace(/&amp;/g,'&'):v;
+}
+function ctlLabel(k){var c=CONTROLS.filter(function(x){return x.k===k;})[0];return c?c.label:k;}
+function showWhy(key,oldOut,newOut){
+  if(settled[key]===state[key])return;
+  el('why-change').textContent=ctlLabel(key)+': '+fmtVal(key,settled[key])+' → '+fmtVal(key,state[key]);
+  el('why-mech').textContent=MECH[key]||'';
+  var moves=[];
+  newOut.gauges.forEach(function(g,i){
+    var og=oldOut.gauges[i];
+    var zo=zone(og.val,og.zones), zn=zone(g.val,g.zones);
+    if(zo.l!==zn.l){
+      moves.push('<div class="why-mv">'+g.title+' <span class="zp" style="background:'+zo.b+';color:'+zo.c+'">'+zo.l+'</span><span class="arr">→</span><span class="zp" style="background:'+zn.b+';color:'+zn.c+'">'+zn.l+'</span></div>');
+    }
+  });
+  if(oldOut.ref.lvl!==newOut.ref.lvl){
+    var RL={1:['Routine','#dcfce7','#15803d'],2:['Early review','#fef3c7','#92400e'],3:['Counselling first','#fae8ff','#a21caf']};
+    var a=RL[oldOut.ref.lvl],b=RL[newOut.ref.lvl];
+    moves.push('<div class="why-mv"><b>Suggested next step</b> <span class="zp" style="background:'+a[1]+';color:'+a[2]+'">'+a[0]+'</span><span class="arr">→</span><span class="zp" style="background:'+b[1]+';color:'+b[2]+'">'+b[0]+'</span></div>');
+  }
+  el('why-moves').innerHTML=moves.length?moves.join(''):'<div class="why-none">The dials moved within the same zones — the verdicts held.</div>';
+  el('why').classList.add('show');
+}
+var raf=null,pendingKey=null;
+function scheduleUpdate(key){
+  pendingKey=key;
+  if(raf)return;
+  raf=requestAnimationFrame(function(){
+    raf=null;
+    var prev=lastOut;
+    var baseOut=compute(settled);
+    var out=compute(state);
+    paint(out,prev||baseOut);
+    showWhy(pendingKey,baseOut,out);
+  });
+}
+function settleBaseline(){settled=JSON.parse(JSON.stringify(state));}
+function initLab(){
+  buildControls();
+  lastOut=null;
+  el('why').classList.remove('show');
+  var out=compute(state);
+  buildGauges(out);
+  paint(out,null);
+}
+
+/* events */
+document.addEventListener('click',function(e){
+  var seg=e.target.closest('[data-seg]');
+  if(seg){
+    var k=seg.getAttribute('data-seg'),v=seg.getAttribute('data-v');
+    if(state[k]!==v){
+      settleBaseline(); activeKey=k;
+      settled[k]=state[k];
+      state[k]=v;
+      el('seg-'+k).querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b===seg);});
+      scheduleUpdate(k);
+    }
+    return;
+  }
+  var cb=e.target.closest('[data-cb]');
+  document.querySelectorAll('.cb.open').forEach(function(x){if(x!==cb)x.classList.remove('open');});
+  if(cb)cb.classList.toggle('open');
+});
+el('btn-reset').addEventListener('click',function(){
+  state=defaults(); settled=defaults(); activeKey=null; initLab();
+});
+document.addEventListener('pointerup',function(){
+  if(activeKey){setTimeout(function(){settleBaseline();activeKey=null;},50);}
+});
+
+/* ───────── EGG-SUPPLY CURVE (age-dependent recovery) ───────── */
+var CX0=34,CX1=326,CY0=16,CY1=140,AGE0=20,AGE1=45;
+function supply(age){return Math.exp(-0.105*(age-AGE0));}
+function cx(age){return CX0+(age-AGE0)/(AGE1-AGE0)*(CX1-CX0);}
+function cy(v){return CY1-v*(CY1-CY0);}
+function retainedF(age){return clamp(0.78-(age-25)*(0.28/17),0.45,0.82);}
+function pathPts(a0,a1,fn){var d='';for(var a=a0;a<=a1+0.001;a+=0.25){d+=(d?' L':'M')+cx(a).toFixed(1)+' '+cy(fn(a)).toFixed(1);}return d;}
+function drawCurve(age){
+  var retF=retainedF(age), dipF=Math.max(retF-0.13,0.3), REC=2.2;
+  el('c-ghost').setAttribute('d',pathPts(age,AGE1,function(a){return supply(a);}));
+  el('c-pre').setAttribute('d',pathPts(AGE0,age,function(a){return supply(a);}));
+  el('c-post').setAttribute('d',pathPts(age,AGE1,function(a){var f=a<age+REC?dipF+(retF-dipF)*((a-age)/REC):retF;return supply(a)*f;}));
+  var x=cx(age),y1=cy(supply(age)),y2=cy(supply(age)*dipF);
+  var dl=el('c-drop');
+  dl.setAttribute('x1',x);dl.setAttribute('x2',x);dl.setAttribute('y1',y1);dl.setAttribute('y2',y2);
+  el('c-dot').setAttribute('cx',x);el('c-dot').setAttribute('cy',y1);
+  var lbl=el('c-droplabel');
+  lbl.textContent='\u2212'+Math.round((1-retF)*100)+'% lasting';
+  lbl.setAttribute('x',Math.min(x+8,CX1-66));lbl.setAttribute('y',(y1+y2)/2+3);
+  el('curve-val').textContent=age;
+  var note=el('curve-note');
+  if(note){note.textContent=age<=31?'At '+age+', the ovary typically regains a good share of function in the months after surgery.':age<=37?'Through the 30s, recovery after surgery becomes more limited.':'At '+age+', little recovery is expected \u2014 the step down is largely lasting.';}
+}
+(function initCurve(){
+  var t=el('xticks'),hh='';
+  [25,30,35,40,45].forEach(function(a){hh+='<text x="'+cx(a).toFixed(1)+'" y="154">'+a+'</text>';});
+  t.innerHTML=hh;
+  var sl=el('curve-age');
+  trackFill(sl);
+  sl.addEventListener('input',function(){trackFill(sl);drawCurve(parseInt(sl.value,10));});
+  drawCurve(33);
+})();
+
+/* ───────── MONTH BARS ───────── */
+function animateBars(){
+  document.querySelectorAll('.mb-fill').forEach(function(b){
+    b.style.width='0';
+    requestAnimationFrame(function(){requestAnimationFrame(function(){b.style.width=b.getAttribute('data-w');});});
+  });
+}
+
+/* ───────── STEP NAVIGATION ───────── */
+var NSTEPS=7, cur=1;
+function goto(n){
+  cur=clamp(n,1,NSTEPS);
+  document.querySelectorAll('.step').forEach(function(s){
+    s.classList.toggle('on',parseInt(s.getAttribute('data-step'))===cur);
+  });
+  el('topstep').textContent=cur+' / '+NSTEPS;
+  el('dots').innerHTML=Array.from({length:NSTEPS},function(_,i){
+    var n=i+1;
+    return '<button class="dot'+(n===cur?' on':n<cur?' done':'')+'" data-goto="'+n+'" aria-label="Step '+n+'"></button>';
+  }).join('');
+  el('nav-prev').disabled=(cur===1);
+  el('nav-next').textContent=(cur===NSTEPS?'Start again':'Next →');
+  if(cur===4)animateBars();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+el('nav-prev').addEventListener('click',function(){goto(cur-1);});
+el('nav-next').addEventListener('click',function(){if(cur<NSTEPS)goto(cur+1);else goto(1);});
+document.addEventListener('click',function(e){
+  var d=e.target.closest('[data-goto]');
+  if(d)goto(parseInt(d.getAttribute('data-goto')));
+});
+
+/* refs */
+el('refs').innerHTML=Object.keys(SRC).map(function(k){return SRC[k];}).sort(function(a,b){return a.n-b.n;})
+  .map(function(s){return '<div class="ref"><b>'+s.n+'.</b> '+s.f+'</div>';}).join('');
+
+initLab();
+goto(1);
+})();
+</script>
+</body>
+</html>
