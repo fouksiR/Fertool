@@ -1,1010 +1,1055 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Recurrent Pregnancy Loss · Evidence-Based Workup</title>
-<meta name="description" content="GP-focused, evidence-stratified investigations for recurrent pregnancy loss. ESHRE 2022 + RANZCOG C-Gyn 38." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#8c2457">
+<title>Recurrent Pregnancy Loss — The Workup That Pays Off</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --paper: #FBF7EE;
-    --paper-2: #F4EEDF;
-    --ink: #1A2624;
-    --ink-2: #4E5C5A;
-    --rule: #E4DAC4;
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --ui:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --bg:#ffffff; --tint:#f6f8fb;
+  --ink:#101d33; --mid:#475569; --faint:#8794a9;
+  --acc:#8c2457; --acc-deep:#5d1038; --acc-wash:#f9eef4;
+  --red:#b4232a; --amber:#b97d10; --green:#2e7d4f;
+  --line:#d9dfe9; --line-soft:#edf1f7;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ui);color:var(--ink);line-height:1.5;background:var(--bg);-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px 104px}
+@media(min-width:900px){.wrap{max-width:640px}}
 
-    --emerald: #0E6E58;
-    --emerald-tint: #D8EDE3;
-    --emerald-deep: #073D31;
+/* top bar */
+.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:560px;margin:0 auto;padding:13px 18px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+@media(min-width:900px){.top-in{max-width:640px}}
+.wordmark{font-size:14.5px;font-weight:700;letter-spacing:-.2px}
+.wordmark em{font-style:normal;color:var(--acc)}
+.topstep{font-size:12px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
 
-    --amber: #B0651A;
-    --amber-tint: #F8E3BE;
-    --amber-deep: #6B3A0C;
+/* steps */
+.step{display:none}
+.step.on{display:block;animation:stepin .28s ease}
+@keyframes stepin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.step-hd{padding:26px 0 14px}
+.step-k{font-size:12px;font-weight:600;color:var(--acc);margin-bottom:8px;display:flex;align-items:baseline;gap:10px}
+.step-k::before{content:'';color:var(--acc);font-weight:800;font-size:12px;letter-spacing:.5px;border-bottom:2px solid var(--acc);padding-bottom:2px;flex-shrink:0;line-height:1}
+.step[data-step="1"] .step-k::before{content:'01'}
+.step[data-step="2"] .step-k::before{content:'02'}
+.step[data-step="3"] .step-k::before{content:'03'}
+.step[data-step="4"] .step-k::before{content:'04'}
+.step[data-step="5"] .step-k::before{content:'05'}
+.step[data-step="6"] .step-k::before{content:'06'}
+.step[data-step="7"] .step-k::before{content:'07'}
+.step-k .min{font-weight:500;color:var(--faint);margin-left:auto}
+.step h2{font-size:24px;font-weight:800;line-height:1.18;letter-spacing:-.5px;max-width:24ch}
+.step-sub{font-size:14px;color:var(--mid);margin-top:8px;line-height:1.55;max-width:56ch}
+.step-sub strong{color:var(--ink);font-weight:600}
 
-    --rose: #A23A52;
-    --rose-tint: #F2D5DA;
-    --rose-deep: #5C1F2C;
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 18px calc(10px + env(safe-area-inset-bottom))}
+.nav-in{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
+@media(min-width:900px){.nav-in{max-width:640px}}
+.nbtn{flex-shrink:0;font-family:var(--ui);font-size:13.5px;font-weight:600;border-radius:2px;padding:11px 18px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--mid);transition:color .15s,border-color .15s;min-width:74px}
+.nbtn:active{border-color:var(--acc);color:var(--acc)}
+.nbtn.next{background:var(--acc);border-color:var(--acc);color:#fff;flex:1}
+.nbtn.next:active{background:var(--acc-deep)}
+.nbtn[disabled]{opacity:.3;pointer-events:none}
+.dots{flex:1;display:flex;justify-content:center;gap:5px}
+.dot{width:14px;height:3px;border-radius:0;background:var(--line);cursor:pointer;transition:background .25s,width .25s;border:none;padding:0}
+.dot.on{background:var(--acc);width:22px}
+.dot.done{background:#ddadc7}
 
-    --coral: #DC6B4D;
+/* generic */
+.panel{background:#fff;border:1px solid var(--line);border-radius:2px;padding:16px;margin-bottom:16px}
+.panel-t{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--line-soft)}
+.viz-tag{font-size:10.5px;color:var(--faint);margin-top:8px;text-align:right}
+.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;flex-shrink:0}
+.i.lg{width:26px;height:26px}
+.i.sm{width:13px;height:13px;vertical-align:-2px}
+.crit-ic{color:var(--acc)}
+.cat-ti .ic{color:var(--acc);display:flex;align-items:center}
+.medicare .ic svg{width:22px;height:22px;stroke:var(--green)}
+.ct-row .ic{display:flex;align-items:center;color:var(--acc)}
+.ct-row .ic svg{width:16px;height:16px}
+.curve-note{font-size:12.5px;color:var(--mid);margin-top:9px;border-top:1px solid var(--line-soft);padding-top:9px}
 
-    --shadow-sm: 0 1px 2px rgba(26,38,36,.04), 0 1px 3px rgba(26,38,36,.06);
-    --shadow-md: 0 4px 14px rgba(26,38,36,.06), 0 2px 6px rgba(26,38,36,.04);
-    --shadow-lg: 0 18px 40px rgba(26,38,36,.08), 0 6px 14px rgba(26,38,36,.05);
-  }
+/* criteria rows */
+.crit{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.crit:last-child{border-bottom:none}
+.crit-ic{flex-shrink:0;width:32px;height:32px;border-radius:2px;display:flex;align-items:center;justify-content:center;background:var(--acc-wash)}
+.crit-b{flex:1}
+.crit-b b{font-size:13.5px;display:block;line-height:1.3;font-weight:600}
+.crit-b p{font-size:12px;color:var(--faint);line-height:1.4;margin-top:1px}
+.when{flex-shrink:0;font-size:11px;font-weight:700;text-align:right;line-height:1.3;max-width:88px}
+.when.w12{color:var(--faint)}
+.when.w6{color:var(--amber)}
+.when.w0{color:var(--acc)}
 
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Montserrat', -apple-system, system-ui, sans-serif;
-    font-size: 15px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+/* two doors */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.door{border-radius:2px;padding:16px 14px;text-align:left}
+.door .big{display:block;margin-bottom:10px}
+.door b{font-size:13.5px;display:block;line-height:1.35;margin-bottom:4px;font-weight:700}
+.door p{font-size:12px;line-height:1.5}
+.door .tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:700}
+.door.d1{background:var(--tint);border:1px solid var(--line);color:var(--mid)}
+.door.d1 b{color:var(--ink)}
+.door.d1 .tag{color:var(--faint)}
+.door.d2{background:var(--acc);color:#f0d7e3;border:1px solid var(--acc)}
+.door.d2 b{color:#fff}
+.door.d2 .tag{color:#fff;border-bottom:1px solid rgba(255,255,255,.45);padding-bottom:1px}
 
-  /* Subtle paper texture via layered gradients */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background:
-      radial-gradient(1200px 600px at 90% -10%, rgba(220, 107, 77, 0.07), transparent 60%),
-      radial-gradient(900px 500px at -10% 30%, rgba(14, 110, 88, 0.06), transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
+/* stat tiles */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;margin:4px 0 18px;border-top:3px solid var(--ink)}
+@media(max-width:380px){.stats{grid-template-columns:1fr}}
+.stat{padding:12px 12px 4px 0;border-right:1px solid var(--line);margin-right:12px}
+.stat:last-child{border-right:none;margin-right:0}
+@media(max-width:380px){.stat{border-right:none;border-bottom:1px solid var(--line);margin-right:0;padding-bottom:10px}}
+.stat-n{font-size:30px;font-weight:800;color:var(--red);line-height:1.05;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.stat-l{font-size:10.5px;font-weight:600;color:var(--mid);line-height:1.35;margin-top:4px}
+.stat-s{font-size:9.5px;color:var(--faint);margin-top:3px}
 
-  .container { max-width: 1180px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+/* medicare */
+.medicare{display:flex;gap:12px;align-items:flex-start;background:transparent;border:none;border-left:3px solid var(--green);border-radius:0;padding:4px 0 4px 14px;margin-bottom:18px}
+.medicare .ic{flex-shrink:0;margin-top:2px}
+.medicare b{font-size:13.5px;color:var(--ink);display:block;margin-bottom:2px;font-weight:700}
+.medicare p{font-size:13px;color:var(--mid);line-height:1.55}
+.medicare p strong{color:var(--green);font-weight:600}
 
-  /* ------- HEADER ------- */
-  header.site {
-    padding: 30px 0 18px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .brand {
-    display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
-    flex-wrap: wrap;
-  }
-  .wordmark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px; font-weight: 500; letter-spacing: 0.02em;
-  }
-  .wordmark em { font-style: italic; color: var(--coral); font-weight: 500; }
-  .crumbs {
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-2);
-  }
+/* risk list */
+.rf-list{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}
+.rf-list span{position:relative;padding:7px 0 7px 14px;font-size:12.5px;font-weight:600;line-height:1.35;border-bottom:1px solid var(--line-soft)}
+.rf-list span:nth-last-child(-n+2){border-bottom:none}
+.rf-list span::before{content:'';position:absolute;left:0;top:13px;width:6px;height:6px;background:var(--red)}
 
-  /* ------- HERO ------- */
-  .hero { padding: 56px 0 36px; }
-  .eyebrow {
-    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--coral); font-weight: 600;
-    display: inline-flex; align-items: center; gap: 10px;
-  }
-  .eyebrow::before {
-    content: ''; width: 28px; height: 1px; background: var(--coral);
-  }
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: clamp(38px, 5.4vw, 64px);
-    line-height: 1.04;
-    letter-spacing: -0.01em;
-    margin: 14px 0 18px;
-  }
-  h1 em { font-style: italic; color: var(--emerald); }
-  .lede {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(20px, 2.1vw, 24px);
-    line-height: 1.45;
-    color: var(--ink-2);
-    max-width: 720px;
-    font-weight: 400;
-  }
+/* plot cards */
+.plot{background:#fff;border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:2px;padding:15px 16px 11px;margin-bottom:16px}
+.fig{display:block;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.6px;margin-bottom:3px}
+.purpose{border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:2px;background:#fff;padding:15px 16px;margin-bottom:6px}
+.pp-line{font-size:13.5px;color:var(--mid);line-height:1.6;margin-bottom:13px}
+.pp-line em{font-style:normal;color:var(--ink);font-weight:600}
+.pp-flow{display:flex;align-items:stretch}
+.pp-n{flex:1;border:1px solid var(--line);background:var(--tint);padding:10px 7px;text-align:center;border-radius:2px}
+.pp-n b{display:block;font-size:11.5px;line-height:1.3;font-weight:700}
+.pp-n span{display:block;font-size:9.5px;color:var(--faint);margin-top:3px;line-height:1.35}
+.pp-n.hot{background:var(--acc);border-color:var(--acc)}
+.pp-n.hot b{color:#fff}
+.pp-n.hot span{color:#cfdef5}
+.pp-ar{flex-shrink:0;width:22px;height:16px;align-self:center;stroke:var(--faint);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin:0 2px}
+.bridge{font-size:13.5px;font-weight:600;color:var(--ink);margin:18px 0 2px;padding-left:12px;border-left:3px solid var(--red)}
+.plot-t{font-size:14px;font-weight:700;margin-bottom:2px}
+.plot-s{font-size:12px;color:var(--faint);margin-bottom:10px}
+.plot svg{width:100%;height:auto;display:block}
+.plot-cap{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;font-weight:600;color:var(--mid);margin:8px 0}
+.plot-cap i{display:inline-block;width:16px;height:3px;margin-right:5px;vertical-align:middle}
+.plot-slider{display:flex;align-items:center;gap:10px}
+.plot-slider .lbl{font-size:12px;font-weight:600;white-space:nowrap}
+.plot-slider .val{font-variant-numeric:tabular-nums;font-size:13.5px;font-weight:700;color:var(--acc-deep);background:var(--acc-wash);border-radius:2px;padding:1px 9px}
 
-  /* ------- DEFINITION STRIP ------- */
-  .definition {
-    margin: 36px 0 50px;
-    background: var(--emerald-deep);
-    color: var(--paper);
-    border-radius: 14px;
-    padding: 32px 34px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    overflow: hidden;
-  }
-  .definition::after {
-    content: '';
-    position: absolute; top: -40px; right: -40px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(220,107,77,.25), transparent 70%);
-    border-radius: 50%;
-  }
-  .def-block h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500; font-style: italic;
-    font-size: 14px; letter-spacing: 0.08em;
-    color: var(--coral);
-    margin: 0 0 10px;
-    text-transform: uppercase;
-  }
-  .def-block p {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px; line-height: 1.45;
-    margin: 0;
-    color: var(--paper);
-  }
-  .def-block strong { color: #FFE7C6; font-weight: 500; }
+/* controls */
+.ghead{font-size:12px;font-weight:700;color:var(--ink);margin:4px 0 8px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.ghead:first-child{border-top:none;padding-top:0}
+.ghead small{font-weight:400;color:var(--faint);margin-left:6px;font-size:11px}
+.ctl{margin-bottom:11px}
+.ctl-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+.ctl-l{font-size:12.5px;font-weight:600;line-height:1.25}
+.ctl-l small{font-weight:400;color:var(--faint);font-size:10.5px;display:block}
+.ctl-v{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--acc-deep);background:var(--acc-wash);border-radius:2px;padding:1px 8px;min-width:44px;text-align:center}
+.ctl-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:transparent;cursor:pointer;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:0;background:var(--trk,linear-gradient(90deg,var(--acc) 0%,var(--acc) 50%,var(--line) 50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:#fff;border:2px solid var(--acc);box-shadow:0 1px 2px rgba(20,24,29,.25);margin-top:-7.5px;transition:transform .12s}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15)}
+input[type=range]::-moz-range-track{height:4px;background:var(--line)}
+input[type=range]::-moz-range-progress{height:4px;background:var(--acc)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:#fff;border:2px solid var(--acc)}
+.seg{display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.seg button{flex:1 1 auto;min-width:0;font-size:12px;font-weight:600;padding:8px 6px;border:none;border-left:1px solid var(--line);background:#fff;color:var(--faint);cursor:pointer;transition:background .15s,color .15s;line-height:1.25}
+.seg button:first-child{border-left:none}
+.seg button.on{background:var(--acc);color:#fff}
+.seg.wrap2 button{flex-basis:50%}
+.seg.wrap2 button:nth-child(3){border-left:none}
+.seg.wrap2 button:nth-child(n+3){border-top:1px solid var(--line)}
+.reset{font-size:11.5px;font-weight:600;color:var(--mid);background:#fff;border:1px solid var(--line);border-radius:2px;padding:5px 11px;cursor:pointer}
+.reset:active{border-color:var(--acc);color:var(--acc)}
 
-  /* ------- FILTER BAR ------- */
-  .filterbar {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    margin: 0 0 30px;
-    align-items: center;
-  }
-  .filterbar .label {
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-2); margin-right: 6px;
-  }
-  .chip {
-    background: transparent;
-    border: 1px solid var(--rule);
-    padding: 8px 16px;
-    border-radius: 999px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12.5px;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    color: var(--ink-2);
-    transition: all 180ms ease;
-  }
-  .chip:hover { background: rgba(255,255,255,.5); color: var(--ink); }
-  .chip[aria-pressed="true"] {
-    background: var(--ink); color: var(--paper); border-color: var(--ink);
-  }
-  .chip .dot {
-    display: inline-block; width: 7px; height: 7px;
-    border-radius: 50%; margin-right: 8px; vertical-align: 1px;
-  }
-  .chip[data-tier="1"] .dot { background: var(--emerald); }
-  .chip[data-tier="2"] .dot { background: var(--amber); }
-  .chip[data-tier="3"] .dot { background: var(--rose); }
+/* patient strip */
+.case{background:var(--acc-deep);color:#e8c9d8;border-radius:2px;padding:14px 16px;margin:0 0 16px;position:relative;overflow:hidden}
+.case-k{font-size:11px;font-weight:700;color:#cf93b0;margin-bottom:5px}
+.case-t{font-size:14.5px;line-height:1.55}
+.case-t strong{color:#fff;font-weight:600}
 
-  .toolbar-right { margin-left: auto; display: flex; gap: 10px; }
-  .btn-mini {
-    background: var(--paper-2);
-    border: 1px solid var(--rule);
-    padding: 8px 14px; border-radius: 999px;
-    font: 600 12px 'Montserrat', sans-serif; letter-spacing: 0.05em;
-    color: var(--ink); cursor: pointer;
-    transition: all 180ms ease;
-  }
-  .btn-mini:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+/* gauges */
+.gauge{background:#fff;border:1px solid var(--line);border-radius:2px;padding:13px 15px 12px;margin-bottom:10px}
+.g-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:22px}
+.g-ti{font-size:14px;font-weight:700;line-height:1.25}
+.g-tag{flex-shrink:0;font-size:10.5px;font-weight:600;white-space:nowrap}
+.g-tag.q{color:var(--green)}
+.g-tag.j{color:var(--faint)}
+.g-track{position:relative;height:10px;border-radius:0;margin:0 2px 10px}
+.g-bg{position:absolute;inset:0}
+.g-track.concern .g-bg{background:linear-gradient(90deg,#74a98c 0%,#d9c06a 34%,#cf9055 64%,#c2574a 88%,#b4232a 100%)}
+.g-track.priority .g-bg{background:linear-gradient(90deg,#d9dfe9 0%,#ddadc7 30%,#b96f97 62%,#7a1e4c 84%,#8c2457 100%)}
+.g-dv{position:absolute;top:-2px;bottom:-2px;width:1px;background:rgba(255,255,255,.85);z-index:1}
+.g-band{position:absolute;top:-3px;bottom:-3px;background:transparent;border:1px solid rgba(20,24,29,.3);z-index:2;transition:left .55s cubic-bezier(.4,0,.2,1),width .55s cubic-bezier(.4,0,.2,1)}
+.g-mk{position:absolute;top:50%;width:3px;height:18px;background:var(--ink);border:none;transform:translate(-50%,-50%);box-shadow:0 0 0 2px #fff;z-index:4;transition:left .55s cubic-bezier(.4,0,.2,1)}
+.g-zn{position:absolute;top:-22px;transform:translateX(-50%);font-size:11px;font-weight:700;padding:1px 0;white-space:nowrap;z-index:5;transition:left .55s cubic-bezier(.4,0,.2,1)}
+.g-note{font-size:13px;color:var(--mid);line-height:1.55;margin-top:4px}
+.g-note strong{color:var(--ink);font-weight:600}
+.qn{border-bottom:2px solid var(--amber);font-weight:600;color:var(--ink)}
+.g-cites{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap}
+.cb{display:inline-flex;align-items:center;font-size:10.5px;font-weight:600;cursor:pointer;position:relative;color:var(--acc)!important;background:none!important;border:none!important;border-bottom:1px dotted var(--acc)!important;border-radius:0!important;padding:0!important}
+.ctt{display:none;position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);z-index:999;width:min(300px,78vw);padding:11px 13px;border-radius:2px;background:var(--ink);color:#f0f2f4;font-size:12px;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.3);text-align:left;font-weight:400}
+.cb.open .ctt{display:block}
+.ctt-t{font-weight:700;margin-bottom:3px;color:#ddadc7;font-size:10px}
 
-  /* ------- TIER SECTIONS ------- */
-  .tier { margin-bottom: 56px; }
-  .tier-head {
-    display: flex; align-items: baseline; gap: 16px;
-    margin-bottom: 22px;
-    padding-bottom: 14px;
-    border-bottom: 1px dashed var(--rule);
-  }
-  .tier-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500; font-style: italic;
-    font-size: 38px;
-    line-height: 1;
-  }
-  .tier-1 .tier-num { color: var(--emerald); }
-  .tier-2 .tier-num { color: var(--amber); }
-  .tier-3 .tier-num { color: var(--rose); }
-  .tier-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 1.1;
-    margin: 0;
-  }
-  .tier-blurb {
-    font-size: 13.5px;
-    color: var(--ink-2);
-    margin-left: auto;
-    max-width: 360px;
-    line-height: 1.5;
-    font-style: italic;
-  }
+/* verdict */
+.refb{border-radius:0;padding:13px 16px;margin:4px 0 16px;border:none;border-left:4px solid;transition:background .35s;background:var(--tint)}
+.refb.l1{border-color:var(--green)}
+.refb.l2{border-color:var(--amber)}
+.refb.l3{border-color:var(--acc)}
+.refb-k{font-size:11px;font-weight:600;margin-bottom:2px;color:var(--faint)}
+.refb-l{font-size:17.5px;font-weight:800;line-height:1.15;margin-bottom:3px;letter-spacing:-.3px}
+.refb.l1 .refb-l{color:var(--green)}.refb.l2 .refb-l{color:var(--amber)}.refb.l3 .refb-l{color:var(--acc-deep)}
+.refb-timing{display:inline-block;font-size:11.5px;font-weight:600;margin-bottom:6px;color:var(--mid)}
+.refb-tx{font-size:13px;color:var(--mid);line-height:1.55}
+.refb-tx strong{color:var(--ink);font-weight:600}
 
-  /* ------- TEST CARD GRID ------- */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-    gap: 16px;
-  }
-  .card {
-    background: #fff;
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 22px 22px 18px;
-    cursor: pointer;
-    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  .card.expanded { box-shadow: var(--shadow-lg); }
-  .card::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px;
-  }
-  .tier-1 .card::before { background: var(--emerald); }
-  .tier-2 .card::before { background: var(--amber); }
-  .tier-3 .card::before { background: var(--rose); opacity: 0.7; }
+/* why box */
+.why{background:transparent;border:none;border-left:3px solid var(--amber);border-radius:0;padding:4px 0 6px 14px;margin-bottom:16px;display:none;animation:stepin .28s ease}
+.why.show{display:block}
+.why-k{font-size:11.5px;font-weight:700;color:var(--amber);margin-bottom:5px}
+.why-change{font-size:13px;font-weight:700;margin-bottom:3px}
+.why-mech{font-size:13px;color:var(--mid);line-height:1.55;margin-bottom:7px}
+.why-moves{display:flex;flex-direction:column;gap:5px}
+.why-mv{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:500;color:var(--mid);flex-wrap:wrap}
+.zp{font-size:10.5px;font-weight:700;white-space:nowrap}
+.why-mv .arr{color:var(--faint)}
+.why-none{font-size:12px;color:var(--faint)}
 
-  .card-top {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 14px;
-  }
-  .test-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.15;
-    margin: 0;
-    letter-spacing: -0.005em;
-  }
-  .test-sub {
-    font-size: 11.5px;
-    color: var(--ink-2);
-    margin-top: 4px;
-    letter-spacing: 0.01em;
-  }
+/* pearls */
+.pearl{border-radius:0;padding:4px 0 6px 14px;margin-bottom:14px;border:none;border-left:3px solid;animation:stepin .3s ease}
+.pearl.teach{border-color:var(--acc)}
+.pearl.warn{border-color:var(--red)}
+.pearl-k{font-size:11.5px;font-weight:700;margin-bottom:3px}
+.pearl.teach .pearl-k{color:var(--acc)}.pearl.warn .pearl-k{color:var(--red)}
+.pearl-t{font-size:14px;font-weight:700;margin-bottom:3px;line-height:1.3}
+.pearl-b{font-size:13px;color:var(--mid);line-height:1.55}
+.pearl-b strong{color:var(--ink);font-weight:600}
 
-  .grade {
-    flex-shrink: 0;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .grade-strong { background: var(--emerald-tint); color: var(--emerald-deep); }
-  .grade-mod { background: #FFF4E0; color: #7A4A14; }
-  .grade-cond { background: var(--amber-tint); color: var(--amber-deep); }
-  .grade-low { background: #ECEAE2; color: #5A5240; }
-  .grade-against { background: var(--rose-tint); color: var(--rose-deep); }
+/* emphasis note (left red rule) */
+.meno{background:transparent;border:none;border-left:3px solid var(--red);border-radius:0;padding:4px 0 6px 14px;margin-bottom:16px}
+.meno-k{font-size:11.5px;font-weight:700;color:var(--red);margin-bottom:3px}
+.meno-t{font-size:16px;font-weight:800;color:var(--ink);line-height:1.25;margin-bottom:5px;letter-spacing:-.2px}
+.meno p{font-size:13px;color:var(--mid);line-height:1.6}
+.meno p strong{color:var(--ink);font-weight:600}
 
-  .card-summary {
-    margin-top: 14px;
-    font-size: 13.5px;
-    line-height: 1.55;
-    color: var(--ink-2);
-  }
+/* timing lanes */
+.spect{background:#fff;border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:2px;padding:15px 16px 9px;margin-bottom:16px}
+.spect-t{font-size:14px;font-weight:700;margin-bottom:11px}
+.lanes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.lane3{background:#fff;padding:11px 9px 12px;text-align:left;border-top:3px solid}
+.lane3 b{display:block;font-size:12px;margin-bottom:4px;font-weight:700}
+.lane3 span{font-size:11px;line-height:1.5;display:block;color:var(--mid)}
+.l-a{border-top-color:var(--red)}.l-a b{color:var(--red)}
+.l-b{border-top-color:var(--amber)}.l-b b{color:var(--amber)}
+.l-c{border-top-color:var(--acc)}.l-c b{color:var(--acc)}
+.lane-ax{display:flex;justify-content:space-between;font-size:10px;font-weight:600;color:var(--faint);margin-top:8px}
 
-  /* Expanded detail */
-  .detail {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 350ms ease;
-  }
-  .card.expanded .detail {
-    max-height: 1200px;
-  }
-  .detail-inner {
-    margin-top: 18px;
-    padding-top: 16px;
-    padding-bottom: 18px;
-    border-top: 1px solid var(--rule);
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--ink);
-  }
-  .detail-inner dl {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 8px 14px;
-    margin: 0;
-  }
-  .detail-inner dt {
-    font-weight: 600;
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-2);
-    padding-top: 2px;
-  }
-  .detail-inner dd {
-    margin: 0;
-    color: var(--ink);
-  }
-  .detail-inner dd em {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--emerald-deep);
-    font-size: 14.5px;
-  }
+/* indication list */
+details.cat{background:transparent;border:none;border-bottom:1px solid var(--line);border-radius:0;margin-bottom:0;overflow:visible}
+details.cat:first-of-type{border-top:1px solid var(--line)}
+details.cat summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 2px}
+details.cat summary::-webkit-details-marker{display:none}
+.cat-ti{font-size:14px;font-weight:600;line-height:1.25;display:flex;align-items:center;gap:10px;flex:1}
+.cat-ti .chev{margin-left:auto;font-size:10px;color:var(--faint);transition:transform .25s}
+details.cat[open] .chev{transform:rotate(180deg)}
+.urg{flex-shrink:0;font-size:10.5px;font-weight:700;white-space:nowrap}
+.urg.u1{color:var(--red)}
+.urg.u2{color:var(--amber)}
+.urg.u3{color:var(--acc)}
+.cat-body{padding:0 2px 14px 30px}
+.cat-b{font-size:13px;color:var(--mid);line-height:1.55}
+.cat-b strong{color:var(--ink);font-weight:600}
+.cat-ex{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:7px}
+.cat-ex span{font-size:11px;font-weight:600;color:var(--acc-deep)}
+.cat-ex span::before{content:'— ';color:var(--faint)}
 
-  .card .toggle {
-    position: absolute;
-    bottom: 14px;
-    right: 16px;
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--paper-2);
-    color: var(--ink-2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    transition: transform 280ms ease, background 200ms ease;
-    pointer-events: none;
-  }
-  .card.expanded .toggle {
-    transform: rotate(45deg);
-    background: var(--ink); color: var(--paper);
-  }
+/* take-home */
+.ort{background:#fff;border:1px solid var(--line);border-radius:2px;padding:18px;margin:0 0 16px}
+.ort-k{font-size:12px;font-weight:600;color:var(--acc);margin-bottom:3px}
+.ort h3{font-size:19px;font-weight:800;line-height:1.2;margin-bottom:14px;letter-spacing:-.3px}
+.ort-cards{display:flex;flex-direction:column;gap:14px;margin-bottom:15px}
+.ort-c{display:flex;gap:13px;align-items:flex-start}
+.ort-n{flex-shrink:0;width:34px;height:34px;border-radius:2px;color:#fff;background:var(--acc);border:none;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ort-c b{font-size:14px;display:block;margin-bottom:1px;font-weight:700}
+.ort-c p{font-size:12.5px;color:var(--mid);line-height:1.5}
+.ort-rule{background:var(--acc-wash);border:none;color:var(--acc-deep);border-radius:0;border-left:4px solid var(--acc);padding:11px 14px;font-size:13px;font-weight:600;line-height:1.5}
+.ort-rule b{font-weight:800}
+.bfl{position:relative;margin:2px 0 16px;padding-left:24px}
+.bfl::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:1.5px;background:var(--line)}
+.bf-item{position:relative;padding-bottom:14px}
+.bf-item:last-child{padding-bottom:0}
+.bf-item::before{content:'';position:absolute;left:-20px;top:5px;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--acc)}
+.bf-item b{font-size:14px;display:block;font-weight:600}
+.bf-item b em{font-style:normal;color:var(--acc);font-weight:700}
+.bf-item p{font-size:12.5px;color:var(--mid);line-height:1.5;margin-top:1px}
 
-  /* ------- ORDER SET STRIP ------- */
-  .orderset {
-    margin: 0 0 50px;
-    background: #fff;
-    border: 1px solid var(--rule);
-    border-left: 4px solid var(--emerald);
-    border-radius: 10px;
-    padding: 22px 26px;
-    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
-    box-shadow: var(--shadow-sm);
-  }
-  .orderset-text { flex: 1; min-width: 280px; }
-  .orderset h4 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    margin: 0 0 4px;
-    font-weight: 600;
-  }
-  .orderset p { margin: 0; color: var(--ink-2); font-size: 13px; }
-  .btn-copy {
-    background: var(--emerald);
-    color: var(--paper);
-    border: none;
-    padding: 12px 22px;
-    border-radius: 999px;
-    font: 600 12px 'Montserrat', sans-serif;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 200ms ease;
-  }
-  .btn-copy:hover { background: var(--emerald-deep); transform: translateY(-1px); }
-  .btn-copy.copied { background: var(--coral); }
+/* contact */
+.contact{background:#fff;border:1px solid var(--line);border-radius:2px;padding:24px 18px;text-align:center;margin-bottom:16px}
+.ct-qr{width:min(240px,64vw);border-radius:2px;background:#fff;display:block;margin:0 auto 16px}
+.ct-name{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.3px}
+.ct-cred{font-size:11.5px;font-weight:700;color:var(--acc);margin:3px 0 2px;letter-spacing:.3px}
+.ct-role{font-size:13px;color:var(--mid);margin-bottom:14px}
+.ct-rows{display:flex;flex-direction:column;gap:0;max-width:330px;margin:0 auto;border-top:1px solid var(--line-soft)}
+.ct-row{display:flex;align-items:center;gap:11px;background:transparent;border:none;border-bottom:1px solid var(--line-soft);border-radius:0;padding:11px 4px;color:var(--ink);text-decoration:none;font-size:13px;font-weight:500;text-align:left;word-break:break-word}
+.ct-row small{display:block;font-size:9.5px;color:var(--faint);font-weight:600}
+.ct-note{font-size:12.5px;color:var(--faint);margin-top:13px}
 
-  /* ------- FOOTER ------- */
-  footer {
-    margin-top: 30px;
-    padding: 40px 0 60px;
-    border-top: 1px solid var(--rule);
-    color: var(--ink-2);
-    font-size: 12.5px;
-    line-height: 1.7;
-  }
-  footer h5 {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 15px;
-    margin: 0 0 8px;
-    color: var(--ink);
-    font-weight: 500;
-  }
-  footer .cols {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr 1fr;
-    gap: 32px;
-  }
-  footer a { color: var(--emerald); text-decoration: none; border-bottom: 1px solid transparent; }
-  footer a:hover { border-bottom-color: var(--emerald); }
-  .disclaimer {
-    margin-top: 24px; padding-top: 18px;
-    border-top: 1px dashed var(--rule);
-    font-size: 11px; letter-spacing: 0.02em;
-    color: var(--ink-2);
-  }
-
-  /* ------- Hidden state for filtering ------- */
-  .tier.hidden { display: none; }
-
-  /* ------- Responsive ------- */
-  @media (max-width: 720px) {
-    .definition { grid-template-columns: 1fr; gap: 18px; padding: 24px 22px; }
-    .container { padding: 0 20px; }
-    .tier-head { flex-wrap: wrap; }
-    .tier-blurb { margin-left: 0; margin-top: 8px; max-width: 100%; }
-    footer .cols { grid-template-columns: 1fr; }
-    .detail-inner dl { grid-template-columns: 1fr; gap: 4px; }
-    .detail-inner dt { margin-top: 8px; }
-  }
-
-  /* Page-load reveal */
-  .reveal { opacity: 0; transform: translateY(8px); animation: reveal 700ms ease forwards; }
-  .reveal-1 { animation-delay: 80ms; }
-  .reveal-2 { animation-delay: 180ms; }
-  .reveal-3 { animation-delay: 280ms; }
-  .reveal-4 { animation-delay: 380ms; }
-  @keyframes reveal { to { opacity: 1; transform: none; } }
+/* collapsibles, disclaimer, footer */
+.unc{background:transparent;border:none;border-top:1px solid var(--line);border-radius:0;padding:11px 2px;margin-bottom:14px}
+.unc summary{font-size:12px;font-weight:600;color:var(--mid);cursor:pointer}
+.unc li{font-size:12.5px;color:var(--mid);line-height:1.5;margin:8px 0 0 2px;list-style:none;padding-left:16px;position:relative}
+.unc li::before{content:'≈';position:absolute;left:0;top:-1px;color:var(--amber);font-weight:700}
+.refs{background:transparent;border:none;border-top:1px solid var(--line);border-radius:0;padding:11px 2px;margin-bottom:12px}
+.refs summary{font-size:12px;font-weight:600;color:var(--mid);cursor:pointer}
+.ref{font-size:12px;color:var(--mid);line-height:1.5;padding:5px 0;border-bottom:1px solid var(--line-soft)}
+.ref:last-child{border-bottom:none}
+.ref b{color:var(--acc);margin-right:4px;font-size:11px;font-weight:700}
+.disc{padding:4px 0 4px 14px;border-radius:0;background:transparent;border:none;border-left:3px solid var(--red);margin-bottom:12px}
+.disc-t{font-size:11.5px;font-weight:700;color:var(--red);margin-bottom:3px}
+.disc-b{font-size:12px;color:var(--mid);line-height:1.55}
+.ft{text-align:center;font-size:11px;color:var(--faint);padding:10px 0 18px}
+/* yield bars */
+.yb-list{display:flex;flex-direction:column;gap:11px;margin:6px 0 4px}
+.yb-l{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:4px}
+.yb-l b{font-size:12.5px;font-weight:700}
+.yb-l span{font-size:10.5px;color:var(--faint);text-align:right;line-height:1.3}
+.yb-track{position:relative;height:16px;background:var(--line-soft)}
+.yb-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--acc);transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.yb.hot .yb-fill{background:var(--green)}
+.yb.grey .yb-fill{background:#b4bcc8}
+.yb-v{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+/* next-pregnancy ruler */
+.np-ruler{position:relative;margin:30px 2px 6px;padding-bottom:4px}
+.np-line{height:3px;background:linear-gradient(90deg,var(--acc),#cf93b0)}
+.np-pt{position:relative;margin-top:14px;padding-left:22px}
+.np-pt i{position:absolute;left:4px;top:4px;width:10px;height:10px;border-radius:50%;background:#fff;border:3px solid var(--acc)}
+.np-pt b{display:block;font-size:12.5px;font-weight:700}
+.np-pt span{display:block;font-size:11.5px;color:var(--mid);line-height:1.4}
+.np-pt{left:0!important}
+/* progressive reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.rv.in{opacity:1;transform:none}
+@keyframes kp{0%,100%{box-shadow:0 0 0 0 rgba(140,36,87,0)}30%{box-shadow:0 0 0 5px rgba(140,36,87,.28)}}
+.pulse{animation:kp 1.5s ease}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="16" y1="3" x2="16" y2="7"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><line x1="5" y1="21" x2="5" y2="3"/><path d="M5 4h12l-2.2 4L17 12H5"/></symbol>
+<symbol id="i-male" viewBox="0 0 24 24"><circle cx="10" cy="14" r="6"/><line x1="14.3" y1="9.7" x2="21" y2="3"/><polyline points="15.5 3 21 3 21 8.5"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20v-.8a6.5 6.5 0 0 1 13 0v.8"/><circle cx="17.3" cy="9.3" r="2.7"/><path d="M16.6 20v-.5a5.4 5.4 0 0 1 4.9-5.4"/></symbol>
+<symbol id="i-snow" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="3.4" y1="7" x2="20.6" y2="17"/><line x1="3.4" y1="17" x2="20.6" y2="7"/><polyline points="9.6 4.4 12 6.8 14.4 4.4"/><polyline points="9.6 19.6 12 17.2 14.4 19.6"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+<symbol id="i-dna" viewBox="0 0 24 24"><path d="M8 2c0 5 8 5 8 10s-8 5-8 10"/><path d="M16 2c0 5-8 5-8 10s8 5 8 10"/><line x1="9.2" y1="7" x2="14.8" y2="7"/><line x1="9.2" y1="17" x2="14.8" y2="17"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><polyline points="3 7 10 14 14 10 21 17"/><polyline points="15 17 21 17 21 11"/></symbol>
+<symbol id="i-scis" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><line x1="8.3" y1="7.6" x2="20" y2="19"/><line x1="8.3" y1="16.4" x2="20" y2="5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 21v-.7a7.5 7.5 0 0 1 15 0v.7"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><polyline points="1.5 4 1.5 10 7.5 10"/><path d="M3.8 15a9 9 0 1 0 1.8-9.4L1.5 10"/></symbol>
+</svg>
 
-<header class="site">
-  <div class="container brand">
-    <div class="wordmark">fert<em>i</em>le</div>
-    <div class="crumbs">GP Decision Support · Women's Health</div>
+<div class="top">
+  <div class="top-in">
+    <div class="wordmark">Recurrent <em>Pregnancy Loss</em></div>
+    <div class="topstep" id="topstep">1 / 7</div>
   </div>
-</header>
+</div>
 
-<main class="container">
+<div class="wrap">
 
-  <section class="hero reveal reveal-1">
-    <div class="eyebrow">Recurrent Pregnancy Loss</div>
-    <h1>The workup, <em>by what the evidence says</em>.</h1>
-    <p class="lede">
-      A test-by-test guide for primary care. Three tiers — do these,
-      consider these, skip these — drawn from ESHRE 2022 and RANZCOG C-Gyn 38.
-    </p>
-  </section>
-
-  <section class="definition reveal reveal-2">
-    <div class="def-block">
-      <h3>Definition</h3>
-      <p>
-        Two or more pregnancy losses before 24 weeks (ESHRE 2022).
-        Losses need not be <strong>consecutive</strong>.
-        A biochemical pregnancy (β-hCG-confirmed) counts.
-      </p>
-    </div>
-    <div class="def-block">
-      <h3>When to investigate</h3>
-      <p>
-        After <strong>two losses</strong> — the threshold for offering
-        antiphospholipid screening, the one most consistently actionable result.
-        Female age and complete pregnancy history are the strongest prognostic inputs.
-      </p>
-    </div>
-  </section>
-
-  <section class="filterbar reveal reveal-3">
-    <span class="label">Show</span>
-    <button class="chip" data-filter="all" aria-pressed="true">All tests</button>
-    <button class="chip" data-filter="1" data-tier="1"><span class="dot"></span>Do</button>
-    <button class="chip" data-filter="2" data-tier="2"><span class="dot"></span>Consider</button>
-    <button class="chip" data-filter="3" data-tier="3"><span class="dot"></span>Don't</button>
-    <div class="toolbar-right">
-      <button class="btn-mini" id="expandAll">Expand all</button>
-      <button class="btn-mini" id="collapseAll">Collapse</button>
-    </div>
-  </section>
-
-  <!-- ORDER SET -->
-  <div class="orderset reveal reveal-4">
-    <div class="orderset-text">
-      <h4>The minimum evidence-based panel</h4>
-      <p>Four tests cover the routine workup. Everything else is tailored to history.</p>
-    </div>
-    <button class="btn-copy" id="copyOrderSet">Copy pathology request</button>
+<!-- ═══════════ STEP 1 — THE FAMILIAR GROUND ═══════════ -->
+<section class="step" data-step="1">
+  <div class="step-hd">
+    <div class="step-k">Familiar ground <span class="min">~1.5 min</span></div>
+    <h2>We know you know how common early loss is</h2>
+    <div class="step-sub">One in four pregnancies ends in early miscarriage — and after a single loss, reassurance is the right medicine. The definitions take thirty seconds.</div>
   </div>
 
-  <!-- ================== TIER 1 ================== -->
-  <section class="tier tier-1" data-tier="1">
-    <div class="tier-head">
-      <div class="tier-num">01</div>
-      <h2 class="tier-title">Routinely recommended</h2>
-      <p class="tier-blurb">Offer to every woman with two or more losses. Each result is actionable.</p>
+  <div class="panel">
+    <div class="panel-t"><span>Recurrent pregnancy loss — the definitions</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-heart"/></svg></div><div class="crit-b"><b>Two or more losses before 24 weeks</b><p>The ESHRE 2022 definition — this is where workup begins</p></div><span class="when w0">RPL</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-flag"/></svg></div><div class="crit-b"><b>They need not be consecutive</b><p>A live birth in between does not reset the count</p></div><span class="when w12">Still counts</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-down"/></svg></div><div class="crit-b"><b>Biochemical losses count</b><p>A βhCG-confirmed pregnancy that never reached scan</p></div><span class="when w12">Still counts</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-clock"/></svg></div><div class="crit-b"><b>After one loss</b><p>No workup — reassure; the next pregnancy is usually fine</p></div><span class="when w6">Reassure</span></div>
+    <div class="crit"><div class="crit-ic"><svg class="i"><use href="#i-cal"/></svg></div><div class="crit-b"><b>After two</b><p>The evidence-based panel is on the table — no need to wait for three</p></div><span class="when w0">Investigate</span></div>
+  </div>
+
+  <div class="doors">
+    <div class="door d1"><span class="big"><svg class="i lg"><use href="#i-user"/></svg></span><b>One loss</b><p>Reassure, support, and expect a normal next pregnancy</p><span class="tag">✓ No tests needed</span></div>
+    <div class="door d2"><span class="big"><svg class="i lg"><use href="#i-zap"/></svg></span><b>Two or more — but do you know which tests actually pay off?</b><p>Every RPL test has a known yield — and half of them aren’t worth ordering</p><span class="tag">Today’s question</span></div>
+  </div>
+  <div class="viz-tag">Every step from here answers that second question.</div>
+</section>
+<!-- ═══════════ STEP 2 — WHY YIELD-FIRST ═══════════ -->
+<section class="step" data-step="2">
+  <div class="step-hd">
+    <div class="step-k">Why think in yields? <span class="min">~2 min</span></div>
+    <h2>Because testing smart beats testing everything</h2>
+    <div class="step-sub">Even after a complete workup, about half of couples get no answer. Knowing each test’s expected yield prevents both the missed treatable cause and the expensive futile panel.</div>
+  </div>
+
+  <div class="purpose">
+    <div class="pp-line">Every test in the RPL workup has a published chance of finding something — <em>its yield</em>. A handful are worth ordering for everyone; many popular ones find nothing actionable at all.</div>
+    <div class="pp-flow">
+      <div class="pp-n"><b>Two or more losses</b><span>the threshold is two, not three</span></div>
+      <svg class="pp-ar" viewBox="0 0 24 16"><path d="M2 8h17M14 3l5 5-5 5"/></svg>
+      <div class="pp-n"><b>Order by yield</b><span>four tests cover the routine panel</span></div>
+      <svg class="pp-ar" viewBox="0 0 24 16"><path d="M2 8h17M14 3l5 5-5 5"/></svg>
+      <div class="pp-n hot"><b>Refer with results in hand</b><span>any positive changes management</span></div>
     </div>
+  </div>
 
-    <div class="cards">
+  <div class="bridge">So here is what each test can actually be expected to find:</div>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Lupus anticoagulant</h3>
-            <div class="test-sub">Antiphospholipid screen · part 1</div>
-          </div>
-          <span class="grade grade-strong">Strong</span>
-        </div>
-        <p class="card-summary">First-line APS test. Treatable cause of recurrent loss with the largest live-birth gain when positive.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Yield</dt><dd>APS in ~10–15% of RPL — the single most actionable finding.</dd>
-            <dt>When</dt><dd>After two losses. <strong>Repeat positive ≥12 weeks later</strong> to confirm.</dd>
-            <dt>Treats</dt><dd>If confirmed APS + ≥3 losses → low-dose aspirin + prophylactic LMWH from positive βhCG.</dd>
-            <dt>Note</dt><dd>Not for women on warfarin or DOACs — false positives. Withhold heparin 12 h before sample.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 15 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">1 in 4</div><div class="stat-l">pregnancies ends in early miscarriage</div><div class="stat-s">population baseline</div></div>
+    <div class="stat"><div class="stat-n">2</div><div class="stat-l">losses — the threshold to start the workup</div><div class="stat-s">ESHRE 2022 · RANZCOG C-Gyn 38</div></div>
+    <div class="stat"><div class="stat-n">~50%</div><div class="stat-l">of fully investigated couples: no cause found</div><div class="stat-s">and their outlook is still good</div></div>
+  </div>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Anticardiolipin antibodies</h3>
-            <div class="test-sub">IgG + IgM · part 2 of APS panel</div>
-          </div>
-          <span class="grade grade-strong">Strong</span>
-        </div>
-        <p class="card-summary">Pairs with lupus anticoagulant. Together they identify APS — the only treatable serological cause.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Cut-off</dt><dd>Medium/high titre (&gt;40 GPL or MPL units, or &gt;99th centile) is clinically meaningful.</dd>
-            <dt>When</dt><dd>After two losses. <strong>Confirm ≥12 weeks apart</strong> per Sydney criteria.</dd>
-            <dt>Pearl</dt><dd>Order LA + aCL together — one swing covers ~95% of APS detectable in primary care.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 15 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">TSH + TPO antibodies</h3>
-            <div class="test-sub">Thyroid function + autoimmunity</div>
-          </div>
-          <span class="grade grade-strong">Strong</span>
-        </div>
-        <p class="card-summary">Subclinical hypothyroidism and TPO positivity are over-represented in RPL. Overt hypothyroidism is treatable.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Yield</dt><dd>Abnormal TSH or TPO+ in ~15–25% of RPL.</dd>
-            <dt>Action</dt><dd>If TSH abnormal → add free T4. Treat overt hypothyroidism. Euthyroid TPO+ does <em>not</em> benefit from levothyroxine (ESHRE 2022 update).</dd>
-            <dt>Caveat</dt><dd>In a future pregnancy with TPO+ or prior SCH, check TSH at 7–9 weeks gestation.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 24, 47, 51 · RANZCOG R15-16</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">3D transvaginal ultrasound</h3>
-            <div class="test-sub">Uterine cavity + adenomyosis</div>
-          </div>
-          <span class="grade grade-cond">Conditional</span>
-        </div>
-        <p class="card-summary">Recommended for all. Distinguishes septate from bicorporeal uterus; 2D US screens for adenomyosis.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Yield</dt><dd>Uterine anomaly in ~10–25% of RPL; adenomyosis newly added in ESHRE 2022.</dd>
-            <dt>Order</dt><dd>Request "TVS with 3D reconstruction" — not all clinics offer; sonohysterography (SHG) is acceptable alternative.</dd>
-            <dt>Note</dt><dd>MRI only if 3D US unavailable. HSG is inferior to SHG for cavity assessment.</dd>
-            <dt>Action</dt><dd>If Müllerian anomaly found → assess renal tract. Septum resection no longer routinely recommended after Rikken RCT 2021.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 33–38 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
+  <div class="plot" id="fig-yield">
+    <div class="plot-t"><span class="fig">Figure 1</span>Expected yield of each test</div>
+    <div class="plot-s">How often each result comes back abnormal in RPL.</div>
+    <div class="yb-list">
+      <div class="yb" data-w="55"><div class="yb-l"><b>POC chromosome array</b><span>on tissue from the next loss — explains that loss</span></div><div class="yb-track"><div class="yb-fill"></div><span class="yb-v">~55%</span></div></div>
+      <div class="yb" data-w="20"><div class="yb-l"><b>TSH + TPO antibodies</b><span>abnormal in 15–25% — overt disease is treatable</span></div><div class="yb-track"><div class="yb-fill"></div><span class="yb-v">~20%</span></div></div>
+      <div class="yb" data-w="17"><div class="yb-l"><b>3D pelvic ultrasound</b><span>anomaly or adenomyosis in 10–25%</span></div><div class="yb-track"><div class="yb-fill"></div><span class="yb-v">~17%</span></div></div>
+      <div class="yb hot" data-w="12"><div class="yb-l"><b>Antiphospholipid screen</b><span>10–15% — the one treatable serological cause</span></div><div class="yb-track"><div class="yb-fill"></div><span class="yb-v">~12%</span></div></div>
+      <div class="yb" data-w="3"><div class="yb-l"><b>Parental karyotype</b><span>2–4% — and it falls sharply with maternal age</span></div><div class="yb-track"><div class="yb-fill"></div><span class="yb-v">~3%</span></div></div>
+      <div class="yb grey" data-w="50"><div class="yb-l"><b>No cause found</b><span>unexplained after the full panel — plan and support</span></div><div class="yb-track"><div class="yb-fill"></div><span class="yb-v">~50%</span></div></div>
     </div>
-  </section>
+    <div class="viz-tag">Approximate yields from ESHRE 2022 evidence review — ranges vary by cohort</div>
+  </div>
 
-  <!-- ================== TIER 2 ================== -->
-  <section class="tier tier-2" data-tier="2">
-    <div class="tier-head">
-      <div class="tier-num">02</div>
-      <h2 class="tier-title">Consider case-by-case</h2>
-      <p class="tier-blurb">Tailor to family history, age, prior workup or partner factors. Don't reflex-order.</p>
+  <div class="medicare">
+    <span class="ic"><svg class="i lg"><use href="#i-card"/></svg></span>
+    <div><b>The four-test GP panel fits one request form</b>
+    <p>Lupus anticoagulant + anticardiolipin (± anti-β2GPI), TSH + TPO antibodies, and a 3D transvaginal ultrasound. Confirm any positive APS result <strong>≥12 weeks later</strong> before labelling.</p></div>
+  </div>
+
+  <div class="pearl teach">
+    <div class="pearl-k">The pearl that reframes the consult</div>
+    <div class="pearl-t">"No cause found" is not "nothing to offer"</div>
+    <div class="pearl-b">Unexplained RPL carries a <strong>good prognosis</strong> — most couples go on to a successful pregnancy with supportive care alone. The workup’s job is to catch the treatable minority and to <strong>earn that reassurance</strong> for everyone else.</div>
+  </div>
+</section>
+<!-- ═══════════ STEP 3 — INTERACTIVE ═══════════ -->
+<section class="step" data-step="3">
+  <div class="step-hd">
+    <div class="step-k">Why history changes the picture <span class="min">~2.5 min</span></div>
+    <h2>Because age and the loss pattern shift the odds — try it</h2>
+    <div class="step-sub">Move the sliders; the counselling updates live. Colours show <strong>direction</strong>, not an individual prediction.</div>
+  </div>
+
+  <div class="case" id="case-card">
+    <div class="case-k">Your patient</div>
+    <div class="case-t" id="case-text"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-t"><span>Change the patient</span><button class="reset" id="btn-reset"><svg class="i sm"><use href="#i-reset"/></svg> Reset</button></div>
+    <div id="controls"></div>
+  </div>
+
+  <div class="why" id="why">
+    <div class="why-k"><svg class="i sm"><use href="#i-zap"/></svg> Why did the advice change?</div>
+    <div class="why-change" id="why-change"></div>
+    <div class="why-mech" id="why-mech"></div>
+    <div class="why-moves" id="why-moves"></div>
+  </div>
+
+  <div id="refbanner"></div>
+  <div id="gauges"></div>
+  <div id="pearls"></div>
+
+  <details class="unc">
+    <summary>Honest uncertainties</summary>
+    <ul>
+      <li>Yields are cohort averages — no model predicts which couple gets an answer.</li>
+      <li>Outlook estimates come from referral-clinic cohorts and are rounded; individual counselling needs the full history.</li>
+      <li>Whether biochemical-only losses carry the same prognosis is still debated.</li>
+    </ul>
+  </details>
+</section>
+<!-- ═══════════ STEP 4 — WHAT TO DO ═══════════ -->
+<section class="step" data-step="4">
+  <div class="step-hd">
+    <div class="step-k">What to actually order <span class="min">~2.5 min</span></div>
+    <h2>Four tests to order, a few to tailor — and a list to refuse</h2>
+    <div class="step-sub">Each line carries its yield. Tap to open the ordering detail.</div>
+  </div>
+
+  <div class="spect">
+    <div class="spect-t"><span class="fig">Figure 2</span>The three tiers at a glance</div>
+    <div class="lanes">
+      <div class="lane3 l-c"><b>Order for everyone</b><span>APS screen<br>TSH + TPO<br>3D ultrasound<br>POC plan</span></div>
+      <div class="lane3 l-b"><b>Tailor to history</b><span>Parental karyotype<br>Sperm DNA frag.<br>Prolactin if symptoms</span></div>
+      <div class="lane3 l-a"><b>Don’t order</b><span>Thrombophilia · MTHFR<br>NK / HLA panels<br>AMH for RPL</span></div>
     </div>
+    <div class="lane-ax"><span>highest value</span><span>no actionable result</span></div>
+  </div>
 
-    <div class="cards">
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-zap"/></svg></span>Antiphospholipid screen<span class="chev">▼</span></div><span class="urg u3">yield 10–15%</span></summary>
+    <div class="cat-body"><div class="cat-b">Lupus anticoagulant + anticardiolipin IgG/IgM (reasonable to add anti-β2GPI on the same form). <strong>The one treatable serological cause.</strong> Confirm any positive ≥12 weeks later. If confirmed APS: low-dose aspirin + prophylactic LMWH from positive βhCG. Not valid on warfarin/DOACs; withhold heparin 12 h pre-sample.</div>
+    <div class="cat-ex"><span>ESHRE Rec 15–16</span><span>RANZCOG R8</span></div></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Anti-β2 glycoprotein I</h3>
-            <div class="test-sub">aβ2GPI · APS extended panel</div>
-          </div>
-          <span class="grade grade-low">Very low</span>
-        </div>
-        <p class="card-summary">Optional add-on to the APS workup. One trial suggests treatment may improve live birth when isolated aβ2GPI+ is present.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>When</dt><dd>Reasonable to bundle with LA + aCL on the same form. Isolated positivity rare.</dd>
-            <dt>Status</dt><dd>ESHRE GPP only; RANZCOG "consider case-by-case".</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 16</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-clock"/></svg></span>TSH + TPO antibodies<span class="chev">▼</span></div><span class="urg u3">yield 15–25%</span></summary>
+    <div class="cat-body"><div class="cat-b">If TSH abnormal → add free T4. <strong>Treat overt hypothyroidism.</strong> Euthyroid TPO-positivity does not benefit from levothyroxine (ESHRE 2022 update) — but recheck TSH at 7–9 weeks in the next pregnancy.</div>
+    <div class="cat-ex"><span>ESHRE Rec 24, 47, 51</span><span>RANZCOG R15–16</span></div></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Parental karyotype</h3>
-            <div class="test-sub">Peripheral blood, both partners</div>
-          </div>
-          <span class="grade grade-cond">Conditional</span>
-        </div>
-        <p class="card-summary">Balanced translocation carrier rate ~2–4% in RPL. Yield drops sharply with maternal age &gt;39 and &lt;3 losses.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Yield</dt><dd>&lt;2.2% if female age &gt;39, &lt;3 losses, negative family history (Franssen 2005). Higher in younger couples and where there is a family history of pregnancy loss or aneuploidy.</dd>
-            <dt>When</dt><dd>If POC testing not available, abnormal POC result, family history of recurrent loss, or consanguinity.</dd>
-            <dt>Action</dt><dd>Refer for genetic counselling if abnormal. Live birth rates remain good — IVF/PGT-SR is one option, not the default.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 13 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-pin"/></svg></span>3D transvaginal ultrasound<span class="chev">▼</span></div><span class="urg u3">yield 10–25%</span></summary>
+    <div class="cat-body"><div class="cat-b">Request <strong>"TVS with 3D reconstruction"</strong> — distinguishes septate from bicorporeal uterus and screens for adenomyosis. Sonohysterography is an acceptable alternative; MRI only if 3D unavailable. Anomaly found → assess renal tract. Note: septum resection is no longer routine after the Rikken RCT.</div>
+    <div class="cat-ex"><span>ESHRE Rec 33–38</span><span>RANZCOG R8</span></div></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">POC chromosome microarray</h3>
-            <div class="test-sub">Array-CGH on miscarriage tissue</div>
-          </div>
-          <span class="grade grade-cond">Conditional</span>
-        </div>
-        <p class="card-summary">Explanatory, not predictive. ~55–64% of POC samples show chromosomal anomaly — slightly lower in RPL than sporadic loss.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Yield</dt><dd>Aneuploidy in ~55% of POC in RPL vs ~64% in single losses (Lei 2022).</dd>
-            <dt>Why array</dt><dd>Array-CGH preferred over conventional karyotype: fewer failed cultures, less maternal contamination.</dd>
-            <dt>Caveat</dt><dd>Result rarely changes management. Counsel pre-test about emotional impact and limitations.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 11–12 · RANZCOG R9</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-dna"/></svg></span>POC array — plan it for the next loss<span class="chev">▼</span></div><span class="urg u3">yield ~55%</span></summary>
+    <div class="cat-body"><div class="cat-b">Array-CGH on miscarriage tissue explains the individual loss (aneuploidy in ~55%) and spares futile maternal testing. <strong>Explanatory, not predictive</strong> — counsel before testing. Arrange the pathway now so the sample isn’t lost in the moment.</div>
+    <div class="cat-ex"><span>ESHRE Rec 11–12</span><span>Lei 2022</span></div></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Sperm DNA fragmentation</h3>
-            <div class="test-sub">Male factor · diagnostic only</div>
-          </div>
-          <span class="grade grade-low">Low</span>
-        </div>
-        <p class="card-summary">Growing evidence of association with RPL. Most relevant in men with smoking, alcohol, obesity, or older paternal age.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>When</dt><dd>Unexplained RPL after standard workup. Particularly informative for unhealthy paternal lifestyle.</dd>
-            <dt>Action</dt><dd>Drives lifestyle counselling. No specific reproductive treatment supported by RCT data — PICSI does not have evidence in RPL.</dd>
-            <dt>Cost</dt><dd>Private only in Australia; expect ~$200–$300.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 39–40 (updated 2022) · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-users"/></svg></span>Parental karyotype — tailor, don’t reflex<span class="chev">▼</span></div><span class="urg u2">yield 2–4%</span></summary>
+    <div class="cat-body"><div class="cat-b">Balanced translocation in ~2–4% of RPL couples — but <strong>under 2% when she is over 39</strong> with fewer than three losses and no family history (Franssen 2005). Best reserved for younger couples, abnormal POC, family history, or consanguinity. Abnormal → genetic counselling; natural conception outcomes remain good.</div>
+    <div class="cat-ex"><span>ESHRE Rec 13</span><span>Franssen 2005</span></div></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Antinuclear antibodies (ANA)</h3>
-            <div class="test-sub">Diagnostic / prognostic only</div>
-          </div>
-          <span class="grade grade-low">Low</span>
-        </div>
-        <p class="card-summary">Modest association with RPL in meta-analysis; ANA+ may worsen prognosis but does not direct treatment.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Use</dt><dd>Consider for explanatory purposes only. Not actionable as a single test.</dd>
-            <dt>If positive</dt><dd>Trigger broader connective-tissue review only if clinical features present.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 21 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="cat">
+    <summary><div class="cat-ti"><span class="ic"><svg class="i"><use href="#i-male"/></svg></span>Sperm DNA fragmentation — selected men<span class="chev">▼</span></div><span class="urg u2">diagnostic only</span></summary>
+    <div class="cat-body"><div class="cat-b">Consider in unexplained RPL, particularly with smoking, alcohol, obesity or older paternal age. Drives <strong>lifestyle counselling</strong> — no treatment has RCT support. Private-only in Australia (~$200–300).</div>
+    <div class="cat-ex"><span>ESHRE Rec 39–40</span></div></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Prolactin</h3>
-            <div class="test-sub">Only with symptoms</div>
-          </div>
-          <span class="grade grade-cond">Conditional</span>
-        </div>
-        <p class="card-summary">Only if oligomenorrhoea, amenorrhoea or galactorrhoea. No routine role.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Order</dt><dd>Only when clinical symptoms of hyperprolactinaemia.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 27 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="cat">
+    <summary><div class="cat-ti" style="color:var(--red)"><span class="ic" style="color:var(--red)"><svg class="i"><use href="#i-scis"/></svg></span>The refuse-politely list<span class="chev">▼</span></div><span class="urg u1">yield ≈ 0 actionable</span></summary>
+    <div class="cat-body"><div class="cat-b"><strong>Inherited thrombophilia</strong> (FVL, prothrombin, protein C/S) — anticoagulation does not improve live birth; test only for independent VTE indications. <strong>MTHFR</strong> — common, benign, standard folate suffices. <strong>NK cells / HLA / cytokines</strong> — no therapeutic implication. <strong>AMH for RPL</strong> — different question entirely. <strong>Glucose/insulin, androgens, homocysteine, routine vitamin D testing, luteal-phase tests</strong> — no prognostic value; supplement vitamin D empirically and skip the blood test.</div>
+    <div class="cat-ex"><span>ESHRE Rec 14, 17–32, 44, 54–55</span><span>RANZCOG R8 — strong against</span></div></div>
+  </details>
+</section>
+<!-- ═══════════ STEP 5 — AFTER THE TESTS ═══════════ -->
+<section class="step" data-step="5">
+  <div class="step-hd">
+    <div class="step-k">After the results <span class="min">~1.5 min</span></div>
+    <h2>The next pregnancy needs a plan, whatever the tests show</h2>
+    <div class="step-sub">Supportive, structured early-pregnancy care is itself associated with better outcomes — this is the part every couple receives.</div>
+  </div>
 
+  <div class="plot" id="fig-plan">
+    <div class="plot-t"><span class="fig">Figure 3</span>The next-pregnancy plan, week by week</div>
+    <div class="plot-s">What happens once the test is positive.</div>
+    <div class="np-ruler">
+      <div class="np-line"></div>
+      <div class="np-pt" style="left:4%"><i></i><b>Positive βhCG</b><span>If confirmed APS: start aspirin ± LMWH now</span></div>
+      <div class="np-pt" style="left:36%"><i></i><b>6–7 weeks</b><span>Early viability scan — reassurance has value</span></div>
+      <div class="np-pt" style="left:62%"><i></i><b>7–9 weeks</b><span>Recheck TSH if TPO-positive or prior abnormality</span></div>
+      <div class="np-pt" style="left:88%"><i></i><b>10–12 weeks</b><span>Handover to routine antenatal care</span></div>
     </div>
-  </section>
+    <div class="viz-tag">Illustrative schedule — adapt to the individual result</div>
+  </div>
 
-  <!-- ================== TIER 3 ================== -->
-  <section class="tier tier-3" data-tier="3">
-    <div class="tier-head">
-      <div class="tier-num">03</div>
-      <h2 class="tier-title">Don't routinely order</h2>
-      <p class="tier-blurb">Common requests with low yield, no actionable result, or evidence against. Useful for pushback.</p>
+  <div class="meno">
+    <div class="meno-k">Worth prescribing in words</div>
+    <div class="meno-t">Supportive care is an intervention</div>
+    <p>Easy access to early scans, a named contact, and an agreed plan — couples with unexplained RPL managed this way do well, with most achieving a live birth without any drug at all. Add empirical <strong>vitamin D 1000–2000 IU daily</strong> (skip the blood test), and lifestyle work for <strong>both partners</strong>.</p>
+  </div>
+
+  <div class="pearl warn">
+    <div class="pearl-k">What not to promise</div>
+    <div class="pearl-t">No empirical aspirin, heparin or progesterone-for-all</div>
+    <div class="pearl-b">Aspirin + LMWH helps <strong>confirmed APS</strong> — not unexplained RPL. Progesterone’s benefit is limited to women with <strong>bleeding in early pregnancy and prior losses</strong> (PRISM/PROMISE). Blanket prescriptions medicalise without helping.</div>
+  </div>
+</section>
+<!-- ═══════════ STEP 6 — TAKE-HOME ═══════════ -->
+<section class="step" data-step="6">
+  <div class="step-hd">
+    <div class="step-k">How to carry it into clinic <span class="min">~1 min</span></div>
+    <h2>Remember three numbers</h2>
+  </div>
+
+  <div class="ort">
+    <div class="ort-k">The quick frame</div>
+    <h3>Think <span style="color:var(--acc)">2 · 4 · 1</span></h3>
+    <div class="ort-cards">
+      <div class="ort-c"><div class="ort-n">2</div><div><b>Two losses — start, don’t wait for three</b><p>Losses need not be consecutive; biochemical counts.</p></div></div>
+      <div class="ort-c"><div class="ort-n">4</div><div><b>Four tests with real yield</b><p>APS screen · TSH + TPO · 3D ultrasound · a POC plan for any next loss.</p></div></div>
+      <div class="ort-c"><div class="ort-n">1</div><div><b>One written plan for the next pregnancy</b><p>Early scan access, who to call, aspirin ± LMWH only if APS confirmed.</p></div></div>
     </div>
+    <div class="ort-rule"><b>Any positive result</b> → refer with the result in hand.&nbsp; <b>All negative</b> → the plan and the reassurance are the treatment.</div>
+  </div>
 
-    <div class="cards">
+  <div class="bfl">
+    <div class="bf-item"><b>Before <em>the third loss</em></b><p>The threshold is two — starting early is kindness, not over-medicine.</p></div>
+    <div class="bf-item"><b>Before <em>the big panel</em></b><p>Yield first: four tests, one form — refuse the zero-yield list politely.</p></div>
+    <div class="bf-item"><b>Before <em>the next positive test</em></b><p>Have the POC pathway and the early-pregnancy plan already written down.</p></div>
+  </div>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Inherited thrombophilia panel</h3>
-            <div class="test-sub">FVL, prothrombin G20210A, protein S</div>
-          </div>
-          <span class="grade grade-against">Don't · Mod</span>
-        </div>
-        <p class="card-summary">No evidence anticoagulation improves live birth in inherited thrombophilia with RPL.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Exception</dt><dd>Order only when personal/family VTE history independently indicates testing. Treat for VTE prevention, not for RPL.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 14, 44 · RANZCOG R8</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
+  <details class="refs">
+    <summary>Evidence anchors</summary>
+    <div id="refs"></div>
+  </details>
 
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Protein C / antithrombin / MTHFR</h3>
-            <div class="test-sub">Extended thrombophilia</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">MTHFR is not a thrombophilic mutation in the clinically relevant sense. Strong evidence against routine testing.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Pearl</dt><dd>MTHFR polymorphisms are common, do not predict pregnancy loss, and do not require treatment beyond standard folate.</dd>
-            <dt>Source</dt><dd><em>RANZCOG R8 (Strong against)</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">HLA / NK cell / cytokine testing</h3>
-            <div class="test-sub">Immunological</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">Marketed by some private clinics. No therapeutic implication and significant technical challenges.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Caveat</dt><dd>HLA-DRB1*15:01 / DRB1*07 / DQB1*05 can be considered in Scandinavian women with secondary RPL after the birth of a boy — niche.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 17–23</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Ovarian reserve (AMH / AFC)</h3>
-            <div class="test-sub">For RPL purpose</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">No association between low ovarian reserve and RPL risk. Different clinical question.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>When AMH is reasonable</dt><dd>For fertility timeline counselling — but that's a separate conversation from miscarriage risk.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 28</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Fasting insulin / glucose</h3>
-            <div class="test-sub">For RPL purpose</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">No prognostic value for RPL. Order independently if PCOS or diabetes is clinically suspected.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Note</dt><dd>BMI optimisation and lifestyle remain core advice regardless. Metformin has not been shown to reduce loss in RPL with glucose defects.</dd>
-            <dt>Source</dt><dd><em>ESHRE Rec 26, 54</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Androgens / LH</h3>
-            <div class="test-sub">Endocrine extras</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">No consistent association with RPL. No prognostic or therapeutic implication.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Source</dt><dd><em>ESHRE Rec 30–31</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Homocysteine</h3>
-            <div class="test-sub">Metabolic marker</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">Inconsistent evidence of association. Routine high-dose folate not recommended without hyperhomocysteinaemia.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Source</dt><dd><em>ESHRE Rec 32, 72</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Vitamin D (as a test)</h3>
-            <div class="test-sub">For RPL purpose</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">RANZCOG strong against routine testing. Empirical supplementation 1000–2000 IU daily is reasonable and safe.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Approach</dt><dd>Skip the bloods, give the supplement. ESHRE notes high prevalence of deficiency and suggests prophylactic vitamin D may be considered.</dd>
-            <dt>Source</dt><dd><em>RANZCOG R8 · ESHRE Rec 55</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
-      <article class="card">
-        <div class="card-top">
-          <div>
-            <h3 class="test-name">Luteal phase insufficiency</h3>
-            <div class="test-sub">Endometrial dating / mid-luteal progesterone</div>
-          </div>
-          <span class="grade grade-against">Don't · Strong</span>
-        </div>
-        <p class="card-summary">Outdated concept in this context. No reliable test, no treatment shown to help RPL.</p>
-        <div class="detail"><div class="detail-inner">
-          <dl>
-            <dt>Source</dt><dd><em>ESHRE Rec 29</em></dd>
-          </dl>
-        </div></div>
-        <span class="toggle">+</span>
-      </article>
-
+  <div class="disc">
+    <div class="disc-t">Educational tool</div>
+    <div class="disc-b">For facilitated group teaching. Yields are cohort averages, the gauges show direction only, and nothing here replaces individualised specialist review. Check current Medicare descriptors before ordering.</div>
+  </div>
+  <div class="ft">Dr Yuval Fouks · Melbourne IVF — professional education use</div>
+</section>
+<!-- ═══════════ STEP 7 ═══════════ -->
+<section class="step" data-step="7">
+  <div class="step-hd">
+    <div class="step-k">Stay in touch <span class="min">any time</span></div>
+    <h2>Questions, cases, second opinions — welcome</h2>
+    <div class="step-sub">Happy to talk through any patient. No formal referral needed for advice.</div>
+  </div>
+  <div class="contact">
+    <img class="ct-qr" src="contact-qr-animated.gif" alt="QR code — connect with Dr Yuval Fouks">
+    <div class="ct-name">Dr Yuval Fouks</div>
+    <div class="ct-cred">MD · MPH · FRANZCOG</div>
+    <div class="ct-role">Reproductive Endocrinologist &amp; Fertility Specialist</div>
+    <div class="ct-rows">
+      <a class="ct-row" href="tel:+61493835221"><span class="ic"><svg class="i"><use href="#i-phone"/></svg></span><span><small>Phone / WhatsApp</small>+61 493 835 221</span></a>
+      <a class="ct-row" href="mailto:yuval.fouks@melbourneivf.com.au"><span class="ic"><svg class="i"><use href="#i-mail"/></svg></span><span><small>Email</small>yuval.fouks@melbourneivf.com.au</span></a>
+      <div class="ct-row"><span class="ic"><svg class="i"><use href="#i-pin"/></svg></span><span><small>Melbourne IVF</small>36 Wellington St, Collingwood · also at Caulfield</span></div>
     </div>
-  </section>
+    <div class="ct-note">Scan the code to connect.</div>
+  </div>
+  <div class="ft">Professional education use</div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="cols">
-      <div>
-        <h5>What this is</h5>
-        Evidence-stratified RPL workup for GPs and women's-health consultations.
-        Three tiers, two source documents, one page.
-        Not a substitute for individualised review by a reproductive medicine specialist.
-      </div>
-      <div>
-        <h5>Primary sources</h5>
-        ESHRE Guideline · <em>Recurrent Pregnancy Loss</em> · update 2022 (final Jan 2023)<br/>
-        RANZCOG · <em>Miscarriage, Recurrent Miscarriage &amp; Ectopic Pregnancy</em> · C-Gyn 38
-      </div>
-      <div>
-        <h5>Refer</h5>
-        Two pregnancy losses with positive APS screen, uterine anomaly,
-        or any abnormal POC/parental karyotype warrants specialist referral.<br/>
-        <a href="https://virtushealth.tfaforms.net/246" target="_blank" rel="noopener">Virtus Health referral form ↗</a>
-      </div>
-    </div>
-    <div class="disclaimer">
-      Educational use for qualified healthcare professionals. Always exercise independent clinical
-      judgement and refer to current Australian guidelines and Medicare item descriptors before ordering.
-      © Fertool · v1 · Mar 2026
-    </div>
-  </footer>
+</div>
 
-</main>
+<!-- bottom nav -->
+<div class="nav">
+  <div class="nav-in">
+    <button class="nbtn" id="nav-prev">Back</button>
+    <div class="dots" id="dots"></div>
+    <button class="nbtn next" id="nav-next">Continue</button>
+  </div>
+</div>
 
 <script>
-  // -------- Expand / collapse cards --------
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.toggle('expanded');
-    });
-  });
+(function(){
+'use strict';
 
-  // -------- Filter --------
-  const chips = document.querySelectorAll('.chip');
-  const tiers = document.querySelectorAll('.tier');
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      chips.forEach(c => c.setAttribute('aria-pressed', 'false'));
-      chip.setAttribute('aria-pressed', 'true');
-      const f = chip.dataset.filter;
-      tiers.forEach(t => {
-        if (f === 'all' || t.dataset.tier === f) {
-          t.classList.remove('hidden');
-        } else {
-          t.classList.add('hidden');
-        }
+/* ───────── REFERENCES ───────── */
+var SRC={
+  ESHRE:  {s:"ESHRE RPL 2022",t:"Clinical Guideline",f:"ESHRE Guideline Group: Recurrent Pregnancy Loss, update 2022 (final Jan 2023). Definitions, recommended investigations and recommendations against low-yield testing.",c:"#8c2457",n:1},
+  RANZCOG:{s:"RANZCOG C-Gyn 38",t:"Clinical Guideline",f:"RANZCOG: Miscarriage, Recurrent Miscarriage & Ectopic Pregnancy (C-Gyn 38). Australian ordering and referral context.",c:"#5d1038",n:2},
+  FRANS:  {s:"Franssen 2005",t:"Cohort",f:"Franssen MT, et al. BMJ 2005. Parental karyotype yield falls below ~2% with maternal age >39, <3 losses and negative family history.",c:"#475569",n:3},
+  LEI:    {s:"Lei 2022",t:"Cohort",f:"Lei D, et al. 2022. Chromosomal anomaly in ~55% of POC from recurrent loss vs ~64% in sporadic loss.",c:"#475569",n:4},
+  BRIG:   {s:"Brigham 1999",t:"Cohort model",f:"Brigham SA, et al. Hum Reprod 1999. Predicted live birth after unexplained RPL falls with maternal age and number of prior losses — but remains the majority outcome for most.",c:"#0e7490",n:5},
+  CLIFF:  {s:"Clifford 1997",t:"Cohort",f:"Clifford K, et al. Hum Reprod 1997. ~75% live birth with supportive care alone in unexplained RPL.",c:"#0e7490",n:6},
+  NYBO:   {s:"Nybo Andersen 2000",t:"Registry (n≈634k)",f:"Nybo Andersen AM, et al. BMJ 2000. Miscarriage risk by maternal age: ~12% in the 20s, ~25% at 35–39, >50% at 40–44.",c:"#9a3412",n:7},
+  RIKKEN: {s:"Rikken 2021",t:"RCT",f:"Rikken JFW, et al. 2021. Septum resection did not improve live birth — no longer routine.",c:"#475569",n:8},
+  PRISM:  {s:"PRISM/PROMISE",t:"RCTs",f:"Coomarasamy A, et al. Progesterone benefit limited to women with early-pregnancy bleeding and prior losses; no benefit as blanket therapy.",c:"#475569",n:9},
+  SYDNEY: {s:"Sydney criteria",t:"Consensus",f:"Miyakis S, et al. 2006. APS requires a persistent positive ≥12 weeks apart plus clinical criteria.",c:"#b4232a",n:10}
+};
+function cite(ids){return ids.map(function(id){var s=SRC[id];return '<span class="cb" data-cb>'+s.s+'<span class="ctt"><span class="ctt-t">'+s.t+'</span>'+s.f+'</span></span>';}).join('');}
+
+/* ───────── ZONES & HELPERS ───────── */
+var ZC=[{m:25,l:'Low',c:'#2e7d4f',b:'#f1f3f7'},{m:50,l:'Moderate',c:'#b97d10',b:'#f1f3f7'},{m:75,l:'High',c:'#b4552a',b:'#f1f3f7'},{m:101,l:'Very high',c:'#b4232a',b:'#f1f3f7'}];
+var ZP=[{m:25,l:'Routine pathway',c:'#8794a9',b:'#f1f3f7'},{m:50,l:'GP workup now',c:'#b97d10',b:'#f1f3f7'},{m:75,l:'Workup + refer together',c:'#8c2457',b:'#f1f3f7'},{m:101,l:'Specialist-led from the start',c:'#5d1038',b:'#f1f3f7'}];
+var ZO=[{m:30,l:'Guarded',c:'#b4552a',b:'#f1f3f7'},{m:55,l:'Fair',c:'#b97d10',b:'#f1f3f7'},{m:75,l:'Good',c:'#2e7d4f',b:'#f1f3f7'},{m:101,l:'Very good',c:'#2e7d4f',b:'#f1f3f7'}];
+var ZY=[{m:30,l:'Less likely',c:'#8794a9',b:'#f1f3f7'},{m:55,l:'Possible',c:'#b97d10',b:'#f1f3f7'},{m:80,l:'Reasonable chance',c:'#8c2457',b:'#f1f3f7'},{m:101,l:'Likely',c:'#5d1038',b:'#f1f3f7'}];
+function zone(v,z){for(var i=0;i<z.length;i++)if(v<z[i].m)return z[i];return z[z.length-1];}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+
+/* ───────── PEARLS ───────── */
+var PEARLS={
+  aps:{cls:'teach',k:'The treatable minority',t:'APS is why the workup exists',
+    b:'Found in <span class="qn">10–15%</span> of RPL — and confirmed APS changes management: low-dose aspirin + prophylactic LMWH from positive βhCG, with a real live-birth gain. Confirm positives <span class="qn">≥12 weeks apart</span>.',
+    src:['ESHRE','SYDNEY']},
+  aneu:{cls:'teach',k:'Why age lowers the "answer rate"',t:'At older ages, the explanation is usually the embryo',
+    b:'Miscarriage risk rises steeply with age (<span class="qn">>50% at 40–44</span>) because aneuploidy rises — so maternal testing finds <strong>less</strong>, not more. A POC array on the next loss often answers what the blood panel cannot.',
+    src:['NYBO','LEI']},
+  outlook:{cls:'teach',k:'The reassurance with evidence',t:'Most couples still get there',
+    b:'With unexplained RPL, around <span class="qn">75%</span> achieve a live birth with supportive care alone. The outlook falls with age and with each additional loss — but for most profiles it remains the likeliest outcome.',
+    src:['CLIFF','BRIG']},
+  late:{cls:'warn',k:'Pattern that raises the stakes',t:'Second-trimester or fetal-heartbeat losses are different',
+    b:'Later losses enrich for APS and anatomic causes — the workup is more likely to find something, and specialist involvement belongs <strong>alongside</strong> the tests, not after them.',
+    src:['ESHRE','RANZCOG']},
+  karyo:{cls:'warn',k:'Tailor, don\u2019t reflex',t:'Karyotype pays off in the young, not the many',
+    b:'Couple karyotype yield is <span class="qn">~2–4%</span> overall — under 2% when she is over 39 with fewer than three losses and no family history. Spend it where it counts.',
+    src:['FRANS','ESHRE']},
+  poc:{cls:'teach',k:'Plan it now',t:'The next loss is the best diagnostic window',
+    b:'Tissue array explains <span class="qn">~55%</span> of losses and spares futile maternal testing. Arrange the pathway in advance — the moment itself is the wrong time to organise logistics.',
+    src:['LEI','ESHRE']}
+};
+
+/* ───────── CONTROLS ───────── */
+var CONTROLS=[
+  {type:'head',txt:'Patient'},
+  {k:'age',   type:'range',half:true,label:'Her age',min:25,max:45,step:1,def:32,fmt:function(v){return v;}},
+  {k:'losses',type:'range',half:true,label:'Pregnancy losses',min:2,max:6,step:1,def:2,fmt:function(v){return v;}},
+  {type:'head',txt:'The loss pattern',hint:'what the history tells you'},
+  {k:'timing',type:'seg',label:'Latest losses were',opts:[['early','Early (<10 wks)'],['late','≥10 wks / fetal heartbeat seen']],def:'early'},
+  {k:'live',  type:'seg',half:true,label:'Prior live birth',opts:[['yes','Yes'],['no','No']],def:'no'},
+  {k:'flags', type:'seg',half:true,label:'Red-flag history',opts:[['none','None'],['vte','VTE / autoimmune'],['fam','Family RPL']],def:'none'}
+];
+var MECH={
+  age:'Age shifts the explanation toward embryo aneuploidy — the workup finds less, the POC array explains more, and the outlook eases downward.',
+  losses:'Each additional loss nudges the outlook down and strengthens the case for having everything — tests and plan — in place now.',
+  timing:'Later losses enrich for the treatable and structural causes — APS and anatomy — so the workup works harder and the specialist joins earlier.',
+  live:'A previous live birth is one of the strongest favourable prognostic signs on the chart.',
+  flags:'Personal VTE or autoimmune disease raises the APS stakes; a family history of recurrent loss raises the karyotype yield.'
+};
+function vignette(s){
+  var tim=s.timing==='late'?'at or beyond 10 weeks':'before 10 weeks';
+  var fl={none:'no red-flag history',vte:'a personal VTE / autoimmune history',fam:'a family history of recurrent loss'}[s.flags];
+  return '<strong>'+s.age+'</strong>, <strong>'+s.losses+' pregnancy losses</strong>, the latest '+tim+'. '+(s.live==='yes'?'<strong>Has</strong> a previous live birth':'No previous live birth')+', '+fl+'. She asks: <strong>\u201cwhy does this keep happening?\u201d</strong>';
+}
+function compute(s){
+  /* G1: chance the workup finds a cause */
+  var f=40;
+  if(s.timing==='late')f+=18;
+  if(s.flags==='vte')f+=12; if(s.flags==='fam')f+=8;
+  if(s.age>=40)f-=14; else if(s.age>=37)f-=7;
+  if(s.losses>=4)f+=6;
+  f=clamp(f,15,85);
+  var fNote=(s.age>=40?'At '+s.age+', rising embryo aneuploidy means maternal tests find <strong>less</strong> — the POC array on a next loss is often the most informative test on the form.':
+    s.timing==='late'?'Later losses enrich for APS and anatomic causes — this is the profile where the panel earns its keep.':
+    'Across all comers, roughly half of thorough workups end unexplained — normal results here are common and carry a good outlook.');
+  /* G2: outlook for next pregnancy */
+  var o=82;
+  if(s.age>28)o-=2.2*(s.age-28);
+  o-=5*(s.losses-2);
+  if(s.live==='yes')o+=6;
+  o=clamp(Math.round(o),32,90);
+  var oNote=(o>=70?'For this profile the next pregnancy is <strong>more likely than not to succeed</strong> — reassurance is evidence-based, not optimism.':
+    o>=50?'Still better than even — but age and loss count are doing real work here, and the conversation should say so honestly.':
+    'A guarded conversation: success is still possible, but this is the profile where specialist review and a structured plan matter most.');
+  /* G3: workup / referral urgency */
+  var u=30+6*(s.losses-2);
+  if(s.timing==='late')u+=22;
+  if(s.flags!=='none')u+=12;
+  if(s.age>=38)u+=8;
+  u=clamp(u,20,95);
+  var lvl,timing,txt;
+  if(s.timing==='late'||s.losses>=4||s.flags==='vte'){
+    lvl=3;timing='Order the panel and refer in parallel';
+    txt='With '+(s.timing==='late'?'<strong>later losses</strong>':s.losses>=4?'<strong>four or more losses</strong>':'<strong>a VTE / autoimmune history</strong>')+', start the four-test panel today and send the referral in the same consult — results will land by the time she is seen.';
+  } else if(s.age>=38||s.losses>=3){
+    lvl=2;timing='GP workup now, review with results';
+    txt='Order the four tests now; refer promptly with any positive, or for counselling once results are back — at '+s.age+' the timeline argues against waiting.';
+  } else {
+    lvl=1;timing='GP-led workup';
+    txt='Order the four-test panel, arrange the POC pathway, and book a results consult. Any positive — or a couple who need the conversation — warrants referral.';
+  }
+  var pearls=[];
+  if(s.timing==='late')pearls.push('late');
+  if(s.age>=38)pearls.push('aneu');
+  if(s.flags==='vte')pearls.push('aps');
+  if(s.flags==='fam')pearls.push('karyo');
+  if(o>=65)pearls.push('outlook');
+  if(pearls.length===0)pearls.push('aps','outlook');
+  if(pearls.indexOf('poc')<0&&s.losses>=3&&pearls.length<2)pearls.push('poc');
+  pearls=pearls.slice(0,2);
+  return {
+    gauges:[
+      {id:'find',title:'Chance the workup finds a cause',type:'priority',tag:'j',val:f,lo:clamp(f-14,2,100),hi:clamp(f+12,0,98),zones:ZY,
+       note:fNote,src:['ESHRE','FRANS']},
+      {id:'outlook',title:'Outlook for the next pregnancy',type:'priority',tag:'q',val:o,lo:clamp(o-12,2,100),hi:clamp(o+10,0,97),zones:ZO,
+       note:oNote,src:['BRIG','CLIFF','NYBO']},
+      {id:'urgency',title:'Workup and referral priority',type:'concern',tag:'j',val:u,lo:clamp(u-13,2,100),hi:clamp(u+12,0,98),zones:ZP,
+       note:(lvl===3?'This history earns parallel tracks — tests and referral together.':lvl===2?'Prompt workup; the referral follows the results closely.':'A well-organised GP workup is the right first move.'),src:['ESHRE','RANZCOG']}
+    ],
+    ref:{lvl:lvl,timing:timing,txt:txt},
+    pearls:pearls
+  };
+}
+/* ───────── ENGINE ───────── */
+function el(id){return document.getElementById(id);}
+function defaults(){var o={};CONTROLS.forEach(function(c){if(c.k)o[c.k]=c.def;});return o;}
+var state=defaults(), settled=defaults(), lastOut=null, activeKey=null;
+
+function trackFill(input){
+  var v=(input.value-input.min)/(input.max-input.min)*100;
+  input.style.setProperty('--trk','linear-gradient(90deg,var(--acc) 0%,var(--acc) '+v+'%,var(--line) '+v+'%)');
+}
+function rangeHTML(c){
+  return '<div class="ctl"><div class="ctl-hd"><div class="ctl-l">'+c.label+(c.sub?'<small>'+c.sub+'</small>':'')+'</div>'+
+    '<div class="ctl-v" id="v-'+c.k+'">'+c.fmt(state[c.k])+'</div></div>'+
+    '<input type="range" id="in-'+c.k+'" min="'+c.min+'" max="'+c.max+'" step="'+c.step+'" value="'+state[c.k]+'" aria-label="'+c.label+'"></div>';
+}
+function segHTML(c){
+  return '<div class="ctl"><div class="ctl-hd"><div class="ctl-l">'+c.label+'</div></div>'+
+    '<div class="seg'+(c.wrap?' wrap2':'')+'" id="seg-'+c.k+'">'+c.opts.map(function(o){
+      return '<button data-seg="'+c.k+'" data-v="'+o[0]+'"'+(state[c.k]===o[0]?' class="on"':'')+'>'+o[1]+'</button>';
+    }).join('')+'</div></div>';
+}
+function itemHTML(c){return c.type==='range'?rangeHTML(c):segHTML(c);}
+function buildControls(){
+  var html='',i=0;
+  while(i<CONTROLS.length){
+    var c=CONTROLS[i];
+    if(c.type==='head'){html+='<div class="ghead">'+c.txt+(c.hint?'<small>'+c.hint+'</small>':'')+'</div>';i++;continue;}
+    if(c.half&&CONTROLS[i+1]&&CONTROLS[i+1].half&&CONTROLS[i+1].type!=='head'){
+      html+='<div class="ctl-row">'+itemHTML(c)+itemHTML(CONTROLS[i+1])+'</div>';i+=2;continue;
+    }
+    html+=itemHTML(c);i++;
+  }
+  el('controls').innerHTML=html;
+  CONTROLS.forEach(function(c){
+    if(c.type==='range'){
+      var inp=el('in-'+c.k);
+      trackFill(inp);
+      inp.addEventListener('input',function(){
+        if(activeKey!==c.k){settleBaseline();activeKey=c.k;}
+        state[c.k]=parseFloat(inp.value);
+        el('v-'+c.k).textContent=c.fmt(state[c.k]);
+        trackFill(inp);
+        scheduleUpdate(c.k);
       });
-    });
-  });
-
-  // -------- Expand / collapse all --------
-  document.getElementById('expandAll').addEventListener('click', () => {
-    document.querySelectorAll('.tier:not(.hidden) .card').forEach(c => c.classList.add('expanded'));
-  });
-  document.getElementById('collapseAll').addEventListener('click', () => {
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
-  });
-
-  // -------- Copy order set --------
-  const orderText = `Recurrent pregnancy loss — pathology request
-
-Patient: [name] · DOB: [   ] · Two or more pregnancy losses
-
-Please perform the following tests:
-1. Lupus anticoagulant
-2. Anticardiolipin antibodies (IgG and IgM)
-3. Anti-β2 glycoprotein I antibodies (optional add-on)
-4. TSH and thyroid peroxidase (TPO) antibodies — add free T4 if TSH abnormal
-
-Imaging (separate request):
-5. Transvaginal pelvic ultrasound with 3D reconstruction
-   — assess uterine morphology and adenomyosis
-
-Reference: ESHRE 2022 / RANZCOG C-Gyn 38
-Note: confirm positive APS antibodies on a repeat sample ≥12 weeks later.`;
-
-  const copyBtn = document.getElementById('copyOrderSet');
-  copyBtn.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(orderText);
-      copyBtn.textContent = '✓ Copied to clipboard';
-      copyBtn.classList.add('copied');
-      setTimeout(() => {
-        copyBtn.textContent = 'Copy pathology request';
-        copyBtn.classList.remove('copied');
-      }, 2200);
-    } catch (e) {
-      // fallback
-      const ta = document.createElement('textarea');
-      ta.value = orderText;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-      copyBtn.textContent = '✓ Copied';
-      setTimeout(() => copyBtn.textContent = 'Copy pathology request', 2200);
     }
   });
-</script>
+}
+function buildGauges(out){
+  el('gauges').innerHTML=out.gauges.map(function(g){
+    return '<div class="gauge" id="g-'+g.id+'">'+
+      '<div class="g-top"><div class="g-ti">'+g.title+'</div><span class="g-tag '+g.tag+'" id="gt-'+g.id+'">'+(g.tag==='q'?'Evidence-based':'Clinical judgement')+'</span></div>'+
+      '<div class="g-track '+g.type+'"><div class="g-bg"></div><div class="g-dv" style="left:25%"></div><div class="g-dv" style="left:50%"></div><div class="g-dv" style="left:75%"></div>'+
+      '<div class="g-band" id="gb-'+g.id+'"></div><div class="g-mk" id="gm-'+g.id+'"></div><div class="g-zn" id="gz-'+g.id+'"></div></div>'+
+      '<div class="g-note" id="gn-'+g.id+'"></div>'+
+      '<div class="g-cites" id="gc-'+g.id+'"></div></div>';
+  }).join('');
+}
+function paintGauge(g,animateFirst){
+  var z=zone(g.val,g.zones);
+  var mk=el('gm-'+g.id),zn=el('gz-'+g.id),bd=el('gb-'+g.id);
+  var set=function(){
+    mk.style.left=clamp(g.val,6,94)+'%';
+    zn.style.left=clamp(g.val,16,84)+'%';
+    bd.style.left=g.lo+'%';bd.style.width=Math.max(g.hi-g.lo,4)+'%';
+  };
+  zn.textContent=z.l; zn.style.color=z.c;
+  el('gn-'+g.id).innerHTML=g.note;
+  el('gc-'+g.id).innerHTML=cite(g.src);
+  var tag=el('gt-'+g.id);
+  tag.className='g-tag '+g.tag; tag.textContent=(g.tag==='q'?'Evidence-based':'Clinical judgement');
+  if(animateFirst){mk.style.left='6%';zn.style.left='16%';bd.style.left='4%';bd.style.width='6%';
+    requestAnimationFrame(function(){requestAnimationFrame(set);});}
+  else set();
+}
+function paintReferral(rf){
+  el('refbanner').innerHTML='<div class="refb l'+rf.lvl+'">'+
+    '<div class="refb-k">Suggested next step</div>'+
+    '<div class="refb-l">'+(rf.lvl===3?'Workup + referral together':rf.lvl===2?'Workup now, refer with results':'GP-led workup')+'</div>'+
+    '<div class="refb-timing"><svg class="i sm"><use href="#i-clock"/></svg> '+rf.timing+'</div>'+
+    '<div class="refb-tx">'+rf.txt+'</div></div>';
+}
+function paintPearls(keys){
+  var cont=el('pearls');
+  var sig=keys.join('|');
+  if(cont.getAttribute('data-sig')===sig)return;
+  cont.setAttribute('data-sig',sig);
+  cont.innerHTML=keys.map(function(k){
+    var p=PEARLS[k];
+    return '<div class="pearl '+p.cls+'"><div class="pearl-k">'+p.k+'</div><div class="pearl-t">'+p.t+'</div>'+
+      '<div class="pearl-b">'+p.b+'</div><div class="g-cites" style="margin-top:7px">'+cite(p.src)+'</div></div>';
+  }).join('');
+}
+function paint(out,prevOut){
+  el('case-text').innerHTML=vignette(state);
+  var first=!prevOut;
+  out.gauges.forEach(function(g){paintGauge(g,first);});
+  paintReferral(out.ref);
+  paintPearls(out.pearls);
+  lastOut=out;
+}
+function fmtVal(k,v){
+  var c=CONTROLS.filter(function(x){return x.k===k;})[0];
+  if(!c)return v;
+  if(c.type==='range')return c.fmt(typeof v==='number'?v:parseFloat(v));
+  var o=c.opts.filter(function(x){return x[0]===v;})[0];
+  return o?o[1].replace(/&amp;/g,'&'):v;
+}
+function ctlLabel(k){var c=CONTROLS.filter(function(x){return x.k===k;})[0];return c?c.label:k;}
+function showWhy(key,oldOut,newOut){
+  if(settled[key]===state[key])return;
+  el('why-change').textContent=ctlLabel(key)+': '+fmtVal(key,settled[key])+' → '+fmtVal(key,state[key]);
+  el('why-mech').textContent=MECH[key]||'';
+  var moves=[];
+  newOut.gauges.forEach(function(g,i){
+    var og=oldOut.gauges[i];
+    var zo=zone(og.val,og.zones), zn=zone(g.val,g.zones);
+    if(zo.l!==zn.l){
+      moves.push('<div class="why-mv">'+g.title+' <span class="zp" style="background:'+zo.b+';color:'+zo.c+'">'+zo.l+'</span><span class="arr">→</span><span class="zp" style="background:'+zn.b+';color:'+zn.c+'">'+zn.l+'</span></div>');
+    }
+  });
+  if(oldOut.ref.lvl!==newOut.ref.lvl){
+    var RL={1:['Routine','#f1f3f7','#2e7d4f'],2:['Early review','#f1f3f7','#b97d10'],3:['Counselling first','#f1f3f7','#5d1038']};
+    var a=RL[oldOut.ref.lvl],b=RL[newOut.ref.lvl];
+    moves.push('<div class="why-mv"><b>Suggested next step</b> <span class="zp" style="background:'+a[1]+';color:'+a[2]+'">'+a[0]+'</span><span class="arr">→</span><span class="zp" style="background:'+b[1]+';color:'+b[2]+'">'+b[0]+'</span></div>');
+  }
+  el('why-moves').innerHTML=moves.length?moves.join(''):'<div class="why-none">The dials moved within the same zones — the verdicts held.</div>';
+  el('why').classList.add('show');
+}
+var raf=null,pendingKey=null;
+function scheduleUpdate(key){
+  pendingKey=key;
+  if(raf)return;
+  raf=requestAnimationFrame(function(){
+    raf=null;
+    var prev=lastOut;
+    var baseOut=compute(settled);
+    var out=compute(state);
+    paint(out,prev||baseOut);
+    showWhy(pendingKey,baseOut,out);
+  });
+}
+function settleBaseline(){settled=JSON.parse(JSON.stringify(state));}
+function initLab(){
+  buildControls();
+  lastOut=null;
+  el('why').classList.remove('show');
+  var out=compute(state);
+  buildGauges(out);
+  paint(out,null);
+}
 
+/* events */
+document.addEventListener('click',function(e){
+  var seg=e.target.closest('[data-seg]');
+  if(seg){
+    var k=seg.getAttribute('data-seg'),v=seg.getAttribute('data-v');
+    if(state[k]!==v){
+      settleBaseline(); activeKey=k;
+      settled[k]=state[k];
+      state[k]=v;
+      el('seg-'+k).querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b===seg);});
+      scheduleUpdate(k);
+    }
+    return;
+  }
+  var cb=e.target.closest('[data-cb]');
+  document.querySelectorAll('.cb.open').forEach(function(x){if(x!==cb)x.classList.remove('open');});
+  if(cb)cb.classList.toggle('open');
+});
+el('btn-reset').addEventListener('click',function(){
+  state=defaults(); settled=defaults(); activeKey=null; initLab();
+});
+document.addEventListener('pointerup',function(){
+  if(activeKey){setTimeout(function(){settleBaseline();activeKey=null;},50);}
+});
+
+/* ───────── PROGRESSIVE REVEAL ───────── */
+var PR_SEL='.step-hd,.purpose,.bridge,.stat,.plot,.medicare,.panel,.pearl,.crit,.door,details.cat,.spect,.meno,.ort,.ort-c,.ort-rule,.bf-item,.bfl,.contact,.refb,.gauge,.case,.unc,.refs,.disc,.lanes,.lane-ax,.np-pt';
+var prObs=null,prQueue=0,prLast=0;
+function countUp(elt){
+  if(elt.dataset.done)return;elt.dataset.done='1';
+  var txt=elt.textContent;
+  var m=txt.match(/^([^0-9]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
+  if(!m)return;
+  var pre=m[1],fin=parseFloat(m[2]),suf=m[3],dec=(m[2].split('.')[1]||'').length;
+  var t0=performance.now();
+  (function f(t){
+    var pr=Math.min((t-t0)/1100,1);pr=1-Math.pow(1-pr,3);
+    elt.textContent=pre+(fin*pr).toFixed(dec)+suf;
+    if(pr<1)requestAnimationFrame(f);else elt.textContent=txt;
+  })(t0);
+}
+function observeStep(){
+  if(prObs)prObs.disconnect();
+  var act=document.querySelector('.step.on');
+  if(!act)return;
+  var nodes=act.querySelectorAll(PR_SEL);
+  nodes.forEach(function(n){n.classList.add('rv');n.classList.remove('in');n.style.transitionDelay='';});
+  prQueue=0;prLast=0;
+  prObs=new IntersectionObserver(function(ents){
+    var now=performance.now();
+    if(now-prLast>700)prQueue=0;
+    ents.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var n=e.target;
+      n.style.transitionDelay=(prQueue*0.22)+'s';
+      prQueue++;prLast=now;
+      n.classList.add('in');
+      prObs.unobserve(n);
+      if(n.id==='fig-yield'){n.querySelectorAll('.yb').forEach(function(y,i2){
+        var fill=y.querySelector('.yb-fill');
+        fill.style.transitionDelay=(0.15+i2*0.22)+'s';
+        requestAnimationFrame(function(){requestAnimationFrame(function(){fill.style.width=y.getAttribute('data-w')+'%';});});
+      });}
+      var sn=n.classList.contains('stat')?n.querySelector('.stat-n'):null;
+      if(sn)setTimeout(function(){countUp(sn);},200);
+    });
+  },{threshold:0.25,rootMargin:'0px 0px -14% 0px'});
+  nodes.forEach(function(n){prObs.observe(n);});
+}
+var KEY={1:'.door.d2',2:'#fig-yield .yb.hot',3:'.refb',4:'.lanes',5:'.meno',6:'.ort-rule',7:'.ct-qr'};
+var pulseTimer=null;
+function startPulse(){
+  clearInterval(pulseTimer);
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  pulseTimer=setInterval(function(){
+    var act=document.querySelector('.step.on');if(!act)return;
+    var k=act.querySelector(KEY[cur]);if(!k||!k.classList.contains('in'))return;
+    k.classList.remove('pulse');void k.offsetWidth;k.classList.add('pulse');
+  },6500);
+}
+
+/* ───────── STEP NAVIGATION ───────── */
+var NSTEPS=7, cur=1;
+function goto(n){
+  cur=clamp(n,1,NSTEPS);
+  document.querySelectorAll('.step').forEach(function(s){
+    s.classList.toggle('on',parseInt(s.getAttribute('data-step'))===cur);
+  });
+  el('topstep').textContent=cur+' / '+NSTEPS;
+  el('dots').innerHTML=Array.from({length:NSTEPS},function(_,i){
+    var n=i+1;
+    return '<button class="dot'+(n===cur?' on':n<cur?' done':'')+'" data-goto="'+n+'" aria-label="Step '+n+'"></button>';
+  }).join('');
+  el('nav-prev').disabled=(cur===1);
+  el('nav-next').textContent=(cur===NSTEPS?'Start again':'Continue');
+  if(cur===3){lastOut=null;var _o=compute(state);buildGauges(_o);paint(_o,null);el('why').classList.remove('show');}
+  window.scrollTo({top:0,behavior:'smooth'});
+  observeStep();
+  startPulse();
+}
+el('nav-prev').addEventListener('click',function(){goto(cur-1);});
+el('nav-next').addEventListener('click',function(){if(cur<NSTEPS)goto(cur+1);else goto(1);});
+document.addEventListener('click',function(e){
+  var d=e.target.closest('[data-goto]');
+  if(d)goto(parseInt(d.getAttribute('data-goto')));
+});
+
+/* refs */
+el('refs').innerHTML=Object.keys(SRC).map(function(k){return SRC[k];}).sort(function(a,b){return a.n-b.n;})
+  .map(function(s){return '<div class="ref"><b>'+s.n+'.</b> '+s.f+'</div>';}).join('');
+
+initLab();
+goto(1);
+})();
+</script>
 </body>
 </html>
