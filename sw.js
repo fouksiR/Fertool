@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fertool-v77';
+const CACHE_NAME = 'fertool-v78';
 
 // Install — just activate immediately
 self.addEventListener('install', event => {
